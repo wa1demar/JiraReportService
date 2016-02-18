@@ -1,0 +1,118 @@
+group 'com.swansoftwaresolutions.jirareport'
+version '0.1'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'war'
+apply plugin: 'groovy'
+apply plugin: 'org.liquibase.gradle'
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "gradle.plugin.org.liquibase:liquibase-gradle-plugin:1.1.1"
+        classpath 'postgresql:postgresql:9.1-901-1.jdbc4'
+        classpath "org.akhikhl.gretty:gretty:+"
+    }
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.4.4'
+
+    compile 'org.apache.commons:commons-dbcp2:2.1.1'
+    compile 'commons-io:commons-io:2.4'
+
+    compile 'com.fasterxml.jackson.core:jackson-core:2.6.3'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.6.3'
+
+    compile 'org.springframework:spring-web:4.2.3.RELEASE'
+    compile 'org.springframework:spring-webmvc:4.2.3.RELEASE'
+    compile 'org.springframework:spring-orm:4.2.3.RELEASE'
+
+    compile 'org.springframework.security:spring-security-core:4.0.3.RELEASE'
+    compile 'org.springframework.security:spring-security-web:4.0.3.RELEASE'
+    compile 'org.springframework.security:spring-security-config:4.0.3.RELEASE'
+    compile 'org.springframework.security:spring-security-taglibs:4.0.3.RELEASE'
+    compile 'io.jsonwebtoken:jjwt:0.4'
+
+    compile 'org.springframework:spring-support:2.0.6'
+
+    compile 'javax.servlet:javax.servlet-api:3.1.0'
+    compile 'org.modelmapper:modelmapper:0.7.5'
+
+    compile 'org.hibernate:hibernate-core:5.0.4.Final'
+    compile 'org.hibernate:hibernate-entitymanager:5.0.4.Final'
+    compile 'javax.transaction:jta:1.1'
+    compile 'postgresql:postgresql:9.1-901-1.jdbc4'
+
+    compile 'javax.validation:validation-api:1.1.0.Final'
+    compile 'org.hibernate:hibernate-validator:5.2.2.Final'
+
+    compile 'javax.servlet.jsp:jsp-api:2.2'
+    compile 'jstl:jstl:1.2'
+
+    compile 'log4j:log4j:1.2.17'
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = []
+        }
+        groovy {
+            srcDirs = ['src/main/java']
+        }
+    }
+
+    test {
+        java {
+            srcDirs = []
+        }
+        groovy {
+            srcDirs = ['src/test/java']
+        }
+
+        resources {
+            srcDirs = ['src/test/resources']
+        }
+    }
+}
+
+Properties props = new Properties()
+props.load(new FileInputStream("src/main/resources/database_postgresql.properties"))
+
+liquibase {
+    activities {
+        main {
+            changeLogFile 'src/main/resources/liquibase/changelog.groovy'
+            driver props.getProperty("database.driver")
+            url props.getProperty("database.url")
+            username props.getProperty("database.user")
+            password props.getProperty("database.password")
+        }
+
+    }
+
+    runList = 'main'
+}
