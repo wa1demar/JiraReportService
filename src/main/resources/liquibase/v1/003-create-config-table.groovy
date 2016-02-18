@@ -4,7 +4,7 @@ databaseChangeLog {
     changeSet(id: '003', author: 'Vladimir Martynyuk') {
         comment "Create table configs"
         createTable(tableName: "configs") {
-            column(name: 'id', type: 'int', autoIncrement: true) {
+            column(name: 'id', type: 'bigint', autoIncrement: true) {
                 constraints(nullable: false)
             }
 

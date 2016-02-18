@@ -1,10 +1,10 @@
 package liquibase.v1
 
 databaseChangeLog {
-    changeSet(id: '004', author: 'Vladimir Martynyuk') {
+    changeSet(id: '005', author: 'Vladimir Martynyuk') {
         comment "Create table reports"
         createTable(tableName: "reports") {
-            column(name: 'id', type: 'int', autoIncrement: true) {
+            column(name: 'id', type: 'bigint', autoIncrement: true) {
                 constraints(nullable: false)
             }
 
@@ -24,11 +24,11 @@ databaseChangeLog {
                 constraints(nullable: true)
             }
 
-            column(name: "board_id", type: "int") {
+            column(name: "board_id", type: 'bigint') {
                 constraints(nullable: true)
             }
 
-            column(name: "creator_id", type: "int") {
+            column(name: "creator_id", type: 'bigint') {
                 constraints(nullable: true)
             }
 
@@ -52,43 +52,43 @@ databaseChangeLog {
                 constraints(nullable: true)
             }
 
-            column(name: "type_id", type: "int") {
+            column(name: "type_id", type: 'bigint') {
                 constraints(nullable: true)
             }
 
-            column(name: "target_points", type: "int") {
+            column(name: "target_points", type: 'bigint') {
                 constraints(nullable: true)
             }
 
-            column(name: "target_hours", type: "int") {
+            column(name: "target_hours", type: 'bigint') {
                 constraints(nullable: true)
             }
 
-            column(name: "target_qat_defect_min", type: "int") {
+            column(name: "target_qat_defect_min", type: 'bigint') {
                 constraints(nullable: true)
             }
 
-            column(name: "target_qat_defect_max", type: "int") {
+            column(name: "target_qat_defect_max", type: 'bigint') {
                 constraints(nullable: true)
             }
 
-            column(name: "target_qat_defect_hours", type: "int") {
+            column(name: "target_qat_defect_hours", type: 'bigint') {
                 constraints(nullable: true)
             }
 
-            column(name: "target_uat_defect_min", type: "int") {
+            column(name: "target_uat_defect_min", type: 'bigint') {
                 constraints(nullable: true)
             }
 
-            column(name: "target_uat_defect_max", type: "int") {
+            column(name: "target_uat_defect_max", type: 'bigint') {
                 constraints(nullable: true)
             }
 
-            column(name: "target_uat_defect_hours", type: "int") {
+            column(name: "target_uat_defect_hours", type: 'bigint') {
                 constraints(nullable: true)
             }
 
-            column(name: "actual_points", type: "int") {
+            column(name: "actual_points", type: 'bigint') {
                 constraints(nullable: true)
             }
 
@@ -96,19 +96,19 @@ databaseChangeLog {
                 constraints(nullable: true)
             }
 
-            column(name: "actual_qat_defect_points", type: "int") {
+            column(name: "actual_qat_defect_points", type: 'bigint') {
                 constraints(nullable: true)
             }
 
-            column(name: "actual_qat_defect_hours", type: "int") {
+            column(name: "actual_qat_defect_hours", type: 'bigint') {
                 constraints(nullable: true)
             }
 
-            column(name: "actual_uat_defect_points", type: "int") {
+            column(name: "actual_uat_defect_points", type: 'bigint') {
                 constraints(nullable: true)
             }
 
-            column(name: "actual_uat_defect_hours", type: "int") {
+            column(name: "actual_uat_defect_hours", type: 'bigint') {
                 constraints(nullable: true)
             }
         }

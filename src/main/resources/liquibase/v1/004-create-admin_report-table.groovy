@@ -4,11 +4,11 @@ databaseChangeLog {
     changeSet(id: '004', author: 'Vladimir Martynyuk') {
         comment "Create table admin_reports"
         createTable(tableName: "admin_reports") {
-            column(name: 'id', type: 'int', autoIncrement: true) {
+            column(name: 'id', type: 'bigint', autoIncrement: true) {
                 constraints(nullable: false)
             }
 
-            column(name: 'report_id', type: 'int', autoIncrement: true) {
+            column(name: 'report_id', type: 'bigint', autoIncrement: true) {
                 constraints(nullable: false)
             }
 

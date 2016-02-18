@@ -4,7 +4,7 @@ databaseChangeLog {
     changeSet(id: '001', author: 'Vladimir Martynyuk') {
         comment "Create table users"
         createTable(tableName: "users") {
-            column(name: 'id', type: 'int', autoIncrement: true) {
+            column(name: 'id', type: 'bigint', autoIncrement: true) {
                 constraints(nullable: false)
             }
             column(name: "login", type: "varchar(150)") {

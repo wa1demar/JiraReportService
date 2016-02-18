@@ -4,15 +4,15 @@ databaseChangeLog {
     changeSet(id: '002', author: 'Vladimir Martynyuk') {
         comment "Create table comments"
         createTable(tableName: "comments") {
-            column(name: 'id', type: 'int', autoIncrement: true) {
+            column(name: 'id', type: 'bigint', autoIncrement: true) {
                 constraints(nullable: false)
             }
 
-            column(name: 'report_id', type: 'int') {
+            column(name: 'report_id', type: 'bigint') {
                 constraints(nullable: false)
             }
 
-            column(name: 'sprint_id', type: 'int') {
+            column(name: 'sprint_id', type: 'bigint') {
                 constraints(nullable: false)
             }
 
