@@ -9,15 +9,15 @@ databaseChangeLog {
             }
 
             column(name: 'report_id', type: 'bigint') {
-                constraints(nullable: false)
+                constraints(nullable: true)
             }
 
             column(name: 'agile_sprint_id', type: 'bigint') {
-                constraints(nullable: false)
+                constraints(nullable: true)
             }
 
             column(name: 'not_count_target', type: 'bigint') {
-                constraints(nullable: false)
+                constraints(nullable: true)
             }
 
             column(name: "name", type: "varchar(150)") {

@@ -9,11 +9,11 @@ databaseChangeLog {
             }
 
             column(name: 'report_id', type: 'bigint') {
-                constraints(nullable: false)
+                constraints(nullable: true)
             }
 
             column(name: 'sprint_id', type: 'bigint') {
-                constraints(nullable: false)
+                constraints(nullable: true)
             }
 
             column(name: "text", type: "text") {
@@ -23,7 +23,7 @@ databaseChangeLog {
                 constraints(nullable: true)
             }
             column(name: "created_date", type: "timestamp") {
-                constraints(nullable: false)
+                constraints(nullable: true)
             }
 
         }

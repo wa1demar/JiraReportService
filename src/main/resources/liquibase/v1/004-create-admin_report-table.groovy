@@ -8,8 +8,8 @@ databaseChangeLog {
                 constraints(nullable: false)
             }
 
-            column(name: 'report_id', type: 'bigint', autoIncrement: true) {
-                constraints(nullable: false)
+            column(name: 'report_id', type: 'bigint') {
+                constraints(nullable: true)
             }
 
             column(name: "name", type: "varchar(150)") {
