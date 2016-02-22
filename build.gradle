@@ -59,12 +59,15 @@ dependencies {
     compile 'org.hibernate:hibernate-entitymanager:5.0.4.Final'
     compile 'javax.transaction:jta:1.1'
     compile 'postgresql:postgresql:9.1-901-1.jdbc4'
+    compile 'com.h2database:h2:1.4.191'
 
     compile 'javax.validation:validation-api:1.1.0.Final'
     compile 'org.hibernate:hibernate-validator:5.2.2.Final'
 
     compile 'javax.servlet.jsp:jsp-api:2.2'
     compile 'jstl:jstl:1.2'
+
+    compile 'com.sun.jersey:jersey-core:1.19'
 
     compile 'log4j:log4j:1.2.17'
 
