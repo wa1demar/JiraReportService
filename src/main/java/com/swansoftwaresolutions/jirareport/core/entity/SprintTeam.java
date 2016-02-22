@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @author Vladimir Martynyuk
  */
 @Entity
-@Table(name = "sprint_teans")
+@Table(name = "sprint_teams")
 public class SprintTeam implements Serializable {
 
     @Id
