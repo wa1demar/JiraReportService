@@ -1,7 +1,7 @@
 package liquibase.v1
 
 databaseChangeLog {
-    changeSet(id: '008', author: 'Vladimir Martynyuk') {
+    changeSet(id: '009', author: 'Vladimir Martynyuk') {
         comment "Add jira_password column to configs table"
         addColumn(tableName: "configs") {
 
