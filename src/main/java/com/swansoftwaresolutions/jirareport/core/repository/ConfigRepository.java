@@ -2,9 +2,11 @@ package com.swansoftwaresolutions.jirareport.core.repository;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Config;
 
+import java.util.List;
+
 public interface ConfigRepository {
 
-    Config getConfigData();
+    List<Config> getConfigData();
 
     void createConfig(final Config config);
 
@@ -12,5 +14,5 @@ public interface ConfigRepository {
 
     void deleteConfig(final Config config);
 
-    void deleteConfig(final Long configId);
+    void deleteConfig(final Long id);
 }

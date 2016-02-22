@@ -5,10 +5,17 @@ import java.io.Serializable;
 
 /**
  * @author Vladimir Martynyuk
+ * @author Vitaliy Holovko
  */
 
 @Entity
 @Table(name = "configs")
+@NamedQueries(value = {
+        @NamedQuery(name = "Config.findByReportId", query = "FROM Config c WHERE c.configId = :id"),
+        @NamedQuery(name = "Config.findById", query = "FROM Config c WHERE c.id = :id"),
+        @NamedQuery(name = "Config.deleteAll", query = "DELETE FROM Config c"),
+        @NamedQuery(name = "Config.deleteById", query = "DELETE FROM Config c WHERE c.id = :id"),
+})
 public class Config implements Serializable {
 
     @Id

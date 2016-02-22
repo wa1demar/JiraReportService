@@ -8,15 +8,15 @@ public interface SprintRepository {
 
     List<Sprint> getAllSprints();
 
-    List<Sprint> getSprintsByIdReport(final Long reportId);
+    List<Sprint> getSprintsByIdReportId(final Long reportId);
 
-    Sprint getSprintByIdReportAndIdAgileSprint(final Long reportId, final Long agileSprintId);
+    Sprint getSprintByIdReportAndIdAgileSprintId(final Long reportId, final Long agileSprintId);
 
     Sprint getSprintById(final Long id);
 
     Sprint getLastAddedSprint();
 
-    Sprint getSprintByIdAgileSprint(final Long agileSprintId);
+    Sprint getSprintByIdAgileSprintId(final Long agileSprintId);
 
     void createSprint(final Sprint sprint);
 
@@ -28,5 +28,5 @@ public interface SprintRepository {
 
     void deleteSprint(final Long sprintId);
 
-    void deleteSprintsByIdReport(final Long reportId);
+    void deleteSprintsByIdReportId(final Long reportId);
 }

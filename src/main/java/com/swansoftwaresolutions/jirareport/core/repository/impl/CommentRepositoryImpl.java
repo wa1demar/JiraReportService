@@ -15,13 +15,13 @@ import java.util.List;
  * @author Vladimir Martynyuk
  */
 @Repository
+@Transactional
 public class CommentRepositoryImpl implements CommentRepository {
 
     @Autowired
     private SessionFactory sessionFactory;
 
     @Override
-    @Transactional
     @SuppressWarnings("unchecked")
     public List<Comment> getAllComments() {
         return sessionFactory.getCurrentSession().createCriteria(Comment.class)
@@ -29,7 +29,6 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    @Transactional
     public List<Comment> getCommentsByReportId(Long reportId) {
         Query query = sessionFactory.getCurrentSession().getNamedQuery("Comment.findByReportId");
         query.setParameter("reportId", reportId);
