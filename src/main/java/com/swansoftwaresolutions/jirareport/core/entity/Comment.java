@@ -9,6 +9,12 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "comments")
+@NamedQueries(value = {
+        @NamedQuery(name = "Comment.findByReportId", query = "FROM Comment c WHERE c.reportId = :reportId"),
+        @NamedQuery(name = "Comment.findById", query = "FROM Comment c WHERE c.id = :id"),
+        @NamedQuery(name = "Comment.deleteAll", query = "DELETE FROM Comment c"),
+        @NamedQuery(name = "Comment.deleteByReportId", query = "DELETE FROM Comment c WHERE c.reportId = :reportId"),
+})
 public class Comment implements Serializable {
 
     @Id

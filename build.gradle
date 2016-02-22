@@ -40,9 +40,10 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.6.3'
 
-    compile 'org.springframework:spring-web:4.2.3.RELEASE'
-    compile 'org.springframework:spring-webmvc:4.2.3.RELEASE'
-    compile 'org.springframework:spring-orm:4.2.3.RELEASE'
+    compile 'org.springframework:spring-web:4.2.4.RELEASE'
+    compile 'org.springframework:spring-webmvc:4.2.4.RELEASE'
+    compile 'org.springframework:spring-orm:4.2.4.RELEASE'
+    compile 'org.springframework:spring-test:4.2.4.RELEASE'
 
     compile 'org.springframework.security:spring-security-core:4.0.3.RELEASE'
     compile 'org.springframework.security:spring-security-web:4.0.3.RELEASE'
