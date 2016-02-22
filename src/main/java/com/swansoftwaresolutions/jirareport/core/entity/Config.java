@@ -8,10 +8,11 @@ import java.io.Serializable;
  */
 
 @Entity
-@Table(name="configs")
+@Table(name = "configs")
 public class Config implements Serializable {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
