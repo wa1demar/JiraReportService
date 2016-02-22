@@ -1,9 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -14,20 +11,43 @@ import java.io.Serializable;
 @Table(name="configs")
 public class Config implements Serializable {
 
+    @Id @GeneratedValue
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "base_url")
     private String baseUrl;
+
+    @Column(name = "jira_user")
     private String jiraUser;
-    private String jiraPass;
+
+    @Column(name = "jira_password")
+    private String jiraPassword;
+
+    @Column(name = "story_point_name")
     private String storyPointsName;
+
+    @Column(name = "agile_done_name")
     private String agileDoneName;
+
+    @Column(name = "jira_dev_group_name")
     private String jiraDevGroupName;
+
+    @Column(name = "bug_name")
     private String bugName;
+
+    @Column(name = "path_to_ajax")
     private String pathToAjax;
+
+    @Column(name = "path_to_agile_rest")
     private String pathToAgileRest;
+
+    @Column(name = "non_working_days")
     private String nonWorkingDays;
+
+    @Column(name = "auto_sync_time")
     private String autoSyncTime;
 
-    @Id @GeneratedValue
     public Long getId() {
         return id;
     }
@@ -52,12 +72,12 @@ public class Config implements Serializable {
         this.jiraUser = jiraUser;
     }
 
-    public String getJiraPass() {
-        return jiraPass;
+    public String getJiraPassword() {
+        return jiraPassword;
     }
 
-    public void setJiraPass(String jiraPass) {
-        this.jiraPass = jiraPass;
+    public void setJiraPassword(String jiraPassword) {
+        this.jiraPassword = jiraPassword;
     }
 
     public String getStoryPointsName() {
