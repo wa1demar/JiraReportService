@@ -1,14 +1,13 @@
 package com.swansoftwaresolutions.jirareport.core.config;
 
-import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
 import java.util.Properties;
 
@@ -16,7 +15,8 @@ import java.util.Properties;
  * @author Vladimir Martynyuk
  */
 @Configuration
-@PropertySource("classpath:database_postgresql.properties")
+@PropertySource("classpath:database.properties")
+@ComponentScan("com.swansoftwaresolutions.jirareport.core.repository.impl")
 public class JPAConfig {
 
     @Value("${database.url}")
@@ -49,11 +49,17 @@ public class JPAConfig {
     }
 
     @Bean
-    LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-        LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
-        factoryBean.setDataSource(driverManagerDataSource());
-        factoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
-        factoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+    HibernateTransactionManager transactionManager() {
+        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+        transactionManager.setSessionFactory(sessionFactory().getObject());
+        return transactionManager;
+    }
+
+    @Bean
+    LocalSessionFactoryBean sessionFactory() {
+        LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
+        sessionFactoryBean.setDataSource(driverManagerDataSource());
+        sessionFactoryBean.setPackagesToScan("com.swansoftwaresolutions.jirareport.core.entity");
 
         Properties jpaProperties = new Properties();
         jpaProperties.setProperty("hibernate.dialect", hibernateDialect);
@@ -61,17 +67,9 @@ public class JPAConfig {
         jpaProperties.setProperty("hibernate.show_sql", hibernateShowSql);
         jpaProperties.setProperty("hibernate.characterEncoding", hibernateCharacterEncoding);
 
-        factoryBean.setJpaProperties(jpaProperties);
-        factoryBean.setPackagesToScan("ua.uzhhorodjavateam.garage.core.entity");
+        sessionFactoryBean.setHibernateProperties(jpaProperties);
 
-        return factoryBean;
-    }
-
-    @Bean
-    JpaTransactionManager transactionManager() {
-        JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
-        return transactionManager;
+        return sessionFactoryBean;
     }
 
 }
