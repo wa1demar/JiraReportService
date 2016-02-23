@@ -4,3 +4,5 @@
 /.idea
 /gradle
 /.gradle
+/classes
+*.iml
