@@ -1,6 +1,5 @@
 package com.swansoftwaresolutions.jirareport.core.repository.impl;
 
-import com.swansoftwaresolutions.jirareport.core.entity.Report;
 import com.swansoftwaresolutions.jirareport.core.entity.SprintIssue;
 import com.swansoftwaresolutions.jirareport.core.repository.SprintIssueRepository;
 import org.hibernate.Criteria;
@@ -97,7 +96,9 @@ public class SprintIssueRepositoryImpl implements SprintIssueRepository {
 
     @Override
     public void deleteSprintIssuesBySprintIdAndAssignee(Long sprintId, String assignee) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("AdminReport.deleteBySprintIdAndAssignee");
+        Query query = sessionFactory.getCurrentSession().getNamedQuery("SprintIssue.deleteBySprintIdAndAssignee");
+        query.setParameter("sprintId", sprintId);
+        query.setParameter("assignee", assignee);
         query.executeUpdate();
     }
 }

@@ -8,13 +8,13 @@ public interface SprintTeamRepository {
 
     List<SprintTeam> getAllSprintTeams();
 
-    List<SprintTeam> getSprintTeamsByIdReport(final Long reportId);
+    List<SprintTeam> getSprintTeamsByReportId(final Long reportId);
 
-    List<SprintTeam> getSprintTeamByIdReportAndIdAgileSprint(final Long reportId, final Long agileSprintId);
+    List<SprintTeam> getSprintTeamByReportIdAndAgileSprintId(final Long reportId, final Long agileSprintId);
 
     SprintTeam getSprintTeamById(final Long id);
 
-    SprintTeam getSprintTeamByIdAgileSprint(final Long agileSprintId);
+    SprintTeam getSprintTeamByAgileSprintId(final Long agileSprintId);
 
     void createSprintTeam(final SprintTeam sprintTeam);
 
@@ -26,5 +26,5 @@ public interface SprintTeamRepository {
 
     void deleteSprintTeam(final Long sprintTeamId);
 
-    void deleteSprintTeamsByIdReport(final Long reportId);
+    void deleteSprintTeamsByReportId(final Long reportId);
 }
