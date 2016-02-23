@@ -66,7 +66,7 @@ public class AdminReportRepositoryImpl implements AdminReportRepository {
 
     @Override
     public void deleteAllAdminReport() {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("AdminReport.deleteAll.deleteAll");
+        Query query = sessionFactory.getCurrentSession().getNamedQuery("AdminReport.deleteAll");
         query.executeUpdate();
     }
 

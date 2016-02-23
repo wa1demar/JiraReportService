@@ -6,3 +6,8 @@
 /.gradle
 /classes
 *.iml
+
+#Remove a file from a Git repository without deleting it from the local filesystem
+#git rm --cached mylogfile.log
+#For a directory:
+#git rm --cached -r mydirectory
