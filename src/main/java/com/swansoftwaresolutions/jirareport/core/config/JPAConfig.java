@@ -34,6 +34,9 @@ public class JPAConfig {
     @Value("${hibernate.show_sql}")
     private String hibernateShowSql;
 
+    @Value("${hibernate.hbm2ddl.auto}")
+    private String hibernateToDll;
+
     @Value("${hibernate.characterEncoding}")
     private String hibernateCharacterEncoding;
 
@@ -63,7 +66,7 @@ public class JPAConfig {
 
         Properties jpaProperties = new Properties();
         jpaProperties.setProperty("hibernate.dialect", hibernateDialect);
-        jpaProperties.setProperty("hibernate.hbm2dll.auto", "validate");
+        jpaProperties.setProperty("hibernate.hbm2dll.auto", hibernateToDll);
         jpaProperties.setProperty("hibernate.show_sql", hibernateShowSql);
         jpaProperties.setProperty("hibernate.characterEncoding", hibernateCharacterEncoding);
 
