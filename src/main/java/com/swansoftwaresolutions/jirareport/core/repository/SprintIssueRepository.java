@@ -9,11 +9,11 @@ public interface SprintIssueRepository {
 
     List<SprintIssue> getAllSprintIssues();
 
-    List<SprintIssue> getSprintIssuesByIdSprint(final Long sprintId);
+    List<SprintIssue> getSprintIssuesBySprintId(final Long sprintId);
 
-    List<SprintIssue> getSprintIssuesByIdSprintAndAssignee(final Long sprintId, final String assignee);
+    List<SprintIssue> getSprintIssuesBySprintIdAndAssignee(final Long sprintId, final String assignee);
 
-    List<SprintIssue> getSprintIssuesByIdSprintAndAssigneeAndIssueDate(final Long sprintId, final String assignee, final String issueDate);
+    List<SprintIssue> getSprintIssuesBySprintIdAndAssigneeAndIssueDate(final Long sprintId, final String assignee, final String issueDate);
 
     SprintIssue getSprintIssueById(final Long id);
 
@@ -29,5 +29,5 @@ public interface SprintIssueRepository {
 
     void deleteSprintIssuesByIdSprint(final Long sprintId);
 
-    void deleteSprintIssuesByIdSprintAndAssignee(final Long sprintId, final String assignee);
+    void deleteSprintIssuesBySprintIdAndAssignee(final Long sprintId, final String assignee);
 }

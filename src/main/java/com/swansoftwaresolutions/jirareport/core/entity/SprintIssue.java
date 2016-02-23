@@ -9,6 +9,14 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "sprint_issues")
+@NamedQueries(value = {
+        @NamedQuery(name = "SprintIssue.findBySprintId", query = "FROM SprintIssue c WHERE c.sprintId = :sprintId"),
+        @NamedQuery(name = "SprintIssue.findBySprintIdAndAssignee", query = "FROM SprintIssue c WHERE c.sprintId = :sprintId AND c.assignee = :assignee ORDER BY c.id ASC"),
+        @NamedQuery(name = "SprintIssue.findBySprintIdAndAssigneeAndIssueDate", query = "FROM SprintIssue c WHERE c.sprintId = :sprintId AND c.assignee = :assignee AND c.issueDate = :issueDate ORDER BY c.id ASC"),
+        @NamedQuery(name = "SprintIssue.findById", query = "FROM SprintIssue c WHERE c.id = :id"),
+        @NamedQuery(name = "SprintIssue.deleteAll", query = "DELETE FROM SprintIssue c"),
+        @NamedQuery(name = "SprintIssue.deleteBySprintIdAndAssignee", query = "DELETE FROM SprintIssue c WHERE c.sprintId = :sprintId AND c.assignee = :assignee"),
+})
 public class SprintIssue implements Serializable {
 
     @Id

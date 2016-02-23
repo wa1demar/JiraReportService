@@ -132,7 +132,6 @@ public class ReportRepositoryImpl implements ReportRepository{
     @Override
     public Report getLastAddedReport() {
         Query query = sessionFactory.getCurrentSession().getNamedQuery("Report.findLastAddedReport");
-        query.setParameter("id", id);
 
         @SuppressWarnings("unchecked")
         Report report = (Report) query.uniqueResult();
