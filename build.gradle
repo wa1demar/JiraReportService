@@ -60,7 +60,7 @@ dependencies {
     compile 'org.hibernate:hibernate-entitymanager:5.0.4.Final'
     compile 'javax.transaction:jta:1.1'
     compile 'postgresql:postgresql:9.1-901-1.jdbc4'
-    compile 'com.h2database:h2:1.4.191'
+    compile 'org.hsqldb:hsqldb:2.3.3'
 
     compile 'javax.validation:validation-api:1.1.0.Final'
     compile 'org.hibernate:hibernate-validator:5.2.2.Final'
@@ -104,7 +104,7 @@ sourceSets {
 }
 
 Properties props = new Properties()
-props.load(new FileInputStream("src/main/resources/database_postgresql.properties"))
+props.load(new FileInputStream("src/main/resources/database.properties"))
 
 liquibase {
     activities {
