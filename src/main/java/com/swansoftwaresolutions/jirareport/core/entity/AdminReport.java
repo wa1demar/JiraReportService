@@ -9,6 +9,12 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "admin_reports")
+@NamedQueries(value = {
+        @NamedQuery(name = "AdminReport.findByReportId", query = "FROM AdminReport c WHERE c.reportId = :reportId"),
+        @NamedQuery(name = "AdminReport.findById", query = "FROM AdminReport c WHERE c.id = :id"),
+        @NamedQuery(name = "AdminReport.deleteAll", query = "DELETE FROM AdminReport c"),
+        @NamedQuery(name = "AdminReport.deleteByReportId", query = "DELETE FROM AdminReport c WHERE c.reportId = :reportId"),
+})
 public class AdminReport implements Serializable {
 
     @Id
