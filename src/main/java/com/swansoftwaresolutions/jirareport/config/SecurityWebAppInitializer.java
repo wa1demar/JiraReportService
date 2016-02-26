@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.core.config;
+package com.swansoftwaresolutions.jirareport.config;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 

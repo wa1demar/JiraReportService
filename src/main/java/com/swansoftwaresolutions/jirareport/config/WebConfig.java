@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.core.config;
+package com.swansoftwaresolutions.jirareport.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +18,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @EnableWebMvc
 @ComponentScan(basePackages = {
         "com.swansoftwaresolutions.jirareport.web.controllers",
-        "com.swansoftwaresolutions.jirareport.rest.controller",
+        "com.swansoftwaresolutions.jirareport.rest.controllers",
         "com.swansoftwaresolutions.jirareport.rest.mapper",
         "com.swansoftwaresolutions.jirareport.rest.handler"
 })

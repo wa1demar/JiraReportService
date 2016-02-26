@@ -9,12 +9,12 @@ import java.io.Serializable;
 @Entity
 @Table(name = "sprint_teams")
 @NamedQueries(value = {
-        @NamedQuery(name = "SprintTeam.findByReportId", query = "FROM SprintIssue c WHERE c.reportId = :reportId"),
-        @NamedQuery(name = "SprintTeam.findByReportIdAndAgileSprintId", query = "FROM SprintIssue c WHERE c.reportId = :reportId AND c.agileSprintId = :agileSprintId"),
-        @NamedQuery(name = "SprintTeam.findByAgileSprintId", query = "FROM SprintIssue c WHERE c.agileSprintId = :agileSprintId"),
+        @NamedQuery(name = "SprintTeam.findByReportId", query = "FROM SprintTeam c WHERE c.reportId = :reportId"),
+        @NamedQuery(name = "SprintTeam.findByReportIdAndAgileSprintId", query = "FROM SprintTeam c WHERE c.reportId = :reportId AND c.agileSprintId = :agileSprintId"),
+        @NamedQuery(name = "SprintTeam.findByAgileSprintId", query = "FROM SprintTeam c WHERE c.agileSprintId = :agileSprintId"),
         @NamedQuery(name = "SprintTeam.findById", query = "FROM SprintTeam c WHERE c.id = :id"),
         @NamedQuery(name = "SprintTeam.deleteAll", query = "DELETE FROM SprintTeam c"),
-        @NamedQuery(name = "SprintTeam.deleteByReportId", query = "DELETE FROM SprintIssue c WHERE c.reportId = :reportId"),
+        @NamedQuery(name = "SprintTeam.deleteByReportId", query = "DELETE FROM SprintTeam c WHERE c.reportId = :reportId"),
 })
 public class SprintTeam implements Serializable {
 
