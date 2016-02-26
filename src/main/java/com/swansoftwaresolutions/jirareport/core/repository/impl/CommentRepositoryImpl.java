@@ -51,8 +51,8 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public void createComment(Comment comment) {
-        sessionFactory.getCurrentSession().save(comment);
+    public Comment createComment(Comment comment) {
+        return (Comment) sessionFactory.getCurrentSession().save(comment);
     }
 
     @Override

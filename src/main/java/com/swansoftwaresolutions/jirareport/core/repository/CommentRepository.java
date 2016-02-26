@@ -12,7 +12,7 @@ public interface CommentRepository {
 
     Comment getCommentById(final Long id);
 
-    void createComment(final Comment comment);
+    Comment createComment(final Comment comment);
 
     void updateComment(final Comment comment);
 

@@ -73,6 +73,9 @@ dependencies {
     compile 'log4j:log4j:1.2.17'
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
+
+    testCompile 'org.unitils:unitils-core:3.4.2'
+    testCompile 'org.unitils:unitils-spring:3.4.2'
 }
 
 task wrapper(type: Wrapper) {
