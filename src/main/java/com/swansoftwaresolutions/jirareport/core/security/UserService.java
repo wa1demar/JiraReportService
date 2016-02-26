@@ -2,7 +2,6 @@ package com.swansoftwaresolutions.jirareport.core.security;
 
 import com.swansoftwaresolutions.jirareport.core.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

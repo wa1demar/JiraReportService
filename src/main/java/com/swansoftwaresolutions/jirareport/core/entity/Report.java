@@ -10,20 +10,19 @@ import java.util.Date;
 @Entity
 @Table(name = "reports")
 @NamedQueries(value = {
-        @NamedQuery(name = "Report.findByReportId", query = "FROM Report c WHERE c.reportId = :reportId"),
         @NamedQuery(name = "Report.findById", query = "FROM Report c WHERE c.id = :id"),
         @NamedQuery(name = "Report.findAllClosed", query = "FROM Report c WHERE c.isClosed = true"),
         @NamedQuery(name = "Report.findAllAutomaticOngoingReport", query = "FROM Report c WHERE (c.isClosed = 0 OR c.isClosed IS NULL) AND (c.typeId = 1 OR  c.typeId IS NULL) ORDER BY c.title ASC"),
         @NamedQuery(name = "Report.findAllManualOngoingReport", query = "FROM Report c WHERE (c.isClosed = 0 OR c.isClosed IS NULL) AND c.typeId = 2 ORDER BY c.title ASC"),
-        @NamedQuery(name = "Report.findAllAutomaticClosedReport", query = "FROM Report c WHERE c.isClosed = 1 AND (c.typeId = 1 OR c.typeId IS NULL ORDER BY c.title ASC"),
+        @NamedQuery(name = "Report.findAllAutomaticClosedReport", query = "FROM Report c WHERE c.isClosed = 1 AND (c.typeId = 1 OR c.typeId IS NULL) ORDER BY c.title ASC"),
         @NamedQuery(name = "Report.findAllManualClosedReport", query = "FROM Report c WHERE (c.isClosed = 1 AND c.typeId = 2) ORDER BY c.title ASC"),
         @NamedQuery(name = "Report.Report.findAllClosedReportsByDateCloseFirst", query = "FROM Report c WHERE (c.isClosed = 1 AND c.closedDate >= :dataFrom  AND c.closedDate <= :dataTo) ORDER BY c.title ASC"),
         @NamedQuery(name = "Report.Report.findAllClosedReportsByDateClose", query = "FROM Report c WHERE (c.isClosed = 1 AND c.closedDate >= :dataFrom) ORDER BY c.closedDate DESC"),
         @NamedQuery(name = "Report.Report.findAllClosedReportsByDateCloseFrom", query = "FROM Report c WHERE (c.isClosed = 1 AND c.closedDate >= :dataFrom) ORDER BY c.closedDate DESC"),
         @NamedQuery(name = "Report.Report.findAllClosedReportsByDateCloseTo", query = "FROM Report c WHERE (c.isClosed = 1 AND c.closedDate <= :dataTo) ORDER BY c.closedDate DESC"),
-        @NamedQuery(name = "Report.findLastUpdatedReport", query = "FROM Report c WHERE c.isClosed = 0 ORDER BY c.updatedDate DESC LIMIT 5"),
+//        @NamedQuery(name = "Report.findLastUpdatedReport", query = "FROM Report c WHERE c.isClosed = false ORDER BY c.updatedDate DESC LIMIT 5"),
         @NamedQuery(name = "Report.findReportBytId", query = "FROM Report c WHERE c.id = :id"),
-        @NamedQuery(name = "Report.findLastAddedReport", query = "FROM Report c ORDER BY c.createdDate DESC LIMIT 1"),
+//        @NamedQuery(name = "Report.findLastAddedReport", query = "FROM Report c ORDER BY c.createdDate DESC LIMIT 1"),
         @NamedQuery(name = "Report.deleteAll", query = "DELETE FROM Report c"),
 })
 public class Report implements Serializable {
