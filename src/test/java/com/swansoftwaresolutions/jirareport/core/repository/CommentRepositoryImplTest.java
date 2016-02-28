@@ -4,7 +4,6 @@ package com.swansoftwaresolutions.jirareport.core.repository;
 import com.swansoftwaresolutions.jirareport.core.entity.Comment;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.unitils.dbunit.annotation.ExpectedDataSet;
 
 import java.util.Date;
 
@@ -17,9 +16,27 @@ public class CommentRepositoryImplTest extends AbstractDbTest {
     private CommentRepository commentRepository;
 
     @Test
-    @ExpectedDataSet
     public void commentMayBeAdded() throws Exception {
-        Comment comment = commentRepository.createComment(new Comment(1L, 1L, "Text", "Creator", new Date()));
-        assertNotNull(comment.getId());
+        Comment comment = new Comment();
+        comment.setReportId(1L);
+        comment.setSprintId(1L);
+        comment.setCreator("Creator");
+        comment.setText("Text");
+        comment.setCreatedDate(new Date());
+
+        Comment newComment = commentRepository.createComment(comment);
+
+        assertNotNull(newComment.getId());
+        assertEquals(newComment.getCreator(), "Creator");
+    }
+
+    @Test
+    public void commentMayBeFoundById() throws Exception {
+        assertNotNull(commentRepository.findById(1L));
+    }
+
+    @Test
+    public void commentMayBeFoundByReportId() throws Exception {
+        assertNotNull(commentRepository.findByReportId(1L));
     }
 }

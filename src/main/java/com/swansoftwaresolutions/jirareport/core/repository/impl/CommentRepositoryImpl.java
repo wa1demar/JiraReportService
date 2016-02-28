@@ -24,14 +24,14 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Comment> getAllComments() {
+    public List<Comment> findAll() {
         return sessionFactory.openSession().createCriteria(Comment.class)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Comment> getCommentsByReportId(Long reportId) {
+    public List<Comment> findByReportId(Long reportId) {
         return (List<Comment>) sessionFactory.openSession()
                 .createCriteria(Comment.class)
                 .add(Restrictions.eq("reportId", reportId))
@@ -39,14 +39,14 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public Comment getCommentById(Long id) {
+    public Comment findById(Long id) {
         return (Comment) sessionFactory.openSession()
-                .createCriteria(Comment.class).add(Restrictions.eq("id", id)).list();
+                .createCriteria(Comment.class).add(Restrictions.eq("id", id)).uniqueResult();
     }
 
     @Override
     public Comment createComment(Comment comment) {
-        sessionFactory.openSession().persist(comment);
+        sessionFactory.getCurrentSession().persist(comment);
         return comment;
     }
 

@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface CommentRepository {
 
-    List<Comment> getAllComments();
+    List<Comment> findAll();
 
-    List<Comment> getCommentsByReportId(final Long reportId);
+    List<Comment> findByReportId(final Long reportId);
 
-    Comment getCommentById(final Long id);
+    Comment findById(final Long id);
 
     Comment createComment(final Comment comment);
 

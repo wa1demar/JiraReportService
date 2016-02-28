@@ -15,7 +15,7 @@ public class WebAppInitializer implements WebApplicationInitializer {
     @Override
     public void onStartup(ServletContext container) throws ServletException {
         AnnotationConfigWebApplicationContext appContext = new AnnotationConfigWebApplicationContext();
-        appContext.register(BusinessContext.class, WebConfig.class, JPAConfig.class, SecurityWebAppInitializer.class, SecurityConfig.class);
+        appContext.scan("com.swansoftwaresolutions.jirareport.config");
 
         ServletRegistration.Dynamic dispatcher = container.addServlet("dispatcher", new DispatcherServlet(appContext));
         dispatcher.setLoadOnStartup(1);

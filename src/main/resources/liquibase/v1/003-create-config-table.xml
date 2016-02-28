@@ -1,0 +1,48 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="003" author="Waldemar">
+        <createTable tableName="configs">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="base_url" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="jira_user" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="jira_password" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="story_point_name" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="agile_done_name" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="jira_dev_group_name" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="bug_name" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="path_to_ajax" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="path_to_agile_rest" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="non_working_days" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="auto_sync_time" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+
+
+        </createTable>
+        <comment>Create table configs</comment>
+
+    </changeSet>
+</databaseChangeLog>

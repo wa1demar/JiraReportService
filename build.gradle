@@ -4,34 +4,18 @@ version '0.1'
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'war'
-apply plugin: 'groovy'
-apply plugin: 'org.liquibase.gradle'
 
-compileJava {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 
 repositories {
     mavenLocal()
     mavenCentral()
 }
 
-buildscript {
-    repositories {
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-    }
-    dependencies {
-        classpath "gradle.plugin.org.liquibase:liquibase-gradle-plugin:1.1.1"
-        classpath 'postgresql:postgresql:9.1-901-1.jdbc4'
-        classpath "org.akhikhl.gretty:gretty:+"
-    }
-}
-
 dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.4.4'
 
     compile 'org.apache.commons:commons-dbcp2:2.1.1'
     compile 'commons-io:commons-io:2.4'
@@ -41,88 +25,36 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.6.3'
 
-    compile 'org.springframework:spring-web:4.2.4.RELEASE'
-    compile 'org.springframework:spring-webmvc:4.2.4.RELEASE'
-    compile 'org.springframework:spring-orm:4.2.4.RELEASE'
-    compile 'org.springframework:spring-test:4.2.4.RELEASE'
+    compile 'org.springframework:spring-core:4.0.6.RELEASE'
+    compile 'org.springframework:spring-web:4.0.6.RELEASE'
+    compile 'org.springframework:spring-webmvc:4.0.6.RELEASE'
+    compile 'org.springframework:spring-tx:4.0.6.RELEASE'
+    compile 'org.springframework:spring-orm:4.0.6.RELEASE'
 
     compile 'org.springframework.security:spring-security-core:4.0.3.RELEASE'
     compile 'org.springframework.security:spring-security-web:4.0.3.RELEASE'
     compile 'org.springframework.security:spring-security-config:4.0.3.RELEASE'
     compile 'org.springframework.security:spring-security-taglibs:4.0.3.RELEASE'
-    compile 'io.jsonwebtoken:jjwt:0.6.0'
 
-    compile 'org.springframework:spring-support:2.0.6'
-
-    compile 'javax.servlet:javax.servlet-api:3.1.0'
-    compile 'org.modelmapper:modelmapper:0.7.5'
-
-    compile 'org.hibernate:hibernate-core:4.3.11.Final'
-    compile 'org.hibernate:hibernate-entitymanager:4.3.11.Final'
-    compile 'javax.transaction:jta:1.1'
+    compile 'org.hibernate:hibernate-core:4.3.6.Final'
     compile 'postgresql:postgresql:9.1-901-1.jdbc4'
-    compile 'org.hsqldb:hsqldb:2.3.3'
+    compile 'org.liquibase:liquibase-core:3.4.2'
 
     compile 'javax.validation:validation-api:1.1.0.Final'
-    compile 'org.hibernate:hibernate-validator:5.2.2.Final'
+    compile 'org.hibernate:hibernate-validator:5.1.3.Final'
 
-    compile 'javax.servlet.jsp:jsp-api:2.2'
-    compile 'jstl:jstl:1.2'
+    compile 'mysql:mysql-connector-java:5.1.31'
 
-    compile 'com.sun.jersey:jersey-core:1.19'
+    compile 'javax.servlet:javax.servlet-api:3.1.0'
+    compile 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1'
+    compile 'javax.servlet:jstl:1.2'
 
-    compile 'log4j:log4j:1.2.17'
+    compile 'org.modelmapper:modelmapper:0.7.5'
+
+    compile 'joda-time:joda-time:2.3'
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile 'org.springframework:spring-test:4.0.6.RELEASE'
+    testCompile 'org.mockito:mockito-all:1.10.19'
 
-    compile 'org.unitils:unitils-core:3.4.2'
-    compile 'org.unitils:unitils-spring:3.4.2'
-    compile 'org.unitils:unitils-test:3.4.2'
-    compile 'org.unitils:unitils-dbunit:3.4.2'
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.3'
-}
-
-sourceSets {
-    main {
-        java {
-            srcDirs = []
-        }
-        groovy {
-            srcDirs = ['src/main/java']
-        }
-    }
-
-    test {
-        java {
-            srcDirs = []
-        }
-        groovy {
-            srcDirs = ['src/test/java']
-        }
-
-        resources {
-            srcDirs = ['src/test/resources']
-        }
-    }
-}
-
-Properties props = new Properties()
-props.load(new FileInputStream("src/main/resources/database.properties"))
-
-liquibase {
-    activities {
-        main {
-            changeLogFile 'src/main/resources/liquibase/changelog.groovy'
-            driver props.getProperty("database.driver")
-            url props.getProperty("database.url")
-            username props.getProperty("database.user")
-            password props.getProperty("database.password")
-        }
-
-    }
-
-    runList = 'main'
 }

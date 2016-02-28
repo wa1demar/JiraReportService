@@ -37,14 +37,6 @@ public class Comment implements Serializable {
     @Column(name = "created_date")
     private Date createdDate;
 
-    public Comment(Long reportId, Long sprintId, String text, String creator, Date createdDate) {
-        this.reportId = reportId;
-        this.sprintId = sprintId;
-        this.text = text;
-        this.creator = creator;
-        this.createdDate = createdDate;
-    }
-
     public Long getId() {
         return id;
     }

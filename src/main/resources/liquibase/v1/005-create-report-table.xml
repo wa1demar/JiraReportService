@@ -1,0 +1,93 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="005" author="Waldemar">
+        <createTable tableName="reports">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="url" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="creator" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="image" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="board_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="creator_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="updated_date" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sync_date" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_closed" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="closed_date" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="type_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="target_points" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="target_hours" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="target_qat_defect_min" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="target_qat_defect_max" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="target_qat_defect_hours" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="target_uat_defect_min" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="target_uat_defect_max" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="target_uat_defect_hours" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="actual_points" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="actual_hours" type="double">
+                <constraints nullable="true"/>
+            </column>
+            <column name="actual_qat_defect_points" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="actual_qat_defect_hours" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="actual_uat_defect_points" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="actual_uat_defect_hours" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+
+
+        </createTable>
+        <comment>Create table reports</comment>
+
+    </changeSet>
+</databaseChangeLog>

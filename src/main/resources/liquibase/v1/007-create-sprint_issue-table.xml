@@ -1,0 +1,42 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="007" author="Waldemar">
+        <createTable tableName="sprint_issues">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sprint_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="agile_sprint_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="key" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="point" type="double">
+                <constraints nullable="true"/>
+            </column>
+            <column name="type_name" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="assignee" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="status_name" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="issue_date" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="hours" type="double">
+                <constraints nullable="true"/>
+            </column>
+
+
+        </createTable>
+        <comment>Create table sprint_issues</comment>
+
+    </changeSet>
+</databaseChangeLog>
