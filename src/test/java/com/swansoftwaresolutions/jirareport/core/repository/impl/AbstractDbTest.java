@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.core.repository;
+package com.swansoftwaresolutions.jirareport.core.repository.impl;
 
 import com.swansoftwaresolutions.jirareport.config.BusinessContext;
 import com.swansoftwaresolutions.jirareport.config.HibernateConfig;

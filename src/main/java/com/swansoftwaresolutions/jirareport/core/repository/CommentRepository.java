@@ -12,15 +12,15 @@ public interface CommentRepository {
 
     Comment findById(final Long id);
 
-    Comment createComment(final Comment comment);
+    Comment add(final Comment comment);
 
-    void updateComment(final Comment comment);
+    Comment update(final Comment comment);
 
-    void deleteAllComments();
+    void deleteAll();
 
-    void deleteComment(final Comment comment);
+    void delete(final Comment comment);
 
-    void deleteComment(final Long commentId);
+    void delete(final Long commentId);
 
-    void deleteCommentsByReportId(final Long reportId);
+    void deleteByReportId(final Long reportId);
 }

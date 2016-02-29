@@ -7,9 +7,13 @@ import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
+import java.sql.Connection;
 import java.util.List;
 
 /**
@@ -45,37 +49,39 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public Comment createComment(Comment comment) {
+    public Comment add(Comment comment) {
         sessionFactory.getCurrentSession().persist(comment);
         return comment;
     }
 
     @Override
-    public void updateComment(Comment comment) {
-        sessionFactory.openSession().update(comment);
+    public Comment update(Comment comment) {
+        return (Comment) sessionFactory.openSession().merge(comment);
     }
 
     @Override
-    public void deleteAllComments() {
+    public void deleteAll() {
         Query query = sessionFactory.openSession().getNamedQuery("Comment.deleteAll");
         query.executeUpdate();
     }
 
     @Override
-    public void deleteComment(Comment comment) {
+    public void delete(Comment comment) {
         sessionFactory.openSession().delete(comment);
     }
 
     @Override
-    public void deleteComment(Long commentId) {
-        sessionFactory.openSession().delete(commentId);
+    public void delete(Long commentId) {
+        Comment comment = findById(commentId);
+        sessionFactory.getCurrentSession().delete(comment);
     }
 
     @Override
-    public void deleteCommentsByReportId(Long reportId) {
+    public void deleteByReportId(Long reportId) {
         Query query = sessionFactory.openSession().getNamedQuery("Comment.deleteByReportId");
         query.setParameter("reportId", reportId);
 
         query.executeUpdate();
     }
+
 }
