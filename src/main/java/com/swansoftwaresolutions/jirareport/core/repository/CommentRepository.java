@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.repository;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Comment;
+import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 
 import java.util.List;
 
@@ -14,13 +15,13 @@ public interface CommentRepository {
 
     Comment add(final Comment comment);
 
-    Comment update(final Comment comment);
+    Comment update(final Comment comment) throws NoSuchEntityException;
 
     void deleteAll();
 
-    void delete(final Comment comment);
+    void delete(final Comment comment) throws NoSuchEntityException;
 
     void delete(final Long commentId);
 
-    void deleteByReportId(final Long reportId);
+    void deleteByReportId(final Long reportId) throws NoSuchEntityException;
 }

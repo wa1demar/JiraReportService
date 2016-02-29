@@ -3,20 +3,21 @@ package com.swansoftwaresolutions.jirareport.core.repository.impl;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Comment;
 import com.swansoftwaresolutions.jirareport.core.repository.CommentRepository;
-import org.junit.FixMethodOrder;
+import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 import org.junit.Test;
-import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlGroup;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Vladimir Martynyuk
  */
 @SqlGroup({
-        @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:beforeTestRun.sql"),
-        @Sql(executionPhase = ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:afterTestRun.sql")
+        @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:sql/comment_before.sql"),
+        @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:sql/comment_after.sql")
 })
 public class CommentRepositoryImplTest extends AbstractDbTest {
 
@@ -24,39 +25,65 @@ public class CommentRepositoryImplTest extends AbstractDbTest {
     private CommentRepository commentRepository;
 
     @Test
-    public void commentMayBeAdded() throws Exception {
+    public void testFindAllComment() throws Exception {
+        List<Comment> comments = commentRepository.findAll();
+        assertNotNull(comments);
+        assertEquals(5, comments.size());
+    }
+
+    @Test
+    public void testFindCommentById() throws Exception {
+        Comment comment = commentRepository.findById(1L);
+
+        assertNotNull(comment);
+        assertEquals("Hello 1", comment.getText());
+        assertEquals("User1", comment.getCreator());
+    }
+
+    @Test
+    public void testFindCommentByWrongId() throws Exception {
+        Comment comment = commentRepository.findById(10L);
+
+        assertNull(comment);
+
+    }
+
+    @Test
+    public void testFindCommentByReportId() throws Exception {
+        List<Comment> comments = commentRepository.findByReportId(2L);
+        assertNotNull(comments);
+        assertEquals(2, comments.size());
+    }
+
+    @Test
+    public void testFindCommentByWrongReportId() throws Exception {
+        List<Comment> comments = commentRepository.findByReportId(20L);
+        assertNotNull(comments);
+        assertEquals(0, comments.size());
+    }
+
+    @Test
+    public void testAddNewComment() throws Exception {
         Comment comment = new Comment();
-        comment.setReportId(28L);
-        comment.setSprintId(2L);
-        comment.setCreator("Creator");
-        comment.setText("Text");
+        comment.setReportId(4L);
+        comment.setSprintId(3L);
+        comment.setCreator("User 6");
+        comment.setText("Hello 6");
         comment.setCreatedDate(new Date());
 
         Comment newComment = commentRepository.add(comment);
 
         assertNotNull(newComment.getId());
-        assertEquals(newComment.getCreator(), "Creator");
-    }
+        assertEquals("User 6", newComment.getCreator());
+        assertEquals("Hello 6", newComment.getText());
 
-
-    @Test
-    public void commentMeyBeSelected() throws Exception {
-        assertNotNull(commentRepository.findAll());
-    }
-
-    @Test
-    public void commentMayBeFoundById() throws Exception {
-        assertNotNull(commentRepository.findById(28L));
+        assertEquals(6, commentRepository.findAll().size());
+        assertEquals(2, commentRepository.findByReportId(4L).size());
     }
 
     @Test
-    public void commentMayBeFoundByReportId() throws Exception {
-        assertNotNull(commentRepository.findByReportId(2L));
-    }
-
-    @Test
-    public void commentMayBeUpdated() throws Exception {
-        Comment comment = commentRepository.findById(28L);
+    public void testUpdateComments() throws Exception {
+        Comment comment = commentRepository.findById(1L);
         assertNotNull(comment);
 
         comment.setCreator("New Creator");
@@ -64,42 +91,69 @@ public class CommentRepositoryImplTest extends AbstractDbTest {
         Comment updatedComment = commentRepository.update(comment);
         assertNotNull(updatedComment);
         assertEquals(comment.getId(), updatedComment.getId());
-        assertEquals(updatedComment.getCreator(), "New Creator");
+        assertEquals("New Creator", updatedComment.getCreator());
+
+    }
+
+    @Test(expected = NoSuchEntityException.class)
+    public void testUpdateWrongComment() throws Exception {
+        Comment comment = new Comment();
+        comment.setReportId(4L);
+        comment.setSprintId(3L);
+        comment.setCreator("User 6");
+        comment.setText("Hello 6");
+        comment.setCreatedDate(new Date());
+
+        commentRepository.update(comment);
 
     }
 
     @Test
-    public void commentMayBeDeleted() throws Exception {
-        Comment comment = commentRepository.findById(28L);
+    public void testDeleteComment() throws Exception {
+        Comment comment = commentRepository.findById(1L);
         assertNotNull(comment);
 
         commentRepository.delete(comment);
-        assertNull(commentRepository.findById(28L));
+        assertNull(commentRepository.findById(1L));
+        assertEquals(4, commentRepository.findAll().size());
+    }
+
+    @Test(expected = NoSuchEntityException.class)
+    public void testDeleteWrongComment() throws Exception {
+        Comment comment = new Comment();
+        comment.setId(15L);
+
+        commentRepository.delete(comment);
+        assertEquals(5, commentRepository.findAll().size());
+
     }
 
     @Test
-    @Rollback
-    public void commentMayBeDeletedById() throws Exception {
-        Comment comment = commentRepository.findById(28L);
+    public void testDeleteCommentById() throws Exception {
+        Comment comment = commentRepository.findById(1L);
         assertNotNull(comment);
 
         commentRepository.delete(comment.getId());
-        assertNull(commentRepository.findById(28L));
+        assertNull(commentRepository.findById(1L));
+        assertEquals(4, commentRepository.findAll().size());
     }
 
     @Test
-    @Rollback
-    public void commentMayBeDeletedByReportId() throws Exception {
-        Comment comment = commentRepository.findById(28L);
-        assertNotNull(comment);
+    public void testDeleteCommentsByReportId() throws Exception {
+        commentRepository.deleteByReportId(2L);
+        assertEquals(3, commentRepository.findAll().size());
+        assertEquals(0, commentRepository.findByReportId(2L).size());
+    }
 
-        commentRepository.deleteByReportId(comment.getReportId());
-        assertNull(commentRepository.findByReportId(comment.getReportId()));
+    @Test(expected = NoSuchEntityException.class)
+    public void testDeleteCommentsByWrongReportId() throws Exception {
+        commentRepository.deleteByReportId(5L);
+
     }
 
     @Test
-    public void allCommentsMayBeDeleted() throws Exception {
+    public void testDeleteAllComments() throws Exception {
         commentRepository.deleteAll();
-        assertEquals(commentRepository.findAll().size(), 0);
+        assertEquals(0, commentRepository.findAll().size());
     }
 }

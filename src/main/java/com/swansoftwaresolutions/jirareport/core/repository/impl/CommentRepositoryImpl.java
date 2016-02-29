@@ -2,6 +2,7 @@ package com.swansoftwaresolutions.jirareport.core.repository.impl;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Comment;
 import com.swansoftwaresolutions.jirareport.core.repository.CommentRepository;
+import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -55,7 +56,10 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public Comment update(Comment comment) {
+    public Comment update(Comment comment) throws NoSuchEntityException {
+        if (findById(comment.getId()) == null) {
+            throw new NoSuchEntityException("Entity not found");
+        }
         return (Comment) sessionFactory.openSession().merge(comment);
     }
 
@@ -66,18 +70,28 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public void delete(Comment comment) {
-        sessionFactory.openSession().delete(comment);
+    public void delete(Comment comment) throws NoSuchEntityException {
+        if (findById(comment.getId()) != null) {
+            sessionFactory.getCurrentSession().delete(comment);
+        } else {
+            throw new NoSuchEntityException("Entity not found");
+        }
     }
 
     @Override
     public void delete(Long commentId) {
         Comment comment = findById(commentId);
         sessionFactory.getCurrentSession().delete(comment);
+
     }
 
     @Override
-    public void deleteByReportId(Long reportId) {
+    public void deleteByReportId(Long reportId) throws NoSuchEntityException {
+
+        if (findByReportId(reportId).size() == 0) {
+            throw new NoSuchEntityException("Entities not found");
+        }
+
         Query query = sessionFactory.openSession().getNamedQuery("Comment.deleteByReportId");
         query.setParameter("reportId", reportId);
 
