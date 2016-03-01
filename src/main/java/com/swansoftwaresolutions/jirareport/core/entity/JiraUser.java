@@ -1,7 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author Vladimir Martynyuk
@@ -10,10 +9,21 @@ import javax.persistence.Table;
 @Table(name = "jira_users")
 public class JiraUser {
 
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "login")
     private String login;
+
+    @Column(name = "full_name")
     private String fullName;
+
+    @Column(name = "jira_user_id")
     private Long jiraUserId;
 
     public Long getId() {
