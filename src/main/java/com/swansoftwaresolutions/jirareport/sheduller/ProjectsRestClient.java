@@ -1,8 +1,9 @@
 package com.swansoftwaresolutions.jirareport.sheduller;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Project;
-import com.swansoftwaresolutions.jirareport.core.repository.ProjectRepository;
+import com.swansoftwaresolutions.jirareport.core.services.ProjectService;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.ProjectDto;
+import com.swansoftwaresolutions.jirareport.sheduller.job.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -18,15 +19,16 @@ import java.util.logging.Logger;
  * @author Vladimir Martynyuk
  * @author Vitaliy Holovko
  */
-@Component
-public class ProjectsRestClient extends RestClientBase {
+
+@Component("projectsRestClient")
+public class ProjectsRestClient extends RestClientBase implements RestClient {
 
     static Logger log = Logger.getLogger(ProjectsRestClient.class.getName());
 
     @Autowired
-    ProjectRepository projectRepository;
+    ProjectService projectService;
 
-    public void getComments() {
+    public void loadData() {
         System.out.println("+++++++++++++++++++++++++++++++++++");
         System.out.println("-----------------------------------");
         System.out.println("-------Project Scheduler-----------");
@@ -45,28 +47,25 @@ public class ProjectsRestClient extends RestClientBase {
     }
 
     private void insertDataToDataBase(ProjectDto[] projectDtos) {
-        List<Project> projectsDB = projectRepository.getAllProjects();
-
         List<Project> projects = fromDtos(projectDtos);
 
-        removeDublicateAndSave(projects, projectsDB);
-//        deleteOldProjects(projects,projectsDB);
+        removeDublicateAndSave(projects, null);//projectService.getAllProjects());
     }
 
     private void deleteOldProjects(List<Project> projects, List<Project> projectsDB) {
-        projectsDB.removeAll(new HashSet(projects));
+//        projectsDB.removeAll(new HashSet(projects));
         for (Project project : projectsDB) {
-            projectRepository.deleteProject(project);
+            projectService.delete(project);
         }
     }
 
     private void removeDublicateAndSave(List<Project> projects, List<Project> projectsDB) {
         List<Project> projectList = projects;
-        projectList.removeAll(new HashSet(projectsDB));
+//        projectList.removeAll(new HashSet(projectsDB));
 
         System.out.println("   Removed " + (projects.size() - projectList.size()) + "dublicates");
         for (Project project : projectList) {
-            projectRepository.add(project);
+            projectService.save(project);
         }
     }
 

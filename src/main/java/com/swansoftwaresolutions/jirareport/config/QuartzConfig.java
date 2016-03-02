@@ -1,9 +1,10 @@
 package com.swansoftwaresolutions.jirareport.config;
 
-import com.swansoftwaresolutions.jirareport.sheduller.job.LoadIssuesJob;
-import com.swansoftwaresolutions.jirareport.sheduller.job.LoadProjectsJob;
-import com.swansoftwaresolutions.jirareport.sheduller.job.LoadUsersJob;
+import com.swansoftwaresolutions.jirareport.sheduller.ProjectsRestClient;
+import com.swansoftwaresolutions.jirareport.sheduller.job.*;
 import org.quartz.Trigger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -20,15 +21,22 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 public class QuartzConfig {
 
 
+    @Autowired
+    ApplicationContext applicationContext;
+
     @Bean
     public SchedulerFactoryBean quartzScheduler() {
         SchedulerFactoryBean quartzScheduler = new SchedulerFactoryBean();
         quartzScheduler.setConfigLocation(new ClassPathResource("quartz.properties"));
 
+        AutowiringSpringBeanJobFactory jobFactory = new AutowiringSpringBeanJobFactory();
+        jobFactory.setApplicationContext(applicationContext);
+        quartzScheduler.setJobFactory(jobFactory);
+
         Trigger[] triggers = {
                 loadProjectsTrigger().getObject(),
 //                loadIssuesTrigger().getObject(),
-                loadUsersTrigger().getObject()
+//                loadUsersTrigger().getObject()
         };
 
         quartzScheduler.setTriggers(triggers);
@@ -85,4 +93,9 @@ public class QuartzConfig {
         return jobDetailFactory;
     }
 
+    @Bean
+    RestClient projectRestClient() {
+
+        return new ProjectsRestClient();
+    }
 }
