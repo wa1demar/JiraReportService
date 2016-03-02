@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class Project {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -23,7 +23,7 @@ public class Project {
     @Column(name = "name")
     private String name;
 
-    public Object getId() {
+    public Long getId() {
         return id;
     }
 

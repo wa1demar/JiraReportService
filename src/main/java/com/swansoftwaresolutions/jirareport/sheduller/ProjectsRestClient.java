@@ -2,6 +2,7 @@ package com.swansoftwaresolutions.jirareport.sheduller;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Project;
 import com.swansoftwaresolutions.jirareport.core.repository.ProjectRepository;
+import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.ProjectDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -45,7 +46,7 @@ public class ProjectsRestClient extends RestClientBase {
     }
 
     private void insertDataToDataBase(ProjectDto[] projectDtos) {
-        List<Project> projectsDB = projectRepository.getAllProjects();
+        List<Project> projectsDB = projectRepository.findAll();
 
         List<Project> projects = fromDtos(projectDtos);
 
@@ -53,10 +54,10 @@ public class ProjectsRestClient extends RestClientBase {
 //        deleteOldProjects(projects,projectsDB);
     }
 
-    private void deleteOldProjects(List<Project> projects, List<Project> projectsDB) {
+    private void deleteOldProjects(List<Project> projects, List<Project> projectsDB) throws NoSuchEntityException {
         projectsDB.removeAll(new HashSet(projects));
         for (Project project : projectsDB) {
-            projectRepository.deleteProject(project);
+            projectRepository.delete(project);
         }
     }
 
