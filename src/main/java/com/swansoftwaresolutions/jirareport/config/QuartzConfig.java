@@ -16,7 +16,7 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
  * @author Vladimir Martynyuk
  */
 @Configuration
-@ComponentScan("com.swansoftwaresolutions.jirareport.sheduller")
+@ComponentScan("com.swansoftwaresolutions.jirareport.sheduller.rest.client")
 public class QuartzConfig {
 
 

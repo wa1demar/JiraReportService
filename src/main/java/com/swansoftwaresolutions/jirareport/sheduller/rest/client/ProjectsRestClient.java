@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.sheduller;
+package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Project;
 import com.swansoftwaresolutions.jirareport.core.repository.ProjectRepository;

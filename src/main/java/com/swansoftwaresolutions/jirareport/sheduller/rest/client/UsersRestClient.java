@@ -1,8 +1,7 @@
-package com.swansoftwaresolutions.jirareport.sheduller;
+package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
 import com.swansoftwaresolutions.jirareport.core.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.core.repository.JiraUserRepository;
-import com.swansoftwaresolutions.jirareport.core.repository.ProjectRepository;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;

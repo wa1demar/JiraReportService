@@ -1,6 +1,6 @@
 package com.swansoftwaresolutions.jirareport.sheduller.job;
 
-import com.swansoftwaresolutions.jirareport.sheduller.ProjectsRestClient;
+import com.swansoftwaresolutions.jirareport.sheduller.rest.client.ProjectsRestClient;
 import org.joda.time.LocalTime;
 import org.quartz.*;
 

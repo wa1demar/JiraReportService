@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.sheduller;
+package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.http.HttpHeaders;
