@@ -12,7 +12,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -31,15 +30,8 @@ public class JiraUsersRestClient extends RestClientBase implements RestClient {
     String USER_URL = "https://swansoftwaresolutions.atlassian.net/rest/api/2/user/search?username=%";
 
 
-    private void insertDataToDataBase(ArrayList<JiraUser> jiraUsers) {
-        List<JiraUser> users = jiraUserService.findAll();
-
-        removeDublicateAndSave(jiraUsers, users);
-    }
-
-    private void removeDublicateAndSave(ArrayList<JiraUser> jiraUsers, List<JiraUser> users) {
-        List<JiraUser> jiraUsers1 = jiraUsers;
-        jiraUsers.removeAll(new HashSet(users));
+    private void removeDublicatesAndInsertDataToDataBase(ArrayList<JiraUser> jiraUsers) {
+        jiraUsers.removeAll(new HashSet(jiraUserService.findAll()));
 
         for (JiraUser jiraUser : jiraUsers) {
             jiraUserService.save(jiraUser);
@@ -65,9 +57,8 @@ public class JiraUsersRestClient extends RestClientBase implements RestClient {
 
     @Override
     public void loadData() {
-        System.out.println("+++++++++++++++++++++++++++++++++++");
-        System.out.println("-----------------------------------");
-        System.out.println("-------Users Scheduler-----------");
+        log.info("-----------------------------------");
+        log.info("-------Users Scheduler-----------");
 
         Set<JiraUser> jiraUsers = new HashSet<>();
 
@@ -80,12 +71,12 @@ public class JiraUsersRestClient extends RestClientBase implements RestClient {
                 jiraUsers.add(fromDto(userDto));
             }
         }
-        System.out.println("   Users on Cloud : " + jiraUsers.size());
+        log.info("   Users on Cloud : " + jiraUsers.size());
 
-        insertDataToDataBase(new ArrayList<JiraUser>(jiraUsers));
+        removeDublicatesAndInsertDataToDataBase(new ArrayList<>(jiraUsers));
 
-        System.out.println("---User Scheduler Completed-----");
-        System.out.println("-----------------------------------");
-        System.out.println("");
+        log.info("---User Scheduler Completed-----");
+        log.info("-----------------------------------");
+        log.info("");
     }
 }
