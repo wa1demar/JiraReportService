@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class Project {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
@@ -53,5 +53,24 @@ public class Project {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Project project = (Project) o;
+
+        if (!jiraId.equals(project.jiraId)) return false;
+        return key.equals(project.key);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = jiraId.hashCode();
+        result = 31 * result + key.hashCode();
+        return result;
     }
 }

@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.sheduller.job;
 
+import com.swansoftwaresolutions.jirareport.sheduller.ProjectsRestClient;
 import org.joda.time.LocalTime;
 import org.quartz.*;
 
@@ -13,6 +14,9 @@ public class LoadProjectsJob implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         LocalTime localTime = new LocalTime();
 
-        System.out.println("JOB RUNNING - " + localTime.toString());
+        System.out.println("PROJECT JOB - " + localTime.toString());
+
+        ProjectsRestClient client = new ProjectsRestClient();
+        client.getComments();
     }
 }
