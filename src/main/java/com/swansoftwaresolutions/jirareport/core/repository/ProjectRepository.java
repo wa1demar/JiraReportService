@@ -16,6 +16,8 @@ public interface ProjectRepository {
 
     Project findById(Long projectId);
 
+    Project findByKey(String key);
+
     void delete(final Project project) throws NoSuchEntityException;
 
     void delete(final Long projectId) throws NoSuchEntityException;

@@ -29,7 +29,8 @@ public class JiraBoardRepositoryImpl implements JiraBoardRepository {
 
     @Override
     public JiraBoard add(JiraBoard jiraBoard) {
-        return null;
+        sessionFactory.getCurrentSession().persist(jiraBoard);
+        return jiraBoard;
     }
 
     @Override

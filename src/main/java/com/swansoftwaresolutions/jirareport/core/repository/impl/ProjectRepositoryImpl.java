@@ -50,6 +50,12 @@ public class ProjectRepositoryImpl implements ProjectRepository {
     }
 
     @Override
+    public Project findByKey(String key) {
+        return (Project) sessionFactory.openSession()
+                .createCriteria(Project.class).add(Restrictions.eq("key", key)).uniqueResult();
+    }
+
+    @Override
     public void delete(Project project) throws NoSuchEntityException {
         Project deleteProject = findById(project.getId());
 

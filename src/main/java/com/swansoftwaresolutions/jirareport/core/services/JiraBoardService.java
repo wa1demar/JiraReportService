@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.services;
 
+import com.swansoftwaresolutions.jirareport.core.entity.JiraBoard;
 import com.swansoftwaresolutions.jirareport.core.entity.Project;
 import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 
@@ -8,13 +9,11 @@ import java.util.List;
 /**
  * @author Vitaliy Holovko
  */
-public interface ProjectService {
+public interface JiraBoardService {
 
-    Project save(Project project);
+    JiraBoard save(JiraBoard jiraBoard);
 
-    Project findByKey(String key) throws NoSuchEntityException;;
+    List<JiraBoard> findAll();
 
-    List<Project> getAllProjects();
-
-    void delete(Project project) throws NoSuchEntityException;
+    void delete(JiraBoard jiraBoard) throws NoSuchEntityException;
 }

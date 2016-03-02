@@ -15,6 +15,12 @@
             <column name="type" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
+            <column name="project_key" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="project_jira_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
         </createTable>
         <comment>Create table boards</comment>
     </changeSet>

@@ -25,6 +25,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public Project findByKey(String key) throws NoSuchEntityException {
+        return projectRepository.findByKey(key);
+    }
+
+    @Override
     public List<Project> getAllProjects() {
         return projectRepository.findAll();
     }

@@ -41,7 +41,6 @@ public class JiraUsersRestClient extends RestClientBase implements RestClient {
         List<JiraUser> jiraUsers1 = jiraUsers;
         jiraUsers.removeAll(new HashSet(users));
 
-        System.out.println("   Removed " + (jiraUsers1.size()-jiraUsers.size()) + "dublicates");
         for (JiraUser jiraUser : jiraUsers) {
             jiraUserService.save(jiraUser);
         }
