@@ -95,7 +95,6 @@ public class QuartzConfig {
 
     @Bean
     RestClient projectRestClient() {
-
         return new ProjectsRestClient();
     }
 }

@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.services;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Project;
+import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 
 import java.util.List;
 
@@ -13,5 +14,5 @@ public interface ProjectService {
 
     List<Project> getAllProjects();
 
-    void delete(Project project);
+    void delete(Project project) throws NoSuchEntityException;
 }

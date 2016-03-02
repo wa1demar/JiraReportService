@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.sheduller;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Project;
+import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.services.ProjectService;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.ProjectDto;
 import com.swansoftwaresolutions.jirareport.sheduller.job.RestClient;
@@ -49,21 +50,25 @@ public class ProjectsRestClient extends RestClientBase implements RestClient {
     private void insertDataToDataBase(ProjectDto[] projectDtos) {
         List<Project> projects = fromDtos(projectDtos);
 
-        removeDublicateAndSave(projects, null);//projectService.getAllProjects());
+        removeDublicateAndSave(projects, projectService.getAllProjects());
     }
 
     private void deleteOldProjects(List<Project> projects, List<Project> projectsDB) {
-//        projectsDB.removeAll(new HashSet(projects));
+        projectsDB.removeAll(new HashSet(projects));
         for (Project project : projectsDB) {
-            projectService.delete(project);
+            try {
+                projectService.delete(project);
+            } catch (NoSuchEntityException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     private void removeDublicateAndSave(List<Project> projects, List<Project> projectsDB) {
         List<Project> projectList = projects;
-//        projectList.removeAll(new HashSet(projectsDB));
+        projectList.removeAll(new HashSet(projectsDB));
 
-        System.out.println("   Removed " + (projects.size() - projectList.size()) + "dublicates");
+        System.out.println("   Removed " + (projects.size() - projectList.size()) + " dublicates");
         for (Project project : projectList) {
             projectService.save(project);
         }
