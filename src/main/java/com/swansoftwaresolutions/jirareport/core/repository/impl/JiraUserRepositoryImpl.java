@@ -1,11 +1,11 @@
 package com.swansoftwaresolutions.jirareport.core.repository.impl;
 
 import com.swansoftwaresolutions.jirareport.core.entity.JiraUser;
-import com.swansoftwaresolutions.jirareport.core.entity.Project;
 import com.swansoftwaresolutions.jirareport.core.repository.JiraUserRepository;
-import com.swansoftwaresolutions.jirareport.core.repository.ProjectRepository;
+import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,17 +31,43 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
     }
 
     @Override
-    public List<JiraUser> getAllUsers() {
+    public List<JiraUser> findAll() {
         return sessionFactory.getCurrentSession().createCriteria(JiraUser.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
     }
 
     @Override
-    public void deleteUser(JiraUser jiraUser) {
-        sessionFactory.getCurrentSession().delete(jiraUser);
+    public JiraUser findById(Long projectId) {
+        return (JiraUser) sessionFactory.openSession()
+                .createCriteria(JiraUser.class).add(Restrictions.eq("id", projectId)).uniqueResult();
     }
 
     @Override
-    public void deleteUser(Long jiraUserId) {
-        sessionFactory.getCurrentSession().delete(jiraUserId);
+    public void delete(JiraUser user) throws NoSuchEntityException {
+        JiraUser deleteUser = findById(user.getId());
+
+        if (deleteUser != null) {
+            sessionFactory.getCurrentSession().delete(user);
+        } else {
+            throw new NoSuchEntityException("Entity Not Found");
+        }
+
+    }
+
+    @Override
+    public void delete(Long userId) throws NoSuchEntityException {
+        JiraUser user = findById(userId);
+        if (user != null) {
+            sessionFactory.getCurrentSession().delete(user);
+        } else {
+            throw new NoSuchEntityException("Entity Not Found");
+        }
+    }
+
+    @Override
+    public JiraUser update(JiraUser user) throws NoSuchEntityException {
+        if (findById(user.getId()) == null) {
+            throw new NoSuchEntityException("Entity not found");
+        }
+        return (JiraUser) sessionFactory.openSession().merge(user);
     }
 }

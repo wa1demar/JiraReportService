@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.config;
 
+import com.swansoftwaresolutions.jirareport.sheduller.JiraUsersRestClient;
 import com.swansoftwaresolutions.jirareport.sheduller.ProjectsRestClient;
 import com.swansoftwaresolutions.jirareport.sheduller.job.*;
 import org.quartz.Trigger;
@@ -36,7 +37,7 @@ public class QuartzConfig {
         Trigger[] triggers = {
                 loadProjectsTrigger().getObject(),
 //                loadIssuesTrigger().getObject(),
-//                loadUsersTrigger().getObject()
+                loadJiraUsersTrigger().getObject()
         };
 
         quartzScheduler.setTriggers(triggers);
@@ -78,15 +79,15 @@ public class QuartzConfig {
     }
 
     @Bean
-    CronTriggerFactoryBean loadUsersTrigger() {
+    CronTriggerFactoryBean loadJiraUsersTrigger() {
         CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
-        cronTriggerFactoryBean.setJobDetail(loadUsersJobDetail().getObject());
+        cronTriggerFactoryBean.setJobDetail(loadJiraUsersJobDetail().getObject());
         cronTriggerFactoryBean.setCronExpression("0 0/2 * * * ?");
         return cronTriggerFactoryBean;
     }
 
     @Bean
-    JobDetailFactoryBean loadUsersJobDetail() {
+    JobDetailFactoryBean loadJiraUsersJobDetail() {
         JobDetailFactoryBean jobDetailFactory = new JobDetailFactoryBean();
         jobDetailFactory.setJobClass(LoadUsersJob.class);
         jobDetailFactory.setDurability(true);
@@ -96,5 +97,10 @@ public class QuartzConfig {
     @Bean
     RestClient projectRestClient() {
         return new ProjectsRestClient();
+    }
+
+    @Bean
+    RestClient jiraUserRestClient() {
+        return new JiraUsersRestClient();
     }
 }

@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.repository;
 
 import com.swansoftwaresolutions.jirareport.core.entity.JiraUser;
+import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 
 import java.util.List;
 
@@ -12,9 +13,13 @@ public interface JiraUserRepository {
 
     JiraUser add(JiraUser project);
 
-    List<JiraUser> getAllUsers();
+    List<JiraUser> findAll();
 
-    void deleteUser(final JiraUser jiraUser);
+    JiraUser findById(Long projectId);
 
-    void deleteUser(final Long jiraUserId);
+    void delete(final JiraUser project) throws NoSuchEntityException;
+
+    void delete(final Long projectId) throws NoSuchEntityException;
+
+    JiraUser update(JiraUser project) throws NoSuchEntityException;
 }

@@ -30,21 +30,22 @@ public class ProjectsRestClient extends RestClientBase implements RestClient {
     ProjectService projectService;
 
     public void loadData() {
-        System.out.println("+++++++++++++++++++++++++++++++++++");
-        System.out.println("-----------------------------------");
-        System.out.println("-------Project Scheduler-----------");
+        log.info("+++++++++++++++++++++++++++++++++++");
+        log.info("-----------------------------------");
+        log.info("-------Project Scheduler-----------");
+
         final String uri = "https://swansoftwaresolutions.atlassian.net/rest/api/2/project.json";
 
         HttpEntity<String> request = new HttpEntity<>(getHeaders());
         RestTemplate restTemplate = new RestTemplate();
         ProjectDto[] projectDtos = restTemplate.exchange(uri, HttpMethod.GET, request, ProjectDto[].class).getBody();
 
-        System.out.println("   Project on Cloud : " + projectDtos.length);
+        log.info("   Project on Cloud : " + projectDtos.length);
         insertDataToDataBase(projectDtos);
 
-        System.out.println("---Project Scheduler Completed-----");
-        System.out.println("-----------------------------------");
-        System.out.println("");
+        log.info("---Project Scheduler Completed-----");
+        log.info("-----------------------------------");
+        log.info("");
     }
 
     private void insertDataToDataBase(ProjectDto[] projectDtos) {
@@ -68,7 +69,7 @@ public class ProjectsRestClient extends RestClientBase implements RestClient {
         List<Project> projectList = projects;
         projectList.removeAll(new HashSet(projectsDB));
 
-        System.out.println("   Removed " + (projects.size() - projectList.size()) + " dublicates");
+        log.info("   Removed " + (projects.size() - projectList.size()) + " dublicates");
         for (Project project : projectList) {
             projectService.save(project);
         }
