@@ -41,13 +41,18 @@ public class ProjectRepositoryImpl implements ProjectRepository {
     @Override
     public List<Project> findAll() {
         return sessionFactory.getCurrentSession().createCriteria(Project.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
-
     }
 
     @Override
     public Project findById(Long projectId) {
         return (Project) sessionFactory.openSession()
                 .createCriteria(Project.class).add(Restrictions.eq("id", projectId)).uniqueResult();
+    }
+
+    @Override
+    public Project findByKey(String key) {
+        return (Project) sessionFactory.openSession()
+                .createCriteria(Project.class).add(Restrictions.eq("key", key)).uniqueResult();
     }
 
     @Override
@@ -59,7 +64,6 @@ public class ProjectRepositoryImpl implements ProjectRepository {
         } else {
             throw new NoSuchEntityException("Entity Not Found");
         }
-
     }
 
     @Override

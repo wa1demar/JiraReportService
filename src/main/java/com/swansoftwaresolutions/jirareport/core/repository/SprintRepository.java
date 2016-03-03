@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface SprintRepository {
 
-    List<Sprint> getAllSprints();
+    List<Sprint> findAll();
 
     List<Sprint> getSprintsByIdReportId(final Long reportId);
 
@@ -18,15 +18,15 @@ public interface SprintRepository {
 
     Sprint getSprintByIdAgileSprintId(final Long agileSprintId);
 
-    void createSprint(final Sprint sprint);
+    Sprint add(final Sprint sprint);
 
-    void updateSprint(final Sprint sprint);
+    void update(final Sprint sprint);
 
     void deleteAllSprint();
 
-    void deleteSprint(final Sprint sprint);
+    void delete(final Sprint sprint);
 
-    void deleteSprint(final Long sprintId);
+    void delete(final Long sprintId);
 
     void deleteSprintsByIdReportId(final Long reportId);
 }

@@ -1,9 +1,10 @@
 package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Project;
-import com.swansoftwaresolutions.jirareport.core.repository.ProjectRepository;
 import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
+import com.swansoftwaresolutions.jirareport.core.services.ProjectService;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.ProjectDto;
+import com.swansoftwaresolutions.jirareport.sheduller.job.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -19,45 +20,48 @@ import java.util.logging.Logger;
  * @author Vladimir Martynyuk
  * @author Vitaliy Holovko
  */
-@Component
-public class ProjectsRestClient extends RestClientBase {
+
+@Component("projectsRestClient")
+public class ProjectsRestClient extends RestClientBase implements RestClient {
 
     static Logger log = Logger.getLogger(ProjectsRestClient.class.getName());
 
     @Autowired
-    ProjectRepository projectRepository;
+    ProjectService projectService;
 
-    public void getComments() {
-        System.out.println("+++++++++++++++++++++++++++++++++++");
-        System.out.println("-----------------------------------");
-        System.out.println("-------Project Scheduler-----------");
+    public void loadData() {
+        log.info("+++++++++++++++++++++++++++++++++++");
+        log.info("-----------------------------------");
+        log.info("-------Project Scheduler-----------");
+
         final String uri = "https://swansoftwaresolutions.atlassian.net/rest/api/2/project.json";
 
         HttpEntity<String> request = new HttpEntity<>(getHeaders());
         RestTemplate restTemplate = new RestTemplate();
         ProjectDto[] projectDtos = restTemplate.exchange(uri, HttpMethod.GET, request, ProjectDto[].class).getBody();
 
-        System.out.println("   Project on Cloud : " + projectDtos.length);
+        log.info("   Project on Cloud : " + projectDtos.length);
         insertDataToDataBase(projectDtos);
 
-        System.out.println("---Project Scheduler Completed-----");
-        System.out.println("-----------------------------------");
-        System.out.println("");
+        log.info("---Project Scheduler Completed-----");
+        log.info("-----------------------------------");
+        log.info("");
     }
 
     private void insertDataToDataBase(ProjectDto[] projectDtos) {
-        List<Project> projectsDB = projectRepository.findAll();
-
         List<Project> projects = fromDtos(projectDtos);
 
-        removeDublicateAndSave(projects, projectsDB);
-//        deleteOldProjects(projects,projectsDB);
+        removeDublicateAndSave(projects, projectService.getAllProjects());
     }
 
-    private void deleteOldProjects(List<Project> projects, List<Project> projectsDB) throws NoSuchEntityException {
+    private void deleteOldProjects(List<Project> projects, List<Project> projectsDB) {
         projectsDB.removeAll(new HashSet(projects));
         for (Project project : projectsDB) {
-            projectRepository.delete(project);
+            try {
+                projectService.delete(project);
+            } catch (NoSuchEntityException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -65,9 +69,9 @@ public class ProjectsRestClient extends RestClientBase {
         List<Project> projectList = projects;
         projectList.removeAll(new HashSet(projectsDB));
 
-        System.out.println("   Removed " + (projects.size() - projectList.size()) + "dublicates");
+        log.info("   Removed " + (projects.size() - projectList.size()) + " dublicates");
         for (Project project : projectList) {
-            projectRepository.add(project);
+            projectService.save(project);
         }
     }
 

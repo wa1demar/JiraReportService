@@ -1,9 +1,12 @@
 package com.swansoftwaresolutions.jirareport.config;
 
-import com.swansoftwaresolutions.jirareport.sheduller.job.LoadIssuesJob;
-import com.swansoftwaresolutions.jirareport.sheduller.job.LoadProjectsJob;
-import com.swansoftwaresolutions.jirareport.sheduller.job.LoadUsersJob;
+import com.swansoftwaresolutions.jirareport.sheduller.rest.client.JiraBoardsRestClient;
+import com.swansoftwaresolutions.jirareport.sheduller.rest.client.JiraUsersRestClient;
+import com.swansoftwaresolutions.jirareport.sheduller.job.*;
+import com.swansoftwaresolutions.jirareport.sheduller.rest.client.ProjectsRestClient;
 import org.quartz.Trigger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -20,15 +23,23 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 public class QuartzConfig {
 
 
+    @Autowired
+    ApplicationContext applicationContext;
+
     @Bean
     public SchedulerFactoryBean quartzScheduler() {
         SchedulerFactoryBean quartzScheduler = new SchedulerFactoryBean();
         quartzScheduler.setConfigLocation(new ClassPathResource("quartz.properties"));
 
+        AutowiringSpringBeanJobFactory jobFactory = new AutowiringSpringBeanJobFactory();
+        jobFactory.setApplicationContext(applicationContext);
+        quartzScheduler.setJobFactory(jobFactory);
+
         Trigger[] triggers = {
                 loadProjectsTrigger().getObject(),
 //                loadIssuesTrigger().getObject(),
-                loadUsersTrigger().getObject()
+                loadJiraUsersTrigger().getObject(),
+                loadJiraBoardsTrigger().getObject()
         };
 
         quartzScheduler.setTriggers(triggers);
@@ -70,19 +81,49 @@ public class QuartzConfig {
     }
 
     @Bean
-    CronTriggerFactoryBean loadUsersTrigger() {
+    CronTriggerFactoryBean loadJiraUsersTrigger() {
         CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
-        cronTriggerFactoryBean.setJobDetail(loadUsersJobDetail().getObject());
+        cronTriggerFactoryBean.setJobDetail(loadJiraUsersJobDetail().getObject());
         cronTriggerFactoryBean.setCronExpression("0 0/2 * * * ?");
         return cronTriggerFactoryBean;
     }
 
     @Bean
-    JobDetailFactoryBean loadUsersJobDetail() {
+    JobDetailFactoryBean loadJiraUsersJobDetail() {
         JobDetailFactoryBean jobDetailFactory = new JobDetailFactoryBean();
         jobDetailFactory.setJobClass(LoadUsersJob.class);
         jobDetailFactory.setDurability(true);
         return jobDetailFactory;
     }
 
+    @Bean
+    CronTriggerFactoryBean loadJiraBoardsTrigger() {
+        CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
+        cronTriggerFactoryBean.setJobDetail(loadJiraBoardsJobDetail().getObject());
+        cronTriggerFactoryBean.setCronExpression("0 0/2 * * * ?");
+        return cronTriggerFactoryBean;
+    }
+
+    @Bean
+    JobDetailFactoryBean loadJiraBoardsJobDetail() {
+        JobDetailFactoryBean jobDetailFactory = new JobDetailFactoryBean();
+        jobDetailFactory.setJobClass(LoadJiraBoardsJob.class);
+        jobDetailFactory.setDurability(true);
+        return jobDetailFactory;
+    }
+
+    @Bean
+    RestClient projectRestClient() {
+        return new ProjectsRestClient();
+    }
+
+    @Bean
+    RestClient jiraUserRestClient() {
+        return new JiraUsersRestClient();
+    }
+
+    @Bean
+    RestClient jiraBoardRestClient() {
+        return new JiraBoardsRestClient();
+    }
 }

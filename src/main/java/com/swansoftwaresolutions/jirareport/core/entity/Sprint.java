@@ -142,4 +142,27 @@ public class Sprint implements Serializable {
     public void setShowUat(Long showUat) {
         this.showUat = showUat;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Sprint sprint = (Sprint) o;
+
+        if (!agileSprintId.equals(sprint.agileSprintId)) return false;
+        if (!name.equals(sprint.name)) return false;
+        if (state != null ? !state.equals(sprint.state) : sprint.state != null) return false;
+        return type.equals(sprint.type);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = agileSprintId.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + (state != null ? state.hashCode() : 0);
+        result = 31 * result + type.hashCode();
+        return result;
+    }
 }
