@@ -1,0 +1,1 @@
+DELETE FROM jira_users;

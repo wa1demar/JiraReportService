@@ -54,7 +54,7 @@ public class UsersRestClient extends RestClientBase {
     }
 
     private void insertDataToDataBase(ArrayList<JiraUser> jiraUsers) {
-        List<JiraUser> users = jiraUserRepository.getAllUsers();
+        List<JiraUser> users = jiraUserRepository.findAll();
 
         removeDublicateAndSave(jiraUsers, users);
     }
