@@ -1,13 +1,12 @@
 package com.swansoftwaresolutions.jirareport.sheduller;
 
 import com.swansoftwaresolutions.jirareport.core.entity.JiraBoard;
-import com.swansoftwaresolutions.jirareport.core.entity.Project;
+import com.swansoftwaresolutions.jirareport.core.entity.Sprint;
 import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.services.JiraBoardService;
+import com.swansoftwaresolutions.jirareport.core.services.JiraSprintsService;
 import com.swansoftwaresolutions.jirareport.core.services.ProjectService;
-import com.swansoftwaresolutions.jirareport.sheduller.dto.IssuesForJiraBoard;
-import com.swansoftwaresolutions.jirareport.sheduller.dto.JiraBoardDto;
-import com.swansoftwaresolutions.jirareport.sheduller.dto.JiraBoardObjectDto;
+import com.swansoftwaresolutions.jirareport.sheduller.dto.*;
 import com.swansoftwaresolutions.jirareport.sheduller.job.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -31,6 +30,7 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
 
     final String BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board.json";
     final String ISSUES_BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board/BOARDID/issue.json";
+    final String SPRINTS_BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board/BOARDID/sprint.json";
 
     @Autowired
     JiraBoardService jiraBoardService;
@@ -38,8 +38,45 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
     @Autowired
     ProjectService projectService;
 
+    @Autowired
+    JiraSprintsService sprintsService;
+
+
     public void loadData() {
-       loadDataForJiraBoards();
+        loadDataForJiraBoards();
+        loadDataForJiraSprints();
+    }
+
+    private void loadDataForJiraSprints() {
+        for (JiraBoard jiraBoard : jiraBoardService.findAll()) {
+            log.info("-----------------------------------");
+            log.info("-------Jira Board Scheduler--------");
+
+            HttpEntity<String> request = new HttpEntity<>(getHeaders());
+            RestTemplate restTemplate = new RestTemplate();
+            SprintsDto sprintDtos = restTemplate.exchange(autocompliteIssuesUrl(SPRINTS_BOARD_URL, jiraBoard.getBoardId().intValue()),
+                    HttpMethod.GET, request, SprintsDto.class).getBody();
+
+            saveSprintsToDataBase(sprintDtos.values);
+
+
+            log.info("");
+        }
+    }
+
+    private void saveSprintsToDataBase(SprintDto[] values) {
+        List<Sprint> sprints = fromDtos(values);
+
+        //TODO Need to be change
+        try {
+            sprints.removeAll(new HashSet(sprintsService.findAll()));
+        } catch (NullPointerException ex) {
+            log.warning("NullPointerExeption !!!");
+        }
+
+        for (Sprint sprint : sprints) {
+            sprintsService.save(sprint);
+        }
     }
 
     private void loadDataForJiraBoards() {
@@ -50,7 +87,6 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
         RestTemplate restTemplate = new RestTemplate();
         JiraBoardObjectDto jiraBoardDtos = restTemplate.exchange(BOARD_URL, HttpMethod.GET, request, JiraBoardObjectDto.class).getBody();
 
-        log.info("   Boards on Cloud : " + jiraBoardDtos);
         insertDataToDataBase(jiraBoardDtos.values);
 
         log.info("--- Jira Board Scheduler Completed ---");
@@ -65,7 +101,7 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
         jiraBoards.removeAll(new HashSet(jiraBoardService.findAll()));
 
         for (JiraBoard jiraBoard : jiraBoards) {
-            if (jiraBoard.getProjectKey()!= null) {
+            if (jiraBoard.getProjectKey() != null) {
                 jiraBoardService.save(jiraBoard);
             }
         }
@@ -74,9 +110,9 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
     private JiraBoardDto getProjectInformationForBoard(JiraBoardDto jiraBoardDto) throws NoSuchEntityException {
         HttpEntity<String> request = new HttpEntity<>(getHeaders());
         RestTemplate restTemplate = new RestTemplate();
-        IssuesForJiraBoard jiraBoardDtos = restTemplate.exchange(autocompliteIssuesUrl(jiraBoardDto.id), HttpMethod.GET, request, IssuesForJiraBoard.class).getBody();
+        IssuesForJiraBoard jiraBoardDtos = restTemplate.exchange(autocompliteIssuesUrl(ISSUES_BOARD_URL, jiraBoardDto.id), HttpMethod.GET, request, IssuesForJiraBoard.class).getBody();
 
-        if (jiraBoardDtos.issues.length>0){
+        if (jiraBoardDtos.issues.length > 0) {
             jiraBoardDto.projectKey = jiraBoardDtos.issues[0].fields.project.key;
             jiraBoardDto.projectId = projectService.findByKey(jiraBoardDto.projectKey).getJiraId();
         } else {
@@ -88,23 +124,31 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
 
 //    ToDo replace to helper
 
-    private String autocompliteIssuesUrl(int id) {
-        return ISSUES_BOARD_URL.replaceAll("BOARDID",String.valueOf(id));
+    private String autocompliteIssuesUrl(String str, int id) {
+        return str.replaceAll("BOARDID", String.valueOf(id));
     }
 
 //ToDo replace methods to Service
 
-private List<JiraBoard> fromDtos(JiraBoardDto[] jBoardDtos) {
-    List<JiraBoard> jiraBoards = new ArrayList<>();
-    for (JiraBoardDto jBoardDto : jBoardDtos){
-        try {
-            jiraBoards.add(fromDto(getProjectInformationForBoard(jBoardDto)));
-        } catch (NoSuchEntityException e){
-            log.warning("Some problems with data from Board "+ jBoardDto.name);
+    private List<JiraBoard> fromDtos(JiraBoardDto[] jBoardDtos) {
+        List<JiraBoard> jiraBoards = new ArrayList<>();
+        for (JiraBoardDto jBoardDto : jBoardDtos) {
+            try {
+                jiraBoards.add(fromDto(getProjectInformationForBoard(jBoardDto)));
+            } catch (NoSuchEntityException e) {
+                log.warning("Some problems with data from Board " + jBoardDto.name);
+            }
         }
+        return jiraBoards;
     }
-    return jiraBoards;
-}
+
+    private List<Sprint> fromDtos(SprintDto[] sprintDtos) {
+        List<Sprint> sprints = new ArrayList<>();
+        for (SprintDto sprintDto : sprintDtos) {
+            sprints.add(fromDto(sprintDto));
+        }
+        return sprints;
+    }
 
     private JiraBoard fromDto(JiraBoardDto jBoardDto) {
         JiraBoard jiraBoard = new JiraBoard();
@@ -115,6 +159,18 @@ private List<JiraBoard> fromDtos(JiraBoardDto[] jBoardDtos) {
         jiraBoard.setProjectJiraId(jBoardDto.projectId);
 
         return jiraBoard;
+    }
+
+    private Sprint fromDto(SprintDto sprintDto) {
+        Sprint sprint = new Sprint();
+        sprint.setName(sprintDto.name);
+        sprint.setState(sprintDto.state);
+        sprint.setAgileSprintId((long) sprintDto.originBoardId);
+        sprint.setStartDate(sprintDto.startDate);
+        sprint.setCompleteDate(sprintDto.completeDate);
+        sprint.setEndDate(sprintDto.completeDate);
+
+        return sprint;
     }
 
 

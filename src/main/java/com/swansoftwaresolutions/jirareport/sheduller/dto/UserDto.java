@@ -1,7 +1,7 @@
 package com.swansoftwaresolutions.jirareport.sheduller.dto;
 
 /**
- * Created by viholovko on 01.03.16.
+ * @author Vitaliy Holovko
  */
 public class UserDto {
 //    public int id;

@@ -12,7 +12,7 @@ public interface ProjectService {
 
     Project save(Project project);
 
-    Project findByKey(String key) throws NoSuchEntityException;;
+    Project findByKey(String key) throws NoSuchEntityException;
 
     List<Project> getAllProjects();
 

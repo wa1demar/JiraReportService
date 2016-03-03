@@ -26,7 +26,7 @@ public class SprintRepositoryImpl implements SprintRepository {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Sprint> getAllSprints() {
+    public List<Sprint> findAll() {
         return sessionFactory.getCurrentSession().createCriteria(Sprint.class)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
     }
@@ -77,12 +77,13 @@ public class SprintRepositoryImpl implements SprintRepository {
     }
 
     @Override
-    public void createSprint(Sprint sprint) {
+    public Sprint add(Sprint sprint) {
         sessionFactory.getCurrentSession().save(sprint);
+        return sprint;
     }
 
     @Override
-    public void updateSprint(Sprint sprint) {
+    public void update(Sprint sprint) {
         sessionFactory.getCurrentSession().update(sprint);
     }
 
@@ -94,12 +95,12 @@ public class SprintRepositoryImpl implements SprintRepository {
     }
 
     @Override
-    public void deleteSprint(Sprint sprint) {
+    public void delete(Sprint sprint) {
         sessionFactory.getCurrentSession().delete(sprint);
     }
 
     @Override
-    public void deleteSprint(Long sprintId) {
+    public void delete(Long sprintId) {
         sessionFactory.getCurrentSession().delete(sprintId);
     }
 
