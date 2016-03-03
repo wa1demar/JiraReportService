@@ -29,6 +29,9 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
 
     static Logger log = Logger.getLogger(JiraBoardsRestClient.class.getName());
 
+    final String BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board.json";
+    final String ISSUES_BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board/BOARDID/issue.json";
+
     @Autowired
     JiraBoardService jiraBoardService;
 
@@ -36,60 +39,72 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
     ProjectService projectService;
 
     public void loadData() {
-        log.info("+++++++++++++++++++++++++++++++++++");
+       loadDataForJiraBoards();
+    }
+
+    private void loadDataForJiraBoards() {
         log.info("-----------------------------------");
         log.info("-------Jira Board Scheduler--------");
 
-        final String uri = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board.json";
-
         HttpEntity<String> request = new HttpEntity<>(getHeaders());
         RestTemplate restTemplate = new RestTemplate();
-        JiraBoardObjectDto jiraBoardDtos = restTemplate.exchange(uri, HttpMethod.GET, request, JiraBoardObjectDto.class).getBody();
+        JiraBoardObjectDto jiraBoardDtos = restTemplate.exchange(BOARD_URL, HttpMethod.GET, request, JiraBoardObjectDto.class).getBody();
 
         log.info("   Boards on Cloud : " + jiraBoardDtos);
         insertDataToDataBase(jiraBoardDtos.values);
 
         log.info("--- Jira Board Scheduler Completed ---");
-        log.info("--------------------------------------");
         log.info("");
     }
 
     private void insertDataToDataBase(JiraBoardDto[] jiraBoardDtos) {
-        List<JiraBoard> jiraBoards = fromDtos(jiraBoardDtos);
-        List<JiraBoard> jiraBoardsDB = jiraBoardService.findAll();
-        removeDublicateAndSave(jiraBoards, jiraBoardsDB);
+        removeDublicateAndSave(fromDtos(jiraBoardDtos));
     }
 
-    private void deleteOldProjects(List<Project> projects, List<Project> projectsDB) {
-        projectsDB.removeAll(new HashSet(projects));
-        for (Project project : projectsDB) {
-//            try {
-////                jiraBoardService.delete(jiraBoard);
-//            } catch (NoSuchEntityException e) {
-//                e.printStackTrace();
-//            }
-        }
-    }
+    private void removeDublicateAndSave(List<JiraBoard> jiraBoards) {
+        jiraBoards.removeAll(new HashSet(jiraBoardService.findAll()));
 
-    private void removeDublicateAndSave(List<JiraBoard> jiraBoards, List<JiraBoard> projectsDB) {
-        List<JiraBoard> jiraBoardList = jiraBoards;
-        jiraBoardList.removeAll(new HashSet(projectsDB));
-
-        log.info("   Removed " + (jiraBoards.size() - jiraBoardList.size()) + " dublicates");
-        for (JiraBoard jiraBoard : jiraBoardList) {
+        for (JiraBoard jiraBoard : jiraBoards) {
             if (jiraBoard.getProjectKey()!= null) {
                 jiraBoardService.save(jiraBoard);
             }
         }
     }
 
-    private List<JiraBoard> fromDtos(JiraBoardDto[] jiraBoardDtos) {
-       List<JiraBoard> jiraBoards = new ArrayList<>();
-        for (JiraBoardDto jiraBoardDto : jiraBoardDtos){
-            jiraBoards.add(fromDto(getProjectInformationForBoard(jiraBoardDto)));
+    private JiraBoardDto getProjectInformationForBoard(JiraBoardDto jiraBoardDto) throws NoSuchEntityException {
+        HttpEntity<String> request = new HttpEntity<>(getHeaders());
+        RestTemplate restTemplate = new RestTemplate();
+        IssuesForJiraBoard jiraBoardDtos = restTemplate.exchange(autocompliteIssuesUrl(jiraBoardDto.id), HttpMethod.GET, request, IssuesForJiraBoard.class).getBody();
+
+        if (jiraBoardDtos.issues.length>0){
+            jiraBoardDto.projectKey = jiraBoardDtos.issues[0].fields.project.key;
+            jiraBoardDto.projectId = projectService.findByKey(jiraBoardDto.projectKey).getJiraId();
+        } else {
+            log.warning("Empty Project Key for " + jiraBoardDto.name);
         }
-        return jiraBoards;
+
+        return jiraBoardDto;
     }
+
+//    ToDo replace to helper
+
+    private String autocompliteIssuesUrl(int id) {
+        return ISSUES_BOARD_URL.replaceAll("BOARDID",String.valueOf(id));
+    }
+
+//ToDo replace methods to Service
+
+private List<JiraBoard> fromDtos(JiraBoardDto[] jBoardDtos) {
+    List<JiraBoard> jiraBoards = new ArrayList<>();
+    for (JiraBoardDto jBoardDto : jBoardDtos){
+        try {
+            jiraBoards.add(fromDto(getProjectInformationForBoard(jBoardDto)));
+        } catch (NoSuchEntityException e){
+            log.warning("Some problems with data from Board "+ jBoardDto.name);
+        }
+    }
+    return jiraBoards;
+}
 
     private JiraBoard fromDto(JiraBoardDto jBoardDto) {
         JiraBoard jiraBoard = new JiraBoard();
@@ -100,26 +115,6 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
         jiraBoard.setProjectJiraId(jBoardDto.projectId);
 
         return jiraBoard;
-    }
-
-    private JiraBoardDto getProjectInformationForBoard(JiraBoardDto jiraBoardDto) {
-        final String uri = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board/"+jiraBoardDto.id+"/issue.json";
-        HttpEntity<String> request = new HttpEntity<>(getHeaders());
-        RestTemplate restTemplate = new RestTemplate();
-        IssuesForJiraBoard jiraBoardDtos = restTemplate.exchange(uri, HttpMethod.GET, request, IssuesForJiraBoard.class).getBody();
-
-        if (jiraBoardDtos.issues.length>0){
-            jiraBoardDto.projectKey = jiraBoardDtos.issues[0].fields.project.key;
-            try {
-                jiraBoardDto.projectId = projectService.findByKey(jiraBoardDto.projectKey).getJiraId();
-            } catch (NoSuchEntityException e){
-
-            }
-        } else {
-            System.out.println("Empty Project Key for " + jiraBoardDto.name);
-        }
-
-        return jiraBoardDto;
     }
 
 
