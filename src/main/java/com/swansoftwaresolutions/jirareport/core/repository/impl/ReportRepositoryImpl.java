@@ -2,9 +2,11 @@ package com.swansoftwaresolutions.jirareport.core.repository.impl;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Report;
 import com.swansoftwaresolutions.jirareport.core.repository.ReportRepository;
+import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -119,14 +121,10 @@ public class ReportRepositoryImpl implements ReportRepository{
     }
 
     @Override
-    public Report getReportById(Long id) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("Report.findReportBytId");
-        query.setParameter("id", id);
+    public Report findById(Long id) {
+        return (Report) sessionFactory.openSession()
+                .createCriteria(Report.class).add(Restrictions.eq("id", id)).uniqueResult();
 
-        @SuppressWarnings("unchecked")
-        Report report = (Report) query.uniqueResult();
-
-        return report;
     }
 
     @Override
@@ -140,28 +138,45 @@ public class ReportRepositoryImpl implements ReportRepository{
     }
 
     @Override
-    public void createReport(Report report) {
-        sessionFactory.getCurrentSession().save(report);
+    public Report add(Report report) {
+        sessionFactory.getCurrentSession().persist(report);
+        return report;
     }
 
     @Override
-    public void updateReport(Report report) {
-        sessionFactory.getCurrentSession().update(report);
+    public Report update(Report report) throws NoSuchEntityException {
+        if (findById(report.getId()) == null) {
+            throw new NoSuchEntityException("Entity not found");
+        }
+        return (Report) sessionFactory.openSession().merge(report);
     }
 
     @Override
-    public void deleteAllReport() {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("Report.deleteAll");
-        query.executeUpdate();
+    public void deleteAll() throws NoSuchEntityException {
+    List<Report> reports = getAllReports();
+        for (Report report : reports){
+            delete(report);
+        }
     }
 
     @Override
-    public void deleteReport(Report report) {
-        sessionFactory.getCurrentSession().delete(report);
+    public void delete(Report report)  throws NoSuchEntityException {
+        Report deleteReport = findById(report.getId());
+
+        if (deleteReport != null) {
+            sessionFactory.getCurrentSession().delete(report);
+        } else {
+            throw new NoSuchEntityException("Entity Not Found");
+        }
     }
 
     @Override
-    public void deleteReport(Long reportId) {
-        sessionFactory.getCurrentSession().delete(reportId);
+    public void delete(Long reportId) throws NoSuchEntityException {
+        Report report = findById(reportId);
+        if (report != null) {
+            sessionFactory.getCurrentSession().delete(report);
+        } else {
+            throw new NoSuchEntityException("Entity Not Found");
+        }
     }
 }

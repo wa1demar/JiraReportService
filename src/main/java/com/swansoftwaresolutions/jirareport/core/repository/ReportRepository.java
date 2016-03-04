@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.repository;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Report;
+import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 
 import java.util.Date;
 import java.util.List;
@@ -28,17 +29,17 @@ public interface ReportRepository {
 
     List<Report> getLastUpdatedReports();
 
-    Report getReportById(final Long id);
+    Report findById(final Long id);
 
     Report getLastAddedReport();
 
-    void createReport(final Report report);
+    Report add(Report report);
 
-    void updateReport(final Report report);
+    Report update(Report report) throws NoSuchEntityException;
 
-    void deleteAllReport();
+    void deleteAll() throws NoSuchEntityException;
 
-    void deleteReport(final Report report);
+    void delete(Report report) throws NoSuchEntityException;
 
-    void deleteReport(final Long reportId);
+    void delete(Long reportId) throws NoSuchEntityException;
 }
