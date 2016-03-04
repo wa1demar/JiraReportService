@@ -1,0 +1,5 @@
+INSERT INTO configs (id, story_point_name, agile_done_name, jira_dev_group_name, bug_name, non_working_days, auto_sync_time) VALUES (1, 'Story Point', 'Dev Done', 'ted', 'Bug', 'r','2016-02-11');
+INSERT INTO configs (id, story_point_name, agile_done_name, jira_dev_group_name, bug_name, non_working_days, auto_sync_time) VALUES (2, 'Story Point', 'Dev Done', 'ted', 'Bug', 'r','2016-02-11');
+INSERT INTO configs (id, story_point_name, agile_done_name, jira_dev_group_name, bug_name, non_working_days, auto_sync_time) VALUES (3, 'Story Point', 'Dev Done', 'ted', 'Bug', 'r','2016-02-11');
+INSERT INTO configs (id, story_point_name, agile_done_name, jira_dev_group_name, bug_name, non_working_days, auto_sync_time) VALUES (4, 'Story Point', 'Dev Done', 'ted', 'Bug', 'r','2016-02-11');
+INSERT INTO configs (id, story_point_name, agile_done_name, jira_dev_group_name, bug_name, non_working_days, auto_sync_time) VALUES (5, 'Story Point', 'Dev Done', 'ted', 'Bug', 'r','2016-02-11');

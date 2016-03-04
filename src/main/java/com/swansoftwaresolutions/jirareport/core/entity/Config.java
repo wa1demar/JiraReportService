@@ -1,7 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 /**
  * @author Vladimir Martynyuk
@@ -10,26 +9,12 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "configs")
-@NamedQueries(value = {
-        @NamedQuery(name = "Config.findById", query = "FROM Config c WHERE c.id = :id"),
-        @NamedQuery(name = "Config.deleteAll", query = "DELETE FROM Config c"),
-        @NamedQuery(name = "Config.deleteById", query = "DELETE FROM Config c WHERE c.id = :id"),
-})
-public class Config implements Serializable {
+public class Config {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
-    @Column(name = "base_url")
-    private String baseUrl;
-
-    @Column(name = "jira_user")
-    private String jiraUser;
-
-    @Column(name = "jira_password")
-    private String jiraPassword;
 
     @Column(name = "story_point_name")
     private String storyPointsName;
@@ -43,12 +28,6 @@ public class Config implements Serializable {
     @Column(name = "bug_name")
     private String bugName;
 
-    @Column(name = "path_to_ajax")
-    private String pathToAjax;
-
-    @Column(name = "path_to_agile_rest")
-    private String pathToAgileRest;
-
     @Column(name = "non_working_days")
     private String nonWorkingDays;
 
@@ -61,30 +40,6 @@ public class Config implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getBaseUrl() {
-        return baseUrl;
-    }
-
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
-    }
-
-    public String getJiraUser() {
-        return jiraUser;
-    }
-
-    public void setJiraUser(String jiraUser) {
-        this.jiraUser = jiraUser;
-    }
-
-    public String getJiraPassword() {
-        return jiraPassword;
-    }
-
-    public void setJiraPassword(String jiraPassword) {
-        this.jiraPassword = jiraPassword;
     }
 
     public String getStoryPointsName() {
@@ -119,22 +74,6 @@ public class Config implements Serializable {
         this.bugName = bugName;
     }
 
-    public String getPathToAjax() {
-        return pathToAjax;
-    }
-
-    public void setPathToAjax(String pathToAjax) {
-        this.pathToAjax = pathToAjax;
-    }
-
-    public String getPathToAgileRest() {
-        return pathToAgileRest;
-    }
-
-    public void setPathToAgileRest(String pathToAgileRest) {
-        this.pathToAgileRest = pathToAgileRest;
-    }
-
     public String getNonWorkingDays() {
         return nonWorkingDays;
     }
@@ -149,5 +88,30 @@ public class Config implements Serializable {
 
     public void setAutoSyncTime(String autoSyncTime) {
         this.autoSyncTime = autoSyncTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Config config = (Config) o;
+
+        if (!storyPointsName.equals(config.storyPointsName)) return false;
+        if (agileDoneName != null ? !agileDoneName.equals(config.agileDoneName) : config.agileDoneName != null)
+            return false;
+        if (jiraDevGroupName != null ? !jiraDevGroupName.equals(config.jiraDevGroupName) : config.jiraDevGroupName != null)
+            return false;
+        return bugName.equals(config.bugName);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = storyPointsName.hashCode();
+        result = 31 * result + (agileDoneName != null ? agileDoneName.hashCode() : 0);
+        result = 31 * result + (jiraDevGroupName != null ? jiraDevGroupName.hashCode() : 0);
+        result = 31 * result + bugName.hashCode();
+        return result;
     }
 }

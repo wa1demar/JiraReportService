@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * @author Vladimir Martynyuk
  */
-@Repository("commentRepository")
+@Repository
 @Transactional
 public class CommentRepositoryImpl implements CommentRepository {
 

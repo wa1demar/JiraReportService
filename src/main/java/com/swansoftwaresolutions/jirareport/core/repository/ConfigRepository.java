@@ -1,18 +1,21 @@
 package com.swansoftwaresolutions.jirareport.core.repository;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Config;
+import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 
 import java.util.List;
 
 public interface ConfigRepository {
 
-    List<Config> getConfigData();
+    List<Config> findAll();
 
-    void createConfig(final Config config);
+    Config findById(Long id);
 
-    void updateConfig(final Config config);
+    Config add(Config config);
 
-    void deleteConfig(final Config config);
+    Config update(Config config) throws NoSuchEntityException;
 
-    void deleteConfig(final Long id);
+    void delete(Config config) throws NoSuchEntityException;
+
+    void delete(Long configId) throws NoSuchEntityException;
 }
