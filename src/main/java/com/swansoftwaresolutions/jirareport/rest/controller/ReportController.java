@@ -1,15 +1,14 @@
-package com.swansoftwaresolutions.jirareport.rest.controllers;
+package com.swansoftwaresolutions.jirareport.rest.controller;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Report;
-import com.swansoftwaresolutions.jirareport.core.services.JiraUserService;
-import com.swansoftwaresolutions.jirareport.core.services.ProjectService;
+import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.ProjectMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.ReportMapper;
+import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
+import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
 import com.swansoftwaresolutions.jirareport.core.services.ReportService;
 import com.swansoftwaresolutions.jirareport.rest.dto.InfoForNewReport;
 import com.swansoftwaresolutions.jirareport.rest.dto.NewReportDto;
-import com.swansoftwaresolutions.jirareport.rest.dto.ReportDto;
-import com.swansoftwaresolutions.jirareport.rest.mapper.JiraUserMapper;
-import com.swansoftwaresolutions.jirareport.rest.mapper.ProjectMapper;
-import com.swansoftwaresolutions.jirareport.rest.mapper.ReportMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,9 +61,9 @@ public class ReportController {
     @RequestMapping(value = "/rest/report/create", method = RequestMethod.POST)
     private ResponseEntity<Boolean> addNewReport(@Valid @RequestBody NewReportDto newReportDto) {
         Report report = new Report();
-        report.setTitle(newReportDto.title);
-        report.setTypeId(newReportDto.typeId);
-        report.setCreator(newReportDto.creator);
+        report.setTitle(newReportDto.getTitle());
+        report.setTypeId(newReportDto.getTypeId());
+        report.setCreator(newReportDto.getCreator());
         //ToDo Add createrId and board
         report.setCreatedDate(new Date());
 

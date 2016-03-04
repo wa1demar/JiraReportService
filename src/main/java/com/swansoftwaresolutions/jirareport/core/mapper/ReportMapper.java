@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.rest.mapper;
+package com.swansoftwaresolutions.jirareport.core.mapper;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Report;
 import com.swansoftwaresolutions.jirareport.rest.dto.ReportDto;

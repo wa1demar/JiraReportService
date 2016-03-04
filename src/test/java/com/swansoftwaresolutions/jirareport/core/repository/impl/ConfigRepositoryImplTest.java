@@ -102,10 +102,9 @@ public class ConfigRepositoryImplTest extends AbstractDbTest {
     }
 
     @Test
-    public void testGetAllConfigs() throws Exception {
-        List<Config> configs = configRepository.findAll();
+    public void testGetFirst() throws Exception {
+        Config configs = configRepository.findFirst();
         assertNotNull(configs);
-        assertEquals(5, configs.size());
     }
 
     @Test
@@ -135,7 +134,7 @@ public class ConfigRepositoryImplTest extends AbstractDbTest {
 
         configRepository.delete(config);
         assertNull(configRepository.findById(1L));
-        assertEquals(4, configRepository.findAll().size());
+//        assertEquals(4, configRepository.findFirst().size());
     }
 
     @Test(expected = NoSuchEntityException.class)

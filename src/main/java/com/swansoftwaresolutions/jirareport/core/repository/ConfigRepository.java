@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface ConfigRepository {
 
-    List<Config> findAll();
+    Config findFirst();
 
     Config findById(Long id);
 
     Config add(Config config);
 
-    Config update(Config config) throws NoSuchEntityException;
+    Config update(Config config);
 
     void delete(Config config) throws NoSuchEntityException;
 

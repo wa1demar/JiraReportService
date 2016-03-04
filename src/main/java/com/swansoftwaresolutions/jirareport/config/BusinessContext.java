@@ -9,7 +9,10 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
  * @author Vladimir Martynyuk
  */
 @Configuration
-@ComponentScan(basePackages = {"com.swansoftwaresolutions.jirareport.core.services"})
+@ComponentScan(basePackages = {
+        "com.swansoftwaresolutions.jirareport.core.service",
+        "com.swansoftwaresolutions.jirareport.core.mapper",
+})
 public class BusinessContext {
 
     @Bean

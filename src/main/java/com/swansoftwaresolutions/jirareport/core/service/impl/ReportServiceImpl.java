@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.core.services.impl;
+package com.swansoftwaresolutions.jirareport.core.service.impl;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Report;
 import com.swansoftwaresolutions.jirareport.core.repository.ReportRepository;

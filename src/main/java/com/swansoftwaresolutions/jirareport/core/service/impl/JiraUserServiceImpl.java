@@ -1,9 +1,9 @@
-package com.swansoftwaresolutions.jirareport.core.services.impl;
+package com.swansoftwaresolutions.jirareport.core.service.impl;
 
 import com.swansoftwaresolutions.jirareport.core.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.core.repository.JiraUserRepository;
 import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
-import com.swansoftwaresolutions.jirareport.core.services.JiraUserService;
+import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
