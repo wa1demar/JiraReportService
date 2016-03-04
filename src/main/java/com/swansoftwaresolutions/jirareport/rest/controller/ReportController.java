@@ -1,7 +1,7 @@
-package com.swansoftwaresolutions.jirareport.rest.controllers;
+package com.swansoftwaresolutions.jirareport.rest.controller;
 
-import com.swansoftwaresolutions.jirareport.core.services.JiraUserService;
-import com.swansoftwaresolutions.jirareport.core.services.ProjectService;
+import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
+import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
 import com.swansoftwaresolutions.jirareport.rest.dto.InfoForNewReport;
 import com.swansoftwaresolutions.jirareport.rest.mapper.JiraUserMapper;
 import com.swansoftwaresolutions.jirareport.rest.mapper.ProjectMapper;

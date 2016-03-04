@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.rest.controllers;
+package com.swansoftwaresolutions.jirareport.rest.controller;
 
 /**
  * @author Vitaliy Hollovko

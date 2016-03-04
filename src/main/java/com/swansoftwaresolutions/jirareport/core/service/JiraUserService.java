@@ -1,7 +1,6 @@
-package com.swansoftwaresolutions.jirareport.core.services;
+package com.swansoftwaresolutions.jirareport.core.service;
 
 import com.swansoftwaresolutions.jirareport.core.entity.JiraUser;
-import com.swansoftwaresolutions.jirareport.core.entity.User;
 import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 
 import java.util.List;

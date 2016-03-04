@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.rest.controllers;
+package com.swansoftwaresolutions.jirareport.rest.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
