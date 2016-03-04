@@ -5,4 +5,6 @@ package com.swansoftwaresolutions.jirareport.rest.dto;
  *         on 04.03.16.
  */
 public class JiraUserDto {
+    public Long id;
+    public String fullName;
 }
