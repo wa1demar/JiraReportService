@@ -1,10 +1,10 @@
 package com.swansoftwaresolutions.jirareport.rest.controller;
 
+import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.ProjectMapper;
 import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
 import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
 import com.swansoftwaresolutions.jirareport.rest.dto.InfoForNewReport;
-import com.swansoftwaresolutions.jirareport.rest.mapper.JiraUserMapper;
-import com.swansoftwaresolutions.jirareport.rest.mapper.ProjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

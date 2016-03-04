@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.repository.impl;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Config;
+import com.swansoftwaresolutions.jirareport.core.entity.builder.ConfigBuilder;
 import com.swansoftwaresolutions.jirareport.core.repository.ConfigRepository;
 import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 import org.hibernate.Criteria;
@@ -30,9 +31,23 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     }
 
     @Override
-    public List<Config> findAll() {
-        return sessionFactory.getCurrentSession().createCriteria(Config.class).
-                setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+    public Config findFirst() {
+        Config config = (Config) sessionFactory.getCurrentSession().createCriteria(Config.class).
+                setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).uniqueResult();
+
+        if (config != null) {
+            return config;
+        } else {
+            return add(new ConfigBuilder()
+                    .agileDoneName("")
+                    .autoSyncTime("")
+                    .bugName("")
+                    .jiraDevGroupName("")
+                    .nonWorkingDays("")
+                    .storyPointsName("")
+                    .build());
+        }
+
     }
 
     @Override
@@ -62,9 +77,9 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     }
 
     @Override
-    public Config update(Config config) throws NoSuchEntityException {
+    public Config update(Config config){
         if (config.getId() == null || findById(config.getId()) == null) {
-            throw new NoSuchEntityException("Entity not found");
+            return add(config);
         }
         return (Config) sessionFactory.openSession().merge(config);
     }

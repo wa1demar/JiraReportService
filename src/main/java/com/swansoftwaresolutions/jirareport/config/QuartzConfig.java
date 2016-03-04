@@ -51,7 +51,7 @@ public class QuartzConfig {
     CronTriggerFactoryBean loadProjectsTrigger() {
         CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
         cronTriggerFactoryBean.setJobDetail(loadProjectsJobDetail().getObject());
-        cronTriggerFactoryBean.setCronExpression("0 * * * * ?");
+        cronTriggerFactoryBean.setCronExpression("12 * * * * ?");
         return cronTriggerFactoryBean;
     }
 
@@ -68,7 +68,7 @@ public class QuartzConfig {
         CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
         cronTriggerFactoryBean.setJobDetail(loadIssuesJobDetail().getObject());
 //        cronTriggerFactoryBean.setCronExpression("0 0/2 * * * ?");
-        cronTriggerFactoryBean.setCronExpression("0 0 * * * ?");
+        cronTriggerFactoryBean.setCronExpression("12 0 * * * ?");
         return cronTriggerFactoryBean;
     }
 
@@ -84,7 +84,7 @@ public class QuartzConfig {
     CronTriggerFactoryBean loadJiraUsersTrigger() {
         CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
         cronTriggerFactoryBean.setJobDetail(loadJiraUsersJobDetail().getObject());
-        cronTriggerFactoryBean.setCronExpression("0 0/2 * * * ?");
+        cronTriggerFactoryBean.setCronExpression("12 0/2 * * * ?");
         return cronTriggerFactoryBean;
     }
 
@@ -100,7 +100,7 @@ public class QuartzConfig {
     CronTriggerFactoryBean loadJiraBoardsTrigger() {
         CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
         cronTriggerFactoryBean.setJobDetail(loadJiraBoardsJobDetail().getObject());
-        cronTriggerFactoryBean.setCronExpression("0 0/2 * * * ?");
+        cronTriggerFactoryBean.setCronExpression("12 0/2 * * * ?");
         return cronTriggerFactoryBean;
     }
 

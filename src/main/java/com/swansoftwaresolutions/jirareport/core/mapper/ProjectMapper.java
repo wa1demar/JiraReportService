@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.rest.mapper;
+package com.swansoftwaresolutions.jirareport.core.mapper;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Project;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.ProjectDto;
@@ -6,8 +6,7 @@ import com.swansoftwaresolutions.jirareport.sheduller.dto.ProjectDto;
 import java.util.List;
 
 /**
- * @author Vitaliy Holovko
- *         on 04.03.16.
+ * @author Vitaliy Hollovko
  */
 public interface ProjectMapper {
 
