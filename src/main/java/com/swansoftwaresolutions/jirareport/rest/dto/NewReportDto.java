@@ -2,7 +2,10 @@ package com.swansoftwaresolutions.jirareport.rest.dto;
 
 /**
  * @author Vitaliy Holovko
- *         on 04.03.16.
  */
 public class NewReportDto {
+    public String title;
+    public Long typeId;
+    public String creator;
+    public Long boardId;
 }
