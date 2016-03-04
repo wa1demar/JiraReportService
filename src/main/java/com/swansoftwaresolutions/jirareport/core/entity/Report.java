@@ -25,7 +25,7 @@ import java.util.Date;
 //        @NamedQuery(name = "Report.findLastAddedReport", query = "FROM Report c ORDER BY c.createdDate DESC LIMIT 1"),
         @NamedQuery(name = "Report.deleteAll", query = "DELETE FROM Report c"),
 })
-public class Report implements Serializable {
+public class Report {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -313,5 +313,83 @@ public class Report implements Serializable {
 
     public void setActualUatDefectHours(Double actualUatDefectHours) {
         this.actualUatDefectHours = actualUatDefectHours;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Report report = (Report) o;
+
+        if (id != null ? !id.equals(report.id) : report.id != null) return false;
+        if (!title.equals(report.title)) return false;
+        if (!creator.equals(report.creator)) return false;
+        if (image != null ? !image.equals(report.image) : report.image != null) return false;
+        if (!boardId.equals(report.boardId)) return false;
+        if (!creatorId.equals(report.creatorId)) return false;
+        if (createdDate != null ? !createdDate.equals(report.createdDate) : report.createdDate != null) return false;
+        if (updatedDate != null ? !updatedDate.equals(report.updatedDate) : report.updatedDate != null) return false;
+        if (syncDate != null ? !syncDate.equals(report.syncDate) : report.syncDate != null) return false;
+        if (!isClosed.equals(report.isClosed)) return false;
+        if (closedDate != null ? !closedDate.equals(report.closedDate) : report.closedDate != null) return false;
+        if (!typeId.equals(report.typeId)) return false;
+        if (targetPoints != null ? !targetPoints.equals(report.targetPoints) : report.targetPoints != null)
+            return false;
+        if (targetHours != null ? !targetHours.equals(report.targetHours) : report.targetHours != null) return false;
+        if (targetQatDefectMin != null ? !targetQatDefectMin.equals(report.targetQatDefectMin) : report.targetQatDefectMin != null)
+            return false;
+        if (targetQatDefectMax != null ? !targetQatDefectMax.equals(report.targetQatDefectMax) : report.targetQatDefectMax != null)
+            return false;
+        if (targetQatDefectHours != null ? !targetQatDefectHours.equals(report.targetQatDefectHours) : report.targetQatDefectHours != null)
+            return false;
+        if (targetUatDefectMin != null ? !targetUatDefectMin.equals(report.targetUatDefectMin) : report.targetUatDefectMin != null)
+            return false;
+        if (targetUatDefectMax != null ? !targetUatDefectMax.equals(report.targetUatDefectMax) : report.targetUatDefectMax != null)
+            return false;
+        if (targetUatDefectHours != null ? !targetUatDefectHours.equals(report.targetUatDefectHours) : report.targetUatDefectHours != null)
+            return false;
+        if (actualPoints != null ? !actualPoints.equals(report.actualPoints) : report.actualPoints != null)
+            return false;
+        if (actualHours != null ? !actualHours.equals(report.actualHours) : report.actualHours != null) return false;
+        if (actualQatDefectPoints != null ? !actualQatDefectPoints.equals(report.actualQatDefectPoints) : report.actualQatDefectPoints != null)
+            return false;
+        if (actualQatDefectHours != null ? !actualQatDefectHours.equals(report.actualQatDefectHours) : report.actualQatDefectHours != null)
+            return false;
+        if (actualUatDefectPoints != null ? !actualUatDefectPoints.equals(report.actualUatDefectPoints) : report.actualUatDefectPoints != null)
+            return false;
+        return !(actualUatDefectHours != null ? !actualUatDefectHours.equals(report.actualUatDefectHours) : report.actualUatDefectHours != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + title.hashCode();
+        result = 31 * result + creator.hashCode();
+        result = 31 * result + (image != null ? image.hashCode() : 0);
+        result = 31 * result + boardId.hashCode();
+        result = 31 * result + creatorId.hashCode();
+        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
+        result = 31 * result + (updatedDate != null ? updatedDate.hashCode() : 0);
+        result = 31 * result + (syncDate != null ? syncDate.hashCode() : 0);
+        result = 31 * result + isClosed.hashCode();
+        result = 31 * result + (closedDate != null ? closedDate.hashCode() : 0);
+        result = 31 * result + typeId.hashCode();
+        result = 31 * result + (targetPoints != null ? targetPoints.hashCode() : 0);
+        result = 31 * result + (targetHours != null ? targetHours.hashCode() : 0);
+        result = 31 * result + (targetQatDefectMin != null ? targetQatDefectMin.hashCode() : 0);
+        result = 31 * result + (targetQatDefectMax != null ? targetQatDefectMax.hashCode() : 0);
+        result = 31 * result + (targetQatDefectHours != null ? targetQatDefectHours.hashCode() : 0);
+        result = 31 * result + (targetUatDefectMin != null ? targetUatDefectMin.hashCode() : 0);
+        result = 31 * result + (targetUatDefectMax != null ? targetUatDefectMax.hashCode() : 0);
+        result = 31 * result + (targetUatDefectHours != null ? targetUatDefectHours.hashCode() : 0);
+        result = 31 * result + (actualPoints != null ? actualPoints.hashCode() : 0);
+        result = 31 * result + (actualHours != null ? actualHours.hashCode() : 0);
+        result = 31 * result + (actualQatDefectPoints != null ? actualQatDefectPoints.hashCode() : 0);
+        result = 31 * result + (actualQatDefectHours != null ? actualQatDefectHours.hashCode() : 0);
+        result = 31 * result + (actualUatDefectPoints != null ? actualUatDefectPoints.hashCode() : 0);
+        result = 31 * result + (actualUatDefectHours != null ? actualUatDefectHours.hashCode() : 0);
+        return result;
     }
 }
