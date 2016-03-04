@@ -1,15 +1,9 @@
 package com.swansoftwaresolutions.jirareport.core.services.impl;
 
 import com.swansoftwaresolutions.jirareport.core.entity.JiraBoard;
-import com.swansoftwaresolutions.jirareport.core.entity.JiraUser;
-import com.swansoftwaresolutions.jirareport.core.entity.Project;
 import com.swansoftwaresolutions.jirareport.core.repository.JiraBoardRepository;
-import com.swansoftwaresolutions.jirareport.core.repository.JiraUserRepository;
-import com.swansoftwaresolutions.jirareport.core.repository.ProjectRepository;
 import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.services.JiraBoardService;
-import com.swansoftwaresolutions.jirareport.core.services.JiraUserService;
-import com.swansoftwaresolutions.jirareport.core.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
