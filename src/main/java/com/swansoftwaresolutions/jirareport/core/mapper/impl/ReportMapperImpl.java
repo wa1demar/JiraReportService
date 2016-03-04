@@ -1,9 +1,8 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Report;
-import com.swansoftwaresolutions.jirareport.rest.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.rest.dto.ReportDto;
-import com.swansoftwaresolutions.jirareport.rest.mapper.ReportMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.ReportMapper;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import java.util.List;
 
 /**
  * @author Vitaliy Holovko
- *         on 04.03.16.
  */
 @Component
 public class ReportMapperImpl implements ReportMapper {
