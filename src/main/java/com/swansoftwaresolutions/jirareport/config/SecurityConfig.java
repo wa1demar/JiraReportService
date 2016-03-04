@@ -1,9 +1,6 @@
 package com.swansoftwaresolutions.jirareport.config;
 
-import com.swansoftwaresolutions.jirareport.core.security.AuthFailure;
-import com.swansoftwaresolutions.jirareport.core.security.AuthSuccess;
-import com.swansoftwaresolutions.jirareport.core.security.CsrfHeaderFilter;
-import com.swansoftwaresolutions.jirareport.core.security.UserService;
+import com.swansoftwaresolutions.jirareport.core.security.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -11,12 +8,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.csrf.CsrfFilter;
-import org.springframework.security.web.csrf.CsrfTokenRepository;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * @author Vladimir Martynyuk
@@ -28,59 +27,57 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    UserService userService;
+    private UserDetailServiceImpl userDetailService;
 
     @Autowired
-    AuthSuccess authSuccess;
+    private AuthSuccess authSuccess;
 
     @Autowired
-    AuthFailure authFailure;
+    private AuthFailure authFailure;
+
+    @Autowired
+    private LogoutSuccess logoutSuccess;
+
+    @Autowired
+    private EntryPointUnauthorizedHandler unauthorizedHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .exceptionHandling().and()
-                .csrf().disable()
-                .sessionManagement()
-                .and().anonymous().and()
-                .servletApi().and()
-                .headers().cacheControl().and()
-                .and()
                 .authorizeRequests()
-                    .antMatchers("/rest/**").anonymous()
-                    .antMatchers("/")
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated()
-                   .and()
+                    .antMatchers("/rest/auth/**").permitAll()
+                    .antMatchers("/rest/**").authenticated()
+                    .antMatchers("/**").anonymous()
+                    .and()
+
                 .formLogin()
-                .loginPage("/rest/auth/login")
-                .usernameParameter("login")
-                .passwordParameter("password")
-                .successHandler(authSuccess);
+                    .loginPage("/rest/auth/login")
+                    .usernameParameter("username")
+                    .passwordParameter("password")
+                    .successHandler(authSuccess)
+                    .failureHandler(authFailure)
+                    .and()
+
+                .logout()
+                    .clearAuthentication(true)
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/rest/auth/logout"))
+                    .logoutSuccessHandler(logoutSuccess)
+                    .and()
+
+                .exceptionHandling()
+                    .authenticationEntryPoint(unauthorizedHandler)
+                    .and()
+                .csrf().disable();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService()).passwordEncoder(new BCryptPasswordEncoder());
+    @Autowired
+    public void configAuthBuilder(AuthenticationManagerBuilder builder) throws Exception {
+        builder.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
     }
 
     @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    @Bean
-    @Override
-    public UserService userDetailsService() {
-        return userService;
-    }
-
-    private CsrfTokenRepository csrfTokenRepository() {
-        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
-        repository.setHeaderName("X-XSRF-TOKEN");
-        return repository;
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 }

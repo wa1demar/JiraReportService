@@ -3,8 +3,6 @@ package com.swansoftwaresolutions.jirareport.core.repository.impl;
 import com.swansoftwaresolutions.jirareport.core.entity.User;
 import com.swansoftwaresolutions.jirareport.core.repository.UserRepository;
 import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +24,9 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User findByUsername(String username) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("User.findByUsername");
-        query.setParameter("username", username);
-
-        return (User) query.uniqueResult();
+        return (User) sessionFactory.getCurrentSession().createCriteria(User.class)
+                .add(Restrictions.eq("username", username))
+                .uniqueResult();
     }
 
     @Override
@@ -40,13 +37,14 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return sessionFactory.getCurrentSession().createCriteria(User.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+        return (List<User>) sessionFactory.getCurrentSession().createCriteria(User.class)
+                .list();
     }
 
     @Override
-    public User findById(Long projectId) {
+    public User findById(Long id) {
         return (User) sessionFactory.openSession()
-                .createCriteria(User.class).add(Restrictions.eq("id", projectId)).uniqueResult();
+                .createCriteria(User.class).add(Restrictions.eq("id", id)).uniqueResult();
     }
 
     @Override

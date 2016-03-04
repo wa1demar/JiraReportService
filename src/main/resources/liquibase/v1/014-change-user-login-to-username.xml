@@ -1,0 +1,13 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="014" author="Vladimir Martynyuk">
+        <renameColumn tableName="users"
+                      newColumnName="username"
+                      oldColumnName="login"
+        />
+
+        <comment>Rename user login to username</comment>
+
+    </changeSet>
+</databaseChangeLog>

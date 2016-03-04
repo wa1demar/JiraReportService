@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by viholovko on 24.02.16.
+ * @author Vitaly Holovko
  */
 @Component
 public class AuthFailure extends SimpleUrlAuthenticationFailureHandler {

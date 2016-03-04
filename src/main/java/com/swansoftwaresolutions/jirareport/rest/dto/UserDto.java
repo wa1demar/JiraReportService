@@ -1,24 +1,14 @@
-package com.swansoftwaresolutions.jirareport.core.entity;
+package com.swansoftwaresolutions.jirareport.rest.dto;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
 /**
  * @author Vladimir Martynyuk
  */
-@Entity
-@Table(name = "users")
-public class User implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "id")
+public class UserDto implements Serializable {
     private Long id;
-
-    @Column(name = "username")
     private String username;
-
-    @Column(name = "password")
+    private String email;
     private String password;
 
     public Long getId() {
@@ -35,6 +25,14 @@ public class User implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
