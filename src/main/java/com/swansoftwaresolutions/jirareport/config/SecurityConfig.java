@@ -47,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().cacheControl().and()
                 .and()
                 .authorizeRequests()
+                    .antMatchers("/rest/**").anonymous()
                     .antMatchers("/")
                     .permitAll()
                     .anyRequest()

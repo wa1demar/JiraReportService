@@ -1,7 +1,7 @@
 package com.swansoftwaresolutions.jirareport.rest.controllers;
 
 /**
- * Created by viholovko on 04.03.16.
+ * @author Vitaliy Hollovko
  */
 public class ConfigController {
 }
