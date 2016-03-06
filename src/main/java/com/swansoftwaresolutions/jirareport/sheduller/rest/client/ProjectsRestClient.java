@@ -1,7 +1,6 @@
 package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Project;
-import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.ProjectDto;
 import com.swansoftwaresolutions.jirareport.sheduller.job.RestClient;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -51,26 +49,13 @@ public class ProjectsRestClient extends RestClientBase implements RestClient {
     private void insertDataToDataBase(ProjectDto[] projectDtos) {
         List<Project> projects = fromDtos(projectDtos);
 
-        removeDublicateAndSave(projects, projectService.getAllProjects());
+        removeDublicateAndSave(projects);
     }
 
-    private void deleteOldProjects(List<Project> projects, List<Project> projectsDB) {
-        projectsDB.removeAll(new HashSet(projects));
-        for (Project project : projectsDB) {
-            try {
-                projectService.delete(project);
-            } catch (NoSuchEntityException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+    private void removeDublicateAndSave(List<Project> projects) {
+        projects.removeAll(projectService.getAllProjects());
 
-    private void removeDublicateAndSave(List<Project> projects, List<Project> projectsDB) {
-        List<Project> projectList = projects;
-        projectList.removeAll(new HashSet(projectsDB));
-
-        log.info("   Removed " + (projects.size() - projectList.size()) + " dublicates");
-        for (Project project : projectList) {
+        for (Project project : projects) {
             projectService.save(project);
         }
     }
@@ -85,9 +70,9 @@ public class ProjectsRestClient extends RestClientBase implements RestClient {
 
     private Project fromDto(ProjectDto projectDto) {
         Project project = new Project();
-        project.setName(projectDto.name);
-        project.setKey(projectDto.key);
-        project.setJiraId((long) projectDto.id);
+        project.setName(projectDto.getName());
+        project.setKey(projectDto.getKey());
+        project.setJiraId((long) projectDto.getId());
 
         return project;
     }

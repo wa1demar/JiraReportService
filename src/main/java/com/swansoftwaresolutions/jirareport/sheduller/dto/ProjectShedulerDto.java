@@ -3,7 +3,7 @@ package com.swansoftwaresolutions.jirareport.sheduller.dto;
 /**
  * @author Vladimir Martynyuk
  */
-public class ProjectDto {
+public class ProjectShedulerDto {
 
     private int id;
     private String key;
