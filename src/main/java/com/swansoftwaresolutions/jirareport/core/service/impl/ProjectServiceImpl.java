@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Project;
+import com.swansoftwaresolutions.jirareport.core.mapper.ProjectMapper;
 import com.swansoftwaresolutions.jirareport.core.repository.ProjectRepository;
 import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
