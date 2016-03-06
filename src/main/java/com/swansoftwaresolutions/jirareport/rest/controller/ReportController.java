@@ -4,7 +4,7 @@ import com.swansoftwaresolutions.jirareport.core.entity.Report;
 import com.swansoftwaresolutions.jirareport.core.service.JiraBoardService;
 import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
 import com.swansoftwaresolutions.jirareport.core.service.ReportService;
-import com.swansoftwaresolutions.jirareport.rest.dto.InfoForNewReport;
+import com.swansoftwaresolutions.jirareport.rest.dto.InfoForNewReportDto;
 import com.swansoftwaresolutions.jirareport.rest.dto.NewReportDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,12 +36,12 @@ public class ReportController {
     }
 
     @RequestMapping(value = "/rest/auth/infofornewreport", method = RequestMethod.GET)
-    private ResponseEntity<InfoForNewReport> listResponseEntity() {
+    private ResponseEntity<InfoForNewReportDto> listResponseEntity() {
         return new ResponseEntity<>(prepareListsOfProjectsAndUsers(), HttpStatus.OK);
     }
 
-    private InfoForNewReport prepareListsOfProjectsAndUsers() {
-        InfoForNewReport infoForNewReport = new InfoForNewReport();
+    private InfoForNewReportDto prepareListsOfProjectsAndUsers() {
+        InfoForNewReportDto infoForNewReport = new InfoForNewReportDto();
         infoForNewReport.boards = jiraBoardService.findAllBoardForInfo();
         infoForNewReport.users = jiraUserService.findAll();
 

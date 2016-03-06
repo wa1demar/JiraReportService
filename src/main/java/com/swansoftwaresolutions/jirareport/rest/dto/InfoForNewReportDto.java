@@ -1,7 +1,5 @@
 package com.swansoftwaresolutions.jirareport.rest.dto;
 
-import com.swansoftwaresolutions.jirareport.core.entity.JiraBoard;
-import com.swansoftwaresolutions.jirareport.sheduller.dto.ProjectDto;
 
 import java.util.List;
 
@@ -9,7 +7,7 @@ import java.util.List;
  * @author Vitaliy Holovko
  *         on 04.03.16.
  */
-public class InfoForNewReport {
+public class InfoForNewReportDto {
 
     public List<JiraBoardInfoDto> boards;
     public List<JiraUserDto> users;
