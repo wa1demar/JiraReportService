@@ -1,9 +1,11 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
 import com.swansoftwaresolutions.jirareport.core.entity.JiraBoard;
+import com.swansoftwaresolutions.jirareport.core.mapper.JiraBoardMapper;
 import com.swansoftwaresolutions.jirareport.core.repository.JiraBoardRepository;
 import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.service.JiraBoardService;
+import com.swansoftwaresolutions.jirareport.rest.dto.JiraBoardInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,9 @@ public class JiraBoardServiceImpl implements JiraBoardService {
     @Autowired
     JiraBoardRepository jiraBoardRepository;
 
+    @Autowired
+    JiraBoardMapper jiraBoardMapper;
+
     @Override
     public JiraBoard save(JiraBoard jiraBoard) {
         return jiraBoardRepository.add(jiraBoard);
@@ -32,5 +37,10 @@ public class JiraBoardServiceImpl implements JiraBoardService {
     @Override
     public void delete(JiraBoard jiraBoard) throws NoSuchEntityException {
         jiraBoardRepository.delete(jiraBoard);
+    }
+
+    @Override
+    public List<JiraBoardInfoDto> findAllBoardForInfo() {
+        return jiraBoardMapper.toInfoDtos(jiraBoardRepository.findAll());
     }
 }
