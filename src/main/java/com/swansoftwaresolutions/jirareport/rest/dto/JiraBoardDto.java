@@ -1,32 +1,16 @@
 package com.swansoftwaresolutions.jirareport.rest.dto;
 
-import javax.persistence.*;
-
 /**
  * @author Vitaliy Holovko
  */
-@Entity
-@Table(name = "jira_boards")
+
 public class JiraBoardDto {
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
-
-    @Column(name = "board_id")
     private Long boardId;
-
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "type")
     private String type;
-
-    @Column(name = "project_key")
     private String projectKey;
-
-    @Column(name = "project_jira_id")
     private Long projectJiraId;
 
     public Long getId() {
