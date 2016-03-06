@@ -31,7 +31,7 @@ public class JiraUsersRestClient extends RestClientBase implements RestClient {
 
 
     private void removeDublicatesAndInsertDataToDataBase(ArrayList<JiraUser> jiraUsers) {
-        jiraUsers.removeAll(new HashSet(jiraUserService.findAll()));
+        jiraUsers.removeAll(jiraUserService.findAll());
 
         for (JiraUser jiraUser : jiraUsers) {
             jiraUserService.save(jiraUser);
@@ -40,9 +40,9 @@ public class JiraUsersRestClient extends RestClientBase implements RestClient {
 
     private JiraUser fromDto(UserDto userDto) {
         JiraUser jiraUser = new JiraUser();
-        jiraUser.setEmail(userDto.emailAddress);
-        jiraUser.setFullName(userDto.displayName);
-        jiraUser.setLogin(userDto.name);
+        jiraUser.setEmail(userDto.getEmailAddress());
+        jiraUser.setFullName(userDto.getDisplayName());
+        jiraUser.setLogin(userDto.getName());
 
         return jiraUser;
     }
