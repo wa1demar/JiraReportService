@@ -25,7 +25,7 @@ import java.util.Date;
 //        @NamedQuery(name = "Report.findLastAddedReport", query = "FROM Report c ORDER BY c.createdDate DESC LIMIT 1"),
         @NamedQuery(name = "Report.deleteAll", query = "DELETE FROM Report c"),
 })
-public class Report {
+public class Report  implements Serializable{
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

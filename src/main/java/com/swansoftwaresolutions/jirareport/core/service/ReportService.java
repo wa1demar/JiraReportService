@@ -2,6 +2,7 @@ package com.swansoftwaresolutions.jirareport.core.service;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Report;
 import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
+import com.swansoftwaresolutions.jirareport.rest.dto.NewReportDto;
 
 /**
  * @author Vitaliy Holovko
@@ -9,7 +10,7 @@ import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEnti
  */
 public interface ReportService {
 
-    Report save(Report report);
+    NewReportDto save(NewReportDto newReportDto);
 
     Report update(Report report) throws NoSuchEntityException;
 
