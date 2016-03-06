@@ -1,12 +1,9 @@
 package com.swansoftwaresolutions.jirareport.rest.controller;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Report;
-import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
-import com.swansoftwaresolutions.jirareport.core.mapper.ProjectMapper;
-import com.swansoftwaresolutions.jirareport.core.mapper.ReportMapper;
+import com.swansoftwaresolutions.jirareport.core.service.JiraBoardService;
 import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
-import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
-import com.swansoftwaresolutions.jirareport.core.services.ReportService;
+import com.swansoftwaresolutions.jirareport.core.service.ReportService;
 import com.swansoftwaresolutions.jirareport.rest.dto.InfoForNewReport;
 import com.swansoftwaresolutions.jirareport.rest.dto.NewReportDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,38 +19,31 @@ import java.util.Date;
 
 /**
  * @author Vitaliy Holovko
- *         on 04.03.16.
  */
 
 @RestController
 public class ReportController {
 
-    private ProjectService projectService;
     private JiraUserService jiraUserService;
-    private ProjectMapper projectMapper;
-    private JiraUserMapper jiraUserMapper;
     private ReportService reportService;
-    private ReportMapper reportMapper;
+    private JiraBoardService jiraBoardService;
 
     @Autowired
-    public ReportController(ProjectService projectService, JiraUserService jiraUserService, ProjectMapper projectMapper, JiraUserMapper jiraUserMapper, ReportService reportService, ReportMapper reportMapper) {
-        this.projectService = projectService;
+    public ReportController(JiraUserService jiraUserService, ReportService reportService, JiraBoardService jiraBoardService) {
         this.jiraUserService = jiraUserService;
-        this.projectMapper = projectMapper;
-        this.jiraUserMapper = jiraUserMapper;
         this.reportService = reportService;
-        this.reportMapper = reportMapper;
+        this.jiraBoardService = jiraBoardService;
     }
 
-    @RequestMapping(value = "/rest/infofornewreport", method = RequestMethod.GET)
+    @RequestMapping(value = "/rest/auth/infofornewreport", method = RequestMethod.GET)
     private ResponseEntity<InfoForNewReport> listResponseEntity() {
         return new ResponseEntity<>(prepareListsOfProjectsAndUsers(), HttpStatus.OK);
     }
 
     private InfoForNewReport prepareListsOfProjectsAndUsers() {
         InfoForNewReport infoForNewReport = new InfoForNewReport();
-        infoForNewReport.projects = projectMapper.toDtos(projectService.getAllProjects());
-        infoForNewReport.users = jiraUserMapper.toDtos(jiraUserService.findAll());
+        infoForNewReport.boards = jiraBoardService.findAllBoardForInfo();
+        infoForNewReport.users = jiraUserService.findAll();
 
         return infoForNewReport;
     }

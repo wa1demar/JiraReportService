@@ -1,9 +1,10 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Report;
+import com.swansoftwaresolutions.jirareport.core.mapper.ReportMapper;
 import com.swansoftwaresolutions.jirareport.core.repository.ReportRepository;
 import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
-import com.swansoftwaresolutions.jirareport.core.services.ReportService;
+import com.swansoftwaresolutions.jirareport.core.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,6 @@ public class ReportServiceImpl implements ReportService{
 
     @Autowired
     ReportRepository reportRepository;
-
 
     @Override
     public Report save(Report project) {
