@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -34,6 +33,7 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
 
     @Autowired
     JiraBoardService jiraBoardService;
+
 
     @Autowired
     ProjectService projectService;
@@ -69,7 +69,7 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
 
         //TODO Need to be change
         try {
-            sprints.removeAll(new HashSet(sprintsService.findAll()));
+            sprints.removeAll(sprintsService.findAll());
         } catch (NullPointerException ex) {
             log.warning("NullPointerExeption !!!");
         }
@@ -98,7 +98,7 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
     }
 
     private void removeDublicateAndSave(List<JiraBoard> jiraBoards) {
-        jiraBoards.removeAll(new HashSet(jiraBoardService.findAll()));
+        jiraBoards.removeAll(jiraBoardService.findAll());
 
         for (JiraBoard jiraBoard : jiraBoards) {
             if (jiraBoard.getProjectKey() != null) {
@@ -110,13 +110,13 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
     private JiraBoardDto getProjectInformationForBoard(JiraBoardDto jiraBoardDto) throws NoSuchEntityException {
         HttpEntity<String> request = new HttpEntity<>(getHeaders());
         RestTemplate restTemplate = new RestTemplate();
-        IssuesForJiraBoard jiraBoardDtos = restTemplate.exchange(autocompliteIssuesUrl(ISSUES_BOARD_URL, jiraBoardDto.id), HttpMethod.GET, request, IssuesForJiraBoard.class).getBody();
+        IssuesForJiraBoard jiraBoardDtos = restTemplate.exchange(autocompliteIssuesUrl(ISSUES_BOARD_URL, jiraBoardDto.getId()), HttpMethod.GET, request, IssuesForJiraBoard.class).getBody();
 
         if (jiraBoardDtos.issues.length > 0) {
-            jiraBoardDto.projectKey = jiraBoardDtos.issues[0].fields.project.key;
-            jiraBoardDto.projectId = projectService.findByKey(jiraBoardDto.projectKey).getJiraId();
+            jiraBoardDto.setProjectKey(jiraBoardDtos.issues[0].fields.project.getKey());
+            jiraBoardDto.setProjectId(projectService.findByKey(jiraBoardDto.getProjectKey()).getJiraId());
         } else {
-            log.warning("Empty Project Key for " + jiraBoardDto.name);
+            log.warning("Empty Project Key for " + jiraBoardDto.getName());
         }
 
         return jiraBoardDto;
@@ -136,7 +136,7 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
             try {
                 jiraBoards.add(fromDto(getProjectInformationForBoard(jBoardDto)));
             } catch (NoSuchEntityException e) {
-                log.warning("Some problems with data from Board " + jBoardDto.name);
+                log.warning("Some problems with data from Board " + jBoardDto.getName());
             }
         }
         return jiraBoards;
@@ -152,11 +152,11 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
 
     private JiraBoard fromDto(JiraBoardDto jBoardDto) {
         JiraBoard jiraBoard = new JiraBoard();
-        jiraBoard.setName(jBoardDto.name);
-        jiraBoard.setType(jBoardDto.type);
-        jiraBoard.setBoardId((long) jBoardDto.id);
-        jiraBoard.setProjectKey(jBoardDto.projectKey);
-        jiraBoard.setProjectJiraId(jBoardDto.projectId);
+        jiraBoard.setName(jBoardDto.getName());
+        jiraBoard.setType(jBoardDto.getType());
+        jiraBoard.setBoardId((long) jBoardDto.getId());
+        jiraBoard.setProjectKey(jBoardDto.getProjectKey());
+        jiraBoard.setProjectJiraId(jBoardDto.getProjectId());
 
         return jiraBoard;
     }
