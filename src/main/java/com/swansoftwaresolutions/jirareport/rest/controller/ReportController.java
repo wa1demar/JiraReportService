@@ -1,17 +1,17 @@
 package com.swansoftwaresolutions.jirareport.rest.controller;
 
+import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.service.JiraBoardService;
 import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
 import com.swansoftwaresolutions.jirareport.core.service.ReportService;
 import com.swansoftwaresolutions.jirareport.rest.dto.InfoForNewReportDto;
 import com.swansoftwaresolutions.jirareport.rest.dto.NewReportDto;
+import com.swansoftwaresolutions.jirareport.rest.dto.ReportDto;
+import com.swansoftwaresolutions.jirareport.rest.dto.responce.ResponceReportDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -55,6 +55,30 @@ public class ReportController {
         } else {
             return new ResponseEntity<>(reportDto, HttpStatus.NO_CONTENT);
         }
+
+    }
+
+    @RequestMapping(value = "/rest/report/redelete", method = RequestMethod.DELETE)
+    private ResponseEntity<ResponceReportDto > deleteReportById(@RequestParam(value = "id") long id) {
+        ResponceReportDto responsePostDto;
+        HttpStatus httpStatus;
+
+        try {
+            if (reportService.findById(id) != null) {
+                reportService.deleteById(id);
+                responsePostDto = new ResponceReportDto(true, "Report deleted successfully.");
+                httpStatus = HttpStatus.OK;
+            } else {
+                responsePostDto = new ResponceReportDto(false, "Can't found Report.");
+                httpStatus = HttpStatus.NOT_FOUND;
+            }
+        } catch (NoSuchEntityException e) {
+            e.printStackTrace();
+            responsePostDto = new ResponceReportDto(false, "Can't found Report.");
+            httpStatus = HttpStatus.NOT_FOUND;
+        }
+
+        return new ResponseEntity<>(responsePostDto, httpStatus);
 
     }
 

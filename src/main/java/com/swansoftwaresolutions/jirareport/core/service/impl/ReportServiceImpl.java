@@ -7,6 +7,7 @@ import com.swansoftwaresolutions.jirareport.core.repository.ReportRepository;
 import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.service.ReportService;
 import com.swansoftwaresolutions.jirareport.rest.dto.NewReportDto;
+import com.swansoftwaresolutions.jirareport.rest.dto.ReportDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,5 +40,20 @@ public class ReportServiceImpl implements ReportService{
     @Override
     public Report update(Report report) throws NoSuchEntityException {
         return reportRepository.update(report);
+    }
+
+    @Override
+    public ReportDto findById(long id) throws NoSuchEntityException {
+        return reportMapper.toDto(reportRepository.findById(id));
+    }
+
+    @Override
+    public void delete(ReportDto reportDto) throws NoSuchEntityException {
+        reportRepository.delete(reportMapper.fromDto(reportDto));
+    }
+
+    @Override
+    public void deleteById(long id) throws NoSuchEntityException {
+        reportRepository.delete(id);
     }
 }
