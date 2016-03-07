@@ -20,7 +20,7 @@ import java.util.List;
  */
 
 @Service
-public class ReportServiceImpl implements ReportService{
+public class ReportServiceImpl implements ReportService {
 
     @Autowired
     ReportRepository reportRepository;
