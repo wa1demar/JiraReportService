@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author Vitaliy Holovko
@@ -50,7 +51,7 @@ public class ReportController {
     private ResponseEntity<NewReportDto> addNewReport(@Valid @RequestBody NewReportDto newReportDto) {
         NewReportDto reportDto = reportService.save(newReportDto);
 
-        if (reportDto!=null) {
+        if (reportDto != null) {
             return new ResponseEntity<>(reportDto, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(reportDto, HttpStatus.NO_CONTENT);
@@ -58,8 +59,8 @@ public class ReportController {
 
     }
 
-    @RequestMapping(value = "/rest/report/redelete", method = RequestMethod.DELETE)
-    private ResponseEntity<ResponceReportDto > deleteReportById(@RequestParam(value = "id") long id) {
+    @RequestMapping(value = "/rest/report/delete", method = RequestMethod.DELETE)
+    private ResponseEntity<ResponceReportDto> deleteReportById(@RequestParam(value = "id") long id) {
         ResponceReportDto responsePostDto;
         HttpStatus httpStatus;
 
@@ -79,10 +80,15 @@ public class ReportController {
         }
 
         return new ResponseEntity<>(responsePostDto, httpStatus);
-
     }
 
+    @RequestMapping(value = "/rest/auth/allreports", method = RequestMethod.GET)
+    private ResponseEntity<List<ReportDto>> findAllReports() {
+        //ToDo Add responce. Need to modify Dto
+        List<ReportDto> reportDtos = reportService.findAll();
 
+        return new ResponseEntity<>(reportDtos, HttpStatus.OK);
+    }
 
 
 }

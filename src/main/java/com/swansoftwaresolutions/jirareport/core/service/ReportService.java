@@ -5,11 +5,15 @@ import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEnti
 import com.swansoftwaresolutions.jirareport.rest.dto.NewReportDto;
 import com.swansoftwaresolutions.jirareport.rest.dto.ReportDto;
 
+import java.util.List;
+
 /**
  * @author Vitaliy Holovko
  *         on 04.03.16.
  */
 public interface ReportService {
+
+    List<ReportDto> findAll();
 
     NewReportDto save(NewReportDto newReportDto);
 

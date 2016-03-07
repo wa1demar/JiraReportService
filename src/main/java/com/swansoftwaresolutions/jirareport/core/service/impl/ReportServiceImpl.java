@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Vitaliy Holovko
@@ -29,6 +30,12 @@ public class ReportServiceImpl implements ReportService{
 
     @Autowired
     JiraUserRepository jiraUserRepository;
+
+
+    @Override
+    public List<ReportDto> findAll() {
+        return reportMapper.toDtos(reportRepository.findAll());
+    }
 
     @Override
     public NewReportDto save(NewReportDto newReportDto) {

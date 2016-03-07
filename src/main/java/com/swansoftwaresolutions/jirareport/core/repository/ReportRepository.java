@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface ReportRepository {
 
-    List<Report> getAllReports();
+    List<Report> findAll();
 
     List<Report> getAllOngoingReports();
 

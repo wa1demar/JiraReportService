@@ -26,7 +26,7 @@ public class ReportRepositoryImpl implements ReportRepository{
     private SessionFactory sessionFactory;
 
     @Override
-    public List<Report> getAllReports() {
+    public List<Report> findAll() {
         return sessionFactory.getCurrentSession().createCriteria(Report.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
     }
 
@@ -153,7 +153,7 @@ public class ReportRepositoryImpl implements ReportRepository{
 
     @Override
     public void deleteAll() throws NoSuchEntityException {
-    List<Report> reports = getAllReports();
+    List<Report> reports = findAll();
         for (Report report : reports){
             delete(report);
         }
