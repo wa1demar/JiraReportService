@@ -14,7 +14,7 @@ public interface ProjectService {
 
     Project findByKey(String key) throws NoSuchEntityException;
 
-    List<Project> getAllProjects();
+    List<Project> findAll();
 
     void delete(Project project) throws NoSuchEntityException;
 }

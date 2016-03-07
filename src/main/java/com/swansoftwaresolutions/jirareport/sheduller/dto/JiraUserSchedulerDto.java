@@ -3,7 +3,7 @@ package com.swansoftwaresolutions.jirareport.sheduller.dto;
 /**
  * @author Vitaliy Holovko
  */
-public class UserDto {
+public class JiraUserSchedulerDto {
 //    public int id;
     private String name;
     private String emailAddress;
