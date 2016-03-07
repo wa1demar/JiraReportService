@@ -6,6 +6,7 @@ import com.swansoftwaresolutions.jirareport.core.repository.JiraBoardRepository;
 import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.service.JiraBoardService;
 import com.swansoftwaresolutions.jirareport.rest.dto.JiraBoardInfoDto;
+import com.swansoftwaresolutions.jirareport.rest.dto.JiraBoardsDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,5 +43,12 @@ public class JiraBoardServiceImpl implements JiraBoardService {
     @Override
     public List<JiraBoardInfoDto> findAllBoardForInfo() {
         return jiraBoardMapper.toInfoDtos(jiraBoardRepository.findAll());
+    }
+
+    @Override
+    public JiraBoardsDto retrieveAllBoards() {
+        List<JiraBoard> boards = jiraBoardRepository.findAll();
+        JiraBoardsDto boardsDto = new JiraBoardsDto(jiraBoardMapper.toDtos(boards));
+        return boardsDto;
     }
 }
