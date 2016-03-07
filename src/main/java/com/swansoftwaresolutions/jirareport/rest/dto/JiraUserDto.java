@@ -7,6 +7,8 @@ package com.swansoftwaresolutions.jirareport.rest.dto;
 public class JiraUserDto {
     private Long id;
     private String fullName;
+    private String login;
+
 
     public Long getId() {
         return id;
@@ -22,5 +24,13 @@ public class JiraUserDto {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 }
