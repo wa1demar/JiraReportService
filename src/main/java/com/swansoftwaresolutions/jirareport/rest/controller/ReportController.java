@@ -82,12 +82,37 @@ public class ReportController {
         return new ResponseEntity<>(responsePostDto, httpStatus);
     }
 
-    @RequestMapping(value = "/rest/auth/allreports", method = RequestMethod.GET)
+    @RequestMapping(value = "/rest/report/allreports", method = RequestMethod.GET)
     private ResponseEntity<List<ReportDto>> findAllReports() {
         //ToDo Add responce. Need to modify Dto
         List<ReportDto> reportDtos = reportService.findAll();
 
         return new ResponseEntity<>(reportDtos, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/rest/auth/copy", method = RequestMethod.POST)
+    private ResponseEntity<ResponceReportDto> makeReportCopyById(@RequestParam(value = "id") long id, @RequestParam(value = "name") String reportName) {
+        ResponceReportDto responsePostDto;
+        HttpStatus httpStatus;
+
+        try {
+            NewReportDto newReportDto = reportService.findNewReportById(id);
+            newReportDto.setTitle(reportName);
+            newReportDto.setId(null);
+            if (reportService.save(newReportDto) != null) {
+                responsePostDto = new ResponceReportDto(true, "Report added successfully.");
+                httpStatus = HttpStatus.OK;
+            } else {
+                responsePostDto = new ResponceReportDto(false, "Can't added Report.");
+                httpStatus = HttpStatus.NOT_FOUND;
+            }
+        } catch (NoSuchEntityException e) {
+            e.printStackTrace();
+            responsePostDto = new ResponceReportDto(false, "Can't added Report.");
+            httpStatus = HttpStatus.NOT_FOUND;
+        }
+
+        return new ResponseEntity<>(responsePostDto, httpStatus);
     }
 
 

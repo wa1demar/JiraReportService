@@ -21,6 +21,8 @@ public interface ReportService {
 
     ReportDto findById(long id) throws NoSuchEntityException;
 
+    NewReportDto findNewReportById(long id) throws NoSuchEntityException;
+
     void deleteById(long id) throws NoSuchEntityException;
 
     void delete(ReportDto reportDto) throws NoSuchEntityException;
