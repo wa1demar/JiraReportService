@@ -73,17 +73,16 @@ public class JiraUser {
 
         JiraUser jiraUser = (JiraUser) o;
 
-        if (!email.equals(jiraUser.email)) return false;
+        if (!fullName.equals(jiraUser.fullName)) return false;
         if (!login.equals(jiraUser.login)) return false;
-        return !(fullName != null ? !fullName.equals(jiraUser.fullName) : jiraUser.fullName != null);
 
+        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = email.hashCode();
-        result = 31 * result + login.hashCode();
-        result = 31 * result + (fullName != null ? fullName.hashCode() : 0);
+        int result = login.hashCode();
+        result = 31 * result + fullName.hashCode();
         return result;
     }
 }

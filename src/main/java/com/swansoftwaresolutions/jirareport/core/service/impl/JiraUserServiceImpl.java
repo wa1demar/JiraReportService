@@ -5,11 +5,13 @@ import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
 import com.swansoftwaresolutions.jirareport.core.repository.JiraUserRepository;
 import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
+import com.swansoftwaresolutions.jirareport.rest.dto.JiraUserAutoDto;
 import com.swansoftwaresolutions.jirareport.rest.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.rest.dto.JiraUsersDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +30,17 @@ public class JiraUserServiceImpl implements JiraUserService {
     @Override
     public JiraUser save(JiraUser jiraUser) {
         return jiraUserRepository.add(jiraUser);
+    }
+
+    @Override
+    public List<JiraUserDto> saveAll(List<JiraUserAutoDto> jiraUserAutoDtoList) throws NoSuchEntityException {
+        jiraUserAutoDtoList.removeAll(jiraUserMapper.toAutoDtos(jiraUserRepository.findAll()));
+
+        List<JiraUserDto> newJiraUser = new ArrayList<>();
+        for (JiraUserAutoDto jiraUserAuto : jiraUserAutoDtoList) {
+            newJiraUser.add(jiraUserMapper.toDto(jiraUserRepository.add(jiraUserMapper.fromAutoDto(jiraUserAuto))));
+        }
+        return newJiraUser;
     }
 
     @Override

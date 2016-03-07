@@ -2,11 +2,10 @@ package com.swansoftwaresolutions.jirareport.core.service;
 
 import com.swansoftwaresolutions.jirareport.core.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
+import com.swansoftwaresolutions.jirareport.rest.dto.JiraUserAutoDto;
 import com.swansoftwaresolutions.jirareport.rest.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.rest.dto.JiraUsersDto;
-import org.springframework.util.MultiValueMap;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -15,6 +14,8 @@ import java.util.List;
 public interface JiraUserService {
 
     JiraUser save(JiraUser jiraUser);
+
+    List<JiraUserDto> saveAll(List<JiraUserAutoDto> jiraUserAutoDtoList) throws NoSuchEntityException;
 
     JiraUsersDto retrieveAllUsers();
 
