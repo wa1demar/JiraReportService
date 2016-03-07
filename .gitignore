@@ -7,6 +7,7 @@
 /.gradle
 /classes
 *.iml
+/src/main/webapp/scripts/vendors
 
 #Remove a file from a Git repository without deleting it from the local filesystem
 #git rm --cached mylogfile.log
