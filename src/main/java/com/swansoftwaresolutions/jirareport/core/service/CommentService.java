@@ -1,9 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.service;
 
-import com.swansoftwaresolutions.jirareport.core.entity.Report;
 import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
-import com.swansoftwaresolutions.jirareport.rest.dto.NewReportDto;
-import com.swansoftwaresolutions.jirareport.rest.dto.ReportDto;
+import com.swansoftwaresolutions.jirareport.rest.dto.CommentDto;
 
 import java.util.List;
 
@@ -13,18 +11,19 @@ import java.util.List;
  */
 public interface CommentService {
 
-    List<ReportDto> findAll();
+    List<CommentDto> findAll();
 
-    NewReportDto save(NewReportDto newReportDto) throws NoSuchEntityException;
+    CommentDto save(CommentDto commentDto);
 
-    Report update(Report report) throws NoSuchEntityException;
+    CommentDto update(CommentDto commentDto) throws NoSuchEntityException;
 
-    ReportDto findById(long id) throws NoSuchEntityException;
+    CommentDto findById(long id) throws NoSuchEntityException;
 
-    NewReportDto findNewReportById(long id) throws NoSuchEntityException;
+    List<CommentDto> findByReportId(long reportId) throws NoSuchEntityException;
 
-    void deleteById(long id) throws NoSuchEntityException;
+    void delete(long id) throws NoSuchEntityException;
 
-    void delete(ReportDto reportDto) throws NoSuchEntityException;
+    void delete(CommentDto commentDto) throws NoSuchEntityException;
 
+    void deleteAll() throws NoSuchEntityException;
 }
