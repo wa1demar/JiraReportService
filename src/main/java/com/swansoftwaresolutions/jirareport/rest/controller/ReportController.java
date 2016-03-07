@@ -21,6 +21,7 @@ import java.util.List;
  */
 
 @RestController
+@RequestMapping("/rest")
 public class ReportController {
 
     private JiraUserService jiraUserService;
@@ -34,7 +35,7 @@ public class ReportController {
         this.jiraBoardService = jiraBoardService;
     }
 
-    @RequestMapping(value = "/rest/report/datainfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/v1/report/datainfo", method = RequestMethod.GET)
     private ResponseEntity<InfoForNewReportDto> listResponseEntity() {
         return new ResponseEntity<>(prepareListsOfProjectsAndUsers(), HttpStatus.OK);
     }
@@ -47,7 +48,7 @@ public class ReportController {
         return infoForNewReport;
     }
 
-    @RequestMapping(value = "/rest/report/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/v1/report", method = RequestMethod.POST)
     private ResponseEntity<NewReportDto> addNewReport(@Valid @RequestBody NewReportDto newReportDto) {
         NewReportDto reportDto = reportService.save(newReportDto);
 
@@ -59,7 +60,7 @@ public class ReportController {
 
     }
 
-    @RequestMapping(value = "/rest/report/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/v1/report", method = RequestMethod.DELETE)
     private ResponseEntity<ResponceReportDto> deleteReportById(@RequestParam(value = "id") long id) {
         ResponceReportDto responsePostDto;
         HttpStatus httpStatus;
@@ -82,7 +83,7 @@ public class ReportController {
         return new ResponseEntity<>(responsePostDto, httpStatus);
     }
 
-    @RequestMapping(value = "/rest/report/allreports", method = RequestMethod.GET)
+    @RequestMapping(value = "/v1/report", method = RequestMethod.GET)
     private ResponseEntity<List<ReportDto>> findAllReports() {
         //ToDo Add responce. Need to modify Dto
         List<ReportDto> reportDtos = reportService.findAll();
@@ -90,7 +91,7 @@ public class ReportController {
         return new ResponseEntity<>(reportDtos, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/rest/auth/copy", method = RequestMethod.POST)
+    @RequestMapping(value = "/v1/report/copy", method = RequestMethod.POST)
     private ResponseEntity<ResponceReportDto> makeReportCopyById(@RequestParam(value = "id") long id, @RequestParam(value = "name") String reportName) {
         ResponceReportDto responsePostDto;
         HttpStatus httpStatus;

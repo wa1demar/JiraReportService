@@ -27,7 +27,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserLoginDto retrieveLoggerUser(String username) {
-        return userMapper.loginToDto(userRepository.findByUsername(username));
+
+        UserLoginDto userLoginDto = userMapper.loginToDto(userRepository.findByUsername(username));
+        userLoginDto.setToken("xfdsfdgdfgfhfghfg ");
+        return userLoginDto;
     }
 
 
