@@ -1,0 +1,50 @@
+<h4>Ongoing projects</h4>
+<div class="form-group col-md-3">
+  <input class="form-control" ng-model="query" placeholder="Find a dashboard">
+</div>
+<div ng-if="dataOngoing.length !== 0">
+  <table class="aui table">
+    <thead>
+    <tr>
+      <th>Dashboard name</th>
+      <th>Project</th>
+      <th>Administrators</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="element-row" ng-repeat="data in dataOngoing | filter:query">
+      <td>
+        <div class="name-box">
+          <a ng-href="#/report/{{data.id}}">
+            <span ng-show="data.title !== ''">{{data.title}}</span>
+            <i ng-show="data.title === ''">No name</i>
+          </a>
+        </div>
+      </td>
+      <td>
+        <a ng-href="" ng-show="borardId !== 0">{{borardTxt}}</a>
+        <strong ng-show="data.idType === 2"><i>Manual</i></strong>
+      </td>
+      <td>
+        <a ng-repeat="adminData in data.admins" ng-href="{{adminData.name}}">{{adminData.displayName}}</a>
+      </td>
+      <td>
+        <div id="ghx-manage-boards-operation-popup-1-{{data.id}}" class="aui-dropdown2 aui-style-default">
+          <ul class="aui-list-truncate">
+            <li ng-show="borardId !== 0 || data.idType === 2"><a ng-href="#/report/{{data.id}}/configure">Configure</a></li>
+            <li ng-show="borardId !== 0 || data.idType === 2"><a href="" ng-click="copyReport(data)">Copy</a></li>
+            <li><a href="" ng-click="deleteReport(data)">Delete</a></li>
+          </ul>
+        </div>
+        <button aria-haspopup="true" id="ghx-manage-boards-operation-trigger-1" aria-owns="ghx-manage-boards-operation-popup-1-{{data.id}}" class="aui-dropdown2-trigger aui-style-default aui-button aui-button-subtle">
+          <span class="ghx-iconfont aui-icon aui-icon-small aui-iconfont-more ghx-clickable"></span>
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="col-md-12 text-center" ng-if="dataOngoing.length === 0">
+  <strong>Not found!</strong>
+</div>

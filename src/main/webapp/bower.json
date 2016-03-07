@@ -1,0 +1,32 @@
+{
+  "name": "webapp",
+  "homepage": "https://github.com/wa1demar/JiraReportService",
+  "authors": [
+    "Sergey Levchenk <bossi4ek@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.0",
+    "jquery": "^2.2.1",
+    "angular-animate": "^1.5.0",
+    "angular-cookies": "^1.5.0",
+    "angular-resource": "^1.5.0",
+    "angular-route": "^1.5.0",
+    "angular-sanitize": "^1.5.0",
+    "angular-touch": "^1.5.0",
+    "angular-bootstrap": "^1.2.4",
+    "angular-ui-select2": "^0.0.5",
+    "angular-messages": "^1.5.0",
+    "bootstrap": "^3.3.6"
+  }
+}

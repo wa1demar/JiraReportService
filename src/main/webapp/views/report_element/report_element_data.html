@@ -1,0 +1,328 @@
+<div id="report-element">
+  <table class="report-element-table">
+    <tr>
+      <td class="report-element-table-chart">
+        <div class="report-element-chart">
+          <center><h3 id="chart-title">Project to date</h3></center>
+          <div ng-show="report.agileSprints.length > 0" id="chart-box">
+            <div class="content" style="max-width: 100%; margin: 0 auto;"></div>
+            <div class="content-serial">
+              <span id="char-actual-serial-icon" class="circle-for-chart green"></span> Actual
+              <span class="circle-for-chart black"></span> Planned
+            </div>
+          </div>
+          <center ng-show="report.agileSprints.length == 0">Sprints not found</center>
+        </div>
+      </td>
+      <td class="report-element-table-sprint">
+        <div class="report-element-sprint-table">
+          <table ng-show="report.agileSprints.length > 0" class="aui table table-sprint">
+            <thead>
+              <tr>
+                <th colspan="2"></th>
+                <th colspan="3" style="border-left: 1px solid #cccccc; border-right: 1px solid #cccccc; color: #cccccc;">Velocity</th>
+                <th></th>
+                <th colspan="6" style="border-left: 1px solid #cccccc; border-right: 1px solid #cccccc; color: #cccccc;">QAT Defects</th>
+                <th></th>
+                <th colspan="6" style="border-left: 1px solid #cccccc; border-right: 1px solid #cccccc; color: #cccccc;">UAT Defects</th>
+              </tr>
+              <tr>
+                <th colspan="2">Sprint</th>
+                <th style="width: 50px;"></th>
+                <th style="width: 60px;">Target <br/> Points</th>
+                <th style="width: 60px;">Actual <br/> Points</th>
+                <th style="display: none;">Target <br/> Hours</th>
+                <th style="display: none;">Actual <br/> Hours</th>
+                <th style="width: 10px;"></th>
+                <th style="width: 25px;"></th>
+                <th style="width: 90px;">Target</th>
+                <th style="width: 60px;">Actual</th>
+                <th style="width: 50px;"></th>
+                <th style="width: 60px;">Target <br/> Hours</th>
+                <th style="width: 60px;">Actual <br/> Hours</th>
+                <th style="width: 10px;"></th>
+                <th style="width: 50px;"></th>
+                <th style="width: 60px;">Target</th>
+                <th style="width: 60px;">Actual</th>
+                <th style="width: 50px;"></th>
+                <th style="width: 60px;">Target <br/> Hours</th>
+                <th style="width: 60px;">Actual <br/> Hours</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="data in report.agileSprints">
+              <td class="show-sprint-details-index text-center sprint-id sprint-{{data.state}}"
+                  data-id-sprint="{{data.id}}"
+                  data-state="{{data.state}}"
+                  data-id="{{data.id}}"
+                  style="width: 100px; cursor: pointer;"
+                  title="{{data.state}} sprint">#{{$index + 1}}</td>
+              <td class="show-sprint-details"
+                  ng-click="changeChart(data.id)"
+                  style="cursor: pointer;"
+                  data-id-sprint="{{data.id}}"
+                  data-state="{{data.state}}"
+                  data-name="{{data.name}}"
+                  data-chart-label="{{data.chartLabel ? data.chartLabel : 0 }}"
+                  data-chart-target="{{data.chartTarget ? data.chartTarget : 0 }}"
+                  data-chart-actual="{{data.chartActual ? data.chartActual : 0 }}">
+                <strong>Team Total <span ng-show="data.notCountTarget === 1" class="aui-icon aui-icon-small aui-iconfont-error js-copy-clipboard" title="Not count target points/hours to Project total"></span></strong>
+              </td>
+              <td class="text-center indicators">
+                <!--#if($data.state == "closed")-->
+                <!--#set($countClosedSprint = $countClosedSprint + 1)-->
+                <!--#set($actualHours = $data.actualPoints)-->
+                <!--#set($targetHours = $data.targetPoints)-->
+                <!--#parse("/templates/report/iconsVelocity.vm")-->
+                <!--#end-->
+              </td>
+              <td class="text-center target-points">{{data.targetPoints}}</td>
+              <td class="text-center actual-points">{{data.actualPoints}}</td>
+              <td class="text-center target-hours" style="display: none;">{{data.targetHours}}</td>
+              <td class="text-center actual-hours" style="display: none;">{{data.actualHours}}</td>
+              <td></td>
+              <td class="text-center indicators">
+                <!--#if($data.state == "closed")-->
+                <!--#set($actualDefects = $data.actualQatDefects)-->
+                <!--#set($defMin = $data.defectMin)-->
+                <!--#set($defMax = $data.defectMax)-->
+                <!--#parse("/templates/report/icons.vm")-->
+                <!--#end-->
+              </td>
+              <td class="text-center" style="">{{data.defectMin}} - {{data.defectMax}}</td>
+              <td class="text-center">{{data.actualQatDefects}}</td>
+              <td class="text-center indicators">
+                <!--#if($data.state == "closed")-->
+                <!--#set($actualHours = $data.actualQatDefectsHours)-->
+                <!--#set($targetHours = $data.defectHours)-->
+                <!--#parse("/templates/report/iconsHours.vm")-->
+                <!--#end-->
+              </td>
+              <td class="text-center">{{data.defectHours}}</td>
+              <td class="text-center">{{data.actualQatDefectsHours}}</td>
+              <td></td>
+              <!--#set($hideUatCount = $hideUatCount + 1)-->
+              <td ng-show="data.showUat !== 1" colspan="6" class="text-center" style="border-right: 1px solid #dddddd;"> - </td>
+              <td ng-show="data.showUat === 1" class="text-center indicators">
+                <!--#if($data.state == "closed")-->
+                <!--#set($actualDefects = $data.actualUatDefects)-->
+                <!--#set($defMin = $data.uatDefectMin)-->
+                <!--#set($defMax = $data.uatDefectMax)-->
+                <!--#parse("/templates/report/icons.vm")-->
+                <!--#end-->
+              </td>
+              <td ng-show="data.showUat === 1" class="text-center" style="">{{data.uatDefectMin}} - {{data.uatDefectMax}}</td>
+              <td ng-show="data.showUat === 1" class="text-center">{{data.actualUatDefects}}</td>
+              <td ng-show="data.showUat === 1" class="text-center indicators">
+                <!--#if($data.state == "closed")-->
+                <!--#set($actualHours = $data.actualUatDefectsHours)-->
+                <!--#set($targetHours = $data.uatDefectHours)-->
+                <!--#parse("/templates/report/iconsHours.vm")-->
+                <!--#end-->
+              </td>
+              <td ng-show="data.showUat === 1" class="text-center">{{data.uatDefectHours}}</td>
+              <td ng-show="data.showUat === 1" class="text-center" style="border-right: 1px solid #dddddd;">{{data.actualUatDefectsHours}}</td>
+            </tr>
+            <!--##TODO change for ST-287 (Not count target)-->
+            <!--#if ($data.notCountTarget != 1)-->
+            <!--#set($targetPointsTotal = $targetPointsTotal + $data.targetPoints)-->
+            <!--#set($targetHoursTotal = $targetHoursTotal + $data.targetHours)-->
+
+            <!--#set($defectMinTotal = $defectMinTotal + $data.defectMin)-->
+            <!--#set($defectMaxTotal = $defectMaxTotal + $data.defectMax)-->
+            <!--#set($defectHoursTotal = $defectHoursTotal + $data.defectHours)-->
+
+            <!--#set($uatDefectMinTotal = $uatDefectMinTotal + $data.uatDefectMin)-->
+            <!--#set($uatDefectMaxTotal = $uatDefectMaxTotal + $data.uatDefectMax)-->
+            <!--#set($uatDefectHoursTotal = $uatDefectHoursTotal + $data.uatDefectHours)-->
+            <!--#end-->
+
+            <!--#set($actualPointsTotal = $actualPointsTotal + $data.actualPoints)-->
+            <!--#set($actualHoursTotal = $actualHoursTotal + $data.actualHours)-->
+
+            <!--#set($actualQatDefectsTotal = $actualQatDefectsTotal + $data.actualQatDefects)-->
+            <!--#set($actualUatDefectsTotal = $actualUatDefectsTotal + $data.actualUatDefects)-->
+
+            <!--#set($actualQatDefectsHoursTotal = $actualQatDefectsHoursTotal + $data.actualQatDefectsHours)-->
+            <!--#set($actualUatDefectsHoursTotal = $actualUatDefectsHoursTotal + $data.actualUatDefectsHours)-->
+            <!--#end-->
+            <tr>
+              <td colspan="2"
+                  class="sprint-closed total"
+                  data-id-report="{{report.id}}"
+                  data-chart-label="{{reportChartData.label}}"
+                  data-chart-target="{{reportChartData.target}}"
+                  data-chart-actual="{{reportChartData.actual}}"><strong>Project total</strong></td>
+              <td class="text-center indicators">
+                <!--#if($countClosedSprint != 0)-->
+                <!--#set($actualHours = $actualPointsTotal)-->
+                <!--#set($targetHours = $targetPointsTotal)-->
+                <!--#parse("/templates/report/iconsVelocity.vm")-->
+                <!--#end-->
+              </td>
+              <td class="text-center total-target-points">{{targetPointsTotal}}</td>
+              <td class="text-center total-actual-points">{{actualPointsTotal}}</td>
+              <td class="text-center total-target-hours" style="display: none;">{{targetHoursTotal}}</td>
+              <td class="text-center total-actual-hours" style="display: none;">{{actualHoursTotal}}</td>
+              <td></td>
+              <td class="text-center indicators">
+                <!--#if($countClosedSprint != 0)-->
+                <!--#set($actualDefects = $actualQatDefectsTotal)-->
+                <!--#set($defMin = $defectMinTotal)-->
+                <!--#set($defMax = $defectMaxTotal)-->
+                <!--#parse("/templates/report/icons.vm")-->
+                <!--#end-->
+              </td>
+              <td class="text-center">{{defectMinTotal}} - {{$defectMaxTotal}}</td>
+              <td class="text-center">{{actualQatDefectsTotal}}</td>
+              <td class="text-center indicators">
+                <!--#if($countClosedSprint != 0)-->
+                <!--#set($actualHours = $actualQatDefectsHoursTotal)-->
+                <!--#set($targetHours = $defectHoursTotal)-->
+                <!--#parse("/templates/report/iconsHours.vm")-->
+                <!--#end-->
+              </td>
+              <td class="text-center">{{defectHoursTotal}}</td>
+              <td class="text-center">{{actualQatDefectsHoursTotal}}</td>
+              <td></td>
+              <td ng-show="hideUatCount === report.agileSprints.length" colspan="6" class="text-center" style="border-right: 1px solid #dddddd;"> - </td>
+              <td ng-show="hideUatCount !== report.agileSprints.length" class="text-center indicators">
+                <!--#if($countClosedSprint != 0)-->
+                <!--#set($actualDefects = $actualUatDefectsTotal)-->
+                <!--#set($defMin = $uatDefectMinTotal)-->
+                <!--#set($defMax = $uatDefectMaxTotal)-->
+                <!--#parse("/templates/report/icons.vm")-->
+                <!--#end-->
+              </td>
+              <td ng-show="hideUatCount !== report.agileSprints.length" class="text-center">{{uatDefectMinTotal}} - {{uatDefectMaxTotal}}</td>
+              <td ng-show="hideUatCount !== report.agileSprints.length" class="text-center">{{actualUatDefectsTotal}}</td>
+              <td ng-show="hideUatCount !== report.agileSprints.length" class="text-center indicators">
+                <!--#if($countClosedSprint != 0)-->
+                <!--#set($actualHours = $actualUatDefectsHoursTotal)-->
+                <!--#set($targetHours = $uatDefectHoursTotal)-->
+                <!--#parse("/templates/report/iconsHours.vm")-->
+                <!--#end-->
+              </td>
+              <td ng-show="hideUatCount !== report.agileSprints.length" class="text-center">{{uatDefectHoursTotal}}</td>
+              <td ng-show="hideUatCount !== report.agileSprints.length" class="text-center" style="border-right: 1px solid #dddddd;">{{actualUatDefectsHoursTotal}}</td>
+            </tr>
+            </tbody>
+          </table>
+          <center ng-show="report.agileSprints.length == 0">Sprints not found</center>
+          <h5 class="note-name">Designation icons:</h5>
+          <ul class="note">
+            <li>
+              <span class="star-five"></span> <span class="note-descr">better than target range</span>
+            </li>
+            <li>
+              <span class="circle green"></span> <span class="note-descr">within target range</span>
+            </li>
+            <li>
+              <span class="circle yellow"></span> <span class="note-descr">within 10% of target range</span>
+            </li>
+            <li>
+              <span class="circle red"></span> <span class="note-descr">outside 10% of targed range</span>
+            </li>
+          </ul>
+        </div>
+        <div class="comments" ng-controller="CommentCtrl">
+          <h5 class="comments-title" title="Show/hide comments" ng-click="toggleComments()">
+            Project Comments
+            <span ng-show="comments.length > 0" id="comment-count">({{comments.length}})</span>
+            <span class="{{commentsHide ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+          </h5>
+          <div class="comments-box" ng-hide="commentsHide">
+            <div class="aui">
+              <textarea ng-model="modelComments.txt" class="comments-data textarea" name="comments-data" id="comments-data" placeholder="Your comment here..." rows="5" cols="50"></textarea>
+              <p><span id="add-comment" class="aui-button add-comment" ng-click="addComment()">Add comment</span></p>
+            </div>
+            <div class="comments-all">
+              <div ng-include="'views/report_element/comments.html'"></div>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div style="width: 100%;">
+  <div class="aui-navgroup-horizontal">
+    <center><h3 style="margin-top: 10px;">Project Progress Bar</h3></center>
+  </div>
+
+  <table ng-show="report.agileSprints.length > 0" class="aui table table-sprint" style="width: 800px; margin: 20px auto;">
+    <thead>
+    <tr>
+      <td></td>
+      <td ng-repeat="data in report.agileSprints" style="border-left: 1px solid #dddddd; min-width: 100px; text-align: center;" class="{{data.type === 1 ? 'sprint-additional-blue' : data.type === 2 ? 'sprint-additional-red' : ''}}">
+
+        <!--#if ($report.idType && $report.idType == 2)-->
+        <!--#if($data.endDate && $data.state == "closed")-->
+        <!--#set($String = '')-->
+        <!--$String.format('%1$tm.%1$td.%1$tY', $data.endDate)-->
+        <!--#else-->
+        <!-- - -->
+        <!--#end-->
+        <!--#else-->
+        <!--#if($data.completeDate)-->
+        <!--#set($String = '')-->
+        <!--$String.format('%1$tm.%1$td.%1$tY', $data.completeDate)-->
+        <!--#else-->
+        <!-- - -->
+        <!--#end-->
+        <!--#end-->
+
+      </td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td rowspan="3" style="border-left: 1px solid #dddddd; background-color: #F0F0F0; margin: 0; padding: 0; width: 10px;">
+        <div style="-moz-transform: rotate(-90deg); -webkit-transform: rotate(-90deg); -o-transform: rotate(-90deg); position: relative;">
+          Points
+        </div>
+      </td>
+      <td ng-repeat="data in report.agileSprints" style="{{!$last ? 'text-align: center; border-left: 1px solid #dddddd;' : 'text-align: center; border-left: 1px solid #dddddd; border-right: 1px solid #dddddd;'}}">{{data.actualPoints}}</td>
+    </tr>
+    <tr>
+      <td colspan="{{report.agileSprints.length}}" class="tr-for-progress-bar">
+        <div class="progress-bar-box">
+          <div id="points-progress-bar" class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar-content">&nbsp;</div>
+          </div>
+          <div id="points-progress-bar-percent"></div>
+        </div>
+        <div id="points-progress-bar-total"></div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <table ng-show="report.agileSprints.length > 0" class="aui table table-sprint" style="width: 800px; margin: 20px auto;">
+    <thead>
+    </thead>
+    <tbody>
+    <tr>
+      <td rowspan="3" style="border-left: 1px solid #dddddd; background-color: #F0F0F0; margin: 0; padding: 0; width: 10px;">
+        <div style="-moz-transform: rotate(-90deg); -webkit-transform: rotate(-90deg); -o-transform: rotate(-90deg); position: relative;">
+          Hours
+        </div>
+      </td>
+      <td ng-repeat="data in report.agileSprints" style="{{!$last ? 'text-align: center; border-left: 1px solid #dddddd; min-width: 100px;' : 'text-align: center; border-left: 1px solid #dddddd; min-width: 100px; border-right: 1px solid #dddddd;'}}">{{data.actualHours}}</td>
+    </tr>
+    <tr>
+      <td colspan="{{report.agileSprints.length}}" class="tr-for-progress-bar">
+        <div class="progress-bar-box">
+          <div id="hours-progress-bar" class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar-content">&nbsp;</div>
+          </div>
+          <div id="hours-progress-bar-percent"></div>
+        </div>
+        <div id="hours-progress-bar-total"></div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <center ng-show="report.agileSprints.length == 0">Sprints not found</center>
+</div>
