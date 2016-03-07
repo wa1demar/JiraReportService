@@ -38,8 +38,10 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
-    public NewReportDto save(NewReportDto newReportDto) {
+    public NewReportDto save(NewReportDto newReportDto) throws NoSuchEntityException {
         newReportDto.setCreatedDate(new Date());
+        newReportDto.setClosed(false);
+        newReportDto.setCreatorId(jiraUserRepository.findByName(newReportDto.getCreator()).getId());
 
         return reportMapper.toNewDto(reportRepository.add(reportMapper.fromNewDto(newReportDto)));
     }

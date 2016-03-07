@@ -15,7 +15,7 @@ public interface ReportService {
 
     List<ReportDto> findAll();
 
-    NewReportDto save(NewReportDto newReportDto);
+    NewReportDto save(NewReportDto newReportDto) throws NoSuchEntityException;
 
     Report update(Report report) throws NoSuchEntityException;
 

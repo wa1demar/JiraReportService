@@ -13,6 +13,7 @@ public class NewReportDto {
     private Long creatorId;
     private Long boardId;
     private Date createdDate;
+    private boolean isClosed;
 
     public Long getId() {
         return id;
@@ -68,5 +69,13 @@ public class NewReportDto {
 
     public void setCreatorId(Long creatorId) {
         this.creatorId = creatorId;
+    }
+
+    public boolean getClosed() {
+        return isClosed;
+    }
+
+    public void setClosed(boolean isClosed) {
+        this.isClosed = isClosed;
     }
 }

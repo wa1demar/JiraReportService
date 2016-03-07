@@ -17,7 +17,9 @@ public interface JiraUserRepository {
 
     void delete(final Long jiraUserId) throws NoSuchEntityException;
 
-    JiraUser findById(long id);
+    JiraUser findById(long id) throws NoSuchEntityException;
+
+    JiraUser findByName(String name) throws NoSuchEntityException;
 
     JiraUser update(JiraUser user) throws NoSuchEntityException;
 

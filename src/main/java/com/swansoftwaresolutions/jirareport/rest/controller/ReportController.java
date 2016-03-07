@@ -47,8 +47,8 @@ public class ReportController {
         return infoForNewReport;
     }
 
-    @RequestMapping(value = "/rest/report/create", method = RequestMethod.POST)
-    private ResponseEntity<NewReportDto> addNewReport(@Valid @RequestBody NewReportDto newReportDto) {
+    @RequestMapping(value = "/rest/auth/create", method = RequestMethod.POST)
+    private ResponseEntity<NewReportDto> addNewReport(@Valid @RequestBody NewReportDto newReportDto) throws NoSuchEntityException {
         NewReportDto reportDto = reportService.save(newReportDto);
 
         if (reportDto != null) {
