@@ -21,7 +21,7 @@ public interface CommentRepository {
 
     void delete(final Comment comment) throws NoSuchEntityException;
 
-    void delete(final Long commentId) throws NoSuchEntityException;
+    void delete(final Long id) throws NoSuchEntityException;
 
     void deleteByReportId(final Long reportId) throws NoSuchEntityException;
 }

@@ -1,10 +1,7 @@
 package com.swansoftwaresolutions.jirareport.rest.controller;
 
 import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
-import com.swansoftwaresolutions.jirareport.core.service.JiraBoardService;
-import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
 import com.swansoftwaresolutions.jirareport.core.service.ReportService;
-import com.swansoftwaresolutions.jirareport.rest.dto.InfoForNewReportDto;
 import com.swansoftwaresolutions.jirareport.rest.dto.NewReportDto;
 import com.swansoftwaresolutions.jirareport.rest.dto.ReportDto;
 import com.swansoftwaresolutions.jirareport.rest.dto.responce.ResponceReportDto;
@@ -24,28 +21,11 @@ import java.util.List;
 @RequestMapping("/rest")
 public class ReportController {
 
-    private JiraUserService jiraUserService;
     private ReportService reportService;
-    private JiraBoardService jiraBoardService;
 
     @Autowired
-    public ReportController(JiraUserService jiraUserService, ReportService reportService, JiraBoardService jiraBoardService) {
-        this.jiraUserService = jiraUserService;
+    public ReportController(ReportService reportService) {
         this.reportService = reportService;
-        this.jiraBoardService = jiraBoardService;
-    }
-
-    @RequestMapping(value = "/v1/report/datainfo", method = RequestMethod.GET)
-    private ResponseEntity<InfoForNewReportDto> listResponseEntity() {
-        return new ResponseEntity<>(prepareListsOfProjectsAndUsers(), HttpStatus.OK);
-    }
-
-    private InfoForNewReportDto prepareListsOfProjectsAndUsers() {
-        InfoForNewReportDto infoForNewReport = new InfoForNewReportDto();
-        infoForNewReport.boards = jiraBoardService.findAllBoardForInfo();
-        infoForNewReport.users = jiraUserService.findAll();
-
-        return infoForNewReport;
     }
 
     @RequestMapping(value = "/v1/report", method = RequestMethod.POST)

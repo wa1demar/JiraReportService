@@ -4,17 +4,12 @@ import com.swansoftwaresolutions.jirareport.core.entity.Comment;
 import com.swansoftwaresolutions.jirareport.core.repository.CommentRepository;
 import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Serializable;
-import java.sql.Connection;
 import java.util.List;
 
 /**
@@ -65,8 +60,10 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     @Override
     public void deleteAll() throws NoSuchEntityException {
-        Query query = sessionFactory.openSession().getNamedQuery("Comment.deleteAll");
-        query.executeUpdate();
+        List<Comment> commentList = findAll();
+        for (Comment comment : commentList){
+            delete(comment);
+        }
     }
 
     @Override
@@ -79,23 +76,25 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public void delete(Long commentId) throws NoSuchEntityException{
-        Comment comment = findById(commentId);
-        sessionFactory.getCurrentSession().delete(comment);
-
+    public void delete(Long id) throws NoSuchEntityException{
+        Comment comment = findById(id);
+        if (comment != null) {
+            sessionFactory.getCurrentSession().delete(comment);
+        } else {
+            throw new NoSuchEntityException("Entity Not Found");
+        }
     }
 
     @Override
     public void deleteByReportId(Long reportId) throws NoSuchEntityException {
+        Comment comment =(Comment) sessionFactory.openSession()
+                .createCriteria(Comment.class).add(Restrictions.eq("reportId", reportId)).uniqueResult();
 
-        if (findByReportId(reportId).size() == 0) {
-            throw new NoSuchEntityException("Entities not found");
+        if (comment != null) {
+            sessionFactory.getCurrentSession().delete(comment);
+        } else {
+            throw new NoSuchEntityException("Entity Not Found");
         }
-
-        Query query = sessionFactory.openSession().getNamedQuery("Comment.deleteByReportId");
-        query.setParameter("reportId", reportId);
-
-        query.executeUpdate();
     }
 
 }
