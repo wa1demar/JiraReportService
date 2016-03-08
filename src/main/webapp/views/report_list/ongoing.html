@@ -2,6 +2,7 @@
 <div class="form-group col-md-3">
   <input class="form-control" ng-model="query" placeholder="Find a dashboard">
 </div>
+<div class="text-center" ng-show="loaderShow"><span class="aui-icon aui-icon-wait">Loading...</span></div>
 <div ng-if="dataOngoing.length !== 0">
   <table class="aui table">
     <thead>
@@ -23,17 +24,17 @@
         </div>
       </td>
       <td>
-        <a ng-href="" ng-show="borardId !== 0">{{borardTxt}}</a>
-        <strong ng-show="data.idType === 2"><i>Manual</i></strong>
+        <a ng-href="https://swansoftwaresolutions.atlassian.net/secure/RapidBoard.jspa?rapidView={{data.borardId}}" ng-show="data.borardId !== 0">{{data.boardName}}</a>
+        <strong ng-show="data.typeId === 2"><i>Manual</i></strong>
       </td>
       <td>
-        <a ng-repeat="adminData in data.admins" ng-href="{{adminData.name}}">{{adminData.displayName}}</a>
+        <a ng-repeat="adminData in data.admins" ng-href="https://swansoftwaresolutions.atlassian.net/secure/ViewProfile.jspa?name={{adminData.login}}">{{adminData.fullName}}</a>
       </td>
       <td>
         <div id="ghx-manage-boards-operation-popup-1-{{data.id}}" class="aui-dropdown2 aui-style-default">
           <ul class="aui-list-truncate">
-            <li ng-show="borardId !== 0 || data.idType === 2"><a ng-href="#/report/{{data.id}}/configure">Configure</a></li>
-            <li ng-show="borardId !== 0 || data.idType === 2"><a href="" ng-click="copyReport(data)">Copy</a></li>
+            <li ng-show="data.borardId !== 0 || data.typeId === 2"><a ng-href="#/report/{{data.id}}/configure">Configure</a></li>
+            <li ng-show="data.borardId !== 0 || data.typeId === 2"><a href="" ng-click="copyReport(data)">Copy</a></li>
             <li><a href="" ng-click="deleteReport(data)">Delete</a></li>
           </ul>
         </div>

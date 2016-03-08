@@ -1,48 +1,18 @@
 'use strict';
 
-jiraPluginApp.controller('HomeCtrl', ['$scope', '$uibModal', 'ReportsFactory', 'ReportFactory', 'CONFIG', '$http',
-  function($scope, $uibModal, ReportsFactory, ReportFactory, CONFIG, $http) {
+jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibModal', 'ReportsFactory', 'CopyReportFactory', 'CONFIG',
+  function($scope, AuthenticationFactory, $uibModal, ReportsFactory, CopyReportFactory, CONFIG) {
 
     var self = this;
+    $scope.loaderShow = true;
 
     this.getReportsData = function () {
       // console.log(ReportFactory.get({id: 2}));
-      $scope.dataOngoing = ReportsFactory.query();
+      $scope.dataOngoing = ReportsFactory.query({}, function(){
+        $scope.loaderShow = false;
+      });
+      $scope.dataClosed = [];
     };
-
-    //
-    // console.log(
-    //   $http({
-    //     url: CONFIG.API_PATH + '/auth/datainfo',
-    //     method:"GET",
-    //     headers: {
-    //       'Content-Type': 'application/x-www-form-urlencoded'
-    //     }
-    //   })
-    // );
-
-    // this.getOngoingData = function () {
-    //   $scope.dataOngoing = [
-    //     {
-    //       id: 1,
-    //       name: "Bluebridge",
-    //       project: "Manual",
-    //       admin: "Rostyslav Trotsyuk"
-    //     },
-    //     {
-    //       id: 2,
-    //       name: "xxx",
-    //       project: "Manual",
-    //       admin: "Rostyslav Trotsyuk"
-    //     },
-    //     {
-    //       id: 3,
-    //       name: "111",
-    //       project: "Manual",
-    //       admin: "Rostyslav Trotsyuk"
-    //     }
-    //   ];
-    // };
 
     self.getReportsData();
 
@@ -83,9 +53,10 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', '$uibModal', 'ReportsFactory', '
       });
       modalInstance.result.then(function (data) {
         //TODO add new report
-        ReportsFactory.create(data);
-        self.getReportsData();
-        console.log(data);
+        data['creator'] = AuthenticationFactory.user;
+        ReportsFactory.create({}, data, function(){
+          self.getReportsData();
+        });
       }, function () {});
     };
 
@@ -96,7 +67,6 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', '$uibModal', 'ReportsFactory', '
         animation: true,
         templateUrl: 'views/dlg/dlg_delete_element.html',
         controller: 'DlgDeleteReportCtrl',
-        // size: size,
         resolve: {
           dlgData: function () {
             return item;
@@ -104,8 +74,9 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', '$uibModal', 'ReportsFactory', '
         }
       });
       modalInstance.result.then(function (data) {
-        //TODO delete report
-        console.log(data);
+        ReportsFactory.delete(data, function() {
+          self.getReportsData();
+        });
       }, function () {});
     };
 
@@ -124,16 +95,17 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', '$uibModal', 'ReportsFactory', '
         }
       });
       modalInstance.result.then(function (data) {
-        //TODO copy report
-        console.log(data);
+        CopyReportFactory.copy(data, {}, function(){
+          self.getReportsData();
+        });
       }, function () {});
     };
   }
 ]);
 
 jiraPluginApp.controller('DlgProcessReportCtrl',
-    ['$scope', '$uibModalInstance', 'dlgData', 'ReportFactory', 'UsersFactory', 'BoardsFactory',
-  function ($scope, $uibModalInstance, dlgData, ReportFactory, UsersFactory, BoardsFactory) {
+    ['$scope', '$uibModalInstance', 'dlgData', 'UsersFactory', 'BoardsFactory',
+  function ($scope, $uibModalInstance, dlgData, UsersFactory, BoardsFactory) {
     $scope.dlgData = {};
 
     var users = UsersFactory.query(function(){
@@ -177,7 +149,8 @@ jiraPluginApp.controller('DlgCopyReportCtrl', ['$scope', '$uibModalInstance', 'd
   function ($scope, $uibModalInstance, dlgData) {
     $scope.dlgData = dlgData;
     $scope.dlgData = {
-      newName: "Copy of " + $scope.dlgData.name
+      id:   $scope.dlgData.id,
+      name: "Copy of " + $scope.dlgData.title
     };
 
     $scope.ok = function () {
