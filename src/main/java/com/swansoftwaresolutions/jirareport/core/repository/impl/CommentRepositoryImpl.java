@@ -64,7 +64,7 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public void deleteAll() {
+    public void deleteAll() throws NoSuchEntityException {
         Query query = sessionFactory.openSession().getNamedQuery("Comment.deleteAll");
         query.executeUpdate();
     }
@@ -79,7 +79,7 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public void delete(Long commentId) {
+    public void delete(Long commentId) throws NoSuchEntityException{
         Comment comment = findById(commentId);
         sessionFactory.getCurrentSession().delete(comment);
 
