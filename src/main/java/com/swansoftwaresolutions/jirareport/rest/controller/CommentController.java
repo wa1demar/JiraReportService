@@ -28,7 +28,7 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @RequestMapping(value = "/v1/report", method = RequestMethod.POST)
+    @RequestMapping(value = "/v1/comment/", method = RequestMethod.POST)
     private ResponseEntity<CommentDto> addNewComment(@Valid @RequestBody CommentDto commentDto) throws NoSuchEntityException {
         commentDto = commentService.save(commentDto);
 
