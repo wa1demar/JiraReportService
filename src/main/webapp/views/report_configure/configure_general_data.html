@@ -1,0 +1,57 @@
+<div class="ghx-page-panel-content-item" id="gh-tab-general" ng-controller="ConfigureGeneralDataCtrl">
+    <form class="aui">
+        <span>General Settings</span>
+    </form>
+    <hr/>
+
+    <form id="general-configure" class="aui">
+        <div class="field-group">
+            <label>Dashboard name:</label>
+            <input id="dashboard-title" type="text" class="text" name="dashboard-name" ng-model="report.title"/>
+        </div>
+        <div class="field-group">
+            <label>Board type:</label>
+        <span style="padding: 5px 0 0 0; font-weight: bold; float: left;">
+            <span ng-show="report.typeId !== 2">Automatic</span>
+            <span ng-show="report.typeId === 2">Manual</span>
+        </span>
+        </div>
+        <div class="field-group" ng-show="report.typeId !== 2">
+            <label>Project:</label>
+            <span style="padding: 5px 0 0 0; font-weight: bold; float: left;">
+                {{report.boardName}}
+            </span>
+        </div>
+        <div class="field-group">
+            <label>Administrators: </label>
+            <select ui-select2 multiple ng-model="report.admins" data-placeholder="Select administrators" id="admins" name="admins" style="width: 250px;">
+                <option ng-repeat="admin in users" value="{{admin.login}}">{{admin.fullName}}</option>
+            </select>
+        </div>
+        <div class="field-group">
+            <label for="is-closed">Closed</label>
+            <span style="padding: 5px 0 0 0; font-weight: bold; float: left;">
+            <input name="is-closed" id="is-closed" type="checkbox" ng-model="report.isClosed"/>
+        </span>
+        </div>
+        <div class="field-group">
+            <label for="is-closed">Date close:</label>
+            <input type="text" name="date-close" id="date-close" class="text aui-date-picker" ng-model="report.dateClose" value="{{report.dateClose | date:'MM/dd/yyyy'}}" ng-disabled="!report.isClosed" style="float: left;" placeholder="MM/DD/YYY"/>
+            <!--#datePopup("date-close" "date-close")-->
+        </div>
+        <span id="save-general-configure" class="aui-button" ng-click="saveConfigureGeneralData()">Save</span>
+    </form>
+
+    <!--<script language="javascript" >-->
+        <!--Calendar.setup({-->
+            <!--firstDay : 1,-->
+            <!--inputField : 'date-close',-->
+            <!--button : 'date-close',-->
+            <!--align : 'Br',-->
+            <!--singleClick : true,-->
+            <!--showsTime : false,-->
+            <!--useISO8601WeekNumbers : false,-->
+            <!--ifFormat : '%m/%d/%Y'-->
+        <!--});-->
+    <!--</script>-->
+</div>

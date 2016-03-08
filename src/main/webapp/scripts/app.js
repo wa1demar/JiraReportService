@@ -40,6 +40,12 @@ jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
         access: {
           requiredLogin: true
         }
+      }).when('/report/:reportId/configure', {
+        templateUrl: 'views/report_configure/configure.html',
+        controller: 'ConfigureCtrl',
+        access: {
+          requiredLogin: true
+        }
       }).when('/portfolio', {
         templateUrl: 'views/report_portfolio/portfolio.html',
         controller: 'PortfolioCtrl',

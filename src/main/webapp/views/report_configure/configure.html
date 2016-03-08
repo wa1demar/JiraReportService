@@ -1,0 +1,33 @@
+<header id="ghx-header" class="aui-page-header">
+    <div class="aui-page-header-inner">
+        <div class="aui-page-header-main">
+            <h2>Configure <a href="${req.contextPath}/secure/SwanReportList!showElement.jspa?id=$report.id"><span id="js-nav-view-name">{{report.title}}</span></a></h2>
+        </div>
+    </div>
+</header>
+<div id="ghx-content-main" class="ghx-content-main">
+    <div class="aui-page-panel" style="margin-top: 0;">
+        <div class="aui-page-panel-inner">
+
+            <div class="aui-page-panel-nav">
+                <nav class="aui-navgroup aui-navgroup-vertical">
+                    <div class="aui-navgroup-inner">
+                        <ul class="aui-nav" id="reports-list-nav">
+                            <li ng-repeat="tab in tabs"
+                                ng-class="{active:isActiveTab(tab.url)}"
+                                ng-click="onClickTab(tab)"><a href="">{{tab.title}}</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <!-- .aui-page-panel-nav -->
+            <section class="aui-page-panel-content">
+                <div id="report-box">
+                    <div ng-include="currentTab"></div>
+                </div>
+            </section>
+            <!-- .aui-page-panel-content -->
+
+        </div>
+    </div>
+</div>
