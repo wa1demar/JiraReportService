@@ -1,8 +1,8 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
-import com.swansoftwaresolutions.jirareport.core.entity.Comment;
-import com.swansoftwaresolutions.jirareport.core.mapper.CommentMapper;
-import com.swansoftwaresolutions.jirareport.rest.dto.CommentDto;
+import com.swansoftwaresolutions.jirareport.core.entity.AdminReport;
+import com.swansoftwaresolutions.jirareport.core.mapper.AdminReportMapper;
+import com.swansoftwaresolutions.jirareport.rest.dto.AdminReportDto;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,31 +15,31 @@ import java.util.List;
  * @author Vitaliy Holovko
  */
 @Component
-public class AdminReportMapperImpl implements CommentMapper {
+public class AdminReportMapperImpl implements AdminReportMapper {
 
     @Autowired
     ModelMapper modelMapper;
 
     @Override
-    public CommentDto toDto(Comment comment) {
-        return modelMapper.map(comment, CommentDto.class);
+    public AdminReportDto toDto(AdminReport adminReport) {
+        return modelMapper.map(adminReport, AdminReportDto.class);
     }
 
     @Override
-    public List<CommentDto> toDtos(List<Comment> commentList) {
-        Type targetistType = new TypeToken<List<CommentDto>>(){}.getType();
-        return modelMapper.map(commentList, targetistType);
+    public List<AdminReportDto> toDtos(List<AdminReport> adminReportList) {
+        Type targetistType = new TypeToken<List<AdminReportDto>>(){}.getType();
+        return modelMapper.map(adminReportList, targetistType);
     }
 
     @Override
-    public Comment fromDto(CommentDto commentDto) {
-        return modelMapper.map(commentDto, Comment.class);
+    public AdminReport fromDto(AdminReportDto adminReportDto) {
+        return modelMapper.map(adminReportDto, AdminReport.class);
     }
 
     @Override
-    public List<Comment> fromDtos(List<CommentDto> commentDtoList) {
-        Type targetistType = new TypeToken<List<Comment>>(){}.getType();
-        return modelMapper.map(commentDtoList, targetistType);
+    public List<AdminReport> fromDtos(List<AdminReportDto> adminReportDtoList) {
+        Type targetistType = new TypeToken<List<AdminReport>>(){}.getType();
+        return modelMapper.map(adminReportDtoList, targetistType);
     }
 
 }

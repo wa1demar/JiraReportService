@@ -1,6 +1,8 @@
 package com.swansoftwaresolutions.jirareport.core.mapper;
 
+import com.swansoftwaresolutions.jirareport.core.entity.AdminReport;
 import com.swansoftwaresolutions.jirareport.core.entity.Comment;
+import com.swansoftwaresolutions.jirareport.rest.dto.AdminReportDto;
 import com.swansoftwaresolutions.jirareport.rest.dto.CommentDto;
 
 import java.util.List;
@@ -10,9 +12,9 @@ import java.util.List;
  */
 public interface AdminReportMapper {
 
-    CommentDto toDto(Comment comment);
-    List<CommentDto> toDtos(List<Comment> commentList);
-    Comment fromDto(CommentDto commentDto);
-    List<Comment> fromDtos(List<CommentDto> commentDtoList);
+    AdminReportDto toDto(AdminReport adminReport);
+    List<AdminReportDto> toDtos(List<AdminReport> adminReportList);
+    AdminReport fromDto(AdminReportDto adminReportDto);
+    List<AdminReport> fromDtos(List<AdminReportDto> adminReportDtoList);
 
 }
