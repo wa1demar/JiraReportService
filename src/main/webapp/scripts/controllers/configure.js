@@ -46,8 +46,16 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl', ['$scope', '$routeParams', '
   function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, CONFIG) {
     //$scope.report = ReportFactory.get({id: $routeParams.reportId});
 
+    var users = UsersFactory.query(function(){
+      $scope.devUsers = users.users;
+    });
+
     $scope.report = {
       typeId: 2
+    };
+
+    $scope.sprint = {
+      type: "0"
     };
 
   }

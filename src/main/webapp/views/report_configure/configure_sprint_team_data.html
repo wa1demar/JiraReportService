@@ -28,7 +28,6 @@
         </div>
 
         <hr/>
-
         <div class="configure-dev-row">
             <div class="dev-data">
                 <div><strong>Developer</strong></div>
@@ -47,7 +46,7 @@
         <div ng-show="sprintTeams.length > 0" ng-repeat="data in sprintTeams" class="configure-dev-row" data-id="{{data.id}}">
             <div class="dev-data">
                 <select ng-model="data.devName" class="select developer-name" disabled>
-                    <option ng-repeat="dataUser in devUsers" value="{{dataUser.name}}">{{dataUser.displayName}}</option>
+                    <option ng-repeat="dataUser in devUsers" value="{{dataUser.login}}">{{dataUser.fullName}}</option>
                 </select>
                 <span class="aui-button delete-developer" data-id="{{data.id}}" ng-click="deleteDeveloper()">Delete</span>
             </div>
@@ -80,7 +79,7 @@
             <div class="dev-data">
                 <select class="select developer-name" ng-model="dataUser.name">
                     <option value="0">Add ...</option>
-                    <option ng-repeat="dataUser in devUsers" ng-hide="data.devName === dataUser.name" ng-disabled="data.devName === dataUser.name" style="float: left;">{{dataUser.displayName}}</option>
+                    <option ng-repeat="dataUser in devUsers" ng-hide="data.devName === dataUser.login" ng-disabled="data.devName === dataUser.login" style="float: left;">{{dataUser.fullName}}</option>
                 </select>
                 <span id="add-sprint-team" class="aui-button" disabled>Add</span>
             </div>
