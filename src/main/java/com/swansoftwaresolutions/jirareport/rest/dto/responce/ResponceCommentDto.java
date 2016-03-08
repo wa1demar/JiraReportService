@@ -22,6 +22,18 @@ public class ResponceCommentDto implements Serializable{
         this.message = message;
     }
 
+    public ResponceCommentDto(Boolean success, String message, CommentDto commentDto) {
+        this.success = success;
+        this.message = message;
+        this.commentDto = commentDto;
+    }
+
+    public ResponceCommentDto(Boolean success, String message, List<CommentDto> commentDtoList) {
+        this.success = success;
+        this.message = message;
+        this.commentDtoList = commentDtoList;
+    }
+
     public ResponceCommentDto(Boolean success, String message, CommentDto commentDto, List<CommentDto> commentDtoList) {
         this.success = success;
         this.message = message;
