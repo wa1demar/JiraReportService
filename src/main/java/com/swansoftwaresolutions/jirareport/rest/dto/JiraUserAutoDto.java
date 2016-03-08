@@ -1,29 +1,13 @@
-package com.swansoftwaresolutions.jirareport.core.entity;
-
-import javax.persistence.*;
+package com.swansoftwaresolutions.jirareport.rest.dto;
 
 /**
- * @author Vladimir Martynyuk
+ * @author Vitaliy Holovko
  */
-@Entity
-@Table(name = "jira_users")
-public class JiraUser {
-
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "id")
+public class JiraUserAutoDto {
     private Long id;
-
-    @Column(name = "email")
     private String email;
-
-    @Column(name = "login")
     private String login;
-
-    @Column(name = "full_name")
     private String fullName;
-
-    @Column(name = "jira_user_id")
     private Long jiraUserId;
 
     public Long getId() {
@@ -71,10 +55,10 @@ public class JiraUser {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        JiraUser jiraUser = (JiraUser) o;
+        JiraUserAutoDto that = (JiraUserAutoDto) o;
 
-        if (!fullName.equals(jiraUser.fullName)) return false;
-        if (!login.equals(jiraUser.login)) return false;
+        if (!fullName.equals(that.fullName)) return false;
+        if (!login.equals(that.login)) return false;
 
         return true;
     }

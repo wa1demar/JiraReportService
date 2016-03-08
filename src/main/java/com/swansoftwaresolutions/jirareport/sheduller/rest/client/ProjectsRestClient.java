@@ -27,6 +27,7 @@ public class ProjectsRestClient extends RestClientBase implements RestClient {
     @Autowired
     ProjectService projectService;
 
+    @Override
     public void loadData() {
         log.info("+++++++++++++++++++++++++++++++++++");
         log.info("-----------------------------------");
@@ -53,7 +54,7 @@ public class ProjectsRestClient extends RestClientBase implements RestClient {
     }
 
     private void removeDublicateAndSave(List<Project> projects) {
-        projects.removeAll(projectService.getAllProjects());
+        projects.removeAll(projectService.findAll());
 
         for (Project project : projects) {
             projectService.save(project);
