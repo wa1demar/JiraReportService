@@ -1,8 +1,8 @@
-package com.swansoftwaresolutions.jirareport.core.repository.impl;
+package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
-import com.swansoftwaresolutions.jirareport.core.entity.Project;
-import com.swansoftwaresolutions.jirareport.core.repository.ProjectRepository;
-import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
+import com.swansoftwaresolutions.jirareport.domain.entity.Project;
+import com.swansoftwaresolutions.jirareport.domain.repository.ProjectRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

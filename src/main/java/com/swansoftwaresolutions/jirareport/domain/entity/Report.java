@@ -71,10 +71,10 @@ public class Report  implements Serializable{
     @Column(name = "type_ID")
     private Long typeId;
 
-    @OneToMany(mappedBy = "report") // inverse side: it has a mappedBy attribute, and can't decide how the association is mapped, since the other side already decided it.
+    @OneToMany(mappedBy = "report", cascade=CascadeType.ALL) // inverse side: it has a mappedBy attribute, and can't decide how the association is mapped, since the other side already decided it.
     @Fetch(FetchMode.JOIN)
     @JsonIgnore
-    private Collection<AdminReport> adminReports;
+    private List<AdminReport> adminReports;
 
     @Column(name = "target_points")
     private Long targetPoints;
@@ -214,11 +214,11 @@ public class Report  implements Serializable{
         this.typeId = typeId;
     }
 
-    public Collection<AdminReport> getAdminReports() {
+    public List<AdminReport> getAdminReports() {
         return adminReports;
     }
 
-    public void setAdminReports(Collection<AdminReport> adminReports) {
+    public void setAdminReports(List<AdminReport> adminReports) {
         this.adminReports = adminReports;
     }
 

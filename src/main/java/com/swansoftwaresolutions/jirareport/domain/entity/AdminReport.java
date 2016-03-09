@@ -19,7 +19,6 @@ public class AdminReport implements Serializable {
     @Column(name = "id")
     private Long id;
 
-
     @ManyToOne
     @JoinTable(name="report_adminreport",
             joinColumns={@JoinColumn(name="report_id")},

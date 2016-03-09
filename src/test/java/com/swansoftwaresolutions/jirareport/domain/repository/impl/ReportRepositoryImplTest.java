@@ -1,7 +1,8 @@
-package com.swansoftwaresolutions.jirareport.core.repository.impl;
+package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
-import com.swansoftwaresolutions.jirareport.core.entity.Report;
-import com.swansoftwaresolutions.jirareport.core.repository.ReportRepository;
+import com.swansoftwaresolutions.jirareport.domain.entity.AdminReport;
+import com.swansoftwaresolutions.jirareport.domain.entity.Report;
+import com.swansoftwaresolutions.jirareport.domain.repository.ReportRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
@@ -9,7 +10,9 @@ import org.springframework.test.context.jdbc.SqlGroup;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Vladimir Martynyuk
@@ -26,7 +29,7 @@ public class ReportRepositoryImplTest extends AbstractDbTest {
     DateFormat dataFormatnew;
 
     @Test
-    public void testAddNewConfig() throws Exception {
+    public void testAddNewReport() throws Exception {
         dataFormatnew = new SimpleDateFormat("MM-dd-yyyy");
 
         Report report = new Report();
@@ -37,11 +40,28 @@ public class ReportRepositoryImplTest extends AbstractDbTest {
         report.setBoardId(2L);
         report.setCreatorId(34L);
 
-        Report reportNew = reportRepository.add(report);
+        AdminReport adminReport1 = new AdminReport();
+        adminReport1.setFullName("admin report1");
+        adminReport1.setLogin("adminreport1");
 
-        assertNotNull(reportNew.getId());
-        assertEquals("Test Report A", reportNew.getTitle());
-        assertEquals("Test Creator", reportNew.getCreator());
+        AdminReport adminReport2 = new AdminReport();
+        adminReport2.setFullName("admin report2");
+        adminReport2.setLogin("adminreport2");
+
+        List<AdminReport> adminReportList = new ArrayList<>();
+        adminReportList.add(adminReport1);
+        adminReportList.add(adminReport2);
+
+        report.setAdminReports(adminReportList);
+
+        Report newReport = reportRepository.add(report);
+
+        assertNotNull(newReport.getId());
+        assertEquals("Test Report A", newReport.getTitle());
+        assertEquals("Test Creator", newReport.getCreator());
+        assertNotNull(newReport.getAdminReports());
+        assertEquals(2, newReport.getAdminReports().size());
+        assertNotNull(newReport.getAdminReports().get(0).getId());
     }
 
 //    @Test(expected = NullPointerException.class)

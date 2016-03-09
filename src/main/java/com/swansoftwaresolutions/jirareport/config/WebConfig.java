@@ -23,11 +23,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 })
 public class WebConfig extends WebMvcConfigurerAdapter {
 
-    @Bean
-    ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
-
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();

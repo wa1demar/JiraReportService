@@ -1,6 +1,6 @@
 package com.swansoftwaresolutions.jirareport.rest.builder;
 
-import com.swansoftwaresolutions.jirareport.rest.dto.ConfigDto;
+import com.swansoftwaresolutions.jirareport.core.dto.ConfigDto;
 
 /**
  * @author Vladimir Martynyuk

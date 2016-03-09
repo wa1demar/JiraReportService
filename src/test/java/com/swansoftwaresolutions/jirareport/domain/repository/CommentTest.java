@@ -1,8 +1,10 @@
-package com.swansoftwaresolutions.jirareport.core.repository;
+package com.swansoftwaresolutions.jirareport.domain.repository;
 
-import com.swansoftwaresolutions.jirareport.core.entity.Comment;
+import com.swansoftwaresolutions.jirareport.domain.entity.Comment;
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Vladimir Martynyuk

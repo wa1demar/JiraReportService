@@ -1,9 +1,9 @@
 package com.swansoftwaresolutions.jirareport.rest.controller;
 
 import com.swansoftwaresolutions.jirareport.config.*;
+import com.swansoftwaresolutions.jirareport.core.dto.ConfigDto;
 import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
 import com.swansoftwaresolutions.jirareport.rest.builder.ConfigDtoBuilder;
-import com.swansoftwaresolutions.jirareport.rest.dto.ConfigDto;
 import com.swansoftwaresolutions.jirareport.utils.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
