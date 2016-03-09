@@ -1,7 +1,7 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
+import com.swansoftwaresolutions.jirareport.core.dto.JiraUsersDto;
 import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
-import com.swansoftwaresolutions.jirareport.rest.dto.JiraUsersDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

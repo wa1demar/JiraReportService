@@ -1,11 +1,12 @@
 package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
-import com.swansoftwaresolutions.jirareport.core.entity.JiraBoard;
-import com.swansoftwaresolutions.jirareport.core.entity.Sprint;
-import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
+import com.swansoftwaresolutions.jirareport.core.mapper.SprintMapper;
 import com.swansoftwaresolutions.jirareport.core.service.JiraBoardService;
 import com.swansoftwaresolutions.jirareport.core.service.JiraSprintsService;
 import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
+import com.swansoftwaresolutions.jirareport.domain.entity.Sprint;
+import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.*;
 import com.swansoftwaresolutions.jirareport.sheduller.job.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,9 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
     @Autowired
     JiraSprintsService sprintsService;
 
+    @Autowired
+    SprintMapper sprintMapper;
+
 
     public void loadData() {
         loadDataForJiraBoards();
@@ -57,15 +61,15 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
             SprintsDto sprintDtos = restTemplate.exchange(autocompliteIssuesUrl(SPRINTS_BOARD_URL, jiraBoard.getBoardId().intValue()),
                     HttpMethod.GET, request, SprintsDto.class).getBody();
 
-            saveSprintsToDataBase(sprintDtos.values);
+            saveSprintsToDataBase(sprintDtos.getValues());
 
 
             log.info("");
         }
     }
 
-    private void saveSprintsToDataBase(SprintDto[] values) {
-        List<Sprint> sprints = fromDtos(values);
+    private void saveSprintsToDataBase(List<SprintDto> values) {
+        List<Sprint> sprints = sprintMapper.fromDtos(values);
 
         //TODO Need to be change
         try {
@@ -87,13 +91,13 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
         RestTemplate restTemplate = new RestTemplate();
         JiraBoardObjectDto jiraBoardDtos = restTemplate.exchange(BOARD_URL, HttpMethod.GET, request, JiraBoardObjectDto.class).getBody();
 
-        insertDataToDataBase(jiraBoardDtos.values);
+        insertDataToDataBase(jiraBoardDtos.getValues());
 
         log.info("--- Jira Board Scheduler Completed ---");
         log.info("");
     }
 
-    private void insertDataToDataBase(JiraBoardDto[] jiraBoardDtos) {
+    private void insertDataToDataBase(List<JiraBoardDto> jiraBoardDtos) {
         removeDublicateAndSave(fromDtos(jiraBoardDtos));
     }
 
@@ -130,7 +134,7 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
 
 //ToDo replace methods to Service
 
-    private List<JiraBoard> fromDtos(JiraBoardDto[] jBoardDtos) {
+    private List<JiraBoard> fromDtos(List<JiraBoardDto> jBoardDtos) {
         List<JiraBoard> jiraBoards = new ArrayList<>();
         for (JiraBoardDto jBoardDto : jBoardDtos) {
             try {
@@ -140,14 +144,6 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
             }
         }
         return jiraBoards;
-    }
-
-    private List<Sprint> fromDtos(SprintDto[] sprintDtos) {
-        List<Sprint> sprints = new ArrayList<>();
-        for (SprintDto sprintDto : sprintDtos) {
-            sprints.add(fromDto(sprintDto));
-        }
-        return sprints;
     }
 
     private JiraBoard fromDto(JiraBoardDto jBoardDto) {

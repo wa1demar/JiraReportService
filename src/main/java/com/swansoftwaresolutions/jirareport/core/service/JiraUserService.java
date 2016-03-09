@@ -4,6 +4,7 @@ import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUsersDto;
+import com.swansoftwaresolutions.jirareport.core.dto.JiraUserAutoDto;
 
 import java.util.List;
 
@@ -13,6 +14,8 @@ import java.util.List;
 public interface JiraUserService {
 
     JiraUser save(JiraUser jiraUser);
+
+    List<JiraUserDto> saveAll(List<JiraUserAutoDto> jiraUserAutoDtoList) throws NoSuchEntityException;
 
     JiraUsersDto retrieveAllUsers();
 

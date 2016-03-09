@@ -2,6 +2,7 @@ package com.swansoftwaresolutions.jirareport.core.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Vladimir Martynyuk
@@ -21,6 +22,7 @@ public class ReportDto implements Serializable {
     private boolean isClosed;
     private Date closedDate;
     private Long typeId;
+    private List<AdminReportDto> adminReports;
     private Long targetPoints;
     private Long targetHours;
     private Long targetQatDefectMin;
@@ -35,6 +37,7 @@ public class ReportDto implements Serializable {
     private Double actualQatDefectHours;
     private Long actualUatDefectPoints;
     private Double actualUatDefectHours;
+    private List<AdminReportDto> admins;
 
     public Long getId() {
         return id;
@@ -138,6 +141,14 @@ public class ReportDto implements Serializable {
 
     public void setTypeId(Long typeId) {
         this.typeId = typeId;
+    }
+
+    public List<AdminReportDto> getAdminReports() {
+        return adminReports;
+    }
+
+    public void setAdminReports(List<AdminReportDto> adminReports) {
+        this.adminReports = adminReports;
     }
 
     public Long getTargetPoints() {
@@ -250,5 +261,13 @@ public class ReportDto implements Serializable {
 
     public void setActualUatDefectHours(Double actualUatDefectHours) {
         this.actualUatDefectHours = actualUatDefectHours;
+    }
+
+    public List<AdminReportDto> getAdmins() {
+        return admins;
+    }
+
+    public void setAdmins(List<AdminReportDto> admins) {
+        this.admins = admins;
     }
 }

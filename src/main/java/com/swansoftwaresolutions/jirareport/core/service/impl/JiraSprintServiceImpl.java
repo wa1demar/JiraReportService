@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
+import com.swansoftwaresolutions.jirareport.core.mapper.SprintMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.Sprint;
 import com.swansoftwaresolutions.jirareport.domain.repository.SprintRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -24,6 +25,9 @@ public class JiraSprintServiceImpl implements JiraSprintsService {
 
     @Autowired
     SprintRepository sprintRepository;
+
+    @Autowired
+    SprintMapper sprintMapper;
 
     @Override
     public SprintsDto retrieveByReportId(long reportId, int typeId) {

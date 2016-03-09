@@ -1,7 +1,8 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
-import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
+import com.swansoftwaresolutions.jirareport.core.dto.ConfigDto;
 import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
+import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

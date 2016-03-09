@@ -18,11 +18,11 @@ public interface CommentRepository {
 
     Comment update(final Comment comment) throws NoSuchEntityException;
 
-    void deleteAll();
+    void deleteAll() throws NoSuchEntityException;
 
     void delete(final Comment comment) throws NoSuchEntityException;
 
-    void delete(final Long commentId);
+    void delete(final Long id) throws NoSuchEntityException;
 
     void deleteByReportId(final Long reportId) throws NoSuchEntityException;
 }

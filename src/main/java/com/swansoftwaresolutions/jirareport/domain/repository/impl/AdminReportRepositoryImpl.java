@@ -1,10 +1,12 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
-import com.swansoftwaresolutions.jirareport.core.repository.AdminReportRepository;
 import com.swansoftwaresolutions.jirareport.domain.entity.AdminReport;
+import com.swansoftwaresolutions.jirareport.domain.entity.Config;
+import com.swansoftwaresolutions.jirareport.domain.repository.AdminReportRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,62 +25,89 @@ public class AdminReportRepositoryImpl implements AdminReportRepository {
 
 
     @Override
-    public List<AdminReport> getAllAdminReports() {
+    public List<AdminReport> findAll() {
         return sessionFactory.getCurrentSession().createCriteria(AdminReport.class)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
     }
 
     @Override
-    public List<AdminReport> getAdminReportsByReportId(Long reportId) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("AdminReport.findByReportId");
-        query.setParameter("reportId", reportId);
-
-        @SuppressWarnings("unchecked")
-        List<AdminReport> adminReports = (List<AdminReport>) query.list();
-        return adminReports;
+    public List<AdminReport> findByReportId(Long reportId) {
+        return (List<AdminReport>) sessionFactory.openSession()
+                .createCriteria(Config.class).add(Restrictions.eq("reportId", reportId));
     }
 
     @Override
-    public AdminReport getAdminReportById(Long id) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("AdminReport.findById");
-        query.setParameter("id", id);
+    public AdminReport findById(Long id) {
+        return (AdminReport) sessionFactory.openSession()
+                .createCriteria(Config.class).add(Restrictions.eq("id", id)).uniqueResult();
+    }
 
-        @SuppressWarnings("unchecked")
-        AdminReport adminReport = (AdminReport) query.uniqueResult();
-
+    @Override
+    public AdminReport add(AdminReport adminReport) {
+        sessionFactory.getCurrentSession().persist(adminReport);
         return adminReport;
     }
 
     @Override
-    public void createAdminReport(AdminReport adminReport) {
-        sessionFactory.getCurrentSession().save(adminReport);
-    }
-
-    @Override
-    public void updateAdminReport(AdminReport adminReport) {
+    public AdminReport update(AdminReport adminReport) throws NoSuchEntityException {
         sessionFactory.getCurrentSession().update(adminReport);
+
+        if (findById(adminReport.getId()) == null) {
+            throw new NoSuchEntityException("Entity not found");
+        }
+        return (AdminReport) sessionFactory.openSession().merge(adminReport);
     }
 
     @Override
-    public void deleteAdminReport(AdminReport adminReport) {
-        sessionFactory.getCurrentSession().delete(adminReport);
+    public void delete(AdminReport adminReport) throws NoSuchEntityException {
+        AdminReport adminR = findById(adminReport.getId());
+
+        if (adminR != null) {
+            sessionFactory.getCurrentSession().delete(adminReport);
+        } else {
+            throw new NoSuchEntityException("Entity Not Found");
+        }
     }
 
     @Override
-    public void deleteAllAdminReport() {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("AdminReport.deleteAll");
-        query.executeUpdate();
+    public void delete(Long id) throws NoSuchEntityException {
+        AdminReport adminReport = findById(id);
+        if (adminReport != null) {
+            sessionFactory.getCurrentSession().delete(adminReport);
+        } else {
+            throw new NoSuchEntityException("Entity Not Found");
+        }
     }
 
     @Override
-    public void deleteAdminReport(Long id) {
-        sessionFactory.getCurrentSession().delete(id);
+    public void deleteAll() throws NoSuchEntityException {
+        List<AdminReport> adminReports = findAll();
+        if (adminReports != null) {
+            for (AdminReport adminReport : adminReports) {
+                if (adminReport != null) {
+                    sessionFactory.getCurrentSession().delete(adminReport);
+                } else {
+                    throw new NoSuchEntityException("Entity Not Found");
+                }
+            }
+        } else {
+            throw new NoSuchEntityException("Entities Not Found");
+        }
     }
 
     @Override
-    public void deleteAdminReportsByIdReport(Long reportId) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("AdminReport.deleteByReportId");
-        query.setParameter("reportId", reportId);
-        query.executeUpdate();
+    public void deleteByReportId(Long reportId) throws NoSuchEntityException {
+        List<AdminReport> adminReports = findByReportId(reportId);
+        if (adminReports != null) {
+            for (AdminReport adminReport : adminReports) {
+                if (adminReport != null) {
+                    sessionFactory.getCurrentSession().delete(adminReport);
+                } else {
+                    throw new NoSuchEntityException("Entity Not Found");
+                }
+            }
+        } else {
+            throw new NoSuchEntityException("Entities Not Found");
+        }
     }
 }

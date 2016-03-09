@@ -1,8 +1,14 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Vladimir Martynyuk
@@ -64,6 +70,11 @@ public class Report  implements Serializable{
 
     @Column(name = "type_ID")
     private Long typeId;
+
+    @OneToMany(mappedBy = "report") // inverse side: it has a mappedBy attribute, and can't decide how the association is mapped, since the other side already decided it.
+    @Fetch(FetchMode.JOIN)
+    @JsonIgnore
+    private Collection<AdminReport> adminReports;
 
     @Column(name = "target_points")
     private Long targetPoints;
@@ -201,6 +212,14 @@ public class Report  implements Serializable{
 
     public void setTypeId(Long typeId) {
         this.typeId = typeId;
+    }
+
+    public Collection<AdminReport> getAdminReports() {
+        return adminReports;
+    }
+
+    public void setAdminReports(Collection<AdminReport> adminReports) {
+        this.adminReports = adminReports;
     }
 
     public Long getTargetPoints() {

@@ -39,9 +39,21 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
     }
 
     @Override
-    public JiraUser findById(long id) {
+    public JiraUser findById(long id) throws NoSuchEntityException {
         return (JiraUser) sessionFactory.openSession()
                 .createCriteria(JiraUser.class).add(Restrictions.eq("id", id)).uniqueResult();
+    }
+
+    @Override
+    public JiraUser findByName(String name) throws NoSuchEntityException {
+        return (JiraUser) sessionFactory.openSession()
+                .createCriteria(JiraUser.class).add(Restrictions.eq("fullName", name)).uniqueResult();
+    }
+
+    @Override
+    public JiraUser findByLogin(String login) throws NoSuchEntityException {
+        return (JiraUser) sessionFactory.openSession()
+                .createCriteria(JiraUser.class).add(Restrictions.eq("login", login)).uniqueResult();
     }
 
     @Override

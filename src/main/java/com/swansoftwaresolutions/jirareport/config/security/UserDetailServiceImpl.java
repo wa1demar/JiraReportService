@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.config.security;
 
+import com.swansoftwaresolutions.jirareport.core.dto.UserDto;
 import com.swansoftwaresolutions.jirareport.core.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

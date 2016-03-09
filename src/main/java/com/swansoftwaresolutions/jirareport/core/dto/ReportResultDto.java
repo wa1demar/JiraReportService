@@ -1,18 +1,23 @@
 package com.swansoftwaresolutions.jirareport.core.dto;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Vitaliy Holovko
  */
-public class NewReportDto {
+public class ReportResultDto implements Serializable {
     private Long id;
+
     private String title;
-    private Long typeId;
+    private String url;
     private String creator;
     private Long creatorId;
     private Long boardId;
     private Date createdDate;
+    private Long typeId;
+    private List<AdminReportDto> adminReports;
 
     public Long getId() {
         return id;
@@ -30,12 +35,12 @@ public class NewReportDto {
         this.title = title;
     }
 
-    public Long getTypeId() {
-        return typeId;
+    public String getUrl() {
+        return url;
     }
 
-    public void setTypeId(Long typeId) {
-        this.typeId = typeId;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getCreator() {
@@ -44,6 +49,14 @@ public class NewReportDto {
 
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Long creatorId) {
+        this.creatorId = creatorId;
     }
 
     public Long getBoardId() {
@@ -62,11 +75,19 @@ public class NewReportDto {
         this.createdDate = createdDate;
     }
 
-    public Long getCreatorId() {
-        return creatorId;
+    public Long getTypeId() {
+        return typeId;
     }
 
-    public void setCreatorId(Long creatorId) {
-        this.creatorId = creatorId;
+    public void setTypeId(Long typeId) {
+        this.typeId = typeId;
+    }
+
+    public List<AdminReportDto> getAdminReports() {
+        return adminReports;
+    }
+
+    public void setAdminReports(List<AdminReportDto> adminReports) {
+        this.adminReports = adminReports;
     }
 }

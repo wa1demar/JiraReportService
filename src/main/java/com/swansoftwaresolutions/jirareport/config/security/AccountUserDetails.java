@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.config.security;
 
+import com.swansoftwaresolutions.jirareport.core.dto.UserDto;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

@@ -30,7 +30,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<Project> getAllProjects() {
+    public List<Project> findAll() {
         return projectRepository.findAll();
     }
 

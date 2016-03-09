@@ -1,8 +1,9 @@
 package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
-import com.swansoftwaresolutions.jirareport.core.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
-import com.swansoftwaresolutions.jirareport.sheduller.dto.UserDto;
+import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
+import com.swansoftwaresolutions.jirareport.core.dto.JiraUserAutoDto;
+import com.swansoftwaresolutions.jirareport.sheduller.dto.JiraUserSchedulerDto;
 import com.swansoftwaresolutions.jirareport.sheduller.job.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -29,17 +30,8 @@ public class JiraUsersRestClient extends RestClientBase implements RestClient {
 
     String USER_URL = "https://swansoftwaresolutions.atlassian.net/rest/api/2/user/search?username=%";
 
-
-    private void removeDublicatesAndInsertDataToDataBase(ArrayList<JiraUser> jiraUsers) {
-        jiraUsers.removeAll(jiraUserService.findAll());
-
-        for (JiraUser jiraUser : jiraUsers) {
-            jiraUserService.save(jiraUser);
-        }
-    }
-
-    private JiraUser fromDto(UserDto userDto) {
-        JiraUser jiraUser = new JiraUser();
+    private JiraUserAutoDto fromDto(JiraUserSchedulerDto userDto) {
+        JiraUserAutoDto jiraUser = new JiraUserAutoDto();
         jiraUser.setEmail(userDto.getEmailAddress());
         jiraUser.setFullName(userDto.getDisplayName());
         jiraUser.setLogin(userDto.getName());
@@ -60,20 +52,24 @@ public class JiraUsersRestClient extends RestClientBase implements RestClient {
         log.info("-----------------------------------");
         log.info("-------Users Scheduler-----------");
 
-        Set<JiraUser> jiraUsers = new HashSet<>();
+        Set<JiraUserAutoDto> jiraUsers = new HashSet<>();
 
         for (char cha : getCharArray()) {
             HttpEntity<String> req = new HttpEntity<>(getHeaders());
             RestTemplate rest = new RestTemplate();
-            UserDto[] userDtos = rest.exchange(USER_URL + cha, HttpMethod.GET, req, UserDto[].class).getBody();
+            JiraUserSchedulerDto[] userDtos = rest.exchange(USER_URL + cha, HttpMethod.GET, req, JiraUserSchedulerDto[].class).getBody();
 
-            for (UserDto userDto : userDtos) {
+            for (JiraUserSchedulerDto userDto : userDtos) {
                 jiraUsers.add(fromDto(userDto));
             }
         }
         log.info("   Users on Cloud : " + jiraUsers.size());
 
-        removeDublicatesAndInsertDataToDataBase(new ArrayList<>(jiraUsers));
+        try {
+            jiraUserService.saveAll(new ArrayList<>(jiraUsers));
+        } catch (NoSuchEntityException e) {
+            log.warning("Can't to save JiraUsers");
+        }
 
         log.info("---User Scheduler Completed-----");
         log.info("-----------------------------------");
