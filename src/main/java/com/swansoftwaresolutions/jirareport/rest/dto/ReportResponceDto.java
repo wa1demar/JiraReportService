@@ -1,19 +1,24 @@
 package com.swansoftwaresolutions.jirareport.rest.dto;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Vitaliy Holovko
  */
-public class NewReportDto {
+public class ReportResponceDto {
+
     private Long id;
+
     private String title;
-    private Long typeId;
+    private String url;
     private String creator;
     private Long creatorId;
     private Long boardId;
     private Date createdDate;
     private boolean isClosed;
+    private Long typeId;
+    private List<AdminReportDto> admins;
 
     public Long getId() {
         return id;
@@ -31,12 +36,12 @@ public class NewReportDto {
         this.title = title;
     }
 
-    public Long getTypeId() {
-        return typeId;
+    public String getUrl() {
+        return url;
     }
 
-    public void setTypeId(Long typeId) {
-        this.typeId = typeId;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getCreator() {
@@ -45,6 +50,14 @@ public class NewReportDto {
 
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Long creatorId) {
+        this.creatorId = creatorId;
     }
 
     public Long getBoardId() {
@@ -63,19 +76,27 @@ public class NewReportDto {
         this.createdDate = createdDate;
     }
 
-    public Long getCreatorId() {
-        return creatorId;
-    }
-
-    public void setCreatorId(Long creatorId) {
-        this.creatorId = creatorId;
-    }
-
-    public boolean getClosed() {
+    public boolean isClosed() {
         return isClosed;
     }
 
-    public void setClosed(boolean isClosed) {
+    public void setIsClosed(boolean isClosed) {
         this.isClosed = isClosed;
+    }
+
+    public Long getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(Long typeId) {
+        this.typeId = typeId;
+    }
+
+    public List<AdminReportDto> getAdmins() {
+        return admins;
+    }
+
+    public void setAdmins(List<AdminReportDto> admins) {
+        this.admins = admins;
     }
 }
