@@ -2,32 +2,33 @@ package com.swansoftwaresolutions.jirareport.domain.repository;
 
 
 import com.swansoftwaresolutions.jirareport.domain.entity.SprintIssue;
+import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 
 import java.util.List;
 
 public interface SprintIssueRepository {
 
-    List<SprintIssue> getAllSprintIssues();
+    List<SprintIssue> findAll();
 
-    List<SprintIssue> getSprintIssuesBySprintId(final Long sprintId);
+    List<SprintIssue> findBySprintId(final Long sprintId);
 
-    List<SprintIssue> getSprintIssuesBySprintIdAndAssignee(final Long sprintId, final String assignee);
+    List<SprintIssue> findBySprintIdAndAssignee(final Long sprintId, final String assignee);
 
-    List<SprintIssue> getSprintIssuesBySprintIdAndAssigneeAndIssueDate(final Long sprintId, final String assignee, final String issueDate);
+    List<SprintIssue> findBySprintIdAndAssigneeAndIssueDate(final Long sprintId, final String assignee, final String issueDate);
 
-    SprintIssue getSprintIssueById(final Long id);
+    SprintIssue findById(final Long id);
 
-    void createSprintIssue(final SprintIssue sprintIssue);
+    SprintIssue add(final SprintIssue sprintIssue);
 
-    void updateSprintIssue(final SprintIssue sprintIssue);
+    SprintIssue update(final SprintIssue sprintIssue) throws NoSuchEntityException;
 
-    void deleteAllSprintIssue();
+    void deleteAll() throws NoSuchEntityException;
 
-    void deleteSprintIssue(final SprintIssue sprint);
+    void delete(SprintIssue sprint) throws NoSuchEntityException;
 
-    void deleteSprintIssue(final Long id);
+    void delete(Long id) throws NoSuchEntityException;
 
-    void deleteSprintIssuesByIdSprint(final Long sprintId);
+    void deleteBySprintId(Long sprintId) throws NoSuchEntityException;
 
-    void deleteSprintIssuesBySprintIdAndAssignee(final Long sprintId, final String assignee);
+    void deleteBySprintIdAndAssignee(final Long sprintId, final String assignee) throws NoSuchEntityException;
 }

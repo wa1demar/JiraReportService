@@ -2,9 +2,10 @@ package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
 import com.swansoftwaresolutions.jirareport.domain.entity.SprintIssue;
 import com.swansoftwaresolutions.jirareport.domain.repository.SprintIssueRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,82 +24,118 @@ public class SprintIssueRepositoryImpl implements SprintIssueRepository {
     private SessionFactory sessionFactory;
 
     @Override
-    public List<SprintIssue> getAllSprintIssues() {
+    public List<SprintIssue> findAll() {
         return sessionFactory.getCurrentSession().createCriteria(SprintIssue.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
     }
 
     @Override
-    public List<SprintIssue> getSprintIssuesBySprintId(Long sprintId) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("SprintIssue.findBySprintId");
-
-        @SuppressWarnings("unchecked")
-        List<SprintIssue> sprintIssues = (List<SprintIssue>) query.list();
-        return sprintIssues;
+    public List<SprintIssue> findBySprintId(Long sprintId){
+        return (List<SprintIssue>) sessionFactory.openSession()
+                .createCriteria(SprintIssue.class).add(Restrictions.eq("reportId", sprintId)).list();
     }
 
     @Override
-    public List<SprintIssue> getSprintIssuesBySprintIdAndAssignee(Long sprintId, String assignee) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("SprintIssue.findBySprintIdAndAssignee");
-
-        @SuppressWarnings("unchecked")
-        List<SprintIssue> sprintIssues = (List<SprintIssue>) query.list();
-        return sprintIssues;
+    public List<SprintIssue> findBySprintIdAndAssignee(Long sprintId, String assignee) {
+        return (List<SprintIssue>) sessionFactory.openSession()
+                .createCriteria(SprintIssue.class).add(Restrictions.eq("sprintId", sprintId)).add(Restrictions.eq("assignee", assignee)).list();
     }
 
     @Override
-    public List<SprintIssue> getSprintIssuesBySprintIdAndAssigneeAndIssueDate(Long sprintId, String assignee, String issueDate) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("SprintIssue.findBySprintIdAndAssigneeAndIssueDate");
-
-        @SuppressWarnings("unchecked")
-        List<SprintIssue> sprintIssues = (List<SprintIssue>) query.list();
-        return sprintIssues;
+    public List<SprintIssue> findBySprintIdAndAssigneeAndIssueDate(Long sprintId, String assignee, String issueDate) {
+        return (List<SprintIssue>) sessionFactory.openSession()
+                .createCriteria(SprintIssue.class).
+                        add(Restrictions.eq("sprintId", sprintId)).
+                        add(Restrictions.eq("assignee", assignee)).
+                        add(Restrictions.eq("issueDate", issueDate)).list();
     }
 
     @Override
-    public SprintIssue getSprintIssueById(Long id) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("SprintIssue.findById");
+    public SprintIssue findById(Long id) {
+        return (SprintIssue) sessionFactory.openSession()
+                .createCriteria(SprintIssue.class).add(Restrictions.eq("id", id)).uniqueResult();
+    }
 
-        @SuppressWarnings("unchecked")
-        SprintIssue sprintIssue = (SprintIssue) query.uniqueResult();
+    @Override
+    public SprintIssue add(SprintIssue sprintIssue) {
+        sessionFactory.getCurrentSession().save(sprintIssue);
         return sprintIssue;
     }
 
     @Override
-    public void createSprintIssue(SprintIssue sprintIssue) {
-        sessionFactory.getCurrentSession().save(sprintIssue);
-    }
-
-    @Override
-    public void updateSprintIssue(SprintIssue sprintIssue) {
+    public SprintIssue update(SprintIssue sprintIssue) throws NoSuchEntityException {
         sessionFactory.getCurrentSession().update(sprintIssue);
+        if (findById(sprintIssue.getId()) == null) {
+            throw new NoSuchEntityException("Entity not found");
+        }
+
+        return (SprintIssue) sessionFactory.openSession().merge(sprintIssue);
     }
 
     @Override
-    public void deleteAllSprintIssue() {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("SprintIssue.deleteAll");
-        query.executeUpdate();
+    public void deleteAll() throws NoSuchEntityException{
+        List<SprintIssue> sprintList = findAll();
+        if (sprintList != null) {
+            for (SprintIssue sprint : sprintList) {
+                if (sprint != null) {
+                    sessionFactory.getCurrentSession().delete(sprint);
+                } else {
+                    throw new NoSuchEntityException("Entity Not Found");
+                }
+            }
+        } else {
+            throw new NoSuchEntityException("Entities Not Found");
+        }
     }
 
     @Override
-    public void deleteSprintIssue(SprintIssue sprintIssue) {
-        sessionFactory.getCurrentSession().delete(sprintIssue);
+    public void delete(SprintIssue sprintIssue) throws NoSuchEntityException {
+        SprintIssue deleteSprintIssue = findById(sprintIssue.getId());
+        if (deleteSprintIssue != null) {
+            sessionFactory.getCurrentSession().delete(sprintIssue);
+        } else {
+            throw new NoSuchEntityException("Entity Not Found");
+        }
     }
 
     @Override
-    public void deleteSprintIssue(Long id) {
-        sessionFactory.getCurrentSession().delete(id);
+    public void delete(Long id) throws NoSuchEntityException{
+        SprintIssue deleteSprintIssue = findById(id);
+        if (deleteSprintIssue != null) {
+            sessionFactory.getCurrentSession().delete(deleteSprintIssue);
+        } else {
+            throw new NoSuchEntityException("Entity Not Found");
+        }
     }
 
     @Override
-    public void deleteSprintIssuesByIdSprint(Long sprintId) {
-        sessionFactory.getCurrentSession().delete(sprintId);
+    public void deleteBySprintId(Long sprintId)throws NoSuchEntityException{
+        List<SprintIssue> sprintIssueList = findBySprintId(sprintId);
+        if (sprintIssueList != null) {
+            for (SprintIssue sprintIssue : sprintIssueList) {
+                if (sprintIssue != null) {
+                    sessionFactory.getCurrentSession().delete(sprintIssue);
+                } else {
+                    throw new NoSuchEntityException("Entity Not Found");
+                }
+            }
+        } else {
+            throw new NoSuchEntityException("Entities Not Found");
+        }
     }
 
     @Override
-    public void deleteSprintIssuesBySprintIdAndAssignee(Long sprintId, String assignee) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("SprintIssue.deleteBySprintIdAndAssignee");
-        query.setParameter("sprintId", sprintId);
-        query.setParameter("assignee", assignee);
-        query.executeUpdate();
+    public void deleteBySprintIdAndAssignee(Long sprintId, String assignee) throws NoSuchEntityException{
+        List<SprintIssue> sprintIssueList = findBySprintIdAndAssignee(sprintId, assignee);
+        if (sprintIssueList != null) {
+            for (SprintIssue sprintIssue : sprintIssueList) {
+                if (sprintIssue != null) {
+                    sessionFactory.getCurrentSession().delete(sprintIssue);
+                } else {
+                    throw new NoSuchEntityException("Entity Not Found");
+                }
+            }
+        } else {
+            throw new NoSuchEntityException("Entities Not Found");
+        }
     }
 }
