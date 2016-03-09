@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
 import com.swansoftwaresolutions.jirareport.core.entity.AdminReport;
+import com.swansoftwaresolutions.jirareport.core.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.core.mapper.AdminReportMapper;
 import com.swansoftwaresolutions.jirareport.rest.dto.AdminReportDto;
 import org.modelmapper.ModelMapper;
@@ -42,4 +43,25 @@ public class AdminReportMapperImpl implements AdminReportMapper {
         return modelMapper.map(adminReportDtoList, targetistType);
     }
 
+    @Override
+    public AdminReportDto toDtofromJiraUser(JiraUser jiraUser) {
+        return modelMapper.map(jiraUser, AdminReportDto.class);
+    }
+
+    @Override
+    public List<AdminReportDto> toDtosfromJiraUsers(List<JiraUser> jiraUserList) {
+        Type targetistType = new TypeToken<List<AdminReportDto>>(){}.getType();
+        return modelMapper.map(jiraUserList, targetistType);
+    }
+
+    @Override
+    public JiraUser fromJiraUserDto(AdminReportDto adminReportDto) {
+        return modelMapper.map(adminReportDto, JiraUser.class);
+    }
+
+    @Override
+    public List<JiraUser> fromJiraUserDtos(List<AdminReportDto> adminReportDtoList) {
+        Type targetistType = new TypeToken<List<JiraUser>>(){}.getType();
+        return modelMapper.map(adminReportDtoList, targetistType);
+    }
 }
