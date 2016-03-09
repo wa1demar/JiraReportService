@@ -51,6 +51,12 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
     }
 
     @Override
+    public JiraUser findByLogin(String login) throws NoSuchEntityException {
+        return (JiraUser) sessionFactory.openSession()
+                .createCriteria(JiraUser.class).add(Restrictions.eq("login", login)).uniqueResult();
+    }
+
+    @Override
     public List<JiraUser> findAll() {
         return sessionFactory.getCurrentSession().createCriteria(JiraUser.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
     }
