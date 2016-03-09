@@ -16,7 +16,7 @@
             <span ng-show="report.typeId === 2">Manual</span>
         </span>
         </div>
-        <div class="field-group" ng-show="report.typeId !== 2">
+        <div class="field-group" ng-show="report.typeId === 1">
             <label>Project:</label>
             <span style="padding: 5px 0 0 0; font-weight: bold; float: left;">
                 {{report.boardName}}
@@ -35,23 +35,14 @@
         </span>
         </div>
         <div class="field-group">
-            <label for="is-closed">Date close:</label>
-            <input type="text" name="date-close" id="date-close" class="text aui-date-picker" ng-model="report.dateClose" value="{{report.dateClose | date:'MM/dd/yyyy'}}" ng-disabled="!report.isClosed" style="float: left;" placeholder="MM/DD/YYY"/>
-            <!--#datePopup("date-close" "date-close")-->
+            <p class="input-group" style="width: 250px;">
+                <input ng-disabled="!report.isClosed" type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="report.dateClose" is-open="popupCalender.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" placeholder="MM/DD/YYY"/>
+                <span class="input-group-btn">
+                    <button ng-disabled="!report.isClosed" type="button" class="btn btn-default" ng-click="openCalender()"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+            </p>
         </div>
+
         <span id="save-general-configure" class="aui-button" ng-click="saveConfigureGeneralData()">Save</span>
     </form>
-
-    <!--<script language="javascript" >-->
-        <!--Calendar.setup({-->
-            <!--firstDay : 1,-->
-            <!--inputField : 'date-close',-->
-            <!--button : 'date-close',-->
-            <!--align : 'Br',-->
-            <!--singleClick : true,-->
-            <!--showsTime : false,-->
-            <!--useISO8601WeekNumbers : false,-->
-            <!--ifFormat : '%m/%d/%Y'-->
-        <!--});-->
-    <!--</script>-->
 </div>

@@ -29,15 +29,56 @@ jiraPluginApp.controller('ConfigureCtrl', ['$scope',
 jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', '$uibModal', 'ReportFactory', 'UsersFactory', 'CONFIG',
   function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, CONFIG) {
 
-    $scope.report = ReportFactory.get({id: $routeParams.reportId});
+    //$scope.report = ReportFactory.get({id: $routeParams.reportId});
+    $scope.report = {
+      title: "title",
+      typeId: 2,
+      boardName: "Test",
+      isClosed: true,
+      dateClose: new Date()
+    };
 
     var users = UsersFactory.query(function(){
       $scope.users = users.users;
     });
 
     $scope.saveConfigureGeneralData = function () {
-      ReportFactory.update();
+      $scope.report.dateClose = $scope.report.isClosed ? $scope.report.dateClose : null;
+      ReportFactory.update({id: $routeParams.reportId}, $scope.report);
     };
+
+    //==================================================================================================================
+    //Calender
+    $scope.dateOptions = {
+      dateDisabled: disabled,
+      formatYear: 'yy',
+      maxDate: new Date(2020, 5, 22),
+      minDate: new Date(),
+      startingDay: 1
+    };
+
+    // Disable weekend selection
+    function disabled(data) {
+      var date = data.date,
+          mode = data.mode;
+      return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+    }
+
+    $scope.openCalender = function() {
+      $scope.popupCalender.opened = true;
+    };
+
+    $scope.setDate = function(year, month, day) {
+      $scope.dt = new Date(year, month, day);
+    };
+
+    $scope.format = 'MM/dd/yyyy';
+    $scope.altInputFormats = ['M!/d!/yyyy'];
+
+    $scope.popupCalender = {
+      opened: false
+    };
+
   }
 ]);
 
