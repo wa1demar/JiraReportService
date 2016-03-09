@@ -2,8 +2,8 @@ package com.swansoftwaresolutions.jirareport.rest.controller;
 
 import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.service.ReportService;
-import com.swansoftwaresolutions.jirareport.rest.dto.NewReportDto;
 import com.swansoftwaresolutions.jirareport.rest.dto.ReportDto;
+import com.swansoftwaresolutions.jirareport.rest.dto.ReportResponceDto;
 import com.swansoftwaresolutions.jirareport.rest.dto.responce.ResponceReportDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,16 +28,19 @@ public class ReportController {
         this.reportService = reportService;
     }
 
-    @RequestMapping(value = "/v1/report", method = RequestMethod.POST)
-    private ResponseEntity<NewReportDto> addNewReport(@Valid @RequestBody NewReportDto newReportDto) throws NoSuchEntityException {
-        NewReportDto reportDto = reportService.save(newReportDto);
+//    @RequestMapping(value = "/v1/report", method = RequestMethod.POST)
+    @RequestMapping(value = "/auth/create", method = RequestMethod.POST)
+    private ResponseEntity<ReportResponceDto> addNewReport(@Valid @RequestBody ReportDto reportNew) throws NoSuchEntityException {
+        ReportResponceDto reportDto = reportService.save(reportNew);
+        HttpStatus httpStatus;
 
         if (reportDto != null) {
-            return new ResponseEntity<>(reportDto, HttpStatus.OK);
+            httpStatus = HttpStatus.OK;
         } else {
-            return new ResponseEntity<>(reportDto, HttpStatus.NO_CONTENT);
+            httpStatus = HttpStatus.NO_CONTENT;
         }
 
+        return new ResponseEntity<>(reportDto, httpStatus);
     }
 
     @RequestMapping(value = "/v1/report", method = RequestMethod.DELETE)
@@ -63,7 +66,8 @@ public class ReportController {
         return new ResponseEntity<>(responsePostDto, httpStatus);
     }
 
-    @RequestMapping(value = "/v1/report", method = RequestMethod.GET)
+    @RequestMapping(value = "/auth/report", method = RequestMethod.GET)
+//    @RequestMapping(value = "/v1/report", method = RequestMethod.GET)
     private ResponseEntity<List<ReportDto>> findAllReports() {
         //ToDo Add responce. Need to modify Dto
         List<ReportDto> reportDtos = reportService.findAll();
@@ -77,7 +81,7 @@ public class ReportController {
         HttpStatus httpStatus;
 
         try {
-            NewReportDto newReportDto = reportService.findNewReportById(id);
+            ReportDto newReportDto = reportService.findById(id);
             newReportDto.setTitle(reportName);
             newReportDto.setId(null);
             if (reportService.save(newReportDto) != null) {
