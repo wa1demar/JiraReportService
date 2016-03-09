@@ -43,8 +43,10 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
     });
 
     $scope.saveConfigureGeneralData = function () {
-      $scope.report.dateClose = $scope.report.isClosed ? $scope.report.dateClose : null;
-      ReportFactory.update({id: $routeParams.reportId}, $scope.report);
+      if($scope.generalConfigure.$valid) {
+        $scope.report.dateClose = $scope.report.isClosed ? $scope.report.dateClose : null;
+        ReportFactory.update({id: $routeParams.reportId}, $scope.report);
+      }
     };
 
     //==================================================================================================================

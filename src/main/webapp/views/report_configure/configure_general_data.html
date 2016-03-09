@@ -4,10 +4,13 @@
     </form>
     <hr/>
 
-    <form id="general-configure" class="aui">
-        <div class="field-group">
+    <form ng-submit="submit()" id="general-configure" name="generalConfigure" class="aui" novalidate>
+        <div class="field-group" ng-class="{ 'has-error': generalConfigure.$submitted && generalConfigure.title.$invalid }">
             <label>Dashboard name:</label>
-            <input id="dashboard-title" type="text" class="text" name="dashboard-name" ng-model="report.title"/>
+            <input id="title" type="text" class="text" name="title" ng-model="report.title" required/>
+            <div class="help-block" ng-messages="generalConfigure.title.$error" ng-if="generalConfigure.$submitted && generalConfigure.title.$invalid">
+                <p ng-message="required">Title is required.</p>
+            </div>
         </div>
         <div class="field-group">
             <label>Board type:</label>
@@ -43,6 +46,6 @@
             </p>
         </div>
 
-        <span id="save-general-configure" class="aui-button" ng-click="saveConfigureGeneralData()">Save</span>
+        <button type="submit" ng-click="saveConfigureGeneralData()" class="aui-button">Save</button>
     </form>
 </div>
