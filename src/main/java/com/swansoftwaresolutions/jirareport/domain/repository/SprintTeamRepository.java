@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.domain.repository;
 
 import com.swansoftwaresolutions.jirareport.domain.entity.SprintTeam;
+import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 
 import java.util.List;
 
@@ -8,23 +9,23 @@ public interface SprintTeamRepository {
 
     List<SprintTeam> findAll();
 
-    List<SprintTeam> getSprintTeamsByReportId(final Long reportId);
+    List<SprintTeam> findByReportId(Long reportId);
 
-    List<SprintTeam> getSprintTeamByReportIdAndAgileSprintId(final Long reportId, final Long agileSprintId);
+    List<SprintTeam> findByReportIdAndAgileSprintId(Long reportId, Long agileSprintId);
 
-    SprintTeam getSprintTeamById(final Long id);
+    SprintTeam findById(Long id);
 
-    SprintTeam getSprintTeamByAgileSprintId(final Long agileSprintId);
+    SprintTeam findByAgileSprintId(Long agileSprintId);
 
-    void createSprintTeam(final SprintTeam sprintTeam);
+    SprintTeam add(SprintTeam sprintTeam) throws NoSuchEntityException;
 
-    void updateSprintTeam(final SprintTeam sprintTeam);
+    SprintTeam update(SprintTeam sprintTeam) throws NoSuchEntityException;
 
-    void deleteAllSprintTeam();
+    void deleteAll() throws NoSuchEntityException;
 
-    void deleteSprintTeam(final SprintTeam sprintTeam);
+    void delete(final SprintTeam sprintTeam) throws NoSuchEntityException;
 
-    void deleteSprintTeam(final Long sprintTeamId);
+    void delete(final Long sprintTeamId) throws NoSuchEntityException;
 
-    void deleteSprintTeamsByReportId(final Long reportId);
+    void deleteByReportId(final Long reportId) throws NoSuchEntityException;
 }

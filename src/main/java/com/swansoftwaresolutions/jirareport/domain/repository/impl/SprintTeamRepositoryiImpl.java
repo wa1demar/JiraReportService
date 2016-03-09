@@ -2,9 +2,10 @@ package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
 import com.swansoftwaresolutions.jirareport.domain.entity.SprintTeam;
 import com.swansoftwaresolutions.jirareport.domain.repository.SprintTeamRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,77 +29,94 @@ public class SprintTeamRepositoryiImpl implements SprintTeamRepository {
     }
 
     @Override
-    public List<SprintTeam> getSprintTeamsByReportId(Long reportId) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("SprintTeam.findByReportId");
-        query.setParameter("reportId", reportId);
-
-        @SuppressWarnings("unchecked")
-        List<SprintTeam> sprintTeams = (List<SprintTeam>) query.list();
-        return sprintTeams;
+    public List<SprintTeam> findByReportId(Long reportId) {
+        return (List<SprintTeam>) sessionFactory.openSession()
+                .createCriteria(SprintTeam.class).add(Restrictions.eq("reportId", reportId)).list();
     }
 
     @Override
-    public List<SprintTeam> getSprintTeamByReportIdAndAgileSprintId(Long reportId, Long agileSprintId) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("SprintTeam.findByReportIdAndAgileSprintId");
-        query.setParameter("reportId", reportId);
-        query.setParameter("agileSprintId", agileSprintId);
-
-        @SuppressWarnings("unchecked")
-        List<SprintTeam> sprintTeams = (List<SprintTeam>) query.list();
-        return sprintTeams;
+    public List<SprintTeam> findByReportIdAndAgileSprintId(Long reportId, Long agileSprintId) {
+        return (List<SprintTeam>) sessionFactory.openSession()
+                .createCriteria(SprintTeam.class).add(Restrictions.eq("reportId", reportId)).add(Restrictions.eq("agileSprintId", agileSprintId)).uniqueResult();
     }
 
     @Override
-    public SprintTeam getSprintTeamById(Long id) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("SprintIssue.findById");
-        query.setParameter("id", id);
-
-        @SuppressWarnings("unchecked")
-        SprintTeam sprintTeam = (SprintTeam) query.uniqueResult();
-        return sprintTeam;
+    public SprintTeam findById(Long id) {
+        return (SprintTeam) sessionFactory.openSession()
+                .createCriteria(SprintTeam.class).add(Restrictions.eq("id", id)).uniqueResult();
     }
 
     @Override
-    public SprintTeam getSprintTeamByAgileSprintId(Long agileSprintId) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("SprintIssue.findByAgileSprintId");
-        query.setParameter("agileSprintId", agileSprintId);
-
-        @SuppressWarnings("unchecked")
-        SprintTeam sprintTeam = (SprintTeam) query.uniqueResult();
-        return sprintTeam;
+    public SprintTeam findByAgileSprintId(Long agileSprintId) {
+        return (SprintTeam) sessionFactory.openSession()
+                .createCriteria(SprintTeam.class).add(Restrictions.eq("agileSprintId", agileSprintId)).uniqueResult();
     }
 
     @Override
-    public void createSprintTeam(SprintTeam sprintTeam) {
+    public SprintTeam add(SprintTeam sprintTeam) throws NoSuchEntityException{
         sessionFactory.getCurrentSession().save(sprintTeam);
-
+        return sprintTeam;
     }
 
     @Override
-    public void updateSprintTeam(SprintTeam sprintTeam) {
+    public SprintTeam update(SprintTeam sprintTeam) throws NoSuchEntityException{
         sessionFactory.getCurrentSession().update(sprintTeam);
+        if (findById(sprintTeam.getId()) == null) {
+            throw new NoSuchEntityException("Entity not found");
+        }
+
+        return (SprintTeam) sessionFactory.openSession().merge(sprintTeam);
     }
 
     @Override
-    public void deleteAllSprintTeam() {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("SprintTeam.deleteAll");
-        query.executeUpdate();
+    public void deleteAll() throws NoSuchEntityException{
+        List<SprintTeam> sprintTeamList = findAll();
+        if (sprintTeamList != null) {
+            for (SprintTeam sprintTeam : sprintTeamList) {
+                if (sprintTeam != null) {
+                    sessionFactory.getCurrentSession().delete(sprintTeam);
+                } else {
+                    throw new NoSuchEntityException("Entity Not Found");
+                }
+            }
+        } else {
+            throw new NoSuchEntityException("Entities Not Found");
+        }
     }
 
     @Override
-    public void deleteSprintTeam(SprintTeam sprintTeam) {
-        sessionFactory.getCurrentSession().delete(sprintTeam);
+    public void delete(SprintTeam sprintTeam) throws  NoSuchEntityException{
+        SprintTeam deleteSprintTeam = findById(sprintTeam.getId());
+        if (deleteSprintTeam != null) {
+            sessionFactory.getCurrentSession().delete(sprintTeam);
+        } else {
+            throw new NoSuchEntityException("Entity Not Found");
+        }
     }
 
     @Override
-    public void deleteSprintTeam(Long id) {
-        sessionFactory.getCurrentSession().delete(id);
+    public void delete(Long id) throws NoSuchEntityException{
+        SprintTeam deleteSprintTeam = findById(id);
+        if (deleteSprintTeam != null) {
+            sessionFactory.getCurrentSession().delete(deleteSprintTeam);
+        } else {
+            throw new NoSuchEntityException("Entity Not Found");
+        }
     }
 
     @Override
-    public void deleteSprintTeamsByReportId(Long reportId) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("SprintTeam.deleteByReportId");
-        query.setParameter("reportId", reportId);
-        query.executeUpdate();
+    public void deleteByReportId(Long reportId)  throws NoSuchEntityException{
+        List<SprintTeam> sprintTeamList = findByReportId(reportId);
+        if (sprintTeamList != null) {
+            for (SprintTeam sprintTeam : sprintTeamList) {
+                if (sprintTeam != null) {
+                    sessionFactory.getCurrentSession().delete(sprintTeam);
+                } else {
+                    throw new NoSuchEntityException("Entity Not Found");
+                }
+            }
+        } else {
+            throw new NoSuchEntityException("Entities Not Found");
+        }
     }
 }
