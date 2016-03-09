@@ -1,7 +1,6 @@
 package com.swansoftwaresolutions.jirareport.rest.dto;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author Vitaliy Holovko
@@ -10,9 +9,10 @@ import java.io.Serializable;
 public class AdminReportDto {
 
     private Long id;
-    private Long reportId;
-    private String name;
-    private String displayName;
+    private String login;
+    private String fullName;
+    private List<ReportDto> report;
+
 
     public Long getId() {
         return id;
@@ -22,27 +22,27 @@ public class AdminReportDto {
         this.id = id;
     }
 
-    public Long getReportId() {
-        return reportId;
+    public String getLogin() {
+        return login;
     }
 
-    public void setReportId(Long reportId) {
-        this.reportId = reportId;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public List<ReportDto> getReport() {
+        return report;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setReport(List<ReportDto> report) {
+        this.report = report;
     }
 }
