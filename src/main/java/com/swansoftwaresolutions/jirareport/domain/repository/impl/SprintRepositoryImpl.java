@@ -1,11 +1,11 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
-import com.swansoftwaresolutions.jirareport.domain.entity.Comment;
 import com.swansoftwaresolutions.jirareport.domain.entity.Sprint;
 import com.swansoftwaresolutions.jirareport.domain.repository.SprintRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,48 +31,33 @@ public class SprintRepositoryImpl implements SprintRepository {
     }
 
     @Override
-    public List<Sprint> findSprintsByReportId(Long reportId) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("Sprint.findByReportId");
-        query.setParameter("reportId", reportId);
-
-        @SuppressWarnings("unchecked")
-        List<Sprint> sprints = (List<Sprint>) query.list();
-
-        return sprints;
+    public List<Sprint> findByReportId(Long reportId) {
+        return (List<Sprint>) sessionFactory.openSession()
+                .createCriteria(Sprint.class).add(Restrictions.eq("reportId", reportId)).list();
     }
 
     @Override
-    public Sprint getSprintByReportIdAndAgileSprintId(Long reportId, Long agileSprintId) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("Sprint.findByReportIdAndAgileSprintId");
-        query.setParameter("reportId", reportId);
-        query.setParameter("agileSprintId", agileSprintId);
-
-        Sprint sprint = (Sprint) query.uniqueResult();
-        return sprint;
+    public Sprint findByReportIdAndAgileSprintId(Long reportId, Long agileSprintId) {
+        return (Sprint) sessionFactory.openSession()
+                .createCriteria(Sprint.class).add(Restrictions.eq("reportId", reportId)).add(Restrictions.eq("agileSprintId", agileSprintId)).uniqueResult();
     }
 
     @Override
-    public Sprint getSprintById(Long id) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("Sprint.findById");
-        query.setParameter("id", id);
-
-        Sprint sprint = (Sprint) query.uniqueResult();
-        return sprint;
+    public Sprint findById(Long id) {
+        return (Sprint) sessionFactory.openSession()
+                .createCriteria(Sprint.class).add(Restrictions.eq("id", id)).uniqueResult();
     }
 
     @Override
-    public Sprint getLastAddedSprint() {
+    public Sprint findLast() {
         Long id = (Long) sessionFactory.getCurrentSession().createSQLQuery("SELECT LAST_INSERT_ID()").uniqueResult();
-        return getSprintById(id);
+        return findById(id);
     }
 
     @Override
-    public Sprint getSprintByAgileSprintId(Long agileSprintId) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("Sprint.findByAgileSprintId");
-        query.setParameter("agileSprintId", agileSprintId);
-
-        Sprint sprint = (Sprint) query.uniqueResult();
-        return sprint;
+    public Sprint findByAgileSprintId(Long agileSprintId) {
+        return (Sprint) sessionFactory.openSession()
+                .createCriteria(Sprint.class).add(Restrictions.eq("agileSprintId", agileSprintId)).uniqueResult();
     }
 
     @Override
@@ -82,32 +67,64 @@ public class SprintRepositoryImpl implements SprintRepository {
     }
 
     @Override
-    public void update(Sprint sprint) {
+    public Sprint update(Sprint sprint) throws NoSuchEntityException{
         sessionFactory.getCurrentSession().update(sprint);
+        if (findById(sprint.getId()) == null) {
+            throw new NoSuchEntityException("Entity not found");
+        }
+
+        return (Sprint) sessionFactory.openSession().merge(sprint);
     }
 
     @Override
-    public void deleteAllSprint() {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("Sprint.deleteAll");
-
-        query.executeUpdate();
+    public void deleteAll() throws NoSuchEntityException{
+        List<Sprint> sprintList = findAll();
+        if (sprintList != null) {
+            for (Sprint sprint : sprintList) {
+                if (sprint != null) {
+                    sessionFactory.getCurrentSession().delete(sprint);
+                } else {
+                    throw new NoSuchEntityException("Entity Not Found");
+                }
+            }
+        } else {
+            throw new NoSuchEntityException("Entities Not Found");
+        }
     }
 
     @Override
-    public void delete(Sprint sprint) {
-        sessionFactory.getCurrentSession().delete(sprint);
+    public void delete(Sprint sprint) throws NoSuchEntityException{
+        Sprint deleteSprint = findById(sprint.getId());
+        if (deleteSprint != null) {
+            sessionFactory.getCurrentSession().delete(sprint);
+        } else {
+            throw new NoSuchEntityException("Entity Not Found");
+        }
     }
 
     @Override
-    public void delete(Long sprintId) {
-        sessionFactory.getCurrentSession().delete(sprintId);
+    public void delete(Long id) throws NoSuchEntityException{
+        Sprint sprint = findById(id);
+        if (sprint != null) {
+            sessionFactory.getCurrentSession().delete(sprint);
+        } else {
+            throw new NoSuchEntityException("Entity Not Found");
+        }
     }
 
     @Override
-    public void deleteSprintsByReportId(Long reportId) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("Sprint.deleteByReportId");
-        query.setParameter("reportId", reportId);
-
-        query.executeUpdate();
+    public void deleteByReportId(Long reportId) throws NoSuchEntityException{
+        List<Sprint> sprintList = findByReportId(reportId);
+        if (sprintList != null) {
+            for (Sprint sprint : sprintList) {
+                if (sprint != null) {
+                    sessionFactory.getCurrentSession().delete(sprint);
+                } else {
+                    throw new NoSuchEntityException("Entity Not Found");
+                }
+            }
+        } else {
+            throw new NoSuchEntityException("Entities Not Found");
+        }
     }
 }

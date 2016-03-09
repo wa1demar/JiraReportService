@@ -10,14 +10,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "sprints")
-@NamedQueries(value = {
-        @NamedQuery(name = "Sprint.findByReportId", query = "FROM Sprint c WHERE c.reportId = :reportId"),
-        @NamedQuery(name = "Sprint.findById", query = "FROM Sprint c WHERE c.id = :id"),
-        @NamedQuery(name = "Sprint.findByReportIdAndAgileSprintId", query = "FROM Sprint c WHERE c.reportId = :reportId AND c.agileSprintId = :agileSprintId"),
-        @NamedQuery(name = "Sprint.findByAgileSprintId", query = "FROM Sprint c WHERE c.agileSprintId = :agileSprintId"),
-        @NamedQuery(name = "Sprint.deleteAll", query = "DELETE FROM Sprint c"),
-        @NamedQuery(name = "Sprint.deleteByReportId", query = "DELETE FROM Sprint c WHERE c.reportId = :reportId"),
-})
 public class Sprint implements Serializable {
 
     @Id
