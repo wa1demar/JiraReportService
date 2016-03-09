@@ -126,7 +126,7 @@ public class CommentController {
         return new ResponseEntity<>(responseCommentDto, httpStatus);
     }
 
-    @RequestMapping(value = "/v1/comments/", method = RequestMethod.GET)
+    @RequestMapping(value = "/v1/comments/{reportId}", method = RequestMethod.GET)
     private ResponseEntity<ResponceCommentDto> findAllCommentsByReportId(@PathVariable(value = "reportId") Long reportId) {
         ResponceCommentDto responseCommentDto;
         HttpStatus httpStatus;
