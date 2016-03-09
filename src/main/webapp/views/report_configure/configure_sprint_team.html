@@ -4,13 +4,13 @@
         <form class="aui">
             <span>Team Settings</span>
             <span id="sprint-select-box">
-                    <select ng-model="sprint" ng-show="agileSprints.length > 0" id="sprint" name="sprint" class="select" style="width: 250px; margin: 0 15px; display: inline-block;">
-                        <option ng-repeat="data in agileSprints" value="{{data.id}}">{{data.name}}</option>
-                    </select>
+                <select ng-model="sprint" ng-show="agileSprints.length > 0" id="sprint" name="sprint" class="select" style="width: 250px; margin: 0 15px; display: inline-block;">
+                    <option ng-repeat="data in agileSprints" value="{{data.id}}">{{data.name}}</option>
+                </select>
 
-                    <span ng-show="agileSprints.length > 0" id="save-sprint-configure" class="aui-button">Save</span>
-                    <span ng-show="agileSprints.length > 0" id="save-sprint-configure-loader">&nbsp;</span>
-                    <span ng-show="!agileSprints || agileSprints.length === 0" class="aui-lozenge aui-lozenge-subtle aui-lozenge-error">need to add sprint</span>
+                <span ng-show="agileSprints.length > 0" ng-click="saveSprintConfigure()" id="save-sprint-configure" class="aui-button">Save</span>
+                <span ng-show="agileSprints.length > 0" id="save-sprint-configure-loader">&nbsp;</span>
+                <span ng-show="!agileSprints || agileSprints.length === 0" class="aui-lozenge aui-lozenge-subtle aui-lozenge-error">need to add sprint</span>
             </span>
 
             <div style="float: right;">
@@ -28,11 +28,14 @@
 
     <!--Auto-->
     <div ng-show="report.typeId !== 2">
-        <div ng-show="agileSprints.length > 0">
+        <div ng-show="report.sprints.length > 0">
             <form class="aui">
                 <span>Team Settings</span>
-                <select ng-model="sprint" id="sprint" name="sprint" class="select" style="width: 250px; margin: 0 15px; display: inline-block;">
-                    <option ng-repeat="data in agileSprints" value="{{data.id}}">{{data.name}}</option>
+                <select ng-model="reportModel.sprint"
+                        ng-change="getSprintTeam(reportModel.sprint)"
+                        ng-options="option.name for option in report.sprints track by option.id"
+                        id="sprint" name="sprint" class="select" style="width: 250px; margin: 0 15px; display: inline-block;">
+                    <!--<option ng-repeat="data in report.sprints" value="{{data.id}}">{{data.name}}</option>-->
                 </select>
                 <span id="save-sprint-configure" class="aui-button">Save</span>
                 <span id="save-sprint-configure-loader">&nbsp;</span>
@@ -50,7 +53,7 @@
             </div>
         </div>
 
-        <div ng-show="!agileSprints || agileSprints.length === 0">
+        <div ng-show="!reportModel.sprint || reportModel.sprint.length === 0">
             <center >Agile sprints not found</center>
         </div>
     </div>

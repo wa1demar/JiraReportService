@@ -1,10 +1,9 @@
 'use strict';
 
-jiraPluginApp.filter('checkmark', function() {
-  /** https://docs.angularjs.org/guide/filter **/
+jiraPluginApp.filter('isChecked', function() {
 
   var filterFunction = function(input) {
-    return input ? '\u2713' : '\u2718';
+    return (input === true || input === 1 || input === '1') ? true : false;
   };
 
   return filterFunction;
