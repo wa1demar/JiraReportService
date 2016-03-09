@@ -7,6 +7,7 @@ public class JiraUserDto {
     private Long id;
     private String fullName;
     private String login;
+    private Long jiraUserId;
 
 
     public Long getId() {
@@ -31,5 +32,13 @@ public class JiraUserDto {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public Long getJiraUserId() {
+        return jiraUserId;
+    }
+
+    public void setJiraUserId(Long jiraUserId) {
+        this.jiraUserId = jiraUserId;
     }
 }
