@@ -1,12 +1,8 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
 import com.swansoftwaresolutions.jirareport.core.entity.Comment;
-import com.swansoftwaresolutions.jirareport.core.entity.Report;
 import com.swansoftwaresolutions.jirareport.core.mapper.CommentMapper;
-import com.swansoftwaresolutions.jirareport.core.mapper.ReportMapper;
 import com.swansoftwaresolutions.jirareport.rest.dto.CommentDto;
-import com.swansoftwaresolutions.jirareport.rest.dto.NewReportDto;
-import com.swansoftwaresolutions.jirareport.rest.dto.ReportDto;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
