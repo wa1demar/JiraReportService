@@ -1,10 +1,13 @@
 package com.swansoftwaresolutions.jirareport.core.entity;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
  * @author Vladimir Martynyuk
+ * @author Vitaliy Holovko
  */
 
 @Entity
@@ -16,14 +19,18 @@ public class AdminReport implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "report_id")
-    private Long reportId;
+
+    @ManyToOne
+    @JoinTable(name="report_adminreport",
+            joinColumns={@JoinColumn(name="report_id")},
+            inverseJoinColumns={@JoinColumn(name="adminreport_id")})
+private Report report;
 
     @Column(name = "name")
-    private String name;
+    private String login;
 
     @Column(name = "display_name")
-    private String displayName;
+    private String fullName;
 
     public Long getId() {
         return id;
@@ -33,27 +40,27 @@ public class AdminReport implements Serializable {
         this.id = id;
     }
 
-    public Long getReportId() {
-        return reportId;
+    public Report getReport() {
+        return report;
     }
 
-    public void setReportId(Long reportId) {
-        this.reportId = reportId;
+    public void setReport(Report report) {
+        this.report = report;
     }
 
-    public String getName() {
-        return name;
+    public String getLogin() {
+        return login;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 }
