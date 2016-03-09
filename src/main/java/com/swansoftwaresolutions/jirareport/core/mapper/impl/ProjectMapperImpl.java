@@ -1,7 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
-import com.swansoftwaresolutions.jirareport.core.entity.Project;
 import com.swansoftwaresolutions.jirareport.core.mapper.ProjectMapper;
+import com.swansoftwaresolutions.jirareport.domain.entity.Project;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.ProjectDto;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;

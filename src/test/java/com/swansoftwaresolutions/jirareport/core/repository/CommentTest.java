@@ -4,8 +4,6 @@ import com.swansoftwaresolutions.jirareport.core.entity.Comment;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import static org.junit.Assert.*;
-
 /**
  * @author Vladimir Martynyuk
  */

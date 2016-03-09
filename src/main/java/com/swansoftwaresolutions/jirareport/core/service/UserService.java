@@ -1,7 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.service;
 
-import com.swansoftwaresolutions.jirareport.rest.dto.UserDto;
-import com.swansoftwaresolutions.jirareport.rest.dto.UserLoginDto;
+import com.swansoftwaresolutions.jirareport.core.dto.UserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.UserLoginDto;
 
 /**
  * @author Vladimir Martynyuk

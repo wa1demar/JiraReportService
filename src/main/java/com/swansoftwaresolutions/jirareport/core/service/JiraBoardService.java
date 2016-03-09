@@ -1,9 +1,9 @@
 package com.swansoftwaresolutions.jirareport.core.service;
 
-import com.swansoftwaresolutions.jirareport.core.entity.JiraBoard;
-import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
-import com.swansoftwaresolutions.jirareport.rest.dto.JiraBoardInfoDto;
-import com.swansoftwaresolutions.jirareport.rest.dto.JiraBoardsDto;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
+import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
+import com.swansoftwaresolutions.jirareport.core.dto.JiraBoardInfoDto;
+import com.swansoftwaresolutions.jirareport.core.dto.JiraBoardsDto;
 
 import java.util.List;
 

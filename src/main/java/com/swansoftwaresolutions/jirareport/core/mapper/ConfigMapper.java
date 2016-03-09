@@ -1,7 +1,8 @@
 package com.swansoftwaresolutions.jirareport.core.mapper;
 
-import com.swansoftwaresolutions.jirareport.core.entity.Config;
-import com.swansoftwaresolutions.jirareport.rest.dto.ConfigDto;
+
+import com.swansoftwaresolutions.jirareport.core.dto.ConfigDto;
+import com.swansoftwaresolutions.jirareport.domain.entity.Config;
 
 /**
  * @author Vitaliy Hollovko

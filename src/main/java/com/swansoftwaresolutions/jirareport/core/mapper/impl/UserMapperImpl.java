@@ -1,9 +1,9 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
-import com.swansoftwaresolutions.jirareport.core.entity.User;
+import com.swansoftwaresolutions.jirareport.core.dto.UserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.UserLoginDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.UserMapper;
-import com.swansoftwaresolutions.jirareport.rest.dto.UserDto;
-import com.swansoftwaresolutions.jirareport.rest.dto.UserLoginDto;
+import com.swansoftwaresolutions.jirareport.domain.entity.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

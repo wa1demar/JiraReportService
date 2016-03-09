@@ -1,10 +1,10 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
-import com.swansoftwaresolutions.jirareport.core.entity.JiraBoard;
-import com.swansoftwaresolutions.jirareport.core.entity.Project;
+import com.swansoftwaresolutions.jirareport.core.dto.JiraBoardDto;
+import com.swansoftwaresolutions.jirareport.core.dto.JiraBoardInfoDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraBoardMapper;
-import com.swansoftwaresolutions.jirareport.rest.dto.JiraBoardDto;
-import com.swansoftwaresolutions.jirareport.rest.dto.JiraBoardInfoDto;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
+import com.swansoftwaresolutions.jirareport.domain.entity.Project;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;

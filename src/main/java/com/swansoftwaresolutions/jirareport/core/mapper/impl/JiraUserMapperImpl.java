@@ -1,8 +1,8 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
-import com.swansoftwaresolutions.jirareport.core.entity.JiraUser;
+import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
-import com.swansoftwaresolutions.jirareport.rest.dto.JiraUserDto;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;

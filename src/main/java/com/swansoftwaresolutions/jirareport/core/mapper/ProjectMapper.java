@@ -1,6 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.mapper;
 
-import com.swansoftwaresolutions.jirareport.core.entity.Project;
+import com.swansoftwaresolutions.jirareport.domain.entity.Project;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.ProjectDto;
 
 import java.util.List;

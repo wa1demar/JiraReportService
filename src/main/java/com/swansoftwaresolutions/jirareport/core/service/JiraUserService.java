@@ -1,12 +1,10 @@
 package com.swansoftwaresolutions.jirareport.core.service;
 
-import com.swansoftwaresolutions.jirareport.core.entity.JiraUser;
-import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
-import com.swansoftwaresolutions.jirareport.rest.dto.JiraUserDto;
-import com.swansoftwaresolutions.jirareport.rest.dto.JiraUsersDto;
-import org.springframework.util.MultiValueMap;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
+import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
+import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.JiraUsersDto;
 
-import java.util.Collection;
 import java.util.List;
 
 /**

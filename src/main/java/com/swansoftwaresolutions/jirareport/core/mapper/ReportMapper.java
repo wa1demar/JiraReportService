@@ -1,14 +1,13 @@
 package com.swansoftwaresolutions.jirareport.core.mapper;
 
-import com.swansoftwaresolutions.jirareport.core.entity.Report;
-import com.swansoftwaresolutions.jirareport.rest.dto.NewReportDto;
-import com.swansoftwaresolutions.jirareport.rest.dto.ReportDto;
+import com.swansoftwaresolutions.jirareport.core.dto.NewReportDto;
+import com.swansoftwaresolutions.jirareport.core.dto.ReportDto;
+import com.swansoftwaresolutions.jirareport.domain.entity.Report;
 
 import java.util.List;
 
 /**
  * @author Vitaliy Holovko
- *         on 04.03.16.
  */
 public interface ReportMapper {
 

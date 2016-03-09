@@ -1,8 +1,9 @@
 package com.swansoftwaresolutions.jirareport.core.mapper;
 
-import com.swansoftwaresolutions.jirareport.core.entity.JiraBoard;
-import com.swansoftwaresolutions.jirareport.rest.dto.JiraBoardDto;
-import com.swansoftwaresolutions.jirareport.rest.dto.JiraBoardInfoDto;
+
+import com.swansoftwaresolutions.jirareport.core.dto.JiraBoardDto;
+import com.swansoftwaresolutions.jirareport.core.dto.JiraBoardInfoDto;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
 
 import java.util.List;
 

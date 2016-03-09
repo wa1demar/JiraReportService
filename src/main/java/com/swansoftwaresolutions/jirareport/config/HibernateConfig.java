@@ -23,7 +23,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @PropertySource("classpath:database.properties")
-@ComponentScan({"com.swansoftwaresolutions.jirareport.core.repository.impl"})
+@ComponentScan({"com.swansoftwaresolutions.jirareport.domain.repository.impl"})
 public class HibernateConfig {
 
     @Value("${database.driver}")
@@ -58,7 +58,7 @@ public class HibernateConfig {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("com.swansoftwaresolutions.jirareport.core.entity");
+        sessionFactory.setPackagesToScan("com.swansoftwaresolutions.jirareport.domain.entity");
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }

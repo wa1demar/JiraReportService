@@ -1,8 +1,8 @@
 package com.swansoftwaresolutions.jirareport.core.mapper;
 
-import com.swansoftwaresolutions.jirareport.core.entity.User;
-import com.swansoftwaresolutions.jirareport.rest.dto.UserDto;
-import com.swansoftwaresolutions.jirareport.rest.dto.UserLoginDto;
+import com.swansoftwaresolutions.jirareport.core.dto.UserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.UserLoginDto;
+import com.swansoftwaresolutions.jirareport.domain.entity.User;
 
 /**
  * @author Vladimir Martynyuk

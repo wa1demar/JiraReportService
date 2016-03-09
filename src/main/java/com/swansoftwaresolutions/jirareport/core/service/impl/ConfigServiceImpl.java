@@ -1,9 +1,9 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
 import com.swansoftwaresolutions.jirareport.core.mapper.ConfigMapper;
-import com.swansoftwaresolutions.jirareport.core.repository.ConfigRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.ConfigRepository;
 import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
-import com.swansoftwaresolutions.jirareport.rest.dto.ConfigDto;
+import com.swansoftwaresolutions.jirareport.core.dto.ConfigDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

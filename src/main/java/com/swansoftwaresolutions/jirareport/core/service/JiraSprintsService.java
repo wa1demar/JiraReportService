@@ -1,7 +1,8 @@
 package com.swansoftwaresolutions.jirareport.core.service;
 
-import com.swansoftwaresolutions.jirareport.core.entity.Sprint;
-import com.swansoftwaresolutions.jirareport.core.repository.exception.NoSuchEntityException;
+import com.swansoftwaresolutions.jirareport.domain.entity.Sprint;
+import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
+import com.swansoftwaresolutions.jirareport.core.dto.SprintsDto;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface JiraSprintsService {
     void delete(Sprint sprint) throws NoSuchEntityException;
 
     void delete(Long sprintId) throws NoSuchEntityException;
+
+    SprintsDto retrieveByReportId(long reportId, int typeId);
 }
