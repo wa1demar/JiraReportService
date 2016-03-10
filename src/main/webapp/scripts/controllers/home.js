@@ -8,7 +8,8 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibMo
 
     this.getReportsData = function () {
       // console.log(ReportFactory.get({id: 2}));
-      $scope.dataOngoing = ReportsFactory.query({}, function(){
+      var dataOngoing = ReportsFactory.query({}, function(){
+        $scope.dataOngoing = dataOngoing.reports;
         $scope.loaderShow = false;
       });
       $scope.dataClosed = [];
