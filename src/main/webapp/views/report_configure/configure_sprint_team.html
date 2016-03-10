@@ -14,9 +14,9 @@
             </span>
 
             <div style="float: right;">
-                <a ng-click="addSprint()" href="" class="aui-button show-sprint-element-dialog">Add Sprint</a>
-                <a ng-click="editSprint()" id="edit-sprint-link" href="" class="aui-button show-sprint-element-dialog">Edit Sprint</a>
-                <span ng-click="deleteSprint()" id="delete-sprint-data" class="aui-button">Delete Sprint</span>
+                <a ng-click="processSprint('add')" href="" class="aui-button show-sprint-element-dialog">Add Sprint</a>
+                <a ng-show="agileSprints.length > 0" ng-click="processSprint('edit')" id="edit-sprint-link" href="" class="aui-button show-sprint-element-dialog">Edit Sprint</a>
+                <span ng-show="agileSprints.length > 0" ng-click="deleteSprint()" id="delete-sprint-data" class="aui-button">Delete Sprint</span>
                 <span id="delete-sprint-data-loader">&nbsp;</span>
             </div>
         </form>
