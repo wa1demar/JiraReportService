@@ -27,65 +27,61 @@
         </div>
 
         <hr/>
-        <div class="configure-dev-row">
-            <div class="dev-data">
-                <div><strong>Developer</strong></div>
-            </div>
-            <div class="dev-value">
-                <div><strong>Engineer Level</strong></div>
-            </div>
-            <div class="dev-value">
-                <div><strong>Participation Level</strong></div>
-            </div>
-            <div class="dev-value">
-                <div><strong>Days in Sprint</strong></div>
-            </div>
-        </div>
-        <!--{{sprintTeams = sprint.sprintTeams; ""}}-->
         <div ng-show="sprintTeams.length > 0" id="has-sprint-team-data" style="display: none"></div>
-        <div ng-show="sprintTeams.length > 0" ng-repeat="data in sprintTeams" class="configure-dev-row" data-id="{{data.id}}">
-            <div class="dev-data">
-                <select ng-model="data.devName" ui-select2 class="developer-name" disabled>
-                    <option ng-repeat="dataUser in devUsers" value="{{dataUser.fullName}}">{{dataUser.fullName}}</option>
-                </select>
-                <span class="aui-button delete-developer" data-id="{{data.id}}" ng-click="deleteDeveloper(data.devName)">Delete</span>
-            </div>
-            <div class="dev-value">
-                <select ng-change="calcParams()" class="select engineer-lvl" ng-model="data.engineerLvl">
-                    <option ng-repeat="engLvl in [1, 2, 3, 4]" value="{{engLvl}}" >EL{{engLvl}}</option>
-                </select>
-            </div>
-            <div class="dev-value">
-                <select ng-change="calcParams()" class="select participation-lvl" ng-model="data.participationLvl">
-                    <option value="1.0">1.0</option>
-                    <option value="0.9">0.9</option>
-                    <option value="0.8">0.8</option>
-                    <option value="0.7">0.7</option>
-                    <option value="0.6">0.6</option>
-                    <option value="0.5">0.5</option>
-                    <option value="0.4">0.4</option>
-                    <option value="0.3">0.3</option>
-                    <option value="0.2">0.2</option>
-                    <option value="0.1">0.1</option>
-                </select>
-            </div>
-            <div class="dev-value" style="width: 300px;">
-                <input ng-change="calcParams()" type="number" min="1" step="1" name="days-in-sprint" class="text days-in-sprint" ng-model="data.daysInSprint" string-to-number/>
-                <span ng-show="reportModel.sprint.type === 2" class="aui-button sprint-team-activity" data-id="{{data.id}}" style="margin-left: 10px;">Activity</span>
-            </div>
-        </div>
-
-        <div class="configure-dev-row">
-            <div class="dev-data">
-                <select ui-select2 class="developer-name" ng-model="dataUser.name">
-                    <option value="0">Add ...</option>
-                    <option ng-repeat="dataUser in devUsers" ng-hide="data.devName === dataUser.fullName" ng-disabled="data.devName === dataUser.fullName" style="float: left;">{{dataUser.fullName}}</option>
-                </select>
-                <span ng-disabled="!dataUser.name || dataUser.name === '0'" ng-click="addDeveloper(dataUser.name)" id="add-sprint-team" class="aui-button">Add</span>
-            </div>
-        </div>
-
-
+        <!--<div>-->
+            <table class="aui table table-preview-details" style="width: inherit;">
+                <thead>
+                    <tr>
+                        <th style="width: 300px; border-right: 2px solid black;">Developer</th>
+                        <th style="width: 150px; border-right: 2px solid black;">Engineer Level</th>
+                        <th style="width: 150px; border-right: 2px solid black;">Participation Level</th>
+                        <th style="width: 300px;">Days in Sprint</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-show="sprintTeams.length > 0" ng-repeat="data in sprintTeams" class="configure-dev-row" data-id="{{data.id}}">
+                        <td style="border-right: 2px solid black;">
+                            <select ui-select2 ng-model="data.devName" class="developer-name" disabled>
+                                <option ng-repeat="dataUser in devUsers" value="{{dataUser.fullName}}">{{dataUser.fullName}}</option>
+                            </select>
+                            <span class="aui-button delete-developer" data-id="{{data.id}}" ng-click="deleteDeveloper(data.devName)">Delete</span>
+                        </td>
+                        <td style="border-right: 2px solid black;">
+                            <select ng-change="calcParams()" class="select engineer-lvl" ng-model="data.engineerLvl">
+                                <option ng-repeat="engLvl in [1, 2, 3, 4]" value="{{engLvl}}" >EL{{engLvl}}</option>
+                            </select>
+                        </td>
+                        <td style="border-right: 2px solid black;">
+                            <select ng-change="calcParams()" class="select participation-lvl" ng-model="data.participationLvl">
+                                <option value="1.0">1.0</option>
+                                <option value="0.9">0.9</option>
+                                <option value="0.8">0.8</option>
+                                <option value="0.7">0.7</option>
+                                <option value="0.6">0.6</option>
+                                <option value="0.5">0.5</option>
+                                <option value="0.4">0.4</option>
+                                <option value="0.3">0.3</option>
+                                <option value="0.2">0.2</option>
+                                <option value="0.1">0.1</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input ng-change="calcParams()" type="number" min="1" step="1" name="days-in-sprint" class="text days-in-sprint" ng-model="data.daysInSprint" string-to-number/>
+                            <span ng-show="reportModel.sprint.type === 2" class="aui-button sprint-team-activity" data-id="{{data.id}}" style="margin-left: 10px;">Activity</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select ui-select2 ng-model="dataUser.name" class="developer-name" style="width: 180px; padding-right: 5px;">
+                                <option value="0">Add ...</option>
+                                <option ng-repeat="dataUser in devUsers" ng-hide="data.devName === dataUser.fullName" ng-disabled="data.devName === dataUser.fullName" style="float: left;">{{dataUser.fullName}}</option>
+                            </select>
+                            <span ng-disabled="!dataUser.name || dataUser.name === '0'" ng-click="addDeveloper(dataUser.name)" id="add-sprint-team" class="aui-button">Add</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        <!--</div>-->
         <hr/>
         <div><strong>Preview details</strong></div>
         <div>
