@@ -231,13 +231,13 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl', ['$scope', '$routeParams', '
             if (data.id === 2) {
                 $scope.sprintTeams = [
                     {
-                        devName: "vholovko",
+                        devName: "Alina Nor",
                         engineerLvl: "3",
                         participationLvl: "0.5",
                         daysInSprint: 5
                     },
                     {
-                        devName: "slevchenko",
+                        devName: "Yevhenii Vuksta",
                         engineerLvl: "1",
                         participationLvl: "0.6",
                         daysInSprint: 7
@@ -249,8 +249,8 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl', ['$scope', '$routeParams', '
             $scope.calcParams();
         };
 
-        $scope.dataUser = {
-            name: 0
+        $scope.dataDeveloper = {
+            fullName: 0
         };
         $scope.addDeveloper = function (item) {
             console.log(item);
@@ -261,8 +261,8 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl', ['$scope', '$routeParams', '
                 participationLvl: "1.0",
                 daysInSprint: 1
             });
-            $scope.dataUser = {
-                name: 0
+            $scope.dataDeveloper = {
+                fullName: 0
             };
             $scope.calcParams();
         };
@@ -271,6 +271,12 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl', ['$scope', '$routeParams', '
             console.log(item);
             var index = $scope.sprintTeams.indexOf(item);
             $scope.sprintTeams.splice(index, 1);
+        };
+
+        $scope.saveSprintConfigure = function () {
+            console.log($routeParams.reportId);
+            console.log($scope.reportModel);
+            console.log($scope.sprintTeams);
         };
     }
 ]);
