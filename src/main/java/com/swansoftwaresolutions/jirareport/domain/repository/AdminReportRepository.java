@@ -1,23 +1,23 @@
 package com.swansoftwaresolutions.jirareport.domain.repository;
 
-import com.swansoftwaresolutions.jirareport.domain.entity.AdminReport;
+import com.swansoftwaresolutions.jirareport.domain.entity.Admin;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 
 import java.util.List;
 
 public interface AdminReportRepository {
 
-    List<AdminReport> findAll();
+    List<Admin> findAll();
 
-    List<AdminReport> findByReportId(final Long reportId);
+    List<Admin> findByReportId(final Long reportId);
 
-    AdminReport findById(final Long id);
+    Admin findById(final Long id);
 
-    AdminReport add(final AdminReport adminReport);
+    Admin add(final Admin admin);
 
-    AdminReport update(final AdminReport adminReport) throws NoSuchEntityException;
+    Admin update(final Admin admin) throws NoSuchEntityException;
 
-    void delete(final AdminReport adminReport) throws NoSuchEntityException;
+    void delete(final Admin admin) throws NoSuchEntityException;
 
     void deleteAll() throws NoSuchEntityException;
 

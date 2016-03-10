@@ -11,8 +11,8 @@ import java.io.Serializable;
  */
 
 @Entity
-@Table(name = "admin_reports")
-public class AdminReport implements Serializable {
+@Table(name = "admins")
+public class Admin implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -20,10 +20,8 @@ public class AdminReport implements Serializable {
     private Long id;
 
     @ManyToOne
-    @JoinTable(name="report_adminreport",
-            joinColumns={@JoinColumn(name="report_id")},
-            inverseJoinColumns={@JoinColumn(name="adminreport_id")})
-private Report report;
+    @JoinColumn(name = "report_id")
+    private Report report;
 
     @Column(name = "name")
     private String login;

@@ -1,8 +1,4 @@
-package com.swansoftwaresolutions.jirareport.core.dto;
-
-import com.swansoftwaresolutions.jirareport.core.dto.ReportDto;
-
-import java.util.List;
+package com.swansoftwaresolutions.jirareport.core.dto.adminreport;
 
 /**
  * @author Vitaliy Holovko
@@ -13,7 +9,6 @@ public class AdminReportDto {
     private Long id;
     private String login;
     private String fullName;
-    private List<ReportDto> report;
 
 
     public Long getId() {
@@ -38,13 +33,5 @@ public class AdminReportDto {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-    }
-
-    public List<ReportDto> getReport() {
-        return report;
-    }
-
-    public void setReport(List<ReportDto> report) {
-        this.report = report;
     }
 }

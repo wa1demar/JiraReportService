@@ -1,9 +1,9 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
 import com.swansoftwaresolutions.jirareport.core.mapper.AdminReportMapper;
-import com.swansoftwaresolutions.jirareport.domain.entity.AdminReport;
+import com.swansoftwaresolutions.jirareport.domain.entity.Admin;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
-import com.swansoftwaresolutions.jirareport.core.dto.AdminReportDto;
+import com.swansoftwaresolutions.jirareport.core.dto.adminreport.AdminReportDto;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,24 +22,24 @@ public class AdminReportMapperImpl implements AdminReportMapper {
     ModelMapper modelMapper;
 
     @Override
-    public AdminReportDto toDto(AdminReport adminReport) {
-        return modelMapper.map(adminReport, AdminReportDto.class);
+    public AdminReportDto toDto(Admin admin) {
+        return modelMapper.map(admin, AdminReportDto.class);
     }
 
     @Override
-    public List<AdminReportDto> toDtos(List<AdminReport> adminReportList) {
+    public List<AdminReportDto> toDtos(List<Admin> adminList) {
         Type targetistType = new TypeToken<List<AdminReportDto>>(){}.getType();
-        return modelMapper.map(adminReportList, targetistType);
+        return modelMapper.map(adminList, targetistType);
     }
 
     @Override
-    public AdminReport fromDto(AdminReportDto adminReportDto) {
-        return modelMapper.map(adminReportDto, AdminReport.class);
+    public Admin fromDto(AdminReportDto adminReportDto) {
+        return modelMapper.map(adminReportDto, Admin.class);
     }
 
     @Override
-    public List<AdminReport> fromDtos(List<AdminReportDto> adminReportDtoList) {
-        Type targetistType = new TypeToken<List<AdminReport>>(){}.getType();
+    public List<Admin> fromDtos(List<AdminReportDto> adminReportDtoList) {
+        Type targetistType = new TypeToken<List<Admin>>(){}.getType();
         return modelMapper.map(adminReportDtoList, targetistType);
     }
 

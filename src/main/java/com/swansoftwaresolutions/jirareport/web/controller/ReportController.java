@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
-import com.swansoftwaresolutions.jirareport.core.dto.ReportDto;
+import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
+import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDto;
 import com.swansoftwaresolutions.jirareport.core.dto.responce.ResponceReportDto;
 import com.swansoftwaresolutions.jirareport.core.service.ReportService;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -27,6 +28,14 @@ public class ReportController {
     public ReportController(ReportService reportService) {
         this.reportService = reportService;
     }
+
+    @RequestMapping(value = "/v1/reports", method = RequestMethod.GET)
+    private ResponseEntity<ReportListDto> getAllReports() {
+        ReportListDto reportDtos = reportService.retrieveAllReportsList();
+        return new ResponseEntity<>(reportDtos, HttpStatus.OK);
+    }
+
+
 
 //    @RequestMapping(value = "/v1/report", method = RequestMethod.POST)
     @RequestMapping(value = "/auth/create", method = RequestMethod.POST)
@@ -64,15 +73,6 @@ public class ReportController {
         }
 
         return new ResponseEntity<>(responsePostDto, httpStatus);
-    }
-
-    @RequestMapping(value = "/auth/report", method = RequestMethod.GET)
-//    @RequestMapping(value = "/v1/report", method = RequestMethod.GET)
-    private ResponseEntity<List<ReportDto>> findAllReports() {
-        //ToDo Add responce. Need to modify Dto
-        List<ReportDto> reportDtos = reportService.findAll();
-
-        return new ResponseEntity<>(reportDtos, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/v1/report/copy", method = RequestMethod.POST)

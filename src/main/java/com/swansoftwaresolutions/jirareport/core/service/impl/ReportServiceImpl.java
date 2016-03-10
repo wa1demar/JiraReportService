@@ -1,18 +1,20 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.ReportResponceDto;
+import com.swansoftwaresolutions.jirareport.core.dto.adminreport.AdminReportDto;
+import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDto;
+import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDtoBuilder;
 import com.swansoftwaresolutions.jirareport.core.mapper.AdminReportMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
 import com.swansoftwaresolutions.jirareport.core.service.AdminReportService;
-import com.swansoftwaresolutions.jirareport.domain.entity.Report;
 import com.swansoftwaresolutions.jirareport.core.mapper.ReportMapper;
+import com.swansoftwaresolutions.jirareport.domain.entity.Report;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.ReportRepository;
-import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.service.ReportService;
-import com.swansoftwaresolutions.jirareport.core.dto.ReportDto;
-import com.swansoftwaresolutions.jirareport.core.dto.AdminReportDto;
-import com.swansoftwaresolutions.jirareport.core.dto.ReportResponceDto;
+import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
+import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,10 +48,11 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     AdminReportMapper adminReportMapper;
 
-
     @Override
-    public List<ReportDto> findAll() {
-        return reportMapper.toDtos(reportRepository.findAll());
+    public ReportListDto retrieveAllReportsList() {
+        List<ReportDto> reportDtos = reportMapper.toDtos(reportRepository.findAll());
+
+        return new ReportListDtoBuilder().reportsDto(reportDtos).build();
     }
 
     @Override
@@ -93,8 +96,8 @@ public class ReportServiceImpl implements ReportService {
         reportDto.setCreator(jiraUser.getLogin());
         reportDto.setCreatorId(jiraUser.getId());
         reportDto.setCreatedDate(new Date());
-        reportDto.setAdminReports(adminReportDtos);
-        reportDto.setIsClosed(false);
+        reportDto.setAdmins(adminReportDtos);
+        reportDto.setClosed(false);
 
         return reportDto;
     }
