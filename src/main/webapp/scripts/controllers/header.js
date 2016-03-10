@@ -1,7 +1,7 @@
 'use strict';
 
-jiraPluginApp.controller("HeaderCtrl", ['$scope', '$location', 'UserAuthFactory','$uibModal', 'CONFIG',
-  function($scope, $location, UserAuthFactory, $uibModal, CONFIG) {
+jiraPluginApp.controller("HeaderCtrl", ['$scope', '$location', 'UserAuthFactory','$uibModal', 'ConfigFactory',
+  function($scope, $location, UserAuthFactory, $uibModal, ConfigFactory) {
 
     $scope.isActive = function(route) {
       return route === $location.path();
@@ -26,19 +26,22 @@ jiraPluginApp.controller("HeaderCtrl", ['$scope', '$location', 'UserAuthFactory'
         }
       });
       modalInstance.result.then(function (data) {
-        //TODO save config
-        console.log(data);
+        ConfigFactory.update(data);
       }, function () {});
     };
   }
 ]);
 
-jiraPluginApp.controller('DlgProcessConfigCtrl', ['$scope', '$uibModalInstance', 'dlgData',
-  function ($scope, $uibModalInstance, dlgData) {
+jiraPluginApp.controller('DlgProcessConfigCtrl', ['$scope', '$uibModalInstance', 'dlgData', 'ConfigFactory',
+  function ($scope, $uibModalInstance, dlgData, ConfigFactory) {
     $scope.dlgData = dlgData;
 
+    var boards = ConfigFactory.get(function(){
+      $scope.configData = boards;
+    });
+
     $scope.ok = function () {
-      $uibModalInstance.close($scope.model);
+      $uibModalInstance.close($scope.configData);
     };
 
     $scope.cancel = function () {
