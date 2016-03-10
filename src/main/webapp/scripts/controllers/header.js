@@ -26,9 +26,7 @@ jiraPluginApp.controller("HeaderCtrl", ['$scope', '$location', 'UserAuthFactory'
         }
       });
       modalInstance.result.then(function (data) {
-        //TODO save config
         ConfigFactory.update(data);
-        console.log(data);
       }, function () {});
     };
   }

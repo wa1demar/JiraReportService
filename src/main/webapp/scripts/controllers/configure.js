@@ -3,7 +3,7 @@
 jiraPluginApp.controller('ConfigureCtrl', ['$scope',
     function($scope) {
         var self = this;
-        //------------------------------------------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------------------------------------
         //Tabs
         $scope.tabs = [{
             title: 'Team settings',
@@ -49,7 +49,7 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
             }
         };
 
-        //==================================================================================================================
+        //==============================================================================================================
         //Calender
         $scope.dateOptions = {
             dateDisabled: disabled,
@@ -85,66 +85,16 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
 ]);
 
 //Configure sprint team data
-jiraPluginApp.controller('ConfigureSprintTeamCtrl', ['$scope', '$routeParams', '$uibModal', 'ReportFactory', 'UsersFactory', 'CONFIG',
-    function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, CONFIG) {
+jiraPluginApp.controller('ConfigureSprintTeamCtrl',
+    ['$scope', '$routeParams', '$uibModal', 'ReportFactory', 'UsersFactory', 'SprintFactory', 'SprintTeamFactory', 'CONFIG',
+    function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, SprintFactory, SprintTeamFactory, CONFIG) {
 
         var self = this;
+        $scope.sprintTeams = [];
 
         var users = UsersFactory.query(function(){
             $scope.devUsers = users.users;
         });
-
-        //$scope.report = ReportFactory.get({id: $routeParams.reportId});
-        $scope.report = {
-            title: "title",
-            typeId: 1,
-            boardName: "Test",
-            isClosed: true,
-            dateClose: new Date(),
-            sprints: [
-                {
-                    id: 1,
-                    name: 'Sprint 1',
-                    type: '1',
-                    notCountTarget: true,
-                    showUat: true
-                },
-                {
-                    id: 2,
-                    name: 'Sprint 2',
-                    type: '0',
-                    notCountTarget: true,
-                    showUat: false,
-                    sprintTeams: [
-                        {
-                            devName: "vholovko",
-                            engineerLvl: "3",
-                            participationLvl: "0.5",
-                            daysInSprint: "5"
-                        },
-                        {
-                            devName: "slevchenko",
-                            engineerLvl: "1",
-                            participationLvl: "0.6",
-                            daysInSprint: "7"
-                        }
-                    ]
-                },
-                {
-                    id: 3,
-                    name: 'Sprint 3',
-                    type: '2',
-                    notCountTarget: false,
-                    showUat: false
-                }
-            ]
-        };
-
-        $scope.reportModel = {
-            sprint: $scope.report.sprints[0]
-        };
-
-        $scope.sprintTeams = [];
 
         //Function for calc preview values
         $scope.calcParams = function(){
@@ -228,6 +178,18 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl', ['$scope', '$routeParams', '
         };
 
         $scope.getSprintTeam = function (data) {
+            //TODO add get sprint teams by reportId and agileSprintId
+            //SprintTeamFactory.get({
+            //    reportId: $routeParams.reportId,
+            //    sprintId: data.id
+            //}, function (data) {
+            //    console.log(data);
+            //    //$scope.sprintTeams = data;
+            //}, function (error) {
+            //    console.log(error);
+            //    $scope.sprintTeams = [];
+            //});
+
             if (data.id === 2) {
                 $scope.sprintTeams = [
                     {
@@ -246,8 +208,64 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl', ['$scope', '$routeParams', '
             } else {
                 $scope.sprintTeams = [];
             }
+
             $scope.calcParams();
         };
+
+        //$scope.report = ReportFactory.get({id: $routeParams.reportId});
+        $scope.report = {
+            title: "title",
+            typeId: 1,
+            boardName: "Test",
+            isClosed: true,
+            dateClose: new Date(),
+            sprints: [
+                {
+                    id: 1,
+                    name: 'Sprint 1',
+                    type: '1',
+                    notCountTarget: true,
+                    showUat: true
+                },
+                {
+                    id: 2,
+                    name: 'Sprint 2',
+                    type: '0',
+                    notCountTarget: true,
+                    showUat: false,
+                    sprintTeams: [
+                        {
+                            devName: "vholovko",
+                            engineerLvl: "3",
+                            participationLvl: "0.5",
+                            daysInSprint: "5"
+                        },
+                        {
+                            devName: "slevchenko",
+                            engineerLvl: "1",
+                            participationLvl: "0.6",
+                            daysInSprint: "7"
+                        }
+                    ]
+                },
+                {
+                    id: 3,
+                    name: 'Sprint 3',
+                    type: '2',
+                    notCountTarget: false,
+                    showUat: false
+                }
+            ]
+        };
+
+        $scope.reportModel = {
+            sprint: $scope.report.sprints[0]
+        };
+
+        //get sprint team for first sprint
+        $scope.getSprintTeam({
+            id: $scope.report.sprints[0].id
+        });
 
         $scope.dataDeveloper = {
             fullName: 0
@@ -274,9 +292,18 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl', ['$scope', '$routeParams', '
         };
 
         $scope.saveSprintConfigure = function () {
-            console.log($routeParams.reportId);
-            console.log($scope.reportModel);
-            console.log($scope.sprintTeams);
+            //TODO save sprint data (with sprint team)
+            var sprint = {
+                sprint:      $scope.reportModel.sprint,
+                sprintTeams: $scope.sprintTeams
+            };
+
+            //SprintFactory.update({
+            //    reportId: $routeParams.reportId,
+            //    sprintId: $scope.reportModel.sprint.id
+            //}, sprint, function () {
+            //    console.log("Save sprint");
+            //});
         };
     }
 ]);
