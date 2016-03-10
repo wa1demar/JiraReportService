@@ -1,0 +1,32 @@
+<header id="ghx-header" class="aui-page-header">
+  <div class="aui-page-header-inner">
+    <div class="aui-page-header-main">
+      <h2>Dashboards</h2>
+    </div>
+    <div class="aui-page-header-actions">
+      <button class="btn btn-primary" type="submit" ng-click="processReport()" >Create dashboard</button>
+    </div>
+  </div>
+</header>
+<div class="ghx-content-main">
+  <div class="aui-page-panel" id="manage-boards-page">
+    <div class="aui-page-panel-inner">
+      <div class="aui-page-panel-nav">
+        <nav class="aui-navgroup aui-navgroup-vertical">
+          <div class="aui-navgroup-inner">
+            <ul class="aui-nav" id="reports-list-nav">
+              <li ng-repeat="tab in tabs"
+                  ng-class="{active:isActiveTab(tab.url)}"
+                  ng-click="onClickTab(tab)"><a href="">{{tab.title}}</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <section class="aui-page-panel-content">
+          <div id="report-box">
+            <div ng-include="currentTab"></div>
+          </div>
+      </section>
+    </div>
+  </div>
+</div>

@@ -1,10 +1,94 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <link rel="stylesheet" href="http://aui-cdn.atlassian.com/aui-adg/5.9.13/css/aui.min.css" media="all">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="http://aui-cdn.atlassian.com/aui-adg/5.9.13/js/aui.min.js"></script>
+
+    <link rel="stylesheet" href="scripts/vendors/select2/select2.css" />
+    <link rel="stylesheet" href="scripts/vendors/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/AgileReportPlugin.css">
 </head>
-<body>
-Hello word from static folder
+<body ng-app="jiraPluginApp">
+    <!--[if lte IE 8]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <div class="navbar navbar-default" role="navigation" ng-controller="HeaderCtrl">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" ng-show="showMenu">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button> <a class="navbar-brand" href="#/">Swan Dashboards</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav" ng-show="showMenu">
+                    <li ng-class="{active:isActive('/')}"><a href="#/">Dashboard</a></li>
+                    <li ng-class="{active:isActive('/portfolio')}"><a ng-href="#/portfolio">Portfolio</a></li>
+                    <li><a href="javascript:" ng-click="processConfig()">Settings</a></li>
+                    <li><a href="javascript:" ng-click="logout()">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!--<div class="container">-->
+    <div style="">
+        <div ng-view=""></div>
+    </div>
+
+    <!--<div class="footer">-->
+        <!--<div class="container">-->
+            <!--<p class="text-muted">Place sticky footer content here-->
+                <!--<a class="pull-right" href="http://google.com" target="_blank">google.com</a>-->
+            <!--</p>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <script src="scripts/vendors/jquery/dist/jquery.js"></script>
+    <script src="scripts/vendors/angular/angular.js"></script>
+    <script src="scripts/vendors/angular-animate/angular-animate.js"></script>
+    <script src="scripts/vendors/angular-cookies/angular-cookies.js"></script>
+    <script src="scripts/vendors/angular-resource/angular-resource.js"></script>
+    <script src="scripts/vendors/angular-route/angular-route.js"></script>
+    <script src="scripts/vendors/angular-sanitize/angular-sanitize.js"></script>
+    <script src="scripts/vendors/angular-touch/angular-touch.js"></script>
+    <script src="scripts/vendors/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="scripts/vendors/select2/select2.js"></script>
+    <script src="scripts/vendors/angular-ui-select2/src/select2.js"></script>
+    <script src="scripts/vendors/angular-messages/angular-messages.js"></script>
+
+    <script src="scripts/app.js"></script>
+    <script src="scripts/config.js"></script>
+
+    <script src="scripts/factories/report.js"></script>
+    <script src="scripts/factories/comment.js"></script>
+    <script src="scripts/factories/user.js"></script>
+    <script src="scripts/factories/board.js"></script>
+
+    <script src="scripts/filters/filters.js"></script>
+    <script src="scripts/directives/directives.js"></script>
+
+    <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/controllers/about.js"></script>
+    <script src="scripts/controllers/header.js"></script>
+    <script src="scripts/controllers/home.js"></script>
+    <script src="scripts/controllers/portfolio.js"></script>
+    <script src="scripts/controllers/pages.js"></script>
+    <script src="scripts/controllers/reportElement.js"></script>
+    <script src="scripts/controllers/comment.js"></script>
+    <script src="scripts/controllers/configure.js"></script>
+
+    <script src="scripts/auth/auth.factory.js"></script>
+    <script src="scripts/auth/auth.controller.js"></script>
 </body>
 </html>

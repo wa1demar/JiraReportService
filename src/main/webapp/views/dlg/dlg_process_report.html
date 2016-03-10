@@ -1,0 +1,38 @@
+<div class="modal-header">
+  <h3 class="modal-title">Add new report</h3>
+</div>
+<form name="processReportForm" ng-submit="submit()" novalidate>
+  <div class="modal-body">
+      <div class="form-group" ng-class="{ 'has-error': processReportForm.$submitted || processReportForm.title.$touched && processReportForm.title.$invalid }">
+        <label for="title">Dashboard name:</label>
+        <input type="text" class="form-control" id="title" name="title" ng-model="model.title" required>
+        <div class="help-block" ng-messages="processReportForm.title.$error" ng-if="processReportForm.title.$touched || processReportForm.$submitted">
+          <p ng-message="required">Your name is required.</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="id-type">Board type:</label>
+        <select id="id-type" class="form-control" name="id-type"  ng-model="model.typeId">
+          <option value="1">Automatic</option>
+          <option value="2">Manual</option>
+        </select>
+      </div>
+      <div class="form-group" ng-show="model.typeId === '1'">
+        <label for="id-board">Report:</label>
+        <select ui-select2 ng-model="model.boardId" data-placeholder="Select board" id="id-board" name="id-board" style="width: 100%;">
+          <option value=""></option>
+          <option ng-repeat="board in dlgData.boards" value="{{board.id}}">{{board.name}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="admins">admins:</label>
+        <select ui-select2 multiple ng-model="model.admins" data-placeholder="Select administrators" id="admins" name="admins" style="width: 100%;">
+          <option ng-repeat="admin in dlgData.users" value="{{admin.login}}">{{admin.fullName}}</option>
+        </select>
+      </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="submit" ng-click="ok()">Create</button>
+    <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+  </div>
+</form>

@@ -1,0 +1,694 @@
+html body {
+    background-color: #f5f5f5;
+}
+
+hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+    opacity: 0.5;
+    z-index: 10;
+    display: none;
+}
+
+.overlay-text {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    width: 100%;
+    height: 20px;
+    position: absolute;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+#ghx-header {
+  margin: 20px;
+}
+
+#manage-boards-page {
+    margin: 0px;
+}
+
+#manage-boards-page .aui.table tr td {
+    vertical-align: middle;
+}
+
+.test-img {
+    background: url("/images/projectavatar.png") no-repeat;
+    width: 48px;
+    height: 48px;
+}
+
+.project-config-icon-128-report{
+    background: transparent url(images/report-128.png) no-repeat 0 0;
+    margin: 10px;
+    padding: 0 0 0 150px;
+    min-height: 128px;
+}
+
+.report-element section {
+    padding: 0;
+}
+
+#report-element {
+    overflow: hidden;
+}
+
+.report-element-table {
+    width: 100%;
+}
+
+.report-element-table-chart {
+    width: 30%;
+    border-right: 1px solid #cccccc;
+    vertical-align: top;
+}
+
+.report-element-table-sprint .aui.table.table-sprint tr td,
+.report-element-table-sprint .aui.table.table-sprint tr th {
+    padding: 5px;
+}
+
+.report-element-table-sprint {
+    vertical-align: top;
+}
+
+.report-element-chart {
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+.report-element-sprint-table {
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+.aui.table.table-sprint thead tr th {
+    vertical-align: middle;
+    text-align: center;
+    border-bottom: inherit;
+    border-top: inherit;
+}
+
+.aui.table.table-sprint tr td,
+.aui.table.table-sprint tr th {
+    vertical-align: middle;
+}
+
+.aui.table.table-sprint tr td.text-left,
+.aui.table.table-sprint tr th.text-left {
+    text-align: left;
+}
+
+.aui.table.table-sprint tr td.text-center,
+.aui.table.table-sprint tr th.text-center {
+    text-align: center;
+}
+
+.aui.table.table-sprint tr td.text-right,
+.aui.table.table-sprint tr th.text-right {
+    text-align: right;
+}
+
+.aui.table.table-sprint tr td.indicators,
+.aui.table.table-sprint tr th.indicators{
+    padding-right: 0;
+}
+
+.aui.table.table-sprint tr td.indicators span,
+.aui.table.table-sprint tr th.indicators span{
+    float: right;
+}
+
+.aui.table.table-sprint tr td.indicators span.circle ,
+.aui.table.table-sprint tr th.indicators span.circle {
+    margin-right: 3px;
+}
+
+.report-element-table-sprint .aui.table.table-sprint tr td.td-for-sprint-team {
+    padding: 0px;
+    border-right: 1px solid #dddddd;
+}
+
+.report-element-table-sprint .aui.table.table-sprint tr td.td-for-sprint-team .dev-name{
+    /*white-space: nowrap; /!* Отменяем перенос текста *!/*/
+    overflow: hidden; /* Обрезаем содержимое */
+    /*padding: 5px; /!* Поля *!/*/
+    text-overflow: ellipsis; /* Многоточие */
+    /*position: absolute;*/
+    /*margin-top: -10px;*/
+}
+
+.sprint-id {
+    border-right: 1px solid #cccccc;
+}
+
+.sprint-id.open {
+    background-color: #D1E9FF;
+    color: #000000;
+}
+
+.sprint-closed {
+    border-left: 4px solid #14B578;
+    background-color: #EFEFEF;
+}
+
+.sprint-additional-blue {
+    background-color: #205081;
+    color: #ffffff;
+}
+
+.sprint-additional-red {
+    background-color: #d04437;
+    color: #ffffff;
+}
+
+.sprint-total {
+    border-left: 1px solid #cccccc;
+    background-color: #ffffff;
+}
+
+.sprint-closed.total {
+    background-color: inherit;
+}
+
+.sprint-active {
+    border-left: 4px solid #ffe79e;
+}
+
+.sprint-future {
+    border-left: 4px solid #e27005;
+}
+
+#report-not-found {
+    text-align: center;
+    margin: 15px 0;
+    font-weight: bold;
+}
+
+.glyphicon.green {
+    color: #11B477;
+}
+
+.glyphicon.yellow {
+    color: #F4DB00;
+}
+
+.glyphicon.red {
+    color: #E31400;
+}
+
+.circle {
+    width: 14px;
+    height: 14px;
+    border-radius: 10px;
+    display: block;
+    margin: 0 auto;
+}
+
+.circle.green {
+    background-color: #11B477;
+}
+
+.circle.yellow {
+    background-color: #F4DB00;
+}
+
+.circle.red {
+    background-color: #E31400;
+}
+
+.star-five {
+    /*margin: 50px 0;*/
+    position: relative;
+    display: block;
+    color: #11B477;
+    width: 0px;
+    height: 0px;
+    border-right:  10px solid transparent;
+    border-bottom: 7px  solid #11B477;
+    border-left:   10px solid transparent;
+    -moz-transform:    rotate(35deg);
+    -webkit-transform: rotate(35deg);
+    -ms-transform:     rotate(35deg);
+    -o-transform:      rotate(35deg);
+}
+
+.star-five:before {
+    border-bottom: 8px solid #11B477;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    position: absolute;
+    height: 0;
+    width: 0;
+    top: -4px;
+    left: -6px;
+    display: block;
+    content: '';
+    -webkit-transform: rotate(-35deg);
+    -moz-transform:    rotate(-35deg);
+    -ms-transform:     rotate(-35deg);
+    -o-transform:      rotate(-35deg);
+
+}
+
+.star-five:after {
+    position: absolute;
+    display: block;
+    color: #11B477;
+    top: 0px;
+    left: -10px;
+    width: 0px;
+    height: 0px;
+    border-right: 10px solid transparent;
+    border-bottom: 7px solid #11B477;
+    border-left: 10px solid transparent;
+    -webkit-transform: rotate(-70deg);
+    -moz-transform:    rotate(-70deg);
+    -ms-transform:     rotate(-70deg);
+    -o-transform:      rotate(-70deg);
+    content: '';
+}
+
+.note {
+    padding-left: 0px;
+}
+
+.note li {
+    display: inline-block;
+    list-style-type: none;
+    padding: 5px 0;
+}
+
+.note .star-five,
+.note .circle {
+    float: left;
+}
+
+.note-name {
+    font-weight: bold;
+    margin-top: 20px;
+    text-transform: none;
+}
+
+.note-descr {
+    position: relative;
+    top: -2px;
+    padding: 0 15px 0 5px;
+}
+
+.note-descr:after {
+    content: ';';
+}
+
+.circle-for-chart {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+}
+
+.circle-for-chart.black {
+    background-color: #000;
+    margin-left: 10px;
+}
+
+.circle-for-chart.green {
+    background-color: #009E0F;
+}
+
+.circle-for-chart.red {
+    background-color: red;
+}
+
+.show-config-dialog {
+    color: #000;
+}
+
+.for-example {
+    color: #CCCCCC;
+    font-size: 11px;
+    font-style: italic;
+    margin-top: 0px;
+}
+
+.team-not-configured {
+    text-align: center;
+    font-weight: bold;
+    padding: 15px 0;
+}
+
+.sync-label-box {
+    float: right;
+    padding: 10px;
+}
+
+/*====================================================================================================================*/
+/*PROGRESS BAR*/
+/*====================================================================================================================*/
+table.aui .tr-for-progress-bar {
+    position: relative;
+    border-left: 1px solid #dddddd;
+    border-right: 1px solid #dddddd;
+    padding: 0;
+    color: #000000;
+}
+
+.progress-bar-box {
+    width: 100%;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    /*background: url("images/bg1.png") repeat-x;*/
+}
+
+.progress-bar-box .progress-bar {
+    color: black;
+    background-color: #939393;
+    background-image: inherit;
+    position: relative;
+    font-style: italic;
+    font-weight: bold;
+    text-align: left;
+    /*padding-left: 5px;*/
+}
+
+.progress-bar-content {
+    padding-left: 10px;
+}
+
+.progress-bar-content::after{
+    content: '';
+    position: absolute;
+    right: -20px;
+    top: 0px;
+    border: 10px solid transparent;
+    border-left: 10px solid #939393;
+}
+
+#points-progress-bar-total,
+#hours-progress-bar-total {
+    position: absolute;
+    top: 2px;
+    right: 0;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 12px;
+    padding-right: 10px;
+}
+
+#points-progress-bar-percent,
+#hours-progress-bar-percent {
+    position: absolute;
+    top: 2px;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 12px;
+    padding-left: 10px;
+}
+
+/*====================================================================================================================*/
+/*CONFIGURE*/
+/*====================================================================================================================*/
+.configure-dev-row {
+
+}
+
+.configure-dev-row .dev-data {
+    display: inline-block;
+    margin-right: 10px;
+    padding-right: 10px;
+    border-right: 2px solid #424242;
+    width: 300px;
+}
+
+.configure-dev-row .dev-value {
+    display: inline-block;
+    margin-right: 10px;
+    padding-right: 10px;
+    border-right: 2px solid #424242;
+    width: 150px;
+}
+
+.configure-dev-row .dev-value:last-child {
+    border: none;
+}
+
+.configure-dev-row .dev-value:last-child input {
+    margin: 0;
+}
+
+.aui .configure-dev-row div.developer-name {
+    display: inline-block;
+    width: 175px;
+    margin: 27px 5px 15px 0;
+    position: relative;
+    top: -5px;
+}
+
+.aui .configure-dev-row select.developer-name {
+    display: inline-block;
+    width: 175px;
+    margin: 21px 0 15px 0;
+}
+
+.aui .configure-dev-row .engineer-lvl,
+.aui .configure-dev-row .participation-lvl,
+.aui .configure-dev-row .days-in-sprint {
+    display: inline-block;
+    width: 145px;
+    margin: 21px 0 15px 0;
+}
+
+.table-preview-details tr td.text-center,
+.table-preview-details tr th.text-center {
+    text-align: center;
+}
+
+.aui .table-preview-details thead {
+    border-bottom: inherit;
+    border-top: inherit;
+}
+
+.table-preview-details thead tr th {
+    vertical-align: middle;
+    text-align: center;
+    border-bottom: inherit;
+    border-top: inherit;
+    color: #71787F;
+}
+
+.aui .table-preview-details .table-preview-details-row,
+.aui .table-preview-details tbody tr,
+.aui .table-preview-details tbody tr td,
+.aui .table-preview-details tbody tr:first-child > td {
+    border-bottom: inherit;
+    border-top: inherit;
+    color: #71787F;
+}
+
+.aui .table-preview-details .table-preview-details-row-total td {
+    border-top: 1px solid #cccccc;
+    color: #000000;
+    font-weight: bold;
+}
+
+.uat-element.hide {
+    display: none;
+}
+
+.autofill-box {
+    text-align: right;
+}
+
+.sprint-note-text {
+    font-size: 12px;
+    color: #71787F;
+    font-style: italic;
+}
+
+/*====================================================================================================================*/
+/*PORTFOLIO*/
+/*====================================================================================================================*/
+#report-box table.aui > thead > tr > th,
+#report-box table.aui > tbody > tr > th,
+#report-box table.aui > thead > tr > td,
+#report-box table.aui > tbody > tr > td,
+#report-box table.aui > tfoot > tr > td {
+    box-sizing: border-box;
+}
+
+#report-box .report-element-table-chart {
+    width: 25%;
+}
+
+/*====================================================================================================================*/
+/*PORTFOLIO*/
+/*====================================================================================================================*/
+.comments {
+    padding: 20px;
+}
+
+.comments-title {
+    font-weight: bold;
+    padding: 10px 20px;
+    margin: 0;
+    background-color: #F5F5F5;
+    border: 1px solid #cccccc;
+    cursor: pointer;
+    text-transform: none;
+}
+
+.comments-box {
+    border-left: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+}
+
+.comments-date {
+    font-style: italic;
+    font-size: 12px;
+    color: #cccccc;
+}
+
+.comments-creator {
+    font-weight: bold;
+}
+
+.comments-txt {
+
+}
+
+.comments-data {
+    max-width: 99%;
+    height: 50px;
+    margin: 5px;
+
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.add-comment {
+    margin: 0 5px;
+}
+
+.comments-not-found {
+    text-align: center;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 13px;
+    padding: 10px 0;
+}
+
+.comments-ul {
+    padding: 0 20px;
+}
+
+.comments-ul li {
+    list-style-type: none;
+    border-bottom: 1px solid #eaeaea;
+    margin-bottom: 10px;
+}
+
+.comments-ul li:last-child {
+    border-bottom: none;
+}
+
+
+/*====================================================================================================================*/
+/*SPRINT TEAM ACTIVITY AND ISSUE*/
+/*====================================================================================================================*/
+.aui.table.activity-table tr th,
+.aui.table.activity-table tr td,
+.aui.table.issue-table tr th,
+.aui.table.issue-table tr td {
+    vertical-align: middle;
+    box-sizing: border-box;
+}
+
+.aui.table.activity-table tr th.width-100,
+.aui.table.activity-table tr td.width-100,
+.aui.table.issue-table tr th.width-100,
+.aui.table.issue-table tr td.width-100 {
+    width: 130px;
+}
+
+/*.aui.table.activity-table tr th.text-center,*/
+/*.aui.table.activity-table tr td.text-center {*/
+    /*text-align: center;*/
+/*}*/
+
+.aui.table.issue-table tr {
+    border-bottom: none;
+}
+
+.aui.table.issue-table tr:hover {
+    background-color: #FFFFFF;
+}
+
+.aui.table.issue-table tr td {
+    border-top: none;
+    border-bottom: none;
+}
+
+.aui.table.issue-table tr td .aui-icon{
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.issue-param-box {
+    padding: 5px 0;
+}
+
+.issue-param-box input {
+    width: 100px;
+    padding: 5px;
+}
+
+.issue-param-box select {
+    width: 180px;
+    padding: 5px;
+}
+
+.issue-param-box-label {
+    display: inline-block;
+    width: 150px;
+    font-weight: bold;
+}
+
+.issue-param-box-measure {
+    padding-left: 10px;
+    color: #424242;
+}
+
+.issue-not-found {
+    font-size: 12px;
+    font-weight: bold;
+    font-style: italic;
+    padding-left: 25px;
+}
+
+.estimate-box {
+    display: block;
+}
+
+.estimate-box.hide {
+    display: none;
+}
