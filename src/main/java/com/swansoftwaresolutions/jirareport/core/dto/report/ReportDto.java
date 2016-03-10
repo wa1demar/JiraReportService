@@ -1,26 +1,28 @@
-package com.swansoftwaresolutions.jirareport.core.dto;
+package com.swansoftwaresolutions.jirareport.core.dto.report;
 
 import com.swansoftwaresolutions.jirareport.core.dto.adminreport.AdminReportDto;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
- * @author Vitaliy Holovko
+ * @author Vladimir Martynyuk
  */
-public class ReportResponceDto {
-
+public class ReportDto implements Serializable {
     private Long id;
-
     private String title;
-    private String url;
     private String creator;
     private Long creatorId;
     private Long boardId;
+    private String boardName;
     private Date createdDate;
-    private boolean isClosed;
+    private Date updatedDate;
+    private Date closedDate;
     private Long typeId;
-    private List<AdminReportDto> admins;
+    private boolean closed;
+    private List<AdminReportDto> admins= new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -36,14 +38,6 @@ public class ReportResponceDto {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public String getCreator() {
@@ -70,6 +64,14 @@ public class ReportResponceDto {
         this.boardId = boardId;
     }
 
+    public String getBoardName() {
+        return boardName;
+    }
+
+    public void setBoardName(String boardName) {
+        this.boardName = boardName;
+    }
+
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -78,12 +80,20 @@ public class ReportResponceDto {
         this.createdDate = createdDate;
     }
 
-    public boolean isClosed() {
-        return isClosed;
+    public Date getUpdatedDate() {
+        return updatedDate;
     }
 
-    public void setIsClosed(boolean isClosed) {
-        this.isClosed = isClosed;
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
+    public Date getClosedDate() {
+        return closedDate;
+    }
+
+    public void setClosedDate(Date closedDate) {
+        this.closedDate = closedDate;
     }
 
     public Long getTypeId() {
@@ -92,6 +102,14 @@ public class ReportResponceDto {
 
     public void setTypeId(Long typeId) {
         this.typeId = typeId;
+    }
+
+    public boolean isClosed() {
+        return closed;
+    }
+
+    public void setClosed(boolean closed) {
+        this.closed = closed;
     }
 
     public List<AdminReportDto> getAdmins() {

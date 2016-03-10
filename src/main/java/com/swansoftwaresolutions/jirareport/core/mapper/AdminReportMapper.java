@@ -1,8 +1,8 @@
 package com.swansoftwaresolutions.jirareport.core.mapper;
 
-import com.swansoftwaresolutions.jirareport.domain.entity.AdminReport;
+import com.swansoftwaresolutions.jirareport.domain.entity.Admin;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
-import com.swansoftwaresolutions.jirareport.core.dto.AdminReportDto;
+import com.swansoftwaresolutions.jirareport.core.dto.adminreport.AdminReportDto;
 
 import java.util.List;
 
@@ -11,10 +11,10 @@ import java.util.List;
  */
 public interface AdminReportMapper {
 
-    AdminReportDto toDto(AdminReport adminReport);
-    List<AdminReportDto> toDtos(List<AdminReport> adminReportList);
-    AdminReport fromDto(AdminReportDto adminReportDto);
-    List<AdminReport> fromDtos(List<AdminReportDto> adminReportDtoList);
+    AdminReportDto toDto(Admin admin);
+    List<AdminReportDto> toDtos(List<Admin> adminList);
+    Admin fromDto(AdminReportDto adminReportDto);
+    List<Admin> fromDtos(List<AdminReportDto> adminReportDtoList);
 
     AdminReportDto toDtofromJiraUser(JiraUser jiraUser);
     List<AdminReportDto> toDtosfromJiraUsers(List<JiraUser> jiraUserList);

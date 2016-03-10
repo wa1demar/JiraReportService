@@ -6,7 +6,7 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -71,10 +71,9 @@ public class Report  implements Serializable{
     @Column(name = "type_ID")
     private Long typeId;
 
-    @OneToMany(mappedBy = "report", cascade=CascadeType.ALL) // inverse side: it has a mappedBy attribute, and can't decide how the association is mapped, since the other side already decided it.
-    @Fetch(FetchMode.JOIN)
+    @OneToMany (mappedBy="report", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<AdminReport> adminReports;
+    private List<Admin> admins = new ArrayList<>();
 
     @Column(name = "target_points")
     private Long targetPoints;
@@ -214,12 +213,12 @@ public class Report  implements Serializable{
         this.typeId = typeId;
     }
 
-    public List<AdminReport> getAdminReports() {
-        return adminReports;
+    public List<Admin> getAdmins() {
+        return admins;
     }
 
-    public void setAdminReports(List<AdminReport> adminReports) {
-        this.adminReports = adminReports;
+    public void setAdmins(List<Admin> admins) {
+        this.admins = admins;
     }
 
     public Long getTargetPoints() {

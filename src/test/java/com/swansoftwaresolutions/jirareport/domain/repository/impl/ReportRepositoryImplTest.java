@@ -1,6 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
-import com.swansoftwaresolutions.jirareport.domain.entity.AdminReport;
+import com.swansoftwaresolutions.jirareport.domain.entity.Admin;
 import com.swansoftwaresolutions.jirareport.domain.entity.Report;
 import com.swansoftwaresolutions.jirareport.domain.repository.ReportRepository;
 import org.junit.Test;
@@ -40,28 +40,28 @@ public class ReportRepositoryImplTest extends AbstractDbTest {
         report.setBoardId(2L);
         report.setCreatorId(34L);
 
-        AdminReport adminReport1 = new AdminReport();
-        adminReport1.setFullName("admin report1");
-        adminReport1.setLogin("adminreport1");
+        Admin admin1 = new Admin();
+        admin1.setFullName("admin report1");
+        admin1.setLogin("adminreport1");
 
-        AdminReport adminReport2 = new AdminReport();
-        adminReport2.setFullName("admin report2");
-        adminReport2.setLogin("adminreport2");
+        Admin admin2 = new Admin();
+        admin2.setFullName("admin report2");
+        admin2.setLogin("adminreport2");
 
-        List<AdminReport> adminReportList = new ArrayList<>();
-        adminReportList.add(adminReport1);
-        adminReportList.add(adminReport2);
+        List<Admin> adminList = new ArrayList<>();
+        adminList.add(admin1);
+        adminList.add(admin2);
 
-        report.setAdminReports(adminReportList);
+        report.setAdmins(adminList);
 
         Report newReport = reportRepository.add(report);
 
         assertNotNull(newReport.getId());
         assertEquals("Test Report A", newReport.getTitle());
         assertEquals("Test Creator", newReport.getCreator());
-        assertNotNull(newReport.getAdminReports());
-        assertEquals(2, newReport.getAdminReports().size());
-        assertNotNull(newReport.getAdminReports().get(0).getId());
+        assertNotNull(newReport.getAdmins());
+        assertEquals(2, newReport.getAdmins().size());
+        assertNotNull(newReport.getAdmins().get(0).getId());
     }
 
 //    @Test(expected = NullPointerException.class)

@@ -4,7 +4,7 @@ import com.swansoftwaresolutions.jirareport.core.mapper.AdminReportMapper;
 import com.swansoftwaresolutions.jirareport.core.service.AdminReportService;
 import com.swansoftwaresolutions.jirareport.domain.repository.AdminReportRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
-import com.swansoftwaresolutions.jirareport.core.dto.AdminReportDto;
+import com.swansoftwaresolutions.jirareport.core.dto.adminreport.AdminReportDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

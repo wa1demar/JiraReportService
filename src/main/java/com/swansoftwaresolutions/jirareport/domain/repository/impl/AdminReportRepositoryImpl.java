@@ -1,6 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
-import com.swansoftwaresolutions.jirareport.domain.entity.AdminReport;
+import com.swansoftwaresolutions.jirareport.domain.entity.Admin;
 import com.swansoftwaresolutions.jirareport.domain.entity.Config;
 import com.swansoftwaresolutions.jirareport.domain.repository.AdminReportRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -25,45 +25,45 @@ public class AdminReportRepositoryImpl implements AdminReportRepository {
 
 
     @Override
-    public List<AdminReport> findAll() {
-        return sessionFactory.getCurrentSession().createCriteria(AdminReport.class)
+    public List<Admin> findAll() {
+        return sessionFactory.getCurrentSession().createCriteria(Admin.class)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
     }
 
     @Override
-    public List<AdminReport> findByReportId(Long reportId) {
-        return (List<AdminReport>) sessionFactory.openSession()
+    public List<Admin> findByReportId(Long reportId) {
+        return (List<Admin>) sessionFactory.openSession()
                 .createCriteria(Config.class).add(Restrictions.eq("reportId", reportId));
     }
 
     @Override
-    public AdminReport findById(Long id) {
-        return (AdminReport) sessionFactory.openSession()
+    public Admin findById(Long id) {
+        return (Admin) sessionFactory.openSession()
                 .createCriteria(Config.class).add(Restrictions.eq("id", id)).uniqueResult();
     }
 
     @Override
-    public AdminReport add(AdminReport adminReport) {
-        sessionFactory.getCurrentSession().persist(adminReport);
-        return adminReport;
+    public Admin add(Admin admin) {
+        sessionFactory.getCurrentSession().persist(admin);
+        return admin;
     }
 
     @Override
-    public AdminReport update(AdminReport adminReport) throws NoSuchEntityException {
-        sessionFactory.getCurrentSession().update(adminReport);
+    public Admin update(Admin admin) throws NoSuchEntityException {
+        sessionFactory.getCurrentSession().update(admin);
 
-        if (findById(adminReport.getId()) == null) {
+        if (findById(admin.getId()) == null) {
             throw new NoSuchEntityException("Entity not found");
         }
-        return (AdminReport) sessionFactory.openSession().merge(adminReport);
+        return (Admin) sessionFactory.openSession().merge(admin);
     }
 
     @Override
-    public void delete(AdminReport adminReport) throws NoSuchEntityException {
-        AdminReport adminR = findById(adminReport.getId());
+    public void delete(Admin admin) throws NoSuchEntityException {
+        Admin adminR = findById(admin.getId());
 
         if (adminR != null) {
-            sessionFactory.getCurrentSession().delete(adminReport);
+            sessionFactory.getCurrentSession().delete(admin);
         } else {
             throw new NoSuchEntityException("Entity Not Found");
         }
@@ -71,9 +71,9 @@ public class AdminReportRepositoryImpl implements AdminReportRepository {
 
     @Override
     public void delete(Long id) throws NoSuchEntityException {
-        AdminReport adminReport = findById(id);
-        if (adminReport != null) {
-            sessionFactory.getCurrentSession().delete(adminReport);
+        Admin admin = findById(id);
+        if (admin != null) {
+            sessionFactory.getCurrentSession().delete(admin);
         } else {
             throw new NoSuchEntityException("Entity Not Found");
         }
@@ -81,11 +81,11 @@ public class AdminReportRepositoryImpl implements AdminReportRepository {
 
     @Override
     public void deleteAll() throws NoSuchEntityException {
-        List<AdminReport> adminReports = findAll();
-        if (adminReports != null) {
-            for (AdminReport adminReport : adminReports) {
-                if (adminReport != null) {
-                    sessionFactory.getCurrentSession().delete(adminReport);
+        List<Admin> admins = findAll();
+        if (admins != null) {
+            for (Admin admin : admins) {
+                if (admin != null) {
+                    sessionFactory.getCurrentSession().delete(admin);
                 } else {
                     throw new NoSuchEntityException("Entity Not Found");
                 }
@@ -97,11 +97,11 @@ public class AdminReportRepositoryImpl implements AdminReportRepository {
 
     @Override
     public void deleteByReportId(Long reportId) throws NoSuchEntityException {
-        List<AdminReport> adminReports = findByReportId(reportId);
-        if (adminReports != null) {
-            for (AdminReport adminReport : adminReports) {
-                if (adminReport != null) {
-                    sessionFactory.getCurrentSession().delete(adminReport);
+        List<Admin> admins = findByReportId(reportId);
+        if (admins != null) {
+            for (Admin admin : admins) {
+                if (admin != null) {
+                    sessionFactory.getCurrentSession().delete(admin);
                 } else {
                     throw new NoSuchEntityException("Entity Not Found");
                 }
