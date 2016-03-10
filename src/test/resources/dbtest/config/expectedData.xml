@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <configs id="13"
+            story_point_name="Story Points1"
+            agile_done_name="Done"
+            jira_dev_group_name="jira-developers"
+            bug_name="Bug"
+            non_working_days="09/05/2015, 10/15/2015"
+            auto_sync_time="10/15/2015"
+    />
+</dataset>

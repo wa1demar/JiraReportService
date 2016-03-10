@@ -1,12 +1,18 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
+import com.github.springtestdbunit.annotation.DatabaseOperation;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.swansoftwaresolutions.jirareport.domain.entity.Config;
 import com.swansoftwaresolutions.jirareport.domain.repository.ConfigRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
+import org.dbunit.dataset.IDataSet;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -15,10 +21,6 @@ import java.util.Date;
 /**
  * @author Vladimir Martynyuk
  */
-@SqlGroup({
-        @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:sql/config_before.sql"),
-        @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:sql/config_after.sql")
-})
 public class ConfigRepositoryImplTest extends AbstractDbTest {
 
     @Autowired
@@ -27,24 +29,22 @@ public class ConfigRepositoryImplTest extends AbstractDbTest {
     DateFormat dataFormatnew;
 
     @Test
+    @Transactional
+    @ExpectedDatabase("/dbtest/config/expectedData.xml")
+    @DatabaseTearDown(value = {"/dbtest/config/expectedData.xml"}, type = DatabaseOperation.DELETE_ALL)
     public void testAddNewConfig() throws Exception {
-        dataFormatnew = new SimpleDateFormat("MM-dd-yyyy");
+        dataFormatnew = new SimpleDateFormat("dd/MM/yyyy");
 
         Config config = new Config();
-        config.setStoryPointsName("Story Point");
-        config.setAgileDoneName("Dev Done");
+        config.setStoryPointsName("Story Points");
+        config.setAgileDoneName("jira-developers");
         config.setBugName("Bug");
-        config.setNonWorkingDays("Sunday");
+        config.setNonWorkingDays("09/05/2015, 10/15/2015");
         config.setAutoSyncTime(dataFormatnew.format(new Date()));
 
         Config newConfig = configRepository.add(config);
 
         assertNotNull(newConfig.getId());
-        assertEquals("Story Point", newConfig.getStoryPointsName());
-        assertEquals("Dev Done", newConfig.getAgileDoneName());
-        assertEquals("Bug", newConfig.getBugName());
-        assertEquals("Sunday", newConfig.getNonWorkingDays());
-        assertNotNull(newConfig.getAutoSyncTime());
     }
 
     @Test(expected = NullPointerException.class)
@@ -107,11 +107,13 @@ public class ConfigRepositoryImplTest extends AbstractDbTest {
     }
 
     @Test
+    @DatabaseSetup("/dbtest/config/sampleData.xml")
+    @DatabaseTearDown(value = "/dbtest/config/sampleData.xml", type = DatabaseOperation.DELETE_ALL)
     public void testFindConfigById() throws Exception {
         Config config = configRepository.findById(1L);
 
         assertNotNull(config);
-        assertEquals("Story Point", config.getStoryPointsName());
+        assertEquals("Story Points", config.getStoryPointsName());
         assertEquals("Bug", config.getBugName());
     }
 
@@ -162,4 +164,5 @@ public class ConfigRepositoryImplTest extends AbstractDbTest {
 
         configRepository.delete(config);
     }
+
 }
