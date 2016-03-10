@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
+import com.swansoftwaresolutions.jirareport.core.dto.report.NewReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDto;
 import com.swansoftwaresolutions.jirareport.core.dto.responce.ResponceReportDto;
@@ -12,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * @author Vitaliy Holovko
@@ -36,20 +36,11 @@ public class ReportController {
     }
 
 
+    @RequestMapping(value = "/v1/reports", method = RequestMethod.POST)
+    private ResponseEntity<ReportDto> addReport(@Valid @RequestBody NewReportDto newReportDto) throws NoSuchEntityException {
+        ReportDto reportDto = reportService.add(newReportDto);
 
-//    @RequestMapping(value = "/v1/report", method = RequestMethod.POST)
-    @RequestMapping(value = "/auth/create", method = RequestMethod.POST)
-    private ResponseEntity<ReportResponceDto> addNewReport(@Valid @RequestBody ReportDto reportNew) throws NoSuchEntityException {
-        ReportResponceDto reportDto = reportService.save(reportNew);
-        HttpStatus httpStatus;
-
-        if (reportDto != null) {
-            httpStatus = HttpStatus.OK;
-        } else {
-            httpStatus = HttpStatus.NO_CONTENT;
-        }
-
-        return new ResponseEntity<>(reportDto, httpStatus);
+        return new ResponseEntity<>(reportDto, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/v1/report", method = RequestMethod.DELETE)
@@ -75,30 +66,30 @@ public class ReportController {
         return new ResponseEntity<>(responsePostDto, httpStatus);
     }
 
-    @RequestMapping(value = "/v1/report/copy", method = RequestMethod.POST)
-    private ResponseEntity<ResponceReportDto> makeReportCopyById(@RequestParam(value = "id") long id, @RequestParam(value = "name") String reportName) {
-        ResponceReportDto responsePostDto;
-        HttpStatus httpStatus;
-
-        try {
-            ReportDto newReportDto = reportService.findById(id);
-            newReportDto.setTitle(reportName);
-            newReportDto.setId(null);
-            if (reportService.save(newReportDto) != null) {
-                responsePostDto = new ResponceReportDto(true, "Report added successfully.");
-                httpStatus = HttpStatus.OK;
-            } else {
-                responsePostDto = new ResponceReportDto(false, "Can't added Report.");
-                httpStatus = HttpStatus.NOT_FOUND;
-            }
-        } catch (NoSuchEntityException e) {
-            e.printStackTrace();
-            responsePostDto = new ResponceReportDto(false, "Can't added Report.");
-            httpStatus = HttpStatus.NOT_FOUND;
-        }
-
-        return new ResponseEntity<>(responsePostDto, httpStatus);
-    }
+//    @RequestMapping(value = "/v1/report/copy", method = RequestMethod.POST)
+//    private ResponseEntity<ResponceReportDto> makeReportCopyById(@RequestParam(value = "id") long id, @RequestParam(value = "name") String reportName) {
+//        ResponceReportDto responsePostDto;
+//        HttpStatus httpStatus;
+//
+////        try {
+////            ReportDto newReportDto = reportService.findById(id);
+////            newReportDto.setTitle(reportName);
+////            newReportDto.setId(null);
+////            if (reportService.add(newReportDto) != null) {
+////                responsePostDto = new ResponceReportDto(true, "Report added successfully.");
+////                httpStatus = HttpStatus.OK;
+////            } else {
+////                responsePostDto = new ResponceReportDto(false, "Can't added Report.");
+////                httpStatus = HttpStatus.NOT_FOUND;
+////            }
+////        } catch (NoSuchEntityException e) {
+////            e.printStackTrace();
+////            responsePostDto = new ResponceReportDto(false, "Can't added Report.");
+////            httpStatus = HttpStatus.NOT_FOUND;
+////        }
+//
+//        return new ResponseEntity<>(responsePostDto, httpStatus);
+//    }
 
 
 }

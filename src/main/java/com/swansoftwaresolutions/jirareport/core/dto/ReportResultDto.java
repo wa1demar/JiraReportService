@@ -1,7 +1,5 @@
 package com.swansoftwaresolutions.jirareport.core.dto;
 
-import com.swansoftwaresolutions.jirareport.core.dto.adminreport.AdminReportDto;
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +17,7 @@ public class ReportResultDto implements Serializable {
     private Long boardId;
     private Date createdDate;
     private Long typeId;
-    private List<AdminReportDto> adminReports;
+    private List<JiraUserDto> adminReports;
 
     public Long getId() {
         return id;
@@ -85,11 +83,11 @@ public class ReportResultDto implements Serializable {
         this.typeId = typeId;
     }
 
-    public List<AdminReportDto> getAdminReports() {
+    public List<JiraUserDto> getAdminReports() {
         return adminReports;
     }
 
-    public void setAdminReports(List<AdminReportDto> adminReports) {
+    public void setAdminReports(List<JiraUserDto> adminReports) {
         this.adminReports = adminReports;
     }
 }

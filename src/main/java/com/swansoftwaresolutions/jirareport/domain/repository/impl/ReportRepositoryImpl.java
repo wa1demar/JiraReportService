@@ -27,7 +27,7 @@ public class ReportRepositoryImpl implements ReportRepository{
 
     @Override
     public List<Report> findAll() {
-        return sessionFactory.getCurrentSession().createCriteria(Report.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+        return sessionFactory.getCurrentSession().createCriteria(Report.class).list();
     }
 
     @Override

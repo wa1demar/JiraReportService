@@ -1,13 +1,9 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
-import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
-import com.swansoftwaresolutions.jirareport.core.dto.ReportResponceDto;
-import com.swansoftwaresolutions.jirareport.core.dto.adminreport.AdminReportDto;
+import com.swansoftwaresolutions.jirareport.core.dto.report.NewReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDtoBuilder;
-import com.swansoftwaresolutions.jirareport.core.mapper.AdminReportMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
-import com.swansoftwaresolutions.jirareport.core.service.AdminReportService;
 import com.swansoftwaresolutions.jirareport.core.mapper.ReportMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.Report;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
@@ -18,8 +14,6 @@ import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEn
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,11 +36,6 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     JiraUserRepository jiraUserRepository;
 
-    @Autowired
-    AdminReportService adminReportService;
-
-    @Autowired
-    AdminReportMapper adminReportMapper;
 
     @Override
     public ReportListDto retrieveAllReportsList() {
@@ -56,8 +45,11 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public ReportResponceDto save(ReportDto reportNew) throws NoSuchEntityException {
-        return reportMapper.toResponceDto(reportMapper.toDto(reportRepository.add(reportMapper.fromDto(prepareReportDto(reportNew)))));
+    public ReportDto add(NewReportDto newReportDto) throws NoSuchEntityException {
+        Report newReport = reportMapper.fromDto(newReportDto);
+        Report addedReport = reportRepository.add(newReport);
+
+        return reportMapper.toDto(addedReport);
     }
 
     @Override
@@ -80,25 +72,4 @@ public class ReportServiceImpl implements ReportService {
         reportRepository.delete(id);
     }
 
-    private ReportDto prepareReportDto(ReportDto reportNew) throws NoSuchEntityException {
-        JiraUserDto jiraUser = jiraUserMapper.toDto(jiraUserRepository.findByLogin(reportNew.getCreator()));
-
-        List<AdminReportDto> adminReportDtos = new ArrayList<>();
-        for (AdminReportDto adminReportDto : reportNew.getAdmins()){
-            adminReportDto = adminReportMapper.toDtofromJiraUser(jiraUserRepository.findByLogin(adminReportDto.getLogin()));
-            adminReportDtos.add(adminReportDto);
-        }
-
-        ReportDto reportDto = new ReportDto();
-        reportDto.setTitle(reportNew.getTitle());
-        reportDto.setBoardId(reportNew.getBoardId());
-        reportDto.setTypeId(reportNew.getTypeId());
-        reportDto.setCreator(jiraUser.getLogin());
-        reportDto.setCreatorId(jiraUser.getId());
-        reportDto.setCreatedDate(new Date());
-        reportDto.setAdmins(adminReportDtos);
-        reportDto.setClosed(false);
-
-        return reportDto;
-    }
 }

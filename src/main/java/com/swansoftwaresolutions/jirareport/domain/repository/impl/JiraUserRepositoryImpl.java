@@ -32,9 +32,9 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
 
     @Override
     public JiraUser update(JiraUser user) throws NoSuchEntityException {
-        if (user.getId() == null || findById(user.getId()) == null) {
-            throw new NoSuchEntityException("Entity not found");
-        }
+//        if (user.getId() == null || findById(user.getId()) == null) {
+//            throw new NoSuchEntityException("Entity not found");
+//        }
         return (JiraUser) sessionFactory.openSession().merge(user);
     }
 
@@ -63,9 +63,8 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
 
     @Override
     public void delete(JiraUser jiraUser) throws NoSuchEntityException {
-        if (jiraUser.getId() == null || findById(jiraUser.getId()) == null) {
-            throw new NoSuchEntityException("Entity not found");
-        }
+//
+
         sessionFactory.getCurrentSession().delete(jiraUser);
     }
 

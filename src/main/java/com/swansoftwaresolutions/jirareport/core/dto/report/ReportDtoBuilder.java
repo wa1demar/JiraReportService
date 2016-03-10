@@ -1,6 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.dto.report;
 
-import com.swansoftwaresolutions.jirareport.core.dto.adminreport.AdminReportDto;
+import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 
 import java.util.Date;
 import java.util.List;
@@ -71,7 +71,7 @@ public class ReportDtoBuilder {
         return this;
     }
 
-    public ReportDtoBuilder admins(List<AdminReportDto> admins) {
+    public ReportDtoBuilder admins(List<JiraUserDto> admins) {
         dto.setAdmins(admins);
         return this;
     }

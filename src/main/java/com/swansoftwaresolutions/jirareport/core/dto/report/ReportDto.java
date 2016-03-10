@@ -1,6 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.dto.report;
 
-import com.swansoftwaresolutions.jirareport.core.dto.adminreport.AdminReportDto;
+import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class ReportDto implements Serializable {
     private Date closedDate;
     private Long typeId;
     private boolean closed;
-    private List<AdminReportDto> admins= new ArrayList<>();
+    private List<JiraUserDto> admins= new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -112,11 +112,11 @@ public class ReportDto implements Serializable {
         this.closed = closed;
     }
 
-    public List<AdminReportDto> getAdmins() {
+    public List<JiraUserDto> getAdmins() {
         return admins;
     }
 
-    public void setAdmins(List<AdminReportDto> admins) {
+    public void setAdmins(List<JiraUserDto> admins) {
         this.admins = admins;
     }
 }
