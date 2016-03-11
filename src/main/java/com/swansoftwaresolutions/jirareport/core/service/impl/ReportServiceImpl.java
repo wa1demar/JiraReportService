@@ -61,13 +61,13 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Report update(Report report) throws NoSuchEntityException {
-        return reportRepository.update(report);
+    public ReportDto retrieveReportByID(long id) {
+        return reportMapper.toDto(reportRepository.findById(id));
     }
 
     @Override
-    public ReportDto findById(long id) throws NoSuchEntityException {
-        return reportMapper.toDto(reportRepository.findById(id));
+    public Report update(Report report) throws NoSuchEntityException {
+        return reportRepository.update(report);
     }
 
     @Override

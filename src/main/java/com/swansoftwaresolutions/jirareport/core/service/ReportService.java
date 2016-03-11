@@ -19,11 +19,11 @@ public interface ReportService {
 
     Report update(Report report) throws NoSuchEntityException;
 
-    ReportDto findById(long id) throws NoSuchEntityException;
-
     void deleteById(long id) throws NoSuchEntityException;
 
     void delete(ReportDto reportDto) throws NoSuchEntityException;
 
     ReportListDto retrieveAllReportsList();
+
+    ReportDto retrieveReportByID(long id);
 }
