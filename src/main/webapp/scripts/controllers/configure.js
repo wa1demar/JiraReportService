@@ -543,17 +543,96 @@ jiraPluginApp.controller('DlgDeleteSprintCtrl', ['$scope', '$uibModalInstance', 
     }
 ]);
 
-jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModalInstance', 'dlgData', 'SprintIssuesFactory', 'SprintIssueFactory',
-    function ($scope, $uibModalInstance, dlgData, SprintIssuesFactory, SprintIssueFactory) {
+jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModal', '$uibModalInstance', 'dlgData', 'SprintIssuesFactory', 'SprintIssueFactory',
+    function ($scope, $uibModal, $uibModalInstance, dlgData, SprintIssuesFactory, SprintIssueFactory) {
+        var self = this;
         $scope.dlgData = dlgData;
-
         console.log($scope.dlgData);
 
-        var dateArray = getDatesArrayWithoutWeekends($scope.dlgData.sprint.startDate, $scope.dlgData.sprint.endDate);
+        //get issues by sprintId and assignee
+        this.getIssues = function() {
+            //SprintIssuesFactory.query({
+            //    sprintId: $scope.dlgData.sprint.id,
+            //    assignee: $scope.dlgData.developer.devName
+            //}, function (data) {
+            //    $scope.issues = data;
+            //});
 
-        console.log(dateArray);
+            $scope.data = [
+                {
+                    date: $scope.dlgData.sprint.startDate,
+                    issues: [
+                        {
+                            id: 1,
+                            typeName: "Story",
+                            statusName: "To Do",
+                            point: 3,
+                            hours: "8.0"
+                        }
+                    ]
+                },
+                {
+                    date: $scope.dlgData.sprint.startDate,
+                    issues: [
+                        {
+                            id: 2,
+                            typeName: "Story",
+                            statusName: "To Do",
+                            point: 3,
+                            hours: "8.0"
+                        }
+                    ]
+                },
+                {
+                    date: $scope.dlgData.sprint.endDate,
+                    issues: []
+                },
+                {
+                    date: $scope.dlgData.sprint.endDate,
+                    issues: []
+                }
+            ]
+        };
+        self.getIssues();
+
+        console.log($scope.data);
 
         //get issues by
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+
+//----------------------------------------------------------------------------------------------------------------------
+//Dlg add issue
+        $scope.processIssue = function (item) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'views/report_configure/dlg/dlg_issue.html',
+                controller: 'DlgIssueCtrl',
+                size: 'sm',
+                resolve: {
+                    dlgData: function () {
+                        return item;
+                    }
+                }
+            });
+            modalInstance.result.then(function (data) {
+                console.log(data);
+                //add
+                //edit
+            }, function () {});
+        };
+    }
+]);
+
+jiraPluginApp.controller('DlgIssueCtrl', ['$scope', '$uibModalInstance', 'dlgData',
+    function ($scope, $uibModalInstance, dlgData) {
+        $scope.dlgData = dlgData;
+
+        $scope.ok = function () {
+            $uibModalInstance.close($scope.dlgData);
+        };
 
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');

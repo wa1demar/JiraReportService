@@ -23,7 +23,7 @@
                     <div ng-include="'views/report_configure/dlg/dlg_all_issue.html'"></div>
                 </td>
                 <td>
-                    <span class="aui-icon aui-icon-small aui-iconfont-add js-copy-clipboard add-issue" data-id="0" data-date="$dateString" title="Add" style="cursor: pointer;">Add</span>
+                    <span ng-click="processIssue()" class="aui-icon aui-icon-small aui-iconfont-add js-copy-clipboard add-issue" title="Add" style="cursor: pointer;">Add</span>
                 </td>
             </tr>
         </tbody>

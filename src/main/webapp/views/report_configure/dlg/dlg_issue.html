@@ -1,0 +1,31 @@
+<div class="modal-header">
+    <h3 class="modal-title capitalize">Activity</h3>
+</div>
+<div class="content-body" style="margin: 20px;">
+    <div class="issue-param-box">
+        <span class="issue-param-box-label">Task type</span>
+        <select id="task-type" class="form-control" ng-model="issue.typeName">
+            <option ng-repeat="typeName in ['Story', 'QAT Defect', 'UAT Defect']" value="{{typeName}}">{{typeName}}</option>
+        </select>
+    </div>
+    <div class="issue-param-box">
+        <span class="issue-param-box-label">Task status</span>
+        <select id="task-status" ng-model="issue.statusName">
+            <option ng-repeat="statusName in ['To Do', 'In Progress', 'Done']" value="{{statusName}}">{{statusName}}</option>
+        </select>
+    </div>
+    <div ng-hide="issue.typeName !== 'Story'" class="issue-param-box estimate-box">
+        <span class="issue-param-box-label">Estimate</span>
+        <input ng-model="issue.point" id="estimate" type="number" min="0" step="1" class=""/>
+        <span class="issue-param-box-measure">Points</span>
+    </div>
+    <div class="issue-param-box">
+        <span class="issue-param-box-label">Time spent</span>
+        <input ng-model="issue.hours" id="time-spent" type="number" min=0 step="0.1" class=""/>
+        <span class="issue-param-box-measure">Hours</span>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="submit" ng-click="ok()">Save</button>
+    <button class="btn btn-default" type="button" ng-click="cancel()">Done</button>
+</div>

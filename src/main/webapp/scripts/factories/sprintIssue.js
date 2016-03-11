@@ -1,7 +1,7 @@
 'use strict';
 
 jiraPluginApp.factory('SprintIssuesFactory', ['$resource', 'CONFIG', function ($resource, CONFIG) {
-  return $resource(CONFIG.API_PATH + '/sprint_issues/:sprintId', {sprintId: "@sprintId"}, {
+  return $resource(CONFIG.API_PATH + '/sprint_issues/:sprintId/:assignee', {sprintId: "@sprintId", assignee: "@assignee"}, {
     query: { method: 'GET', isArray: true },
     add:   { method: 'POST' }
   });
