@@ -38,7 +38,6 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
             dateClose: new Date()
         };
 
-        //test commit`
 //----------------------------------------------------------------------------------------------------------------------
 //Calender
         $scope.dateOptions = {
