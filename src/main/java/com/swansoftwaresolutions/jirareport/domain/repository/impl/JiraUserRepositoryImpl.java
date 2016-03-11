@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
+import com.swansoftwaresolutions.jirareport.domain.entity.Report;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.hibernate.Criteria;
@@ -32,9 +33,9 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
 
     @Override
     public JiraUser update(JiraUser user) throws NoSuchEntityException {
-        if (user.getId() == null || findById(user.getId()) == null) {
-            throw new NoSuchEntityException("Entity not found");
-        }
+//        if (user.getId() == null || findById(user.getId()) == null) {
+//            throw new NoSuchEntityException("Entity not found");
+//        }
         return (JiraUser) sessionFactory.openSession().merge(user);
     }
 
@@ -63,9 +64,8 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
 
     @Override
     public void delete(JiraUser jiraUser) throws NoSuchEntityException {
-        if (jiraUser.getId() == null || findById(jiraUser.getId()) == null) {
-            throw new NoSuchEntityException("Entity not found");
-        }
+//
+
         sessionFactory.getCurrentSession().delete(jiraUser);
     }
 
@@ -76,5 +76,10 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
             throw new NoSuchEntityException("Entity not found");
         }
         sessionFactory.getCurrentSession().delete(user);
+    }
+
+    @Override
+    public List<JiraUser> findByLogins(String[] admins) {
+        return  sessionFactory.getCurrentSession().createCriteria(JiraUser.class).add(Restrictions.in("login", admins)).list();
     }
 }

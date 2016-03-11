@@ -71,9 +71,11 @@ public class Report  implements Serializable{
     @Column(name = "type_ID")
     private Long typeId;
 
-    @OneToMany (mappedBy="report", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Admin> admins = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "admins_reports", joinColumns = {
+            @JoinColumn(name = "report_id") },
+            inverseJoinColumns = { @JoinColumn(name = "admin_login") })
+    private List<JiraUser> admins = new ArrayList<>();
 
     @Column(name = "target_points")
     private Long targetPoints;
@@ -213,11 +215,11 @@ public class Report  implements Serializable{
         this.typeId = typeId;
     }
 
-    public List<Admin> getAdmins() {
+    public List<JiraUser> getAdmins() {
         return admins;
     }
 
-    public void setAdmins(List<Admin> admins) {
+    public void setAdmins(List<JiraUser> admins) {
         this.admins = admins;
     }
 

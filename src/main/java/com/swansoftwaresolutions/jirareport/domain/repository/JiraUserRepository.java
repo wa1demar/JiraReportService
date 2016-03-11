@@ -26,4 +26,6 @@ public interface JiraUserRepository {
     JiraUser update(JiraUser user) throws NoSuchEntityException;
 
     List<JiraUser> findAll();
+
+    List<JiraUser> findByLogins(String[] admins);
 }

@@ -68,7 +68,7 @@ public class JiraUsersRestClient extends RestClientBase implements RestClient {
         try {
             jiraUserService.saveAll(new ArrayList<>(jiraUsers));
         } catch (NoSuchEntityException e) {
-            log.warning("Can't to save JiraUsers");
+            log.warning("Can't to add JiraUsers");
         }
 
         log.info("---User Scheduler Completed-----");
