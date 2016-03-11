@@ -196,6 +196,11 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //get sprints data
         $scope.getSprints = function () {
+
+            var startDate = new Date();
+            var endDate = new Date();
+            endDate.setDate(endDate.getDate()+5);
+
             //$scope.sprints = SprintsFactory.query({reportId: $routeParams.reportId});
             $scope.sprints = [
                 {
@@ -203,21 +208,27 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                     name: 'Sprint 1',
                     type: 1,
                     notCountTarget: true,
-                    showUat: true
+                    showUat: true,
+                    startDate: startDate,
+                    endDate: endDate
                 },
                 {
                     id: 2,
                     name: 'Sprint 2',
                     type: 0,
                     notCountTarget: true,
-                    showUat: false
+                    showUat: false,
+                    startDate: startDate,
+                    endDate: endDate
                 },
                 {
                     id: 3,
                     name: 'Sprint 3',
                     type: 2,
                     notCountTarget: false,
-                    showUat: false
+                    showUat: false,
+                    startDate: startDate,
+                    endDate: endDate
                 }
             ];
         };
@@ -532,11 +543,17 @@ jiraPluginApp.controller('DlgDeleteSprintCtrl', ['$scope', '$uibModalInstance', 
     }
 ]);
 
-jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModalInstance', 'dlgData',
-    function ($scope, $uibModalInstance, dlgData) {
+jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModalInstance', 'dlgData', 'SprintIssuesFactory', 'SprintIssueFactory',
+    function ($scope, $uibModalInstance, dlgData, SprintIssuesFactory, SprintIssueFactory) {
         $scope.dlgData = dlgData;
 
         console.log($scope.dlgData);
+
+        var dateArray = getDatesArrayWithoutWeekends($scope.dlgData.sprint.startDate, $scope.dlgData.sprint.endDate);
+
+        console.log(dateArray);
+
+        //get issues by
 
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
