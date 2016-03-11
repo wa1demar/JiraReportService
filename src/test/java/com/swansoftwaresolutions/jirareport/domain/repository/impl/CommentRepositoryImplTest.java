@@ -52,14 +52,14 @@ public class CommentRepositoryImplTest extends AbstractDbTest {
         assertNotNull(comments.size());
     }
 
-//    @Test
-//    public void testFindCommentById() throws Exception {
-//        Comment comment = commentRepository.findById(1L);
-//
-//        assertNotNull(comment);
-//        assertEquals("Hello 1", comment.getText());
-//        assertEquals("User1", comment.getCreator());
-//    }
+    @Test
+    public void testFindCommentById() throws Exception {
+        Comment comment = commentRepository.findById(1L);
+
+        assertNotNull(comment);
+        assertEquals("Hello 1", comment.getText());
+        assertEquals("User1", comment.getCreator());
+    }
 //
 //    @Test
 //    public void testFindCommentByWrongId() throws Exception {

@@ -9,7 +9,7 @@ public class NewReportDto implements Serializable {
     private String title;
     private String creator;
     private Long boardId;
-//    private int typeId;
+    private int typeId;
     private String[] admins;
 
     public String getTitle() {
@@ -36,13 +36,13 @@ public class NewReportDto implements Serializable {
         this.boardId = boardId;
     }
 
-//    public int getTypeId() {
-//        return typeId;
-//    }
-//
-//    public void setTypeId(int typeId) {
-//        this.typeId = typeId;
-//    }
+    public int getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
+    }
 
     public String[] getAdmins() {
         return admins;
