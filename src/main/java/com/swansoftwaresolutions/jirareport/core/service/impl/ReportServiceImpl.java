@@ -83,6 +83,7 @@ public class ReportServiceImpl implements ReportService {
         List<AdminReportDto> adminReportDtos = new ArrayList<>();
         for (AdminReportDto adminReportDto : reportNew.getAdmins()){
             adminReportDto = adminReportMapper.toDtofromJiraUser(jiraUserRepository.findByLogin(adminReportDto.getLogin()));
+            adminReportDto.setId(null);
             adminReportDtos.add(adminReportDto);
         }
 

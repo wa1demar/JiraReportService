@@ -139,7 +139,7 @@ public class ReportRepositoryImpl implements ReportRepository{
 
     @Override
     public Report add(Report report) {
-        sessionFactory.getCurrentSession().save(report);
+        sessionFactory.getCurrentSession().persist(report);
         return report;
     }
 
