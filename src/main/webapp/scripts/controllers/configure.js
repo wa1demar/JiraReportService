@@ -293,16 +293,11 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 for (var index = 0; index < users.users.length; index++) {
                     for (var indexTeam = 0; indexTeam < $scope.sprintTeams.length; indexTeam++) {
                         if (users.users[index].login === $scope.sprintTeams[indexTeam].devName) {
-                            console.log(users.users[index].login + " --- " + $scope.sprintTeams[indexTeam].devName);
                             users.users.splice(index, 1);
                         }
                     }
                 }
-
-
                 $scope.devUsersForAdd = users.users;
-                console.log($scope.devUsersForAdd);
-                console.log($scope.sprintTeams);
             });
         };
 
@@ -398,7 +393,27 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 
 //----------------------------------------------------------------------------------------------------------------------
 //Dlg developer activity
-
+        $scope.dlgSprintTeamActivity = function (sprint, developer) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'views/report_configure/dlg/dlg_sprint_team_activity.html',
+                controller: 'DlgSprintTeamActivityCtrl',
+                size: 'lg',
+                resolve: {
+                    dlgData: function () {
+                        return {
+                            sprint:     sprint,
+                            developer:  developer
+                        };
+                    }
+                }
+            });
+            modalInstance.result.then(function (data) {
+                SprintFactory.delete(data, function() {
+                    self.getSprintConfigureData();
+                });
+            }, function () {});
+        };
     }
 ]);
 
@@ -478,6 +493,18 @@ jiraPluginApp.controller('DlgDeleteSprintCtrl', ['$scope', '$uibModalInstance', 
         $scope.ok = function () {
             $uibModalInstance.close($scope.dlgData);
         };
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    }
+]);
+
+jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModalInstance', 'dlgData',
+    function ($scope, $uibModalInstance, dlgData) {
+        $scope.dlgData = dlgData;
+
+        console.log($scope.dlgData);
 
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
