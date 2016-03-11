@@ -5,7 +5,9 @@ import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDtoBuilder;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.ReportMapper;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.Report;
+import com.swansoftwaresolutions.jirareport.domain.entity.builder.JiraUserBuilder;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.ReportRepository;
 import com.swansoftwaresolutions.jirareport.core.service.ReportService;
@@ -14,6 +16,7 @@ import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEn
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,7 +49,12 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public ReportDto add(NewReportDto newReportDto) throws NoSuchEntityException {
+
+        List<JiraUser> jiraUsers = jiraUserRepository.findByLogins(newReportDto.getAdmins());
+
         Report newReport = reportMapper.fromDto(newReportDto);
+        newReport.setAdmins(jiraUsers);
+
         Report addedReport = reportRepository.add(newReport);
 
         return reportMapper.toDto(addedReport);

@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.Report;
 import com.swansoftwaresolutions.jirareport.domain.repository.ReportRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -179,4 +180,5 @@ public class ReportRepositoryImpl implements ReportRepository{
             throw new NoSuchEntityException("Entity Not Found");
         }
     }
+
 }

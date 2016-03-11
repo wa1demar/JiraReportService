@@ -35,13 +35,13 @@ public class ReportController {
         return new ResponseEntity<>(reportDtos, HttpStatus.OK);
     }
 
-
     @RequestMapping(value = "/v1/reports", method = RequestMethod.POST)
     private ResponseEntity<ReportDto> addReport(@Valid @RequestBody NewReportDto newReportDto) throws NoSuchEntityException {
         ReportDto reportDto = reportService.add(newReportDto);
 
         return new ResponseEntity<>(reportDto, HttpStatus.OK);
     }
+
 
     @RequestMapping(value = "/v1/report", method = RequestMethod.DELETE)
     private ResponseEntity<ResponceReportDto> deleteReportById(@RequestParam(value = "id") long id) {
