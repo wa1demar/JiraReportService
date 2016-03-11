@@ -1,6 +1,8 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Vladimir Martynyuk
@@ -9,14 +11,10 @@ import javax.persistence.*;
 @Table(name = "jira_users")
 public class JiraUser {
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-
     @Column(name = "email")
     private String email;
 
+    @Id
     @Column(name = "login")
     private String login;
 
@@ -26,13 +24,9 @@ public class JiraUser {
     @Column(name = "jira_user_id")
     private Long jiraUserId;
 
-    public Long getId() {
-        return id;
-    }
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "admins")
+    private List<Report> reports = new ArrayList<>();
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getEmail() {
         return email;
@@ -64,6 +58,14 @@ public class JiraUser {
 
     public void setJiraUserId(Long jiraUserId) {
         this.jiraUserId = jiraUserId;
+    }
+
+    public List<Report> getReports() {
+        return reports;
+    }
+
+    public void setReports(List<Report> reports) {
+        this.reports = reports;
     }
 
     @Override

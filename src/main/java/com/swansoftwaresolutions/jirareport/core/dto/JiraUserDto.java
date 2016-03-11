@@ -4,19 +4,9 @@ package com.swansoftwaresolutions.jirareport.core.dto;
  * @author Vitaliy Holovko
  */
 public class JiraUserDto {
-    private Long id;
     private String fullName;
     private String login;
     private Long jiraUserId;
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getFullName() {
         return fullName;

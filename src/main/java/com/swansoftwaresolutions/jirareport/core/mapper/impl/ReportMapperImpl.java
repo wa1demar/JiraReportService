@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
-import com.swansoftwaresolutions.jirareport.core.dto.ReportDto;
+import com.swansoftwaresolutions.jirareport.core.dto.report.NewReportDto;
+import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.ReportMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.Report;
 import com.swansoftwaresolutions.jirareport.core.dto.ReportResponceDto;
@@ -20,6 +21,11 @@ public class ReportMapperImpl implements ReportMapper {
 
     @Autowired
     ModelMapper modelMapper;
+
+    @Override
+    public Report fromDto(NewReportDto newReportDto) {
+        return modelMapper.map(newReportDto, Report.class);
+    }
 
     @Override
     public ReportDto toDto(Report report) {
@@ -46,7 +52,7 @@ public class ReportMapperImpl implements ReportMapper {
     @Override
     public ReportResponceDto toResponceDto(ReportDto reportDto) {
         ReportResponceDto reportResponceDto = modelMapper.map(reportDto, ReportResponceDto.class);
-        reportResponceDto.setAdmins(reportDto.getAdminReports());
+//        reportResponceDto.setAdmins(reportDto.getAdmins());
 
         return reportResponceDto;
     }

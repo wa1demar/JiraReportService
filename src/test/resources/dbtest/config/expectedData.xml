@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <configs id="13"
+    <configs
             story_point_name="Story Points1"
             agile_done_name="Done"
             jira_dev_group_name="jira-developers"

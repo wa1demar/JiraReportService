@@ -18,7 +18,7 @@ public class ReportResponceDto {
     private Date createdDate;
     private boolean isClosed;
     private Long typeId;
-    private List<AdminReportDto> admins;
+    private List<JiraUserDto> admins;
 
     public Long getId() {
         return id;
@@ -92,11 +92,11 @@ public class ReportResponceDto {
         this.typeId = typeId;
     }
 
-    public List<AdminReportDto> getAdmins() {
+    public List<JiraUserDto> getAdmins() {
         return admins;
     }
 
-    public void setAdmins(List<AdminReportDto> admins) {
+    public void setAdmins(List<JiraUserDto> admins) {
         this.admins = admins;
     }
 }

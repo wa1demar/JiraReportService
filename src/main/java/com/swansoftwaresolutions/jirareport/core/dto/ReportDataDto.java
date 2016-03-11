@@ -1,5 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.dto;
 
+import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
+
 import java.io.Serializable;
 import java.util.List;
 

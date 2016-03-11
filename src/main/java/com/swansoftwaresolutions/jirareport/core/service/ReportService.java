@@ -1,8 +1,10 @@
 package com.swansoftwaresolutions.jirareport.core.service;
 
+import com.swansoftwaresolutions.jirareport.core.dto.report.NewReportDto;
+import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.Report;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
-import com.swansoftwaresolutions.jirareport.core.dto.ReportDto;
+import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.ReportResponceDto;
 
 import java.util.List;
@@ -13,16 +15,15 @@ import java.util.List;
  */
 public interface ReportService {
 
-    List<ReportDto> findAll();
-
-    ReportResponceDto save(ReportDto reportDto) throws NoSuchEntityException;
+    ReportDto add(NewReportDto newReportDto) throws NoSuchEntityException;
 
     Report update(Report report) throws NoSuchEntityException;
-
-    ReportDto findById(long id) throws NoSuchEntityException;
 
     void deleteById(long id) throws NoSuchEntityException;
 
     void delete(ReportDto reportDto) throws NoSuchEntityException;
 
+    ReportListDto retrieveAllReportsList();
+
+    ReportDto retrieveReportByID(long id);
 }
