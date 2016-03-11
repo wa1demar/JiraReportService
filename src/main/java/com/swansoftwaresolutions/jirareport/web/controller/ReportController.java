@@ -43,34 +43,27 @@ public class ReportController {
     }
 
     @RequestMapping(value = "/v1/reports/{id}", method = RequestMethod.GET)
-    private ResponseEntity<ReportDto> getReportById(@Valid @PathVariable("id") long id) throws NoSuchEntityException {
+    private ResponseEntity<ReportDto> getReportById(@PathVariable("id") long id) throws NoSuchEntityException {
         ReportDto reportDto = reportService.retrieveReportByID(id);
 
         return new ResponseEntity<>(reportDto, HttpStatus.OK);
     }
 
 
-    @RequestMapping(value = "/v1/report", method = RequestMethod.DELETE)
-    private ResponseEntity<ResponceReportDto> deleteReportById(@RequestParam(value = "id") long id) {
-        ResponceReportDto responsePostDto;
-        HttpStatus httpStatus;
+    @RequestMapping(value = "/v1/reports/{id}", method = RequestMethod.PUT)
+    private ResponseEntity<ReportDto> updateReport(@PathVariable("id") long id, @Valid @RequestBody ReportDto reportDto) throws NoSuchEntityException {
+        ReportDto updatedReport = reportService.update(reportDto);
 
-        try {
-            if (reportService.retrieveReportByID(id) != null) {
-                reportService.deleteById(id);
-                responsePostDto = new ResponceReportDto(true, "Report deleted successfully.");
-                httpStatus = HttpStatus.OK;
-            } else {
-                responsePostDto = new ResponceReportDto(false, "Can't found Report.");
-                httpStatus = HttpStatus.NOT_FOUND;
-            }
-        } catch (NoSuchEntityException e) {
-            e.printStackTrace();
-            responsePostDto = new ResponceReportDto(false, "Can't found Report.");
-            httpStatus = HttpStatus.NOT_FOUND;
-        }
+        return new ResponseEntity<>(updatedReport, HttpStatus.OK);
+    }
 
-        return new ResponseEntity<>(responsePostDto, httpStatus);
+
+    @RequestMapping(value = "/v1/reports/{id}", method = RequestMethod.DELETE)
+    private ResponseEntity<ReportDto> deleteReport(@PathVariable("id") long id) throws NoSuchEntityException {
+
+        reportService.delete(id);
+
+        return new ResponseEntity<>(new ReportDto(), HttpStatus.OK);
     }
 
 //    @RequestMapping(value = "/v1/report/copy", method = RequestMethod.POST)

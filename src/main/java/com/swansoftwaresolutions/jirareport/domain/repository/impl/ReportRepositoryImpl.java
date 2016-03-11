@@ -123,7 +123,7 @@ public class ReportRepositoryImpl implements ReportRepository{
 
     @Override
     public Report findById(Long id) {
-        return (Report) sessionFactory.openSession()
+        return (Report) sessionFactory.getCurrentSession()
                 .createCriteria(Report.class).add(Restrictions.eq("id", id)).uniqueResult();
 
     }
@@ -149,7 +149,10 @@ public class ReportRepositoryImpl implements ReportRepository{
         if (findById(report.getId()) == null) {
             throw new NoSuchEntityException("Entity not found");
         }
-        return (Report) sessionFactory.openSession().merge(report);
+
+        sessionFactory.openSession().persist(report);
+
+        return report;
     }
 
     @Override
