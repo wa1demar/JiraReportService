@@ -8,3 +8,17 @@ jiraPluginApp.filter('isChecked', function() {
 
   return filterFunction;
 });
+
+//jiraPluginApp.filter('isInObj', function() {
+//  var filterFunction = function(input, obj) {
+//    for (var index = 0; index < input.length; index++) {
+//      for (var indexTeam = 0; indexTeam < obj.length; indexTeam++) {
+//        if (input[index].login === obj[indexTeam].devName) {
+//          return true;
+//        }
+//      }
+//    }
+//  };
+//
+//  return filterFunction;
+//});

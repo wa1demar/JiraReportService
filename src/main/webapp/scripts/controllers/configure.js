@@ -57,10 +57,13 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
     function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, SprintsFactory, SprintFactory, SprintTeamFactory, CONFIG) {
 
         var self = this;
-        var users = UsersFactory.query(function(){
+        $scope.sprintTeams = [];
+
+//----------------------------------------------------------------------------------------------------------------------
+//get developer
+        var users = UsersFactory.query(function() {
             $scope.devUsers = users.users;
         });
-        $scope.sprintTeams = [];
 
 //----------------------------------------------------------------------------------------------------------------------
 //Function for calc preview values
@@ -210,13 +213,13 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             if (data.id === 2) {
                 $scope.sprintTeams = [
                     {
-                        devName: "Alina Nor",
+                        devName: "bridoux",
                         engineerLvl: 3,
                         participationLvl: "0.5",
                         daysInSprint: 5
                     },
                     {
-                        devName: "Yevhenii Vuksta",
+                        devName: "bmurga",
                         engineerLvl: 1,
                         participationLvl: "0.6",
                         daysInSprint: 7
@@ -225,6 +228,20 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             } else {
                 $scope.sprintTeams = [];
             }
+
+//----------------------------------------------------------------------------------------------------------------------
+//get developer
+//TODO need refactoring
+            var users = UsersFactory.query(function() {
+                $scope.devUsersForAdd = users.users;
+                for (var index = 0; index < $scope.devUsersForAdd.length; index++) {
+                    for (var indexTeam = 0; indexTeam < $scope.sprintTeams.length; indexTeam++) {
+                        if ($scope.devUsersForAdd[index].login === $scope.sprintTeams[indexTeam].devName) {
+                            $scope.devUsersForAdd.splice(index, 1);
+                        }
+                    }
+                }
+            });
 
             $scope.calcParams();
         };
@@ -255,21 +272,38 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //work with developers
         $scope.dataDeveloper = {
-            fullName: 0
+            login: "add"
         };
         $scope.addDeveloper = function (item) {
             console.log(item);
             $scope.sprintTeams.push({
-                fullName: item,
                 devName: item,
                 engineerLvl: 1,
                 participationLvl: "1.0",
                 daysInSprint: 1
             });
             $scope.dataDeveloper = {
-                fullName: 0
+                login: "add"
             };
             $scope.calcParams();
+
+//----------------------------------------------------------------------------------------------------------------------
+//get developer
+            var users = UsersFactory.query(function(){
+                for (var index = 0; index < users.users.length; index++) {
+                    for (var indexTeam = 0; indexTeam < $scope.sprintTeams.length; indexTeam++) {
+                        if (users.users[index].login === $scope.sprintTeams[indexTeam].devName) {
+                            console.log(users.users[index].login + " --- " + $scope.sprintTeams[indexTeam].devName);
+                            users.users.splice(index, 1);
+                        }
+                    }
+                }
+
+
+                $scope.devUsersForAdd = users.users;
+                console.log($scope.devUsersForAdd);
+                console.log($scope.sprintTeams);
+            });
         };
 
         $scope.deleteDeveloper = function (item) {

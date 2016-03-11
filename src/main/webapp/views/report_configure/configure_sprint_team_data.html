@@ -41,7 +41,7 @@
                 <tr ng-show="sprintTeams.length > 0" ng-repeat="data in sprintTeams" class="configure-dev-row" data-id="{{data.id}}">
                     <td class="border-right-2">
                         <select ui-select2 ng-model="data.devName" class="developer-name" disabled>
-                            <option ng-repeat="dataUser in devUsers" value="{{dataUser.fullName}}">{{dataUser.fullName}}</option>
+                            <option ng-repeat="dataUser in devUsers" value="{{dataUser.login}}">{{dataUser.fullName}}</option>
                         </select>
                         <span class="aui-button delete-developer" data-id="{{data.id}}" ng-click="deleteDeveloper(data.devName)">Delete</span>
                     </td>
@@ -65,18 +65,18 @@
                         </select>
                     </td>
                     <td>
-                        <input ng-change="calcParams()" type="number" min="1" step="1" name="days-in-sprint" class="text days-in-sprint" ng-model="data.daysInSprint" convert-to-number/>
+                        <input ng-change="calcParams()" type="number" min="1" step="1" name="days-in-sprint" class="text days-in-sprint" ng-model="data.daysInSprint"/>
                         <span ng-show="reportModel.sprint.type === 2" class="aui-button sprint-team-activity" data-id="{{data.id}}" style="margin-left: 10px;">Activity</span>
                     </td>
                 </tr>
                 <tr>
                     <td class="border-right-2">
-                        <select ui-select2 class="developer-name" ng-model="dataDeveloper.fullName" style="width: 180px; margin-right: 5px;">
-                            <option value="0">Add ...</option>
-                            <option ng-repeat="dataUser in devUsers" ng-hide="data.devName === dataUser.fullName" ng-disabled="data.devName === dataUser.fullName" style="float: left;">{{dataUser.fullName}}</option>
+                        <select ui-select2 class="developer-name" ng-model="dataDeveloper.login" style="width: 180px; margin-right: 5px;">
+                            <option value="add">Add ...</option>
+                            <option ng-repeat="dataUser in devUsersForAdd" value="{{dataUser.login}}" style="float: left;">{{dataUser.fullName}}</option>
                         </select>
-                        <span ng-disabled="!dataDeveloper.fullName || dataDeveloper.fullName === '0'"
-                              ng-click="dataDeveloper.fullName && dataDeveloper.fullName !== '0' ? addDeveloper(dataDeveloper.fullName) : ''"
+                        <span ng-disabled="!dataDeveloper.login || dataDeveloper.login === 'add'"
+                              ng-click="dataDeveloper.login && dataDeveloper.login !== 'add' ? addDeveloper(dataDeveloper.login) : ''"
                               id="add-sprint-team" class="aui-button">Add</span>
                     </td>
                 </tr>
