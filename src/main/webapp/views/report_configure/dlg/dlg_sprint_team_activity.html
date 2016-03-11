@@ -1,0 +1,37 @@
+<div class="modal-header">
+    <h3 class="modal-title capitalize">Activity</h3>
+</div>
+<div class="content-body" style="margin: 20px;">
+    <table ng-show="data.length > 0" class="aui table activity-table">
+        <thead>
+            <tr>
+                <th class="text-center">Date</th>
+                <th class="text-center width-100">Task type</th>
+                <th class="text-center width-100">Task status</th>
+                <th class="text-center width-100">Estimate</th>
+                <th class="text-center width-100">Time Spent</th>
+                <th style="width: 70px;"></th>
+                <th style="width: 30px;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="value in data" class="element-row">
+                <td>
+                    {{value.date | date:'MM/dd/yyyy'}}
+                </td>
+                <td class="issue-box" colspan="5">
+                    <div ng-include="'views/report_configure/dlg/dlg_all_issue.html'"></div>
+                </td>
+                <td>
+                    <span class="aui-icon aui-icon-small aui-iconfont-add js-copy-clipboard add-issue" data-id="0" data-date="$dateString" title="Add" style="cursor: pointer;">Add</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p ng-show="data.length === 0" style="text-align: center;">
+        <strong><i>Data not found</i></strong>
+    </p>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" type="button" ng-click="cancel()">Done</button>
+</div>

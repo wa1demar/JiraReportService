@@ -32,7 +32,6 @@ public class JiraUserRepositoryImplTest extends AbstractDbTest {
 
         JiraUser newUser = userRepository.add(user);
 
-        assertNotNull(newUser.getId());
         assertEquals("new.user@gmail.com", newUser.getEmail());
         assertEquals("newUser", newUser.getLogin());
         assertEquals("New User", newUser.getFullName());
@@ -49,7 +48,6 @@ public class JiraUserRepositoryImplTest extends AbstractDbTest {
         user.setJiraUserId(10006L);
 
         JiraUser updatedUser = userRepository.update(user);
-        assertNotNull(updatedUser.getId());
         assertEquals("new.user@gmail.com", updatedUser.getEmail());
         assertEquals("newUser", updatedUser.getLogin());
         assertEquals("New User", updatedUser.getFullName());
@@ -99,7 +97,6 @@ public class JiraUserRepositoryImplTest extends AbstractDbTest {
         JiraUser user = userRepository.findById(1L);
         assertNotNull(user);
 
-        userRepository.delete(user.getId());
         assertNull(userRepository.findById(1L));
         assertEquals(4, userRepository.findAll().size());
 

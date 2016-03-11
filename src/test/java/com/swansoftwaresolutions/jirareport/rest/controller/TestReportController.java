@@ -1,7 +1,5 @@
 package com.swansoftwaresolutions.jirareport.rest.controller;
 
-import com.swansoftwaresolutions.jirareport.core.dto.adminreport.AdminReportDto;
-import com.swansoftwaresolutions.jirareport.core.dto.adminreport.AdminreportDtoBuilder;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDtoBuilder;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDto;
@@ -58,18 +56,6 @@ public class TestReportController extends AbstractRestControllerTest {
                 .createdDate(new Date())
                 .updatedDate(new Date())
                 .closed(false)
-                .admins(new ArrayList<AdminReportDto>() {{
-                    add(new AdminreportDtoBuilder()
-                            .id(1L)
-                            .login("Login 1")
-                            .fullName("Full Name1")
-                            .build());
-                    add(new AdminreportDtoBuilder()
-                            .id(2L)
-                            .login("Login 2")
-                            .fullName("Full Name2")
-                            .build());
-                }})
                 .build();
 
         ReportDto secondReport = new ReportDtoBuilder()
@@ -81,13 +67,6 @@ public class TestReportController extends AbstractRestControllerTest {
                 .createdDate(new Date())
                 .updatedDate(new Date())
                 .closed(false)
-                .admins(new ArrayList<AdminReportDto>() {{
-                    add(new AdminreportDtoBuilder()
-                            .id(1L)
-                            .login("Login 1")
-                            .fullName("Full Name1")
-                            .build());
-                }})
                 .build();
 
 

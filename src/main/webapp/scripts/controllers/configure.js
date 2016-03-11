@@ -38,6 +38,38 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
             dateClose: new Date()
         };
 
+//----------------------------------------------------------------------------------------------------------------------
+//Calender
+        $scope.dateOptions = {
+            dateDisabled: disabled,
+            formatYear: 'yy',
+            maxDate: new Date(2020, 5, 22),
+            minDate: new Date(),
+            startingDay: 1
+        };
+
+        // Disable weekend selection
+        function disabled(data) {
+            var date = data.date,
+                mode = data.mode;
+            return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+        }
+
+        $scope.openCalender = function() {
+            $scope.popupCalender.opened = true;
+        };
+
+        $scope.setDate = function(year, month, day) {
+            $scope.dt = new Date(year, month, day);
+        };
+
+        $scope.format = 'MM/dd/yyyy';
+        $scope.altInputFormats = ['M!/d!/yyyy'];
+
+        $scope.popupCalender = {
+            opened: false
+        };
+
         var users = UsersFactory.query(function(){
             $scope.users = users.users;
         });
@@ -57,10 +89,13 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
     function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, SprintsFactory, SprintFactory, SprintTeamFactory, CONFIG) {
 
         var self = this;
-        var users = UsersFactory.query(function(){
+        $scope.sprintTeams = [];
+
+//----------------------------------------------------------------------------------------------------------------------
+//get developer
+        var users = UsersFactory.query(function() {
             $scope.devUsers = users.users;
         });
-        $scope.sprintTeams = [];
 
 //----------------------------------------------------------------------------------------------------------------------
 //Function for calc preview values
@@ -161,6 +196,11 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //get sprints data
         $scope.getSprints = function () {
+
+            var startDate = new Date();
+            var endDate = new Date();
+            endDate.setDate(endDate.getDate()+5);
+
             //$scope.sprints = SprintsFactory.query({reportId: $routeParams.reportId});
             $scope.sprints = [
                 {
@@ -168,21 +208,27 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                     name: 'Sprint 1',
                     type: 1,
                     notCountTarget: true,
-                    showUat: true
+                    showUat: true,
+                    startDate: startDate,
+                    endDate: endDate
                 },
                 {
                     id: 2,
                     name: 'Sprint 2',
                     type: 0,
                     notCountTarget: true,
-                    showUat: false
+                    showUat: false,
+                    startDate: startDate,
+                    endDate: endDate
                 },
                 {
                     id: 3,
                     name: 'Sprint 3',
                     type: 2,
                     notCountTarget: false,
-                    showUat: false
+                    showUat: false,
+                    startDate: startDate,
+                    endDate: endDate
                 }
             ];
         };
@@ -210,13 +256,13 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             if (data.id === 2) {
                 $scope.sprintTeams = [
                     {
-                        devName: "Alina Nor",
+                        devName: "bridoux",
                         engineerLvl: 3,
                         participationLvl: "0.5",
                         daysInSprint: 5
                     },
                     {
-                        devName: "Yevhenii Vuksta",
+                        devName: "bmurga",
                         engineerLvl: 1,
                         participationLvl: "0.6",
                         daysInSprint: 7
@@ -225,6 +271,20 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             } else {
                 $scope.sprintTeams = [];
             }
+
+//----------------------------------------------------------------------------------------------------------------------
+//get developer
+//TODO need refactoring
+            var users = UsersFactory.query(function() {
+                $scope.devUsersForAdd = users.users;
+                for (var index = 0; index < $scope.devUsersForAdd.length; index++) {
+                    for (var indexTeam = 0; indexTeam < $scope.sprintTeams.length; indexTeam++) {
+                        if ($scope.devUsersForAdd[index].login === $scope.sprintTeams[indexTeam].devName) {
+                            $scope.devUsersForAdd.splice(index, 1);
+                        }
+                    }
+                }
+            });
 
             $scope.calcParams();
         };
@@ -255,21 +315,33 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //work with developers
         $scope.dataDeveloper = {
-            fullName: 0
+            login: "add"
         };
         $scope.addDeveloper = function (item) {
             console.log(item);
             $scope.sprintTeams.push({
-                fullName: item,
                 devName: item,
                 engineerLvl: 1,
                 participationLvl: "1.0",
                 daysInSprint: 1
             });
             $scope.dataDeveloper = {
-                fullName: 0
+                login: "add"
             };
             $scope.calcParams();
+
+//----------------------------------------------------------------------------------------------------------------------
+//get developer
+            var users = UsersFactory.query(function(){
+                for (var index = 0; index < users.users.length; index++) {
+                    for (var indexTeam = 0; indexTeam < $scope.sprintTeams.length; indexTeam++) {
+                        if (users.users[index].login === $scope.sprintTeams[indexTeam].devName) {
+                            users.users.splice(index, 1);
+                        }
+                    }
+                }
+                $scope.devUsersForAdd = users.users;
+            });
         };
 
         $scope.deleteDeveloper = function (item) {
@@ -364,7 +436,27 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 
 //----------------------------------------------------------------------------------------------------------------------
 //Dlg developer activity
-
+        $scope.dlgSprintTeamActivity = function (sprint, developer) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'views/report_configure/dlg/dlg_sprint_team_activity.html',
+                controller: 'DlgSprintTeamActivityCtrl',
+                size: 'lg',
+                resolve: {
+                    dlgData: function () {
+                        return {
+                            sprint:     sprint,
+                            developer:  developer
+                        };
+                    }
+                }
+            });
+            modalInstance.result.then(function (data) {
+                SprintFactory.delete(data, function() {
+                    self.getSprintConfigureData();
+                });
+            }, function () {});
+        };
     }
 ]);
 
@@ -444,6 +536,24 @@ jiraPluginApp.controller('DlgDeleteSprintCtrl', ['$scope', '$uibModalInstance', 
         $scope.ok = function () {
             $uibModalInstance.close($scope.dlgData);
         };
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    }
+]);
+
+jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModalInstance', 'dlgData', 'SprintIssuesFactory', 'SprintIssueFactory',
+    function ($scope, $uibModalInstance, dlgData, SprintIssuesFactory, SprintIssueFactory) {
+        $scope.dlgData = dlgData;
+
+        console.log($scope.dlgData);
+
+        var dateArray = getDatesArrayWithoutWeekends($scope.dlgData.sprint.startDate, $scope.dlgData.sprint.endDate);
+
+        console.log(dateArray);
+
+        //get issues by
 
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');

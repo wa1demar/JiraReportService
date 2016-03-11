@@ -1,0 +1,43 @@
+<table class="aui table issue-table">
+    #if($dataIssue.size() > 0)
+        #foreach($valueIssue in $dataIssue)
+            <tr>
+                <td class="width-100">$valueIssue.typeName</td>
+                <td class="width-100">
+                    #set($statusStyle = "")
+                    #if($valueIssue.statusName == "Done")
+                        #set($statusStyle = "aui-lozenge-success")
+                    #elseif($valueIssue.statusName == "In Progress")
+                        #set($statusStyle = "aui-lozenge-current")
+                    #else
+                        #set($statusStyle = "aui-lozenge-complete")
+                    #end
+
+                    <span class="aui-lozenge aui-lozenge-subtle $statusStyle">$valueIssue.statusName</span>
+                </td>
+                <td class="width-100">
+                    #if($valueIssue.point != 0)
+                        $Math.round($valueIssue.point) points
+                    #else
+                        -
+                    #end
+                </td>
+                <td class="width-100">
+                    #if($valueIssue.hours != 0)
+                        $valueIssue.hours hours
+                    #else
+                        -
+                    #end
+                </td>
+                <td style="width: 70px;">
+                    <span class="aui-icon aui-icon-small aui-iconfont-edit js-copy-clipboard edit-issue" title="Edit" data-id="$valueIssue.id" data-date="$valueIssue.issueDate">Edit</span>
+##                    <span class="aui-icon aui-icon-small aui-iconfont-delete js-copy-clipboard delete-issue" title="Delete" data-id="$valueIssue.id" data-date="$valueIssue.issueDate">Delete</span>
+##                    <span class="aui-icon aui-icon-small aui-iconfont-delete delete-issue" title="Delete" data-id="$valueIssue.id" data-date="$valueIssue.issueDate">Delete</span>
+                    <span class="aui-icon aui-icon-small aui-iconfont-close-dialog delete-issue" title="Delete" data-id="$valueIssue.id" data-date="$valueIssue.issueDate">Delete</span>
+                </td>
+            </tr>
+        #end
+    #else
+        <p class="issue-not-found">Data not found</p>
+    #end
+</table>
