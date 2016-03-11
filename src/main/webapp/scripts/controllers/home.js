@@ -17,8 +17,8 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibMo
 
         self.getReportsData();
 
-        //------------------------------------------------------------------------------------------------------------------
-        //Tabs
+//----------------------------------------------------------------------------------------------------------------------
+//Tabs
         $scope.tabs = [{
             title: 'Ongoing',
             url: 'views/report_list/ongoing.html'
@@ -37,8 +37,8 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibMo
             return tabUrl === $scope.currentTab;
         };
 
-        //------------------------------------------------------------------------------------------------------------------
-        //Dlg process report
+//----------------------------------------------------------------------------------------------------------------------
+//Dlg process report
         $scope.dlgData = {};
         $scope.processReport = function (size) {
             var modalInstance = $uibModal.open({
@@ -61,8 +61,8 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibMo
             }, function () {});
         };
 
-        //------------------------------------------------------------------------------------------------------------------
-        //Dlg delete report
+//----------------------------------------------------------------------------------------------------------------------
+//Dlg delete report
         $scope.deleteReport = function (item) {
             var modalInstance = $uibModal.open({
                 animation: true,
@@ -82,8 +82,8 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibMo
         };
 
 
-        //------------------------------------------------------------------------------------------------------------------
-        //Dlg copy report
+//----------------------------------------------------------------------------------------------------------------------
+//Dlg copy report
         $scope.copyReport = function (item) {
             var modalInstance = $uibModal.open({
                 animation: true,
