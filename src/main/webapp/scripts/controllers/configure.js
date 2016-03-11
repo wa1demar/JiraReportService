@@ -38,6 +38,38 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
             dateClose: new Date()
         };
 
+//----------------------------------------------------------------------------------------------------------------------
+//Calender
+        $scope.dateOptions = {
+            dateDisabled: disabled,
+            formatYear: 'yy',
+            maxDate: new Date(2020, 5, 22),
+            minDate: new Date(),
+            startingDay: 1
+        };
+
+        // Disable weekend selection
+        function disabled(data) {
+            var date = data.date,
+                mode = data.mode;
+            return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+        }
+
+        $scope.openCalender = function() {
+            $scope.popupCalender.opened = true;
+        };
+
+        $scope.setDate = function(year, month, day) {
+            $scope.dt = new Date(year, month, day);
+        };
+
+        $scope.format = 'MM/dd/yyyy';
+        $scope.altInputFormats = ['M!/d!/yyyy'];
+
+        $scope.popupCalender = {
+            opened: false
+        };
+
         var users = UsersFactory.query(function(){
             $scope.users = users.users;
         });
