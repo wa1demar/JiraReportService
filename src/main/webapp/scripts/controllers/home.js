@@ -117,7 +117,7 @@ jiraPluginApp.controller('DlgProcessReportCtrl',
             });
 
             $scope.model = {
-                typeId: "1"
+                typeId: 1
             };
 
             $scope.ok = function () {

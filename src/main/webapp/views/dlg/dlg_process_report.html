@@ -12,14 +12,14 @@
       </div>
       <div class="form-group">
         <label for="id-type">Board type:</label>
-        <select id="id-type" class="form-control" name="id-type"  ng-model="model.typeId">
+        <select id="id-type" class="form-control" name="id-type"  ng-model="model.typeId" convert-to-number>
           <option value="1">Automatic</option>
           <option value="2">Manual</option>
         </select>
       </div>
-      <div class="form-group" ng-show="model.typeId === '1'">
+      <div class="form-group" ng-show="model.typeId === 1">
         <label for="id-board">Report:</label>
-        <select ui-select2 ng-model="model.boardId" data-placeholder="Select board" id="id-board" name="id-board" style="width: 100%;">
+        <select ui-select2 ng-model="model.boardId" data-placeholder="Select board" id="id-board" name="id-board" style="width: 100%;" convert-to-number>
           <option value=""></option>
           <option ng-repeat="board in dlgData.boards" value="{{board.id}}">{{board.name}}</option>
         </select>
