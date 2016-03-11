@@ -123,7 +123,7 @@ public class ReportRepositoryImpl implements ReportRepository{
 
     @Override
     public Report findById(Long id) {
-        return (Report) sessionFactory.openSession()
+        return (Report) sessionFactory.getCurrentSession()
                 .createCriteria(Report.class).add(Restrictions.eq("id", id)).uniqueResult();
 
     }

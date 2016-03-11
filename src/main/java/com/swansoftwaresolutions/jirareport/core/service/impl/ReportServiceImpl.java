@@ -78,7 +78,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public void deleteById(long id) throws NoSuchEntityException {
+    public void delete(long id) throws NoSuchEntityException {
         reportRepository.delete(id);
     }
 

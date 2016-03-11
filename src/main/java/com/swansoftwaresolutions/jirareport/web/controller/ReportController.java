@@ -58,27 +58,12 @@ public class ReportController {
     }
 
 
-    @RequestMapping(value = "/v1/report", method = RequestMethod.DELETE)
-    private ResponseEntity<ResponceReportDto> deleteReportById(@RequestParam(value = "id") long id) {
-        ResponceReportDto responsePostDto;
-        HttpStatus httpStatus;
+    @RequestMapping(value = "/v1/reports/{id}", method = RequestMethod.DELETE)
+    private ResponseEntity<ReportDto> deleteReport(@PathVariable("id") long id) throws NoSuchEntityException {
 
-        try {
-            if (reportService.retrieveReportByID(id) != null) {
-                reportService.deleteById(id);
-                responsePostDto = new ResponceReportDto(true, "Report deleted successfully.");
-                httpStatus = HttpStatus.OK;
-            } else {
-                responsePostDto = new ResponceReportDto(false, "Can't found Report.");
-                httpStatus = HttpStatus.NOT_FOUND;
-            }
-        } catch (NoSuchEntityException e) {
-            e.printStackTrace();
-            responsePostDto = new ResponceReportDto(false, "Can't found Report.");
-            httpStatus = HttpStatus.NOT_FOUND;
-        }
+        reportService.delete(id);
 
-        return new ResponseEntity<>(responsePostDto, httpStatus);
+        return new ResponseEntity<>(new ReportDto(), HttpStatus.OK);
     }
 
 //    @RequestMapping(value = "/v1/report/copy", method = RequestMethod.POST)
