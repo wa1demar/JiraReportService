@@ -149,7 +149,10 @@ public class ReportRepositoryImpl implements ReportRepository{
         if (findById(report.getId()) == null) {
             throw new NoSuchEntityException("Entity not found");
         }
-        return (Report) sessionFactory.openSession().merge(report);
+
+        sessionFactory.openSession().persist(report);
+
+        return report;
     }
 
     @Override

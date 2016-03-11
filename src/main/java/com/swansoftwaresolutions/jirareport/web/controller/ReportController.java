@@ -43,10 +43,18 @@ public class ReportController {
     }
 
     @RequestMapping(value = "/v1/reports/{id}", method = RequestMethod.GET)
-    private ResponseEntity<ReportDto> getReportById(@Valid @PathVariable("id") long id) throws NoSuchEntityException {
+    private ResponseEntity<ReportDto> getReportById(@PathVariable("id") long id) throws NoSuchEntityException {
         ReportDto reportDto = reportService.retrieveReportByID(id);
 
         return new ResponseEntity<>(reportDto, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/v1/reports/{id}", method = RequestMethod.PUT)
+    private ResponseEntity<ReportDto> updateReport(@PathVariable("id") long id, @Valid @RequestBody ReportDto reportDto) throws NoSuchEntityException {
+        ReportDto updatedReport = reportService.update(reportDto);
+
+        return new ResponseEntity<>(updatedReport, HttpStatus.OK);
     }
 
 

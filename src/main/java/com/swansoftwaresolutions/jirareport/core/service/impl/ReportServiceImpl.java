@@ -66,8 +66,10 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Report update(Report report) throws NoSuchEntityException {
-        return reportRepository.update(report);
+    public ReportDto update(ReportDto reportDto) throws NoSuchEntityException {
+        Report report = reportMapper.fromDto(reportDto);
+
+        return reportMapper.toDto(reportRepository.update(report));
     }
 
     @Override
