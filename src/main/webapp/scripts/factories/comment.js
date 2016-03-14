@@ -1,14 +1,14 @@
 'use strict';
 
-jiraPluginApp.factory('CommentsFactory', ['$resource', function ($resource) {
-  return $resource('http://localhost:3000/comments/:id', {id: '@id'}, {
+jiraPluginApp.factory('CommentsFactory', ['$resource', 'CONFIG', function ($resource, CONFIG) {
+  return $resource(CONFIG.API_PATH + '/reports/:id/comments', {id: '@id'}, {
     query:  { method: 'GET', isArray: true },
-    create: { method: 'POST' }
+    add:    { method: 'POST' }
   });
 }]);
 
-jiraPluginApp.factory('CommentFactory', ['$resource', function ($resource) {
-  return $resource('http://localhost:3000/comment/:id', {id: '@id'}, {
+jiraPluginApp.factory('CommentFactory', ['$resource', 'CONFIG', function ($resource, CONFIG) {
+  return $resource(CONFIG.API_PATH + '/comments/:id', {id: '@id'}, {
     get:    { method: 'GET' },
     delete: { method: 'DELETE'}
   });

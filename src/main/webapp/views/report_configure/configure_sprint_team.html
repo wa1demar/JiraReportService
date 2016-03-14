@@ -1,32 +1,4 @@
 <div class="ghx-page-panel-content-item" id="gh-tab-sprint-team" ng-controller="ConfigureSprintTeamCtrl">
-    <!--Manual-->
-    <!--<div ng-show="report.typeId === 2">-->
-        <!--<form class="aui">-->
-            <!--<span>Team Settings</span>-->
-            <!--<span id="sprint-select-box">-->
-                <!--<select ng-model="sprint" ng-show="agileSprints.length > 0" id="sprint" name="sprint" class="select" style="width: 250px; margin: 0 15px; display: inline-block;">-->
-                    <!--<option ng-repeat="data in agileSprints" value="{{data.id}}">{{data.name}}</option>-->
-                <!--</select>-->
-
-                <!--<span ng-show="agileSprints.length > 0" ng-click="saveSprintConfigure()" id="add-sprint-configure" class="aui-button">Save</span>-->
-                <!--<span ng-show="agileSprints.length > 0" id="add-sprint-configure-loader">&nbsp;</span>-->
-                <!--<span ng-show="!agileSprints || agileSprints.length === 0" class="aui-lozenge aui-lozenge-subtle aui-lozenge-error">need to add sprint</span>-->
-            <!--</span>-->
-
-            <!--<div style="float: right;">-->
-                <!--<a ng-click="processSprint('add')" href="" class="aui-button show-sprint-element-dialog">Add Sprint</a>-->
-                <!--<a ng-show="agileSprints.length > 0" ng-click="processSprint('edit')" id="edit-sprint-link" href="" class="aui-button show-sprint-element-dialog">Edit Sprint</a>-->
-                <!--<span ng-show="agileSprints.length > 0" ng-click="deleteSprint()" id="delete-sprint-data" class="aui-button">Delete Sprint</span>-->
-                <!--<span id="delete-sprint-data-loader">&nbsp;</span>-->
-            <!--</div>-->
-        <!--</form>-->
-        <!--<hr/>-->
-        <!--<div id="sprint-team-data-box">-->
-            <!--<div ng-include="'views/report_configure/configure_sprint_team_data.html'"></div>-->
-        <!--</div>-->
-    <!--</div>-->
-
-    <!--Auto-->
     <div>
         <div ng-show="sprints.length > 0">
             <form class="aui">
