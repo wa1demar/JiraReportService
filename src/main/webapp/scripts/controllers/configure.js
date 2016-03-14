@@ -29,14 +29,14 @@ jiraPluginApp.controller('ConfigureCtrl', ['$scope',
 jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', '$uibModal', 'ReportFactory', 'UsersFactory', 'CONFIG',
     function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, CONFIG) {
 
-        //$scope.report = ReportFactory.get({id: $routeParams.reportId});
-        $scope.report = {
-            title: "title",
-            typeId: 2,
-            boardName: "Test",
-            isClosed: true,
-            dateClose: new Date()
-        };
+        $scope.report = ReportFactory.get({id: $routeParams.reportId});
+        //$scope.report = {
+        //    title: "title",
+        //    typeId: 2,
+        //    boardName: "Test",
+        //    isClosed: true,
+        //    dateClose: new Date()
+        //};
 
 //----------------------------------------------------------------------------------------------------------------------
 //Calender
@@ -197,12 +197,13 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //get sprints data
         $scope.getSprints = function () {
-
             var startDate = new Date();
             var endDate = new Date();
             endDate.setDate(endDate.getDate()+5);
             //TODO get sprints
-            //$scope.sprints = SprintsFactory.query({reportId: $routeParams.reportId});
+            SprintsFactory.query({reportId: $routeParams.reportId}, function(data) {
+                $scope.sprints = data.sprints;
+            });
             $scope.sprints = [
                 {
                     id: 1,
@@ -240,43 +241,47 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //get sprint teams data
         $scope.getSprintTeams = function (data) {
-
             if (data === undefined) {
-                data = {id: $scope.sprints[0]};
+                if ($scope.sprints !== undefined && $scope.sprints.length > 0) {
+                    data = {id: $scope.sprints[0].id};
+                }
             }
 
             //TODO add get sprint teams by reportId and agileSprintId
-            //SprintTeamFactory.get({
-            //    reportId: $routeParams.reportId,
-            //    sprintId: data.id
-            //}, function (data) {
-            //    console.log(data);
-            //    //$scope.sprintTeams = data;
-            //}, function (error) {
-            //    console.log(error);
-            //    $scope.sprintTeams = [];
-            //});
-
-            if (data.id === 2) {
-                $scope.sprintTeams = [
-                    {
-                        id: 1,
-                        devName: "bridoux",
-                        engineerLvl: 3,
-                        participationLvl: "0.5",
-                        daysInSprint: 5
-                    },
-                    {
-                        id: 2,
-                        devName: "bmurga",
-                        engineerLvl: 1,
-                        participationLvl: "0.6",
-                        daysInSprint: 7
-                    }
-                ];
-            } else {
-                $scope.sprintTeams = [];
+            console.log(data);
+            if (data !== undefined && data.id !== undefined) {
+                SprintTeamFactory.get({
+                    reportId: $routeParams.reportId,
+                    sprintId: data.id
+                }, function (data) {
+                    //console.log(data);
+                    $scope.sprintTeams = data;
+                }, function (error) {
+                    //console.log(error);
+                    $scope.sprintTeams = [];
+                });
             }
+
+            //if (data.id === 2) {
+            //    $scope.sprintTeams = [
+            //        {
+            //            id: 1,
+            //            devName: "bridoux",
+            //            engineerLvl: 3,
+            //            participationLvl: "0.5",
+            //            daysInSprint: 5
+            //        },
+            //        {
+            //            id: 2,
+            //            devName: "bmurga",
+            //            engineerLvl: 1,
+            //            participationLvl: "0.6",
+            //            daysInSprint: 7
+            //        }
+            //    ];
+            //} else {
+            //    $scope.sprintTeams = [];
+            //}
 
 //----------------------------------------------------------------------------------------------------------------------
 //get developer
@@ -311,9 +316,11 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             //console.log($scope.sprints);
             //console.log($scope.sprintTeams);
 
-            $scope.reportModel = {
-                sprint: $scope.sprints[0]
-            };
+            if ($scope.sprints !== undefined) {
+                $scope.reportModel = {
+                    sprint: $scope.sprints[0]
+                };
+            }
         };
 
         self.getSprintConfigureData();
