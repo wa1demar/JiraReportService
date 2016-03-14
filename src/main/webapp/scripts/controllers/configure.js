@@ -256,12 +256,14 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             if (data.id === 2) {
                 $scope.sprintTeams = [
                     {
+                        id: 1,
                         devName: "bridoux",
                         engineerLvl: 3,
                         participationLvl: "0.5",
                         daysInSprint: 5
                     },
                     {
+                        id: 2,
                         devName: "bmurga",
                         engineerLvl: 1,
                         participationLvl: "0.6",
@@ -551,12 +553,12 @@ jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModal', '$
 
         //get issues by sprintId and assignee
         this.getIssues = function() {
-            //SprintIssuesFactory.query({
-            //    sprintId: $scope.dlgData.sprint.id,
-            //    assignee: $scope.dlgData.developer.devName
-            //}, function (data) {
-            //    $scope.issues = data;
-            //});
+            SprintIssuesFactory.query({
+                sprintId: $scope.dlgData.sprint.id,
+                assignee: $scope.dlgData.developer.devName
+            }, function (data) {
+                $scope.issues = data;
+            });
 
             $scope.data = [
                 {
@@ -567,7 +569,7 @@ jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModal', '$
                             typeName: "Story",
                             statusName: "To Do",
                             point: 3,
-                            hours: "8.0"
+                            hours: 8.0
                         }
                     ]
                 },
@@ -577,9 +579,9 @@ jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModal', '$
                         {
                             id: 2,
                             typeName: "Story",
-                            statusName: "To Do",
+                            statusName: "In Progress",
                             point: 3,
-                            hours: "8.0"
+                            hours: 8.0
                         }
                     ]
                 },
@@ -605,11 +607,46 @@ jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModal', '$
 
 //----------------------------------------------------------------------------------------------------------------------
 //Dlg add issue
-        $scope.processIssue = function (item) {
+        $scope.processIssue = function (item, issueDate) {
             var modalInstance = $uibModal.open({
                 animation: true,
                 templateUrl: 'views/report_configure/dlg/dlg_issue.html',
-                controller: 'DlgIssueCtrl',
+                controller: 'DlgProcessIssueCtrl',
+                size: 'md',
+                resolve: {
+                    dlgData: function () {
+                        return {
+                            item:       item,
+                            issueDate:  issueDate
+                        };
+                    }
+                }
+            });
+            modalInstance.result.then(function (data) {
+                console.log(data);
+                if (data.type === "edit") {
+                    var idIssue = data.id;
+                    delete data.id;
+                    delete data.type;
+                    SprintIssueFactory.update({issueId: idIssue}, data, function(result){
+                        self.getIssues();
+                    });
+                } else {
+                    delete data.type;
+                    SprintIssuesFactory.add({sprintId: $scope.dlgData.sprint.id, assignee: $scope.dlgData.developer.devName}, data, function(result){
+                        self.getIssues();
+                    });
+                }
+            }, function () {});
+        };
+
+//----------------------------------------------------------------------------------------------------------------------
+//Dlg delete issue
+        $scope.deleteIssue = function (item) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'views/dlg/dlg_delete_element.html',
+                controller: 'DlgDeleteIssueCtrl',
                 size: 'sm',
                 resolve: {
                     dlgData: function () {
@@ -618,15 +655,40 @@ jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModal', '$
                 }
             });
             modalInstance.result.then(function (data) {
-                console.log(data);
-                //add
-                //edit
+                SprintIssueFactory.delete({issueId: data.id}, function(result){
+                    self.getIssues();
+                });
             }, function () {});
         };
     }
 ]);
 
-jiraPluginApp.controller('DlgIssueCtrl', ['$scope', '$uibModalInstance', 'dlgData',
+jiraPluginApp.controller('DlgProcessIssueCtrl', ['$scope', '$uibModalInstance', 'dlgData',
+    function ($scope, $uibModalInstance, dlgData) {
+        $scope.issue = dlgData.item;
+        if ($scope.issue === undefined) {
+            $scope.issue = {
+                type: "add",
+                typeName: "Story",
+                statusName: "To Do",
+                hours: 8.0,
+                issueDate: dlgData.issueDate
+            }
+        } else {
+            $scope.issue["type"] = "edit";
+        }
+
+        $scope.ok = function () {
+            $uibModalInstance.close($scope.issue);
+        };
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    }
+]);
+
+jiraPluginApp.controller('DlgDeleteIssueCtrl', ['$scope', '$uibModalInstance', 'dlgData',
     function ($scope, $uibModalInstance, dlgData) {
         $scope.dlgData = dlgData;
 

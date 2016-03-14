@@ -15,7 +15,7 @@
         </td>
         <td style="width: 70px;">
             <span ng-click="processIssue(valueIssue)" class="aui-icon aui-icon-small aui-iconfont-edit js-copy-clipboard edit-issue" title="Edit">Edit</span>
-            <span ng-click="deleteIssue()" class="aui-icon aui-icon-small aui-iconfont-close-dialog delete-issue" title="Delete">Delete</span>
+            <span ng-click="deleteIssue(valueIssue)" class="aui-icon aui-icon-small aui-iconfont-close-dialog delete-issue" title="Delete">Delete</span>
         </td>
     </tr>
     <tr ng-show="value.issues.length === 0">
