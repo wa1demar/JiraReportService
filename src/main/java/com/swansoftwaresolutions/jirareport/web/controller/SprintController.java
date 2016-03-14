@@ -3,6 +3,7 @@ package com.swansoftwaresolutions.jirareport.web.controller;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintsDto;
 import com.swansoftwaresolutions.jirareport.core.service.JiraSprintsService;
+import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,5 +35,14 @@ public class SprintController {
         SprintDto dto = jiraSprintsService.add(sprintDto);
 
         return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{report_id}/sprints/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<SprintDto> addNewSprint(@PathVariable("report_id") long report_id, @PathVariable("id") long id) throws NoSuchEntityException {
+
+        jiraSprintsService.delete(id);
+
+        return new ResponseEntity<>(new SprintDto(), HttpStatus.OK);
     }
 }
