@@ -28,7 +28,7 @@
         <strong ng-show="data.typeId === 2"><i>Manual</i></strong>
       </td>
       <td>
-        <a ng-repeat="adminData in data.admins" ng-href="https://swansoftwaresolutions.atlassian.net/secure/ViewProfile.jspa?name={{adminData.login}}">{{adminData.fullName}}</a>
+        <a ng-repeat="adminData in data.admins" ng-href="https://swansoftwaresolutions.atlassian.net/secure/ViewProfile.jspa?name={{adminData.login}}">{{adminData.fullName}}{{$last ? '' : ', '}}</a>
       </td>
       <td>
         <div id="ghx-manage-boards-operation-popup-1-{{data.id}}" class="aui-dropdown2 aui-style-default">

@@ -3,15 +3,15 @@
 jiraPluginApp.factory('ReportsFactory', ['$resource', 'CONFIG', function ($resource, CONFIG) {
   return $resource(CONFIG.API_PATH + '/reports', {}, {
     query:  { method: 'GET', isArray: false },
-    create: { method: 'POST' },
-    delete: { method: 'DELETE'}
+    create: { method: 'POST' }
   });
 }]);
 
 jiraPluginApp.factory('ReportFactory', ['$resource', 'CONFIG', function ($resource, CONFIG) {
   return $resource(CONFIG.API_PATH + '/reports/:id', {id: "@id"}, {
-    get: { method: 'GET'},
-    update: { method: 'PUT'}
+    get:    { method: 'GET' },
+    update: { method: 'PUT' },
+    delete: { method: 'DELETE' }
   });
 }]);
 

@@ -1,7 +1,7 @@
 'use strict';
 
-jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibModal', 'ReportsFactory', 'CopyReportFactory', 'CONFIG',
-    function($scope, AuthenticationFactory, $uibModal, ReportsFactory, CopyReportFactory, CONFIG) {
+jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibModal', 'ReportsFactory', 'ReportFactory', 'CopyReportFactory', 'CONFIG',
+    function($scope, AuthenticationFactory, $uibModal, ReportsFactory, ReportFactory, CopyReportFactory, CONFIG) {
 
         var self = this;
         $scope.loaderShow = true;
@@ -75,7 +75,7 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibMo
                 }
             });
             modalInstance.result.then(function (data) {
-                ReportsFactory.delete(data, function() {
+                ReportFactory.delete({id: data.id}, function() {
                     self.getReportsData();
                 });
             }, function () {});
