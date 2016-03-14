@@ -112,7 +112,7 @@ public class SprintRepositoryImpl implements SprintRepository {
         }
     }
 
-    @Override
+    @Override // TODO: should be optimized - without loop
     public void deleteByReportId(Long reportId) throws NoSuchEntityException{
         List<Sprint> sprintList = findByReportId(reportId);
         if (sprintList != null) {
