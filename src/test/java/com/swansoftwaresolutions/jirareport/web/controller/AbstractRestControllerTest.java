@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.rest.controller;
+package com.swansoftwaresolutions.jirareport.web.controller;
 
 import com.swansoftwaresolutions.jirareport.config.HibernateConfig;
 import com.swansoftwaresolutions.jirareport.config.TestContext;

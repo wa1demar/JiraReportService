@@ -30,17 +30,16 @@ import java.util.Set;
 public class ReportServiceImpl implements ReportService {
 
     @Autowired
-    ReportRepository reportRepository;
+    private ReportRepository reportRepository;
 
     @Autowired
-    ReportMapper reportMapper;
+    private ReportMapper reportMapper;
 
     @Autowired
-    JiraUserMapper jiraUserMapper;
+    private JiraUserMapper jiraUserMapper;
 
     @Autowired
-    JiraUserRepository jiraUserRepository;
-
+    private JiraUserRepository jiraUserRepository;
 
     @Override
     public ReportListDto retrieveAllReportsList() {
