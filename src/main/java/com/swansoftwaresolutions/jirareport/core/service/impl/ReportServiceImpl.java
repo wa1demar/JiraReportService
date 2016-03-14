@@ -68,8 +68,15 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public ReportDto update(ReportDto reportDto) throws NoSuchEntityException {
-        Report report = reportMapper.fromDto(reportDto);
+    public ReportDto update(NewReportDto newReportDto, long id) throws NoSuchEntityException {
+        List<JiraUser> jiraUsers = null;
+        if (newReportDto.getAdmins() != null && newReportDto.getAdmins().length > 0) {
+            jiraUsers = jiraUserRepository.findByLogins(newReportDto.getAdmins());
+        }
+
+        Report report = reportMapper.fromDto(newReportDto);
+        report.setId(id);
+        report.setAdmins(jiraUsers);
 
         return reportMapper.toDto(reportRepository.update(report));
     }

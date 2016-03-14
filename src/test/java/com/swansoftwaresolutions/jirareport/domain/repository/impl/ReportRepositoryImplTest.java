@@ -35,9 +35,9 @@ public class ReportRepositoryImplTest extends AbstractDbTest {
         report.setTitle("Test Report A");
         report.setCreatedDate(new Date());
         report.setCreator("Test Creator");
-        report.setTypeId(0L);
+        report.setTypeId(0);
         report.setBoardId(2L);
-        report.setCreatorId(34L);
+//        report.setCreatorId(34L);
 
         Report newReport = reportRepository.add(report);
 
