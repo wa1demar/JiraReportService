@@ -183,6 +183,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //get report data
         $scope.getReport = function () {
+            //TODO get report
             //$scope.report = ReportFactory.get({id: $routeParams.reportId});
             $scope.report = {
                 title: "title",
@@ -200,7 +201,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             var startDate = new Date();
             var endDate = new Date();
             endDate.setDate(endDate.getDate()+5);
-
+            //TODO get sprints
             //$scope.sprints = SprintsFactory.query({reportId: $routeParams.reportId});
             $scope.sprints = [
                 {
@@ -210,7 +211,8 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                     notCountTarget: true,
                     showUat: true,
                     startDate: startDate,
-                    endDate: endDate
+                    endDate: endDate,
+                    state: "active"
                 },
                 {
                     id: 2,
@@ -219,7 +221,8 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                     notCountTarget: true,
                     showUat: false,
                     startDate: startDate,
-                    endDate: endDate
+                    endDate: endDate,
+                    state: "active"
                 },
                 {
                     id: 3,
@@ -228,7 +231,8 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                     notCountTarget: false,
                     showUat: false,
                     startDate: startDate,
-                    endDate: endDate
+                    endDate: endDate,
+                    state: "active"
                 }
             ];
         };
@@ -256,12 +260,14 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             if (data.id === 2) {
                 $scope.sprintTeams = [
                     {
+                        id: 1,
                         devName: "bridoux",
                         engineerLvl: 3,
                         participationLvl: "0.5",
                         daysInSprint: 5
                     },
                     {
+                        id: 2,
                         devName: "bmurga",
                         engineerLvl: 1,
                         participationLvl: "0.6",
@@ -380,6 +386,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 resolve: {
                     dlgData: function () {
                         return {
+                            item: $scope.reportModel.sprint,
                             type: type
                         };
                     }
@@ -387,7 +394,6 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             });
             modalInstance.result.then(function (data) {
                 //TODO add/edit sprint
-
                 if(data.type === "add") {
                     data.sprint['type'] = 0;
                     data.sprint['notCountTarget'] = false;
@@ -401,7 +407,9 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                     self.getSprintConfigureData();
                     $scope.sprints.push(data.sprint);
                 } else {
-
+                    SprintFactory.update({reportId: $routeParams.reportId, sprintId: $scope.reportModel.sprint.id}, data.sprint, function () {
+                        self.getSprintConfigureData();
+                    });
                 }
 
                 //SprintsFactory.add({
@@ -463,16 +471,12 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 jiraPluginApp.controller('DlgProcessSprintCtrl',
     ['$scope', '$uibModalInstance', 'dlgData', 'SprintFactory',
     function ($scope, $uibModalInstance, dlgData, SprintFactory) {
-        $scope.dlgData = dlgData;
-        if(dlgData.type === "edit") {
-            //var sprint = SprintFactory.query(function(){
-            //    $scope.sprint = sprint;
-            //    $scope.sprint['state'] = "active";
-            //});
+        $scope.sprint = dlgData.item;
+        if (dlgData.type === "add") {
+            $scope.sprint = {
+                state: "active"
+            }
         }
-
-        $scope.sprint = {};
-        $scope.sprint['state'] = "active";
 
 //----------------------------------------------------------------------------------------------------------------------
 //Calender
@@ -543,17 +547,156 @@ jiraPluginApp.controller('DlgDeleteSprintCtrl', ['$scope', '$uibModalInstance', 
     }
 ]);
 
-jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModalInstance', 'dlgData', 'SprintIssuesFactory', 'SprintIssueFactory',
-    function ($scope, $uibModalInstance, dlgData, SprintIssuesFactory, SprintIssueFactory) {
+jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModal', '$uibModalInstance', 'dlgData', 'SprintIssuesFactory', 'SprintIssueFactory',
+    function ($scope, $uibModal, $uibModalInstance, dlgData, SprintIssuesFactory, SprintIssueFactory) {
+        var self = this;
         $scope.dlgData = dlgData;
-
         console.log($scope.dlgData);
 
-        var dateArray = getDatesArrayWithoutWeekends($scope.dlgData.sprint.startDate, $scope.dlgData.sprint.endDate);
+        //get issues by sprintId and assignee
+        this.getIssues = function() {
+            SprintIssuesFactory.query({
+                sprintId: $scope.dlgData.sprint.id,
+                assignee: $scope.dlgData.developer.devName
+            }, function (data) {
+                $scope.issues = data;
+            });
 
-        console.log(dateArray);
+            $scope.data = [
+                {
+                    date: $scope.dlgData.sprint.startDate,
+                    issues: [
+                        {
+                            id: 1,
+                            typeName: "Story",
+                            statusName: "To Do",
+                            point: 3,
+                            hours: 8.0
+                        }
+                    ]
+                },
+                {
+                    date: $scope.dlgData.sprint.startDate,
+                    issues: [
+                        {
+                            id: 2,
+                            typeName: "Story",
+                            statusName: "In Progress",
+                            point: 3,
+                            hours: 8.0
+                        }
+                    ]
+                },
+                {
+                    date: $scope.dlgData.sprint.endDate,
+                    issues: []
+                },
+                {
+                    date: $scope.dlgData.sprint.endDate,
+                    issues: []
+                }
+            ]
+        };
+        self.getIssues();
+
+        console.log($scope.data);
 
         //get issues by
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+
+//----------------------------------------------------------------------------------------------------------------------
+//Dlg add issue
+        $scope.processIssue = function (item, issueDate) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'views/report_configure/dlg/dlg_issue.html',
+                controller: 'DlgProcessIssueCtrl',
+                size: 'md',
+                resolve: {
+                    dlgData: function () {
+                        return {
+                            item:       item,
+                            issueDate:  issueDate
+                        };
+                    }
+                }
+            });
+            modalInstance.result.then(function (data) {
+                console.log(data);
+                if (data.type === "edit") {
+                    var idIssue = data.id;
+                    delete data.id;
+                    delete data.type;
+                    SprintIssueFactory.update({issueId: idIssue}, data, function(result){
+                        self.getIssues();
+                    });
+                } else {
+                    delete data.type;
+                    SprintIssuesFactory.add({sprintId: $scope.dlgData.sprint.id, assignee: $scope.dlgData.developer.devName}, data, function(result){
+                        self.getIssues();
+                    });
+                }
+            }, function () {});
+        };
+
+//----------------------------------------------------------------------------------------------------------------------
+//Dlg delete issue
+        $scope.deleteIssue = function (item) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'views/dlg/dlg_delete_element.html',
+                controller: 'DlgDeleteIssueCtrl',
+                size: 'sm',
+                resolve: {
+                    dlgData: function () {
+                        return item;
+                    }
+                }
+            });
+            modalInstance.result.then(function (data) {
+                SprintIssueFactory.delete({issueId: data.id}, function(result){
+                    self.getIssues();
+                });
+            }, function () {});
+        };
+    }
+]);
+
+jiraPluginApp.controller('DlgProcessIssueCtrl', ['$scope', '$uibModalInstance', 'dlgData',
+    function ($scope, $uibModalInstance, dlgData) {
+        $scope.issue = dlgData.item;
+        if ($scope.issue === undefined) {
+            $scope.issue = {
+                type: "add",
+                typeName: "Story",
+                statusName: "To Do",
+                hours: 8.0,
+                issueDate: dlgData.issueDate
+            }
+        } else {
+            $scope.issue["type"] = "edit";
+        }
+
+        $scope.ok = function () {
+            $uibModalInstance.close($scope.issue);
+        };
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    }
+]);
+
+jiraPluginApp.controller('DlgDeleteIssueCtrl', ['$scope', '$uibModalInstance', 'dlgData',
+    function ($scope, $uibModalInstance, dlgData) {
+        $scope.dlgData = dlgData;
+
+        $scope.ok = function () {
+            $uibModalInstance.close($scope.dlgData);
+        };
 
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
