@@ -150,7 +150,7 @@ public class ReportRepositoryImpl implements ReportRepository{
             throw new NoSuchEntityException("Entity not found");
         }
 
-        sessionFactory.openSession().persist(report);
+        sessionFactory.openSession().update(report);
 
         return report;
     }
