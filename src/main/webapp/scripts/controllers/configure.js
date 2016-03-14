@@ -183,6 +183,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //get report data
         $scope.getReport = function () {
+            //TODO get report
             //$scope.report = ReportFactory.get({id: $routeParams.reportId});
             $scope.report = {
                 title: "title",
@@ -200,7 +201,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             var startDate = new Date();
             var endDate = new Date();
             endDate.setDate(endDate.getDate()+5);
-
+            //TODO get sprints
             //$scope.sprints = SprintsFactory.query({reportId: $routeParams.reportId});
             $scope.sprints = [
                 {
@@ -210,7 +211,8 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                     notCountTarget: true,
                     showUat: true,
                     startDate: startDate,
-                    endDate: endDate
+                    endDate: endDate,
+                    state: "active"
                 },
                 {
                     id: 2,
@@ -219,7 +221,8 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                     notCountTarget: true,
                     showUat: false,
                     startDate: startDate,
-                    endDate: endDate
+                    endDate: endDate,
+                    state: "active"
                 },
                 {
                     id: 3,
@@ -228,7 +231,8 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                     notCountTarget: false,
                     showUat: false,
                     startDate: startDate,
-                    endDate: endDate
+                    endDate: endDate,
+                    state: "active"
                 }
             ];
         };
@@ -382,6 +386,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 resolve: {
                     dlgData: function () {
                         return {
+                            item: $scope.reportModel.sprint,
                             type: type
                         };
                     }
@@ -389,7 +394,6 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             });
             modalInstance.result.then(function (data) {
                 //TODO add/edit sprint
-
                 if(data.type === "add") {
                     data.sprint['type'] = 0;
                     data.sprint['notCountTarget'] = false;
@@ -403,7 +407,9 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                     self.getSprintConfigureData();
                     $scope.sprints.push(data.sprint);
                 } else {
-
+                    SprintFactory.update({reportId: $routeParams.reportId, sprintId: $scope.reportModel.sprint.id}, data.sprint, function () {
+                        self.getSprintConfigureData();
+                    });
                 }
 
                 //SprintsFactory.add({
@@ -465,16 +471,12 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 jiraPluginApp.controller('DlgProcessSprintCtrl',
     ['$scope', '$uibModalInstance', 'dlgData', 'SprintFactory',
     function ($scope, $uibModalInstance, dlgData, SprintFactory) {
-        $scope.dlgData = dlgData;
-        if(dlgData.type === "edit") {
-            //var sprint = SprintFactory.query(function(){
-            //    $scope.sprint = sprint;
-            //    $scope.sprint['state'] = "active";
-            //});
+        $scope.sprint = dlgData.item;
+        if (dlgData.type === "add") {
+            $scope.sprint = {
+                state: "active"
+            }
         }
-
-        $scope.sprint = {};
-        $scope.sprint['state'] = "active";
 
 //----------------------------------------------------------------------------------------------------------------------
 //Calender
