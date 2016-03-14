@@ -9,7 +9,7 @@ jiraPluginApp.factory('ReportsFactory', ['$resource', 'CONFIG', function ($resou
 }]);
 
 jiraPluginApp.factory('ReportFactory', ['$resource', 'CONFIG', function ($resource, CONFIG) {
-  return $resource(CONFIG.API_PATH + '/report/:id', {id: "@id"}, {
+  return $resource(CONFIG.API_PATH + '/reports/:id', {id: "@id"}, {
     get: { method: 'GET'},
     update: { method: 'PUT'}
   });
