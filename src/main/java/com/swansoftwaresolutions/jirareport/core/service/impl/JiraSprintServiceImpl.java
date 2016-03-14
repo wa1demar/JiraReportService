@@ -1,13 +1,12 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
+import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDto;
+import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintsDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.SprintMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.Sprint;
 import com.swansoftwaresolutions.jirareport.domain.repository.SprintRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.service.JiraSprintsService;
-import com.swansoftwaresolutions.jirareport.core.dto.SprintDataDto;
-import com.swansoftwaresolutions.jirareport.core.dto.SprintTeamDto;
-import com.swansoftwaresolutions.jirareport.core.dto.SprintsDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,59 +29,15 @@ public class JiraSprintServiceImpl implements JiraSprintsService {
     SprintMapper sprintMapper;
 
     @Override
-    public SprintsDto retrieveByReportId(long reportId, int typeId) {
+    public SprintsDto retrieveByReportId(long reportId) {
+        List<Sprint> sprints = sprintRepository.findByReportId(reportId);
 
-//        List<Sprint> sprints = sprintRepository.findSprintsByReportId(reportId);
-//
-//        List<SprintDataDto> dataLocal = new ArrayList<>();
-//
-//        for (Sprint sprint : sprints) {
-//            Map<String, Double> sprintActualPoints;
-//
-//            Map<String, Integer> sprintTargetPoints = getTargetDataBySprint(sprint.getAgileSprintId(), reportId);
-//            if (typeId == 0 || typeId == 1) {
-//                sprintActualPoints = getActualDataFromSprintData(sprint.getId(), reportId);
-//            } else {
-//                sprintActualPoints = getActualDataFromManualSprintData(sprint.getId());
-//            }
-//
-//            //System.out.println(sprintActualPoints);
-//
-//            dataLocal.add(new SprintDataDto(sprint.getAgileSprintId(), sprint.getState().toLowerCase(), sprint.getType(),
-//                    sprint.getName(),
-//                    sprint.getStartDate(),
-//                    sprint.getEndDate(),
-//                    sprint.getCompleteDate(),
-//                    sprintTargetPoints.get("targetPoints"),
-//                    Math.round(sprintActualPoints.get("allPointsFromAgile")),
-//                    Math.round(sprintActualPoints.get("actualPoints")),
-//                    sprintTargetPoints.get("targetHours"),
-//                    Math.round(sprintActualPoints.get("actualHours") * 10) / 10.0,
-//
-//                    sprintTargetPoints.get("defectMin"),
-//                    sprintTargetPoints.get("defectMax"),
-//                    sprintTargetPoints.get("defectHours"),
-//
-//                    sprintTargetPoints.get("uatDefectMin"),
-//                    sprintTargetPoints.get("uatDefectMax"),
-//                    sprintTargetPoints.get("uatDefectHours"),
-//
-//                    Math.round(sprintActualPoints.get("actualQatDefects")),
-//                    sprint.getShowUat() == 1 ? Math.round(sprintActualPoints.get("actualUatDefects")) : 0,
-//
-//                    Math.round(sprintActualPoints.get("actualQatDefectsHours") * 10) / 10.0,
-//                    sprint.getShowUat() == 1 ? Math.round(sprintActualPoints.get("actualUatDefectsHours") * 10) / 10.0 : 0,
-//
-//                    sprint.getNotCountTarget(),
-//
-//                    sprint.getShowUat()
-//            ));
-//        }
-//
-        SprintsDto result = new SprintsDto();
-//        result.setValues(dataLocal);
+        return sprintMapper.toDto(sprints);
+    }
 
-        return result;
+    @Override
+    public void add(Sprint sprint) {
+
     }
 
 //    public Map<String, Integer> getTargetDataBySprint(Long idSprint, Long idReport) {
@@ -131,8 +86,10 @@ public class JiraSprintServiceImpl implements JiraSprintsService {
 //    }
 
     @Override
-    public Sprint save(Sprint sprint) {
-        return sprintRepository.add(sprint);
+    public SprintDto add(SprintDto sprint) {
+        Sprint sprintDto = sprintMapper.fromDto(sprint);
+        Sprint newSprint = sprintRepository.add(sprintDto);
+        return sprintMapper.toDto(newSprint);
     }
 
     @Override

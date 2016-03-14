@@ -24,7 +24,7 @@ public class Sprint implements Serializable {
     private Long agileSprintId;
 
     @Column(name = "not_count_target")
-    private Long notCountTarget;
+    private boolean notCountTarget;
 
     @Column(name = "name")
     private String name;
@@ -45,7 +45,7 @@ public class Sprint implements Serializable {
     private Date completeDate;
 
     @Column(name = "show_uat")
-    private Long showUat;
+    private boolean showUat;
 
     public Long getId() {
         return id;
@@ -71,11 +71,11 @@ public class Sprint implements Serializable {
         this.agileSprintId = agileSprintId;
     }
 
-    public Long getNotCountTarget() {
+    public boolean getNotCountTarget() {
         return notCountTarget;
     }
 
-    public void setNotCountTarget(Long notCountTarget) {
+    public void setNotCountTarget(boolean notCountTarget) {
         this.notCountTarget = notCountTarget;
     }
 
@@ -127,11 +127,11 @@ public class Sprint implements Serializable {
         this.completeDate = completeDate;
     }
 
-    public Long getShowUat() {
+    public boolean getShowUat() {
         return showUat;
     }
 
-    public void setShowUat(Long showUat) {
+    public void setShowUat(boolean showUat) {
         this.showUat = showUat;
     }
 

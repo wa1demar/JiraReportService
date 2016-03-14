@@ -1,23 +1,23 @@
-package com.swansoftwaresolutions.jirareport.core.dto;
+package com.swansoftwaresolutions.jirareport.core.dto.sprint;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author Vladimir Martynyuk
  */
-public class SprintDto implements Serializable {
+public class SprintDto {
+
     private Long id;
     private Long reportId;
     private Long agileSprintId;
-    private Long notCountTarget;
+    private boolean notCountTarget;
     private String name;
     private String state;
     private Long type;
     private Date startDate;
     private Date endDate;
     private Date completeDate;
-    private Long showUat;
+    private boolean showUat;
 
     public Long getId() {
         return id;
@@ -43,11 +43,11 @@ public class SprintDto implements Serializable {
         this.agileSprintId = agileSprintId;
     }
 
-    public Long getNotCountTarget() {
+    public boolean getNotCountTarget() {
         return notCountTarget;
     }
 
-    public void setNotCountTarget(Long notCountTarget) {
+    public void setNotCountTarget(boolean notCountTarget) {
         this.notCountTarget = notCountTarget;
     }
 
@@ -99,11 +99,11 @@ public class SprintDto implements Serializable {
         this.completeDate = completeDate;
     }
 
-    public Long getShowUat() {
+    public boolean getShowUat() {
         return showUat;
     }
 
-    public void setShowUat(Long showUat) {
+    public void setShowUat(boolean showUat) {
         this.showUat = showUat;
     }
 }

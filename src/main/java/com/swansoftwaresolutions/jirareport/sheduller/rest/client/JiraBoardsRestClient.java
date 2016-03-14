@@ -69,7 +69,7 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
     }
 
     private void saveSprintsToDataBase(List<SprintDto> values) {
-        List<Sprint> sprints = sprintMapper.fromDtos(values);
+        List<Sprint> sprints = sprintMapper.fromShedullerDtos(values);
 
         //TODO Need to be change
         try {
@@ -79,7 +79,7 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
         }
 
         for (Sprint sprint : sprints) {
-            sprintsService.save(sprint);
+            sprintsService.add(sprint);
         }
     }
 
