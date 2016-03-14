@@ -436,7 +436,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 }
             });
             modalInstance.result.then(function (data) {
-                SprintFactory.delete(data, function() {
+                SprintFactory.delete({reportId: $routeParams.reportId, sprintId: $scope.reportModel.sprint.id}, function() {
                     self.getSprintConfigureData();
                 });
             }, function () {});
