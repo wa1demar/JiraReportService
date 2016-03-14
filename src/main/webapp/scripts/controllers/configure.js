@@ -181,107 +181,64 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
         };
 
 //----------------------------------------------------------------------------------------------------------------------
-//get report data
-        $scope.getReport = function () {
-            //TODO get report
-            //$scope.report = ReportFactory.get({id: $routeParams.reportId});
-            $scope.report = {
-                title: "title",
-                typeId: 2,
-                boardName: "Test",
-                isClosed: true,
-                dateClose: new Date()
-            };
-        };
-
-//----------------------------------------------------------------------------------------------------------------------
-//get sprints data
-        $scope.getSprints = function () {
-            var startDate = new Date();
-            var endDate = new Date();
-            endDate.setDate(endDate.getDate()+5);
-            //TODO get sprints
-            SprintsFactory.query({reportId: $routeParams.reportId}, function(data) {
-                $scope.sprints = data.sprints;
-            });
-            $scope.sprints = [
-                {
-                    id: 1,
-                    name: 'Sprint 1',
-                    type: 1,
-                    notCountTarget: true,
-                    showUat: true,
-                    startDate: startDate,
-                    endDate: endDate,
-                    state: "active"
-                },
-                {
-                    id: 2,
-                    name: 'Sprint 2',
-                    type: 0,
-                    notCountTarget: true,
-                    showUat: false,
-                    startDate: startDate,
-                    endDate: endDate,
-                    state: "active"
-                },
-                {
-                    id: 3,
-                    name: 'Sprint 3',
-                    type: 2,
-                    notCountTarget: false,
-                    showUat: false,
-                    startDate: startDate,
-                    endDate: endDate,
-                    state: "active"
-                }
-            ];
-        };
-
-//----------------------------------------------------------------------------------------------------------------------
 //get sprint teams data
         $scope.getSprintTeams = function (data) {
+            console.log("getSprintTeams");
+            console.log(data);
+            var firstLoad = true;
             if (data === undefined) {
                 if ($scope.sprints !== undefined && $scope.sprints.length > 0) {
                     data = {id: $scope.sprints[0].id};
                 }
+            } else {
+                firstLoad = false;
             }
+
+            console.log(data);
 
             //TODO add get sprint teams by reportId and agileSprintId
-            console.log(data);
-            if (data !== undefined && data.id !== undefined) {
-                SprintTeamFactory.get({
-                    reportId: $routeParams.reportId,
-                    sprintId: data.id
-                }, function (data) {
-                    //console.log(data);
-                    $scope.sprintTeams = data;
-                }, function (error) {
-                    //console.log(error);
-                    $scope.sprintTeams = [];
-                });
+            //if (data !== undefined && data.id !== undefined) {
+            //    SprintTeamFactory.query({
+            //        reportId: $routeParams.reportId,
+            //        sprintId: data.id
+            //    }, function (data) {
+            //        //console.log(data);
+            //        $scope.sprintTeams = data;
+            //    }, function (error) {
+            //        //console.log(error);
+            //        $scope.sprintTeams = [];
+            //    });
+            //}
+
+            if (data.id === 27581) {
+                $scope.sprintTeams = [
+                    {
+                        id: 1,
+                        devName: "bridoux",
+                        engineerLvl: 3,
+                        participationLvl: "0.5",
+                        daysInSprint: 5
+                    },
+                    {
+                        id: 2,
+                        devName: "bmurga",
+                        engineerLvl: 1,
+                        participationLvl: "0.6",
+                        daysInSprint: 7
+                    }
+                ];
+            } else {
+                $scope.sprintTeams = [];
             }
 
-            //if (data.id === 2) {
-            //    $scope.sprintTeams = [
-            //        {
-            //            id: 1,
-            //            devName: "bridoux",
-            //            engineerLvl: 3,
-            //            participationLvl: "0.5",
-            //            daysInSprint: 5
-            //        },
-            //        {
-            //            id: 2,
-            //            devName: "bmurga",
-            //            engineerLvl: 1,
-            //            participationLvl: "0.6",
-            //            daysInSprint: 7
-            //        }
-            //    ];
-            //} else {
-            //    $scope.sprintTeams = [];
-            //}
+            console.log($scope.sprints);
+
+            //TODO need only in first load
+            if (firstLoad && $scope.sprints !== undefined) {
+                $scope.reportModel = {
+                    sprint: $scope.sprints[0]
+                };
+            }
 
 //----------------------------------------------------------------------------------------------------------------------
 //get developer
@@ -301,26 +258,92 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
         };
 
 //----------------------------------------------------------------------------------------------------------------------
+//get sprints data
+        $scope.getSprints = function () {
+            var startDate = new Date();
+            var endDate = new Date();
+            endDate.setDate(endDate.getDate()+5);
+            //TODO get sprints
+            SprintsFactory.query({reportId: $routeParams.reportId}, function(data) {
+                $scope.sprints = data.sprints;
+                console.log("getSprints");
+                console.log($scope.sprints);
+                $scope.getSprintTeams();
+            });
+            //$scope.sprints = [
+            //    {
+            //        id: 1,
+            //        name: 'Sprint 1',
+            //        type: 1,
+            //        notCountTarget: true,
+            //        showUat: true,
+            //        startDate: startDate,
+            //        endDate: endDate,
+            //        state: "active"
+            //    },
+            //    {
+            //        id: 2,
+            //        name: 'Sprint 2',
+            //        type: 0,
+            //        notCountTarget: true,
+            //        showUat: false,
+            //        startDate: startDate,
+            //        endDate: endDate,
+            //        state: "active"
+            //    },
+            //    {
+            //        id: 3,
+            //        name: 'Sprint 3',
+            //        type: 2,
+            //        notCountTarget: false,
+            //        showUat: false,
+            //        startDate: startDate,
+            //        endDate: endDate,
+            //        state: "active"
+            //    }
+            //];
+        };
+
+//----------------------------------------------------------------------------------------------------------------------
+//get report data
+        $scope.getReport = function () {
+            //TODO get report
+            ReportFactory.get({id: $routeParams.reportId}, function(result){
+                $scope.report = result;
+                console.log("getReport");
+                $scope.getSprints();
+            });
+
+            //$scope.report = {
+            //    title: "title",
+            //    typeId: 2,
+            //    boardName: "Test",
+            //    isClosed: true,
+            //    dateClose: new Date()
+            //};
+        };
+
+//----------------------------------------------------------------------------------------------------------------------
 //get sprint configure data
         this.getSprintConfigureData = function () {
             //get report data
             $scope.getReport();
 
             //get sprint data
-            $scope.getSprints();
+            //$scope.getSprints();
 
             //get sprint teams data
-            $scope.getSprintTeams();
+            //$scope.getSprintTeams();
 
-            //console.log($scope.report);
-            //console.log($scope.sprints);
+            console.log($scope.report);
+            console.log($scope.sprints);
             //console.log($scope.sprintTeams);
 
-            if ($scope.sprints !== undefined) {
-                $scope.reportModel = {
-                    sprint: $scope.sprints[0]
-                };
-            }
+            //if ($scope.sprints !== undefined) {
+            //    $scope.reportModel = {
+            //        sprint: $scope.sprints[0]
+            //    };
+            //}
         };
 
         self.getSprintConfigureData();
@@ -392,8 +415,9 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 controller: 'DlgProcessSprintCtrl',
                 resolve: {
                     dlgData: function () {
+                        console.log($scope.reportModel);
                         return {
-                            item: $scope.reportModel.sprint,
+                            item: $scope.reportModel != undefined ? $scope.reportModel.sprint : undefined,
                             type: type
                         };
                     }
