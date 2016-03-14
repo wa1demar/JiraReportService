@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.utils;
+package com.swansoftwaresolutions.jirareport.web.utils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -28,7 +28,9 @@ public class ReportRepositoryImpl implements ReportRepository{
 
     @Override
     public List<Report> findAll() {
-        return sessionFactory.getCurrentSession().createCriteria(Report.class).list();
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM Report r");
+
+        return query.list();
     }
 
     @Override
