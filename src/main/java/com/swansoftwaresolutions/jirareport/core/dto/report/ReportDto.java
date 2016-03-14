@@ -14,13 +14,13 @@ public class ReportDto implements Serializable {
     private Long id;
     private String title;
     private String creator;
-    private Long creatorId;
+//    private Long creatorId;
     private Long boardId;
     private String boardName;
     private Date createdDate;
     private Date updatedDate;
     private Date closedDate;
-    private Long typeId;
+    private int typeId;
     private boolean closed;
     private List<JiraUserDto> admins= new ArrayList<>();
 
@@ -48,13 +48,13 @@ public class ReportDto implements Serializable {
         this.creator = creator;
     }
 
-    public Long getCreatorId() {
-        return creatorId;
-    }
-
-    public void setCreatorId(Long creatorId) {
-        this.creatorId = creatorId;
-    }
+//    public Long getCreatorId() {
+//        return creatorId;
+//    }
+//
+//    public void setCreatorId(Long creatorId) {
+//        this.creatorId = creatorId;
+//    }
 
     public Long getBoardId() {
         return boardId;
@@ -96,11 +96,11 @@ public class ReportDto implements Serializable {
         this.closedDate = closedDate;
     }
 
-    public Long getTypeId() {
+    public int getTypeId() {
         return typeId;
     }
 
-    public void setTypeId(Long typeId) {
+    public void setTypeId(int typeId) {
         this.typeId = typeId;
     }
 

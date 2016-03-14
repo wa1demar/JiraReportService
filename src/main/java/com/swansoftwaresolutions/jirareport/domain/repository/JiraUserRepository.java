@@ -4,6 +4,7 @@ import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Vladimir Martynyuk
