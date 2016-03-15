@@ -110,7 +110,7 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
     }
 ]);
 
-//Configure sprint team data
+//Configure jira_sprint team data
 jiraPluginApp.controller('ConfigureSprintTeamCtrl',
     ['$scope', '$routeParams', '$uibModal', 'ReportFactory', 'UsersFactory', 'SprintsFactory', 'SprintFactory', 'SprintTeamFactory', 'CONFIG',
     function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, SprintsFactory, SprintFactory, SprintTeamFactory, CONFIG) {
@@ -208,7 +208,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
         };
 
 //----------------------------------------------------------------------------------------------------------------------
-//get sprint teams data
+//get jira_sprint teams data
         $scope.getSprintTeams = function (data) {
             console.log("getSprintTeams");
             console.log(data);
@@ -223,7 +223,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 
             console.log(data);
 
-            //TODO add get sprint teams by reportId and agileSprintId
+            //TODO add get jira_sprint teams by reportId and agileSprintId
             if (data !== undefined && data.id !== undefined) {
                 SprintTeamFactory.query({
                     reportId: $routeParams.reportId,
@@ -351,15 +351,15 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
         };
 
 //----------------------------------------------------------------------------------------------------------------------
-//get sprint configure data
+//get jira_sprint configure data
         this.getSprintConfigureData = function () {
             //get report data
             $scope.getReport();
 
-            //get sprint data
+            //get jira_sprint data
             //$scope.getSprints();
 
-            //get sprint teams data
+            //get jira_sprint teams data
             //$scope.getSprintTeams();
 
             console.log($scope.report);
@@ -368,7 +368,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 
             //if ($scope.sprints !== undefined) {
             //    $scope.reportModel = {
-            //        sprint: $scope.sprints[0]
+            //        jira_sprint: $scope.sprints[0]
             //    };
             //}
         };
@@ -414,9 +414,9 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
         };
 
 //----------------------------------------------------------------------------------------------------------------------
-//save sprint configure
+//save jira_sprint configure
         $scope.saveSprintConfigure = function () {
-            //TODO save sprint data (with sprint team)
+            //TODO save jira_sprint data (with jira_sprint team)
             var sprint = {
                 sprint:                 $scope.reportModel.sprint,
                 sprintTeams:            $scope.sprintTeams,
@@ -427,13 +427,13 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 reportId: $routeParams.reportId,
                 sprintId: $scope.reportModel.sprint.id
             }, sprint, function () {
-                console.log("Save sprint");
+                console.log("Save jira_sprint");
             });
         };
 
 
 //----------------------------------------------------------------------------------------------------------------------
-//Dlg process sprint (type: add/edit)
+//Dlg process jira_sprint (type: add/edit)
         $scope.dlgData = {};
         $scope.processSprint = function (type) {
             var modalInstance = $uibModal.open({
@@ -451,7 +451,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 }
             });
             modalInstance.result.then(function (data) {
-                //TODO add/edit sprint
+                //TODO add/edit jira_sprint
                 if(data.type === "add") {
                     data.sprint['type'] = 0;
                     data.sprint['notCountTarget'] = false;
@@ -473,7 +473,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
         };
 
 //----------------------------------------------------------------------------------------------------------------------
-//Dlg delete sprint
+//Dlg delete jira_sprint
         $scope.deleteSprint = function (item) {
             var modalInstance = $uibModal.open({
                 animation: true,

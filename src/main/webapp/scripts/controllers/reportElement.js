@@ -146,14 +146,14 @@ jiraPluginApp.controller('ReportElementCtrl', ['$scope', '$routeParams', 'Report
     };
 
 //----------------------------------------------------------------------------------------------------------------------
-//get sprint teams data
+//get jira_sprint teams data
     this.getSprintTeams = function (data) {
 
       if (data === undefined) {
         data = {id: $scope.sprints[0]};
       }
 
-      //TODO add get sprint teams by reportId and agileSprintId
+      //TODO add get jira_sprint teams by reportId and agileSprintId
       //SprintTeamFactory.get({
       //    reportId: $routeParams.reportId,
       //    sprintId: data.id

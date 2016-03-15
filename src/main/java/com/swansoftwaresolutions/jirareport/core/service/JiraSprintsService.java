@@ -1,9 +1,9 @@
 package com.swansoftwaresolutions.jirareport.core.service;
 
-import com.swansoftwaresolutions.jirareport.core.dto.sprint.ImportedSprintDto;
-import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDto;
-import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintsDto;
-import com.swansoftwaresolutions.jirareport.domain.entity.Sprint;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSprintDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.JiraSprintDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.JiraSprintsDto;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraSprint;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 
 import java.util.List;
@@ -13,16 +13,16 @@ import java.util.List;
  */
 public interface JiraSprintsService {
 
-    SprintDto add(SprintDto sprint);
+    JiraSprintDto add(JiraSprintDto sprint);
 
-    void add(ImportedSprintDto sprint);
+    void add(ImportedJiraSprintDto sprint);
 
-    List<ImportedSprintDto> findAll();
+    List<ImportedJiraSprintDto> findAll();
 
-    void delete(Sprint sprint) throws NoSuchEntityException;
+    void delete(JiraSprint jiraSprint) throws NoSuchEntityException;
 
     void delete(Long sprintId) throws NoSuchEntityException;
 
-    SprintsDto retrieveByReportId(long reportId);
+    JiraSprintsDto retrieveByBoardId(long board_id);
 
 }

@@ -1,9 +1,9 @@
 package com.swansoftwaresolutions.jirareport.core.mapper;
 
-import com.swansoftwaresolutions.jirareport.core.dto.sprint.ImportedSprintDto;
-import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDto;
-import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintsDto;
-import com.swansoftwaresolutions.jirareport.domain.entity.Sprint;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSprintDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.JiraSprintDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.JiraSprintsDto;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraSprint;
 
 import java.util.List;
 
@@ -11,17 +11,17 @@ import java.util.List;
  * @author Vladimir Martynyuk
  */
 public interface SprintMapper {
-    List<Sprint> fromDtos(List<com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDto> sprintDtos);
+    List<JiraSprint> fromDtos(List<JiraSprintDto> jiraSprintDtos);
 
-    List<Sprint> fromShedullerDtos(List<ImportedSprintDto> sprintDtos);
+    List<JiraSprint> fromShedullerDtos(List<ImportedJiraSprintDto> sprintDtos);
 
-    SprintsDto toDto(List<Sprint> sprints);
+    JiraSprintsDto toDto(List<JiraSprint> jiraSprints);
 
-    SprintDto toDto(Sprint sprint);
+    JiraSprintDto toDto(JiraSprint jiraSprint);
 
-    Sprint fromDto(SprintDto sprint);
+    JiraSprint fromDto(JiraSprintDto sprint);
 
-    Sprint fromDto(ImportedSprintDto sprint);
+    JiraSprint fromDto(ImportedJiraSprintDto sprint);
 
-    List<ImportedSprintDto> toDtos(List<Sprint> all);
+    List<ImportedJiraSprintDto> toDtos(List<JiraSprint> all);
 }

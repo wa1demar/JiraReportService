@@ -1,23 +1,18 @@
-package com.swansoftwaresolutions.jirareport.core.dto.sprint;
+package com.swansoftwaresolutions.jirareport.core.dto.jira_sprint;
 
 import java.util.Date;
 
 /**
  * @author Vladimir Martynyuk
  */
-public class SprintDto {
+public class JiraSprintDto {
 
     private Long id;
-    private Long reportId;
-    private Long agileSprintId;
-    private boolean notCountTarget;
     private String name;
     private String state;
-    private Long type;
     private Date startDate;
     private Date endDate;
     private Date completeDate;
-    private boolean showUat;
 
     public Long getId() {
         return id;
@@ -25,30 +20,6 @@ public class SprintDto {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getReportId() {
-        return reportId;
-    }
-
-    public void setReportId(Long reportId) {
-        this.reportId = reportId;
-    }
-
-    public Long getAgileSprintId() {
-        return agileSprintId;
-    }
-
-    public void setAgileSprintId(Long agileSprintId) {
-        this.agileSprintId = agileSprintId;
-    }
-
-    public boolean getNotCountTarget() {
-        return notCountTarget;
-    }
-
-    public void setNotCountTarget(boolean notCountTarget) {
-        this.notCountTarget = notCountTarget;
     }
 
     public String getName() {
@@ -65,14 +36,6 @@ public class SprintDto {
 
     public void setState(String state) {
         this.state = state;
-    }
-
-    public Long getType() {
-        return type;
-    }
-
-    public void setType(Long type) {
-        this.type = type;
     }
 
     public Date getStartDate() {
@@ -99,11 +62,4 @@ public class SprintDto {
         this.completeDate = completeDate;
     }
 
-    public boolean getShowUat() {
-        return showUat;
-    }
-
-    public void setShowUat(boolean showUat) {
-        this.showUat = showUat;
-    }
 }

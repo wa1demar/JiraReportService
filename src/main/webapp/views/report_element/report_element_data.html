@@ -14,9 +14,9 @@
           <center ng-show="report.agileSprints.length == 0">Sprints not found</center>
         </div>
       </td>
-      <td class="report-element-table-sprint">
-        <div class="report-element-sprint-table">
-          <table ng-show="report.agileSprints.length > 0" class="aui table table-sprint">
+      <td class="report-element-table-jiraSprint">
+        <div class="report-element-jiraSprint-table">
+          <table ng-show="report.agileSprints.length > 0" class="aui table table-jiraSprint">
             <thead>
               <tr>
                 <th colspan="2"></th>
@@ -51,16 +51,16 @@
             </thead>
             <tbody>
             <tr ng-repeat="data in report.agileSprints">
-              <td class="show-sprint-details-index text-center sprint-id sprint-{{data.state}}"
-                  data-id-sprint="{{data.id}}"
+              <td class="show-jiraSprint-details-index text-center jiraSprint-id jiraSprint-{{data.state}}"
+                  data-id-jiraSprint="{{data.id}}"
                   data-state="{{data.state}}"
                   data-id="{{data.id}}"
                   style="width: 100px; cursor: pointer;"
-                  title="{{data.state}} sprint">#{{$index + 1}}</td>
-              <td class="show-sprint-details"
+                  title="{{data.state}} jiraSprint">#{{$index + 1}}</td>
+              <td class="show-jiraSprint-details"
                   ng-click="changeChart(data.id)"
                   style="cursor: pointer;"
-                  data-id-sprint="{{data.id}}"
+                  data-id-jiraSprint="{{data.id}}"
                   data-state="{{data.state}}"
                   data-name="{{data.name}}"
                   data-chart-label="{{data.chartLabel ? data.chartLabel : 0 }}"
@@ -148,7 +148,7 @@
             <!--#end-->
             <tr>
               <td colspan="2"
-                  class="sprint-closed total"
+                  class="jiraSprint-closed total"
                   data-id-report="{{report.id}}"
                   data-chart-label="{{reportChartData.label}}"
                   data-chart-target="{{reportChartData.target}}"
@@ -251,11 +251,11 @@
     <center><h3 style="margin-top: 10px;">Project Progress Bar</h3></center>
   </div>
 
-  <table ng-show="report.agileSprints.length > 0" class="aui table table-sprint" style="width: 800px; margin: 20px auto;">
+  <table ng-show="report.agileSprints.length > 0" class="aui table table-jiraSprint" style="width: 800px; margin: 20px auto;">
     <thead>
     <tr>
       <td></td>
-      <td ng-repeat="data in report.agileSprints" style="border-left: 1px solid #dddddd; min-width: 100px; text-align: center;" class="{{data.type === 1 ? 'sprint-additional-blue' : data.type === 2 ? 'sprint-additional-red' : ''}}">
+      <td ng-repeat="data in report.agileSprints" style="border-left: 1px solid #dddddd; min-width: 100px; text-align: center;" class="{{data.type === 1 ? 'jiraSprint-additional-blue' : data.type === 2 ? 'jiraSprint-additional-red' : ''}}">
 
         <!--#if ($report.idType && $report.idType == 2)-->
         <!--#if($data.endDate && $data.state == "closed")-->
@@ -298,7 +298,7 @@
     </tr>
     </tbody>
   </table>
-  <table ng-show="report.agileSprints.length > 0" class="aui table table-sprint" style="width: 800px; margin: 20px auto;">
+  <table ng-show="report.agileSprints.length > 0" class="aui table table-jiraSprint" style="width: 800px; margin: 20px auto;">
     <thead>
     </thead>
     <tbody>
