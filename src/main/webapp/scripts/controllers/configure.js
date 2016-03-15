@@ -29,7 +29,21 @@ jiraPluginApp.controller('ConfigureCtrl', ['$scope',
 jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', '$uibModal', 'ReportFactory', 'UsersFactory', 'CONFIG',
     function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, CONFIG) {
 
-        $scope.report = ReportFactory.get({id: $routeParams.reportId});
+        var self = this;
+
+        this.getReport = function () {
+            ReportFactory.get({id: $routeParams.reportId}, function (result) {
+                $scope.report = result;
+                var admins = [];
+                for (var index = 0; index < result.admins.length; index++) {
+                    admins.push(result.admins[index].login);
+                }
+                $scope.report.admins = admins;
+            });
+        };
+
+        self.getReport();
+
         //$scope.report = {
         //    title: "title",
         //    typeId: 2,
@@ -76,8 +90,12 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
 
         $scope.saveConfigureGeneralData = function () {
             if($scope.generalConfigure.$valid) {
+                console.log(2222);
                 $scope.report.dateClose = $scope.report.isClosed ? $scope.report.dateClose : null;
-                ReportFactory.update({id: $routeParams.reportId}, $scope.report);
+                ReportFactory.update({id: $routeParams.reportId}, $scope.report, function(){
+                    //FIXME not reinit select2
+                    self.getReport();
+                });
             }
         };
     }
@@ -210,7 +228,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             //    });
             //}
 
-            if (data.id === 27581) {
+            if (data.id === 57284) {
                 $scope.sprintTeams = [
                     {
                         id: 1,
