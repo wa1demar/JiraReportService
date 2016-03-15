@@ -1,5 +1,7 @@
 package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
+import com.swansoftwaresolutions.jirareport.core.dto.sprint.ImportedSprintDto;
+import com.swansoftwaresolutions.jirareport.core.dto.sprint.ImportedSprintDtos;
 import com.swansoftwaresolutions.jirareport.core.mapper.SprintMapper;
 import com.swansoftwaresolutions.jirareport.core.service.JiraBoardService;
 import com.swansoftwaresolutions.jirareport.core.service.JiraSprintsService;
@@ -28,9 +30,9 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
 
     static Logger log = Logger.getLogger(JiraBoardsRestClient.class.getName());
 
-    final String BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board.json";
-    final String ISSUES_BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board/BOARDID/issue.json";
-    final String SPRINTS_BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board/BOARDID/sprint.json";
+    private final String BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board.json";
+    private final String ISSUES_BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board/BOARDID/issue.json";
+    private final String SPRINTS_BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board/BOARDID/sprint.json";
 
     @Autowired
     JiraBoardService jiraBoardService;
@@ -58,8 +60,8 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
 
             HttpEntity<String> request = new HttpEntity<>(getHeaders());
             RestTemplate restTemplate = new RestTemplate();
-            SprintsDto sprintDtos = restTemplate.exchange(autocompliteIssuesUrl(SPRINTS_BOARD_URL, jiraBoard.getBoardId().intValue()),
-                    HttpMethod.GET, request, SprintsDto.class).getBody();
+            ImportedSprintDtos sprintDtos = restTemplate.exchange(autocompliteIssuesUrl(SPRINTS_BOARD_URL, jiraBoard.getBoardId().intValue()),
+                    HttpMethod.GET, request, ImportedSprintDtos.class).getBody();
 
             saveSprintsToDataBase(sprintDtos.getValues());
 
@@ -68,17 +70,17 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
         }
     }
 
-    private void saveSprintsToDataBase(List<SprintDto> values) {
-        List<Sprint> sprints = sprintMapper.fromShedullerDtos(values);
+    private void saveSprintsToDataBase(List<ImportedSprintDto> values) {
+        List<ImportedSprintDto> sprints = sprintsService.findAll();
 
         //TODO Need to be change
         try {
-            sprints.removeAll(sprintsService.findAll());
+            values.removeAll(sprints);
         } catch (NullPointerException ex) {
             log.warning("NullPointerExeption !!!");
         }
 
-        for (Sprint sprint : sprints) {
+        for (ImportedSprintDto sprint : values) {
             sprintsService.add(sprint);
         }
     }
@@ -156,18 +158,5 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
 
         return jiraBoard;
     }
-
-    private Sprint fromDto(SprintDto sprintDto) {
-        Sprint sprint = new Sprint();
-        sprint.setName(sprintDto.name);
-        sprint.setState(sprintDto.state);
-        sprint.setAgileSprintId((long) sprintDto.originBoardId);
-        sprint.setStartDate(sprintDto.startDate);
-        sprint.setCompleteDate(sprintDto.completeDate);
-        sprint.setEndDate(sprintDto.completeDate);
-
-        return sprint;
-    }
-
 
 }

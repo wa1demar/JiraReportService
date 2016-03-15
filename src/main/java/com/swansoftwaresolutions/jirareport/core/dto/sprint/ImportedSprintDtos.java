@@ -1,14 +1,15 @@
-package com.swansoftwaresolutions.jirareport.sheduller.dto;
+package com.swansoftwaresolutions.jirareport.core.dto.sprint;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
- * @author Vitaliy Holovko
+ * @author Vladimir Martynyuk
  */
-public class SprintsDto {
+public class ImportedSprintDtos implements Serializable {
     private int maxResults;
     private boolean isLast;
-    private List<SprintDto> values;
+    private List<ImportedSprintDto> values;
 
     public int getMaxResults() {
         return maxResults;
@@ -26,11 +27,11 @@ public class SprintsDto {
         isLast = last;
     }
 
-    public List<SprintDto> getValues() {
+    public List<ImportedSprintDto> getValues() {
         return values;
     }
 
-    public void setValues(List<SprintDto> values) {
+    public void setValues(List<ImportedSprintDto> values) {
         this.values = values;
     }
 }

@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.service;
 
+import com.swansoftwaresolutions.jirareport.core.dto.sprint.ImportedSprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintsDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.Sprint;
@@ -14,7 +15,9 @@ public interface JiraSprintsService {
 
     SprintDto add(SprintDto sprint);
 
-    List<Sprint> findAll();
+    void add(ImportedSprintDto sprint);
+
+    List<ImportedSprintDto> findAll();
 
     void delete(Sprint sprint) throws NoSuchEntityException;
 
@@ -22,5 +25,4 @@ public interface JiraSprintsService {
 
     SprintsDto retrieveByReportId(long reportId);
 
-    void add(Sprint sprint);
 }

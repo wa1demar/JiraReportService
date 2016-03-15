@@ -166,7 +166,7 @@ public class ReportRepositoryImpl implements ReportRepository{
     }
 
     @Override
-    public void delete(Report report)  throws NoSuchEntityException {
+    public Report delete(Report report)  throws NoSuchEntityException {
         Report deleteReport = findById(report.getId());
 
         if (deleteReport != null) {
@@ -174,16 +174,20 @@ public class ReportRepositoryImpl implements ReportRepository{
         } else {
             throw new NoSuchEntityException("Entity Not Found");
         }
+
+        return deleteReport;
     }
 
     @Override
-    public void delete(Long reportId) throws NoSuchEntityException {
+    public Report delete(Long reportId) throws NoSuchEntityException {
         Report report = findById(reportId);
         if (report != null) {
             sessionFactory.getCurrentSession().delete(report);
         } else {
             throw new NoSuchEntityException("Entity Not Found");
         }
+
+        return report;
     }
 
 }
