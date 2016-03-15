@@ -2,12 +2,12 @@
     <div class="aui-page-header-main">
         <h2>Executive Transparency Report</h2>
         <form class="aui">
-            <select ng-model="report.id"
-                    ng-change="getReportAllData(report)"
+            <select ng-model="reportData.report.id"
+                    ng-change="getReportAllData(reportData.report)"
                     id="change-report-element" class="select" style="width: 300px;" convert-to-number>
                 <option ng-repeat="value in reports" value="{{value.id}}">{{value.title}}</option>
             </select>
-            <a id="configure-page-link" ng-href="#/report/{{report.id}}/configure">
+            <a id="configure-page-link" ng-href="#/report/{{reportData.report.id}}/configure">
                 <span class="aui-button">Configure</span>
             </a>
         </form>

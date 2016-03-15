@@ -20,3 +20,9 @@ jiraPluginApp.factory('CopyReportFactory', ['$resource', 'CONFIG', function ($re
     copy:   { method: 'POST' }
   });
 }]);
+
+jiraPluginApp.factory('ReportWithSprintsAndTeamsFactory', ['$resource', 'CONFIG', function ($resource, CONFIG) {
+  return $resource(CONFIG.API_PATH + '/reports/:id/data_with_sprints_and_teams', {id: "@id"}, {
+    get:    { method: 'GET' }
+  });
+}]);

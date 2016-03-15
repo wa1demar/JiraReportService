@@ -1,33 +1,33 @@
 <form class="aui">
     <div class="autofill-box"></div>
-    <div id="jiraSprint-autofill-box">
+    <div id="sprint-autofill-box">
         <div>
             Sprint type:
-            <select ng-model="reportModel.jiraSprint.type" id="jiraSprint-type" name="jiraSprint-type" class="select jiraSprint-type" convert-to-number>
+            <select ng-model="reportModel.sprint.type" id="sprint-type" name="sprint-type" class="select sprint-type" convert-to-number>
                 <option value="0">Standard</option>
                 <option value="1">Additional blue</option>
                 <option value="2">Additional red</option>
             </select>
-            <p class="jiraSprint-note-text">
-                * Additional jiraSprint - if jiraSprint was added after finishing the project
+            <p class="sprint-note-text">
+                * Additional sprint - if sprint was added after finishing the project
             </p>
-            <p class="jiraSprint-note-text">
-                Blue - additional jiraSprint for scope changed. Red - additional unpaid jiraSprint
+            <p class="sprint-note-text">
+                Blue - additional sprint for scope changed. Red - additional unpaid sprint
             </p>
         </div>
         <div style="margin-top: 15px;">
-            <input ng-model="reportModel.jiraSprint.notCountTarget" name="not-count-target" id="not-count-target" type="checkbox"/>
+            <input ng-model="reportModel.sprint.notCountTarget" name="not-count-target" id="not-count-target" type="checkbox"/>
             <label for="not-count-target" style="color: #000000;">Not count target</label>
-            <p class="jiraSprint-note-text">* If checked then do not add target points/hours to Project total</p>
+            <p class="sprint-note-text">* If checked then do not add target points/hours to Project total</p>
         </div>
         <div style="margin-top: 15px;">
-            <input ng-model="reportModel.jiraSprint.showUat" ng-change="calcParams()" name="show-uat-jiraSprint" id="show-uat-jiraSprint" type="checkbox"/>
-            <label for="show-uat-jiraSprint" style="color: #000000;">UAT</label>
-            <p class="jiraSprint-note-text">* If checked then show UAT Defects</p>
+            <input ng-model="reportModel.sprint.showUat" ng-change="calcParams()" name="show-uat-sprint" id="show-uat-sprint" type="checkbox"/>
+            <label for="show-uat-sprint" style="color: #000000;">UAT</label>
+            <p class="sprint-note-text">* If checked then show UAT Defects</p>
         </div>
 
         <hr/>
-        <div ng-show="sprintTeams.length > 0" id="has-jiraSprint-team-data" style="display: none"></div>
+        <div ng-show="sprintTeams.length > 0" id="has-sprint-team-data" style="display: none"></div>
         <table class="aui table table-preview-details" style="width: inherit;">
             <thead>
                 <tr>
@@ -65,8 +65,8 @@
                         </select>
                     </td>
                     <td>
-                        <input ng-change="calcParams()" type="number" min="1" step="1" name="days-in-jiraSprint" class="text days-in-jiraSprint" ng-model="data.daysInSprint"/>
-                        <span ng-show="report.typeId === 2 && data.id" ng-click="dlgSprintTeamActivity(reportModel.jiraSprint, data)" class="aui-button jiraSprint-team-activity" style="margin-left: 10px;">Activity</span>
+                        <input ng-change="calcParams()" type="number" min="1" step="1" name="days-in-sprint" class="text days-in-sprint" ng-model="data.daysInSprint"/>
+                        <span ng-show="report.typeId === 2 && data.id" ng-click="dlgSprintTeamActivity(reportModel.sprint, data)" class="aui-button sprint-team-activity" style="margin-left: 10px;">Activity</span>
                     </td>
                 </tr>
                 <tr>
@@ -77,7 +77,7 @@
                         </select>
                         <span ng-disabled="!dataDeveloper.login || dataDeveloper.login === 'add'"
                               ng-click="dataDeveloper.login && dataDeveloper.login !== 'add' ? addDeveloper(dataDeveloper.login) : ''"
-                              id="add-jiraSprint-team" class="aui-button">Add</span>
+                              id="add-sprint-team" class="aui-button">Add</span>
                     </td>
                 </tr>
             </tbody>
@@ -94,7 +94,7 @@
                     <tr>
                         <th colspan="5"></th>
                         <th colspan="3" class="text-center" style="border-left: 1px solid #cccccc">QAT</th>
-                        <th ng-hide="!reportModel.jiraSprint.showUat" colspan="3" class="text-center uat-element" style="border-left: 1px solid #cccccc">UAT</th>
+                        <th ng-hide="!reportModel.sprint.showUat" colspan="3" class="text-center uat-element" style="border-left: 1px solid #cccccc">UAT</th>
                     </tr>
                     <tr>
                         <th></th>
@@ -108,9 +108,9 @@
                         <th class="text-center">Defects Max</th>
                         <th class="text-center">Defects Hours</th>
 
-                        <th ng-hide="!reportModel.jiraSprint.showUat" class="text-center uat-element" style="border-left: 1px solid #cccccc">Defects Min</th>
-                        <th ng-hide="!reportModel.jiraSprint.showUat" class="text-center uat-element">Defects Max</th>
-                        <th ng-hide="!reportModel.jiraSprint.showUat" class="text-center uat-element">Defects Hours</th>
+                        <th ng-hide="!reportModel.sprint.showUat" class="text-center uat-element" style="border-left: 1px solid #cccccc">Defects Min</th>
+                        <th ng-hide="!reportModel.sprint.showUat" class="text-center uat-element">Defects Max</th>
+                        <th ng-hide="!reportModel.sprint.showUat" class="text-center uat-element">Defects Hours</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -121,7 +121,7 @@
                     </td>
                     <td class="engineer-lvl text-center">{{data.engineerLvl === '4' ? '3' : data.engineerLvl}}</td>
                     <td class="participation-lvl text-center">{{data.participationLvl}}</td>
-                    <td class="days-in-jiraSprint text-center">{{data.daysInSprint}}</td>
+                    <td class="days-in-sprint text-center">{{data.daysInSprint}}</td>
 
                     <td class="target-points text-center">{{data.targetPoints}}</td>
                     <td class="target-hours text-center" style="display: none;">{{data.targetHours}}</td>
@@ -130,15 +130,15 @@
                     <td class="defect-max text-center">{{data.defectMax}}</td>
                     <td class="defect-hours text-center">{{data.defectHours}}</td>
 
-                    <td ng-hide="!reportModel.jiraSprint.showUat" class="uat-defect-min text-center uat-element" style="border-left: 1px solid #cccccc">{{data.uatDefectMin}}</td>
-                    <td ng-hide="!reportModel.jiraSprint.showUat" class="uat-defect-max text-center uat-element">{{data.uatDefectMax}}</td>
-                    <td ng-hide="!reportModel.jiraSprint.showUat" class="uat-defect-hours text-center uat-element">{{data.uatDefectHours}}</td>
+                    <td ng-hide="!reportModel.sprint.showUat" class="uat-defect-min text-center uat-element" style="border-left: 1px solid #cccccc">{{data.uatDefectMin}}</td>
+                    <td ng-hide="!reportModel.sprint.showUat" class="uat-defect-max text-center uat-element">{{data.uatDefectMax}}</td>
+                    <td ng-hide="!reportModel.sprint.showUat" class="uat-defect-hours text-center uat-element">{{data.uatDefectHours}}</td>
                 </tr>
                 <tr class="table-preview-details-row-total">
                     <td>Total</td>
                     <td class="engineer-lvl-total text-center">{{totalPreviewDetails.engineerLvl}}</td>
                     <td class="participation-lvl-total text-center"></td>
-                    <td class="days-in-jiraSprint-total text-center"></td>
+                    <td class="days-in-sprint-total text-center"></td>
 
                     <td class="target-points-total text-center">{{totalPreviewDetails.targetPoints}}</td>
                     <td class="target-hours-total text-center" style="display: none;">{{totalPreviewDetails.targetHours}}</td>
@@ -147,9 +147,9 @@
                     <td class="defect-max-total text-center">{{totalPreviewDetails.defectMax}}</td>
                     <td class="defect-hours-total text-center">{{totalPreviewDetails.defectHours}}</td>
 
-                    <td ng-hide="!reportModel.jiraSprint.showUat" class="uat-defect-min-total text-center uat-element" style="border-left: 1px solid #cccccc">{{totalPreviewDetails.uatDefectMin}}</td>
-                    <td ng-hide="!reportModel.jiraSprint.showUat" class="uat-defect-max-total text-center uat-element">{{totalPreviewDetails.uatDefectMax}}</td>
-                    <td ng-hide="!reportModel.jiraSprint.showUat" class="uat-defect-hours-total text-center uat-element">{{totalPreviewDetails.uatDefectHours}}</td>
+                    <td ng-hide="!reportModel.sprint.showUat" class="uat-defect-min-total text-center uat-element" style="border-left: 1px solid #cccccc">{{totalPreviewDetails.uatDefectMin}}</td>
+                    <td ng-hide="!reportModel.sprint.showUat" class="uat-defect-max-total text-center uat-element">{{totalPreviewDetails.uatDefectMax}}</td>
+                    <td ng-hide="!reportModel.sprint.showUat" class="uat-defect-hours-total text-center uat-element">{{totalPreviewDetails.uatDefectHours}}</td>
                 </tr>
                 </tbody>
             </table>

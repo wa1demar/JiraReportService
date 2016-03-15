@@ -4,19 +4,19 @@
       <td class="report-element-table-chart">
         <div class="report-element-chart">
           <center><h3 id="chart-title">Project to date</h3></center>
-          <div ng-show="report.agileSprints.length > 0" id="chart-box">
+          <div ng-show="reportData.sprints.length > 0" id="chart-box">
             <div class="content" style="max-width: 100%; margin: 0 auto;"></div>
             <div class="content-serial">
               <span id="char-actual-serial-icon" class="circle-for-chart green"></span> Actual
               <span class="circle-for-chart black"></span> Planned
             </div>
           </div>
-          <center ng-show="report.agileSprints.length == 0">Sprints not found</center>
+          <center ng-show="reportData.sprints.length == 0">Sprints not found</center>
         </div>
       </td>
-      <td class="report-element-table-jiraSprint">
-        <div class="report-element-jiraSprint-table">
-          <table ng-show="report.agileSprints.length > 0" class="aui table table-jiraSprint">
+      <td class="report-element-table-sprint">
+        <div class="report-element-sprint-table">
+          <table ng-show="reportData.sprints.length > 0" class="aui table table-sprint">
             <thead>
               <tr>
                 <th colspan="2"></th>
@@ -50,17 +50,17 @@
               </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="data in report.agileSprints">
-              <td class="show-jiraSprint-details-index text-center jiraSprint-id jiraSprint-{{data.state}}"
-                  data-id-jiraSprint="{{data.id}}"
+            <tr ng-repeat="data in reportData.sprints">
+              <td class="show-sprint-details-index text-center sprint-id sprint-{{data.state}}"
+                  data-id-sprint="{{data.id}}"
                   data-state="{{data.state}}"
                   data-id="{{data.id}}"
                   style="width: 100px; cursor: pointer;"
-                  title="{{data.state}} jiraSprint">#{{$index + 1}}</td>
-              <td class="show-jiraSprint-details"
+                  title="{{data.state}} sprint">#{{$index + 1}}</td>
+              <td class="show-sprint-details"
                   ng-click="changeChart(data.id)"
                   style="cursor: pointer;"
-                  data-id-jiraSprint="{{data.id}}"
+                  data-id-sprint="{{data.id}}"
                   data-state="{{data.state}}"
                   data-name="{{data.name}}"
                   data-chart-label="{{data.chartLabel ? data.chartLabel : 0 }}"
@@ -148,8 +148,8 @@
             <!--#end-->
             <tr>
               <td colspan="2"
-                  class="jiraSprint-closed total"
-                  data-id-report="{{report.id}}"
+                  class="sprint-closed total"
+                  data-id-report="{{reportData.id}}"
                   data-chart-label="{{reportChartData.label}}"
                   data-chart-target="{{reportChartData.target}}"
                   data-chart-actual="{{reportChartData.actual}}"><strong>Project total</strong></td>
@@ -185,8 +185,8 @@
               <td class="text-center">{{defectHoursTotal}}</td>
               <td class="text-center">{{actualQatDefectsHoursTotal}}</td>
               <td></td>
-              <td ng-show="hideUatCount === report.agileSprints.length" colspan="6" class="text-center" style="border-right: 1px solid #dddddd;"> - </td>
-              <td ng-show="hideUatCount !== report.agileSprints.length" class="text-center indicators">
+              <td ng-show="hideUatCount === reportData.sprints.length" colspan="6" class="text-center" style="border-right: 1px solid #dddddd;"> - </td>
+              <td ng-show="hideUatCount !== reportData.sprints.length" class="text-center indicators">
                 <!--#if($countClosedSprint != 0)-->
                 <!--#set($actualDefects = $actualUatDefectsTotal)-->
                 <!--#set($defMin = $uatDefectMinTotal)-->
@@ -194,21 +194,21 @@
                 <!--#parse("/templates/report/icons.vm")-->
                 <!--#end-->
               </td>
-              <td ng-show="hideUatCount !== report.agileSprints.length" class="text-center">{{uatDefectMinTotal}} - {{uatDefectMaxTotal}}</td>
-              <td ng-show="hideUatCount !== report.agileSprints.length" class="text-center">{{actualUatDefectsTotal}}</td>
-              <td ng-show="hideUatCount !== report.agileSprints.length" class="text-center indicators">
+              <td ng-show="hideUatCount !== reportData.sprints.length" class="text-center">{{uatDefectMinTotal}} - {{uatDefectMaxTotal}}</td>
+              <td ng-show="hideUatCount !== reportData.sprints.length" class="text-center">{{actualUatDefectsTotal}}</td>
+              <td ng-show="hideUatCount !== reportData.sprints.length" class="text-center indicators">
                 <!--#if($countClosedSprint != 0)-->
                 <!--#set($actualHours = $actualUatDefectsHoursTotal)-->
                 <!--#set($targetHours = $uatDefectHoursTotal)-->
                 <!--#parse("/templates/report/iconsHours.vm")-->
                 <!--#end-->
               </td>
-              <td ng-show="hideUatCount !== report.agileSprints.length" class="text-center">{{uatDefectHoursTotal}}</td>
-              <td ng-show="hideUatCount !== report.agileSprints.length" class="text-center" style="border-right: 1px solid #dddddd;">{{actualUatDefectsHoursTotal}}</td>
+              <td ng-show="hideUatCount !== reportData.sprints.length" class="text-center">{{uatDefectHoursTotal}}</td>
+              <td ng-show="hideUatCount !== reportData.sprints.length" class="text-center" style="border-right: 1px solid #dddddd;">{{actualUatDefectsHoursTotal}}</td>
             </tr>
             </tbody>
           </table>
-          <center ng-show="report.agileSprints.length == 0">Sprints not found</center>
+          <center ng-show="reportData.sprints.length == 0">Sprints not found</center>
           <h5 class="note-name">Designation icons:</h5>
           <ul class="note">
             <li>
@@ -251,13 +251,13 @@
     <center><h3 style="margin-top: 10px;">Project Progress Bar</h3></center>
   </div>
 
-  <table ng-show="report.agileSprints.length > 0" class="aui table table-jiraSprint" style="width: 800px; margin: 20px auto;">
+  <table ng-show="reportData.sprints.length > 0" class="aui table table-sprint" style="width: 800px; margin: 20px auto;">
     <thead>
     <tr>
       <td></td>
-      <td ng-repeat="data in report.agileSprints" style="border-left: 1px solid #dddddd; min-width: 100px; text-align: center;" class="{{data.type === 1 ? 'jiraSprint-additional-blue' : data.type === 2 ? 'jiraSprint-additional-red' : ''}}">
+      <td ng-repeat="data in reportData.sprints" style="border-left: 1px solid #dddddd; min-width: 100px; text-align: center;" class="{{data.type === 1 ? 'sprint-additional-blue' : data.type === 2 ? 'sprint-additional-red' : ''}}">
 
-        <!--#if ($report.idType && $report.idType == 2)-->
+        <!--#if ($reportData.idType && $reportData.idType == 2)-->
         <!--#if($data.endDate && $data.state == "closed")-->
         <!--#set($String = '')-->
         <!--$String.format('%1$tm.%1$td.%1$tY', $data.endDate)-->
@@ -283,10 +283,10 @@
           Points
         </div>
       </td>
-      <td ng-repeat="data in report.agileSprints" style="{{!$last ? 'text-align: center; border-left: 1px solid #dddddd;' : 'text-align: center; border-left: 1px solid #dddddd; border-right: 1px solid #dddddd;'}}">{{data.actualPoints}}</td>
+      <td ng-repeat="data in reportData.sprints" style="{{!$last ? 'text-align: center; border-left: 1px solid #dddddd;' : 'text-align: center; border-left: 1px solid #dddddd; border-right: 1px solid #dddddd;'}}">{{data.actualPoints}}</td>
     </tr>
     <tr>
-      <td colspan="{{report.agileSprints.length}}" class="tr-for-progress-bar">
+      <td colspan="{{reportData.sprints.length}}" class="tr-for-progress-bar">
         <div class="progress-bar-box">
           <div id="points-progress-bar" class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
             <div class="progress-bar-content">&nbsp;</div>
@@ -298,7 +298,7 @@
     </tr>
     </tbody>
   </table>
-  <table ng-show="report.agileSprints.length > 0" class="aui table table-jiraSprint" style="width: 800px; margin: 20px auto;">
+  <table ng-show="reportData.sprints.length > 0" class="aui table table-sprint" style="width: 800px; margin: 20px auto;">
     <thead>
     </thead>
     <tbody>
@@ -308,10 +308,10 @@
           Hours
         </div>
       </td>
-      <td ng-repeat="data in report.agileSprints" style="{{!$last ? 'text-align: center; border-left: 1px solid #dddddd; min-width: 100px;' : 'text-align: center; border-left: 1px solid #dddddd; min-width: 100px; border-right: 1px solid #dddddd;'}}">{{data.actualHours}}</td>
+      <td ng-repeat="data in reportData.sprints" style="{{!$last ? 'text-align: center; border-left: 1px solid #dddddd; min-width: 100px;' : 'text-align: center; border-left: 1px solid #dddddd; min-width: 100px; border-right: 1px solid #dddddd;'}}">{{data.actualHours}}</td>
     </tr>
     <tr>
-      <td colspan="{{report.agileSprints.length}}" class="tr-for-progress-bar">
+      <td colspan="{{reportData.sprints.length}}" class="tr-for-progress-bar">
         <div class="progress-bar-box">
           <div id="hours-progress-bar" class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
             <div class="progress-bar-content">&nbsp;</div>
@@ -324,5 +324,5 @@
     </tbody>
   </table>
 
-  <center ng-show="report.agileSprints.length == 0">Sprints not found</center>
+  <center ng-show="reportData.sprints.length == 0">Sprints not found</center>
 </div>
