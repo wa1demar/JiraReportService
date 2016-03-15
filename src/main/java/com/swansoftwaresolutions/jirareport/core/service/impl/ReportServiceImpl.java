@@ -51,7 +51,10 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public ReportDto add(NewReportDto newReportDto) throws NoSuchEntityException {
 
-        List<JiraUser> jiraUsers = jiraUserRepository.findByLogins(newReportDto.getAdmins());
+        List<JiraUser> jiraUsers = null;
+        if (newReportDto.getAdmins() != null && newReportDto.getAdmins().length > 0) {
+            jiraUsers = jiraUserRepository.findByLogins(newReportDto.getAdmins());
+        }
 
         Report newReport = reportMapper.fromDto(newReportDto);
         newReport.setAdmins(jiraUsers);
@@ -86,8 +89,8 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public void delete(long id) throws NoSuchEntityException {
-        reportRepository.delete(id);
+    public ReportDto delete(long id) throws NoSuchEntityException {
+        return reportMapper.toDto(reportRepository.delete(id));
     }
 
 }

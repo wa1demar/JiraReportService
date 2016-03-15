@@ -340,19 +340,19 @@ public class Report  implements Serializable{
 
         Report report = (Report) o;
 
-        if (!id.equals(report.id)) return false;
+        if (id != null ? !id.equals(report.id) : report.id != null) return false;
         if (!title.equals(report.title)) return false;
         if (!creator.equals(report.creator)) return false;
-        return typeId.equals(report.typeId);
+        return boardId.equals(report.boardId);
 
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + title.hashCode();
         result = 31 * result + creator.hashCode();
-        result = 31 * result + typeId.hashCode();
+        result = 31 * result + boardId.hashCode();
         return result;
     }
 }
