@@ -1,11 +1,12 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
-import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSprintDto;
-import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.JiraSprintDto;
-import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.JiraSprintsDto;
+import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
+import com.swansoftwaresolutions.jirareport.core.dto.sprint.NewSprintDto;
+import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDto;
+import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDtos;
+import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDtosBuilder;
 import com.swansoftwaresolutions.jirareport.core.mapper.SprintMapper;
-import com.swansoftwaresolutions.jirareport.core.mapper.mappings.ImportedJiraSprintDtoMapper;
-import com.swansoftwaresolutions.jirareport.domain.entity.JiraSprint;
+import com.swansoftwaresolutions.jirareport.domain.entity.Sprint;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,52 +21,32 @@ import java.util.List;
 @Component
 public class SprintMapperImpl implements SprintMapper {
 
+    @Autowired
     ModelMapper modelMapper;
 
-    @Autowired
-    public SprintMapperImpl(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-        modelMapper.addMappings(new ImportedJiraSprintDtoMapper());
+    @Override
+    public Sprint fromDto(NewSprintDto sprintDto) {
+        return modelMapper.map(sprintDto, Sprint.class);
     }
 
     @Override
-    public List<JiraSprint> fromDtos(List<JiraSprintDto> jiraSprintDtos) {
-        return null;
+    public SprintDto toDto(Sprint sprint) {
+        return modelMapper.map(sprint, SprintDto.class);
     }
 
     @Override
-    public List<JiraSprint> fromShedullerDtos(List<ImportedJiraSprintDto> sprintDtos) {
-        Type targetistType = new TypeToken<List<JiraSprint>>(){}.getType();
-        return modelMapper.map(sprintDtos, targetistType);
+    public Sprint fromDto(SprintDto sprintDto) {
+        return modelMapper.map(sprintDto, Sprint.class);
     }
 
     @Override
-    public JiraSprintsDto toDto(List<JiraSprint> jiraSprints) {
-        JiraSprintsDto jiraSprintsDto = new JiraSprintsDto();
-        Type targetistType = new TypeToken<List<JiraSprintDto>>(){}.getType();
-        jiraSprintsDto.setSprints(modelMapper.map(jiraSprints, targetistType));
+    public SprintDtos toDto(List<Sprint> sprints) {
 
-        return jiraSprintsDto;
+        Type targetistType = new TypeToken<List<SprintDto>>(){}.getType();
+        List<SprintDto> sprintDtos = modelMapper.map(sprints, targetistType);
+
+        return new SprintDtosBuilder().sprints(sprintDtos).build();
     }
 
-    @Override
-    public JiraSprintDto toDto(JiraSprint jiraSprint) {
-        return modelMapper.map(jiraSprint, JiraSprintDto.class);
-    }
 
-    @Override
-    public JiraSprint fromDto(JiraSprintDto sprint) {
-        return modelMapper.map(sprint, JiraSprint.class);
-    }
-
-    @Override
-    public JiraSprint fromDto(ImportedJiraSprintDto sprint) {
-        return modelMapper.map(sprint, JiraSprint.class);
-    }
-
-    @Override
-    public List<ImportedJiraSprintDto> toDtos(List<JiraSprint> all) {
-        Type targetistType = new TypeToken<List<ImportedJiraSprintDto>>(){}.getType();
-        return modelMapper.map(all, targetistType);
-    }
 }

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/rest")
-public class BoardController {
+public class JiraBoardController {
     @Autowired
     JiraBoardService jiraBoardService;
 

@@ -2,7 +2,7 @@ package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
 import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSprintDtos;
-import com.swansoftwaresolutions.jirareport.core.mapper.SprintMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.JiraSprintMapper;
 import com.swansoftwaresolutions.jirareport.core.service.JiraBoardService;
 import com.swansoftwaresolutions.jirareport.core.service.JiraSprintsService;
 import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
@@ -47,7 +47,7 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
     JiraSprintsService sprintsService;
 
     @Autowired
-    SprintMapper sprintMapper;
+    JiraSprintMapper jiraSprintMapper;
 
 
     public void loadData() {
