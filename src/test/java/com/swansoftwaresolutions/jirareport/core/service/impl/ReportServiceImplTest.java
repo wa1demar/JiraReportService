@@ -53,6 +53,6 @@ public class ReportServiceImplTest extends AbstractServiceImplTest {
         verify(reportRepositoryMock, times(1)).findAll();
         verifyNoMoreInteractions(reportRepositoryMock);
 
-        assertEquals(expected, actual);
+        assertEquals(expected, actual.getReports());
     }
 }

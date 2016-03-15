@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
+import com.swansoftwaresolutions.jirareport.core.dto.sprint.ImportedSprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintsDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.SprintMapper;
@@ -27,8 +28,9 @@ public class SprintMapperImpl implements SprintMapper {
     }
 
     @Override
-    public List<Sprint> fromShedullerDtos(List<com.swansoftwaresolutions.jirareport.sheduller.dto.SprintDto> sprintDtos) {
-        return null;
+    public List<Sprint> fromShedullerDtos(List<ImportedSprintDto> sprintDtos) {
+        Type targetistType = new TypeToken<List<Sprint>>(){}.getType();
+        return modelMapper.map(sprintDtos, targetistType);
     }
 
     @Override
@@ -48,5 +50,16 @@ public class SprintMapperImpl implements SprintMapper {
     @Override
     public Sprint fromDto(SprintDto sprint) {
         return modelMapper.map(sprint, Sprint.class);
+    }
+
+    @Override
+    public Sprint fromDto(ImportedSprintDto sprint) {
+        return modelMapper.map(sprint, Sprint.class);
+    }
+
+    @Override
+    public List<ImportedSprintDto> toDtos(List<Sprint> all) {
+        Type targetistType = new TypeToken<List<ImportedSprintDto>>(){}.getType();
+        return modelMapper.map(all, targetistType);
     }
 }
