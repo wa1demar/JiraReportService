@@ -3,7 +3,7 @@
 ///v1/reports/{report_id}/sprints
 jiraPluginApp.factory('SprintsFactory', ['$resource', 'CONFIG', function ($resource, CONFIG) {
   return $resource(CONFIG.API_PATH + '/reports/:reportId/sprints', {reportId: "@reportId"}, {
-    query:  { method: 'GET', isArray: true },
+    query:  { method: 'GET', isArray: false },
     add:    { method: 'POST' }
   });
 }]);
