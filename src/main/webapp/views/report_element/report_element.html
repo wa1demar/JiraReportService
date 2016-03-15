@@ -1,28 +1,28 @@
 <header id="ghx-header" class="aui-page-header">
-  <div class="aui-page-header-main">
-    <h2>Executive Transparency Report</h2>
-    <form class="aui">
-      <select id="change-report-element" class="select" style="width: 300px;">
-        <option ng-repeat="value in reports" value="{{value.id}}" data-board-id="{{value.boardId}}">{{value.name}}</option>
-      </select>
-      <a id="configure-page-link" ng-href="#/report/{{report.id}}/configure">
-        <span class="aui-button">Configure</span>
-      </a>
-    </form>
-  </div>
+    <div class="aui-page-header-main">
+        <h2>Executive Transparency Report</h2>
+        <form class="aui">
+            <select ng-model="reportData.report.id"
+                    ng-change="getReportAllData(reportData.report)"
+                    id="change-report-element" class="select" style="width: 300px;" convert-to-number>
+                <option ng-repeat="value in reports" value="{{value.id}}">{{value.title}}</option>
+            </select>
+            <a id="configure-page-link" ng-href="#/report/{{reportData.report.id}}/configure">
+                <span class="aui-button">Configure</span>
+            </a>
+        </form>
+    </div>
 </header>
 <div class="ghx-content-main">
-  <div class="aui-page-panel" style="margin-top: 0;">
-    <div class="aui-page-panel-inner report-element">
-      <!-- .aui-page-panel-nav -->
-      <section class="aui-page-panel-content" id="ghx-content-main">
-        <div class="ghx-page-panel-content-item">
-          <div id="report-element-box">
-            <div ng-include="'views/report_element/report_element_data.html'"></div>
-          </div>
+    <div class="aui-page-panel" style="margin-top: 0;">
+        <div class="aui-page-panel-inner report-element">
+            <section class="aui-page-panel-content" id="ghx-content-main">
+                <div class="ghx-page-panel-content-item">
+                    <div id="report-element-box">
+                        <div ng-include="'views/report_element/report_element_data.html'"></div>
+                    </div>
+                </div>
+            </section>
         </div>
-      </section>
-      <!-- .aui-page-panel-content -->
     </div>
-  </div>
 </div>

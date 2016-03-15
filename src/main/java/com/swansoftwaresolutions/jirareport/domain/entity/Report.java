@@ -6,9 +6,7 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Vladimir Martynyuk
@@ -50,8 +48,8 @@ public class Report  implements Serializable{
     @Column(name = "board_id")
     private Long boardId;
 
-    @Column(name = "creator_id")
-    private Long creatorId;
+//    @Column(name = "creator_id")
+//    private Long creatorId;
 
     @Column(name = "created_date")
     private Date createdDate;
@@ -69,7 +67,7 @@ public class Report  implements Serializable{
     private Date closedDate;
 
     @Column(name = "type_ID")
-    private Long typeId;
+    private Integer typeId;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "admins_reports", joinColumns = {
@@ -159,13 +157,13 @@ public class Report  implements Serializable{
         this.boardId = boardId;
     }
 
-    public Long getCreatorId() {
-        return creatorId;
-    }
-
-    public void setCreatorId(Long creatorId) {
-        this.creatorId = creatorId;
-    }
+//    public Long getCreatorId() {
+//        return creatorId;
+//    }
+//
+//    public void setCreatorId(Long creatorId) {
+//        this.creatorId = creatorId;
+//    }
 
     public Date getCreatedDate() {
         return createdDate;
@@ -207,11 +205,11 @@ public class Report  implements Serializable{
         this.closedDate = closedDate;
     }
 
-    public Long getTypeId() {
+    public Integer getTypeId() {
         return typeId;
     }
 
-    public void setTypeId(Long typeId) {
+    public void setTypeId(Integer typeId) {
         this.typeId = typeId;
     }
 
@@ -342,19 +340,19 @@ public class Report  implements Serializable{
 
         Report report = (Report) o;
 
-        if (!id.equals(report.id)) return false;
+        if (id != null ? !id.equals(report.id) : report.id != null) return false;
         if (!title.equals(report.title)) return false;
         if (!creator.equals(report.creator)) return false;
-        return typeId.equals(report.typeId);
+        return boardId.equals(report.boardId);
 
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + title.hashCode();
         result = 31 * result + creator.hashCode();
-        result = 31 * result + typeId.hashCode();
+        result = 31 * result + boardId.hashCode();
         return result;
     }
 }

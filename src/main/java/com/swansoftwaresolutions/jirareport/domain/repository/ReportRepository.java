@@ -40,7 +40,7 @@ public interface ReportRepository {
 
     void deleteAll() throws NoSuchEntityException;
 
-    void delete(Report report) throws NoSuchEntityException;
+    Report delete(Report report) throws NoSuchEntityException;
 
-    void delete(Long reportId) throws NoSuchEntityException;
+    Report delete(Long reportId) throws NoSuchEntityException;
 }

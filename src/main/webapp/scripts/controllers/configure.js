@@ -29,14 +29,28 @@ jiraPluginApp.controller('ConfigureCtrl', ['$scope',
 jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', '$uibModal', 'ReportFactory', 'UsersFactory', 'CONFIG',
     function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, CONFIG) {
 
-        //$scope.report = ReportFactory.get({id: $routeParams.reportId});
-        $scope.report = {
-            title: "title",
-            typeId: 2,
-            boardName: "Test",
-            isClosed: true,
-            dateClose: new Date()
+        var self = this;
+
+        this.getReport = function () {
+            ReportFactory.get({id: $routeParams.reportId}, function (result) {
+                $scope.report = result;
+                var admins = [];
+                for (var index = 0; index < result.admins.length; index++) {
+                    admins.push(result.admins[index].login);
+                }
+                $scope.report.admins = admins;
+            });
         };
+
+        self.getReport();
+
+        //$scope.report = {
+        //    title: "title",
+        //    typeId: 2,
+        //    boardName: "Test",
+        //    isClosed: true,
+        //    dateClose: new Date()
+        //};
 
 //----------------------------------------------------------------------------------------------------------------------
 //Calender
@@ -76,14 +90,27 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
 
         $scope.saveConfigureGeneralData = function () {
             if($scope.generalConfigure.$valid) {
+                console.log("isClosed: " + $scope.report.isClosed);
                 $scope.report.dateClose = $scope.report.isClosed ? $scope.report.dateClose : null;
-                ReportFactory.update({id: $routeParams.reportId}, $scope.report);
+
+                var reportData = {
+                    title:      $scope.report.title,
+                    isClosed:   $scope.report.isClosed === undefined ? false : $scope.report.isClosed,
+                    dateClose:  $scope.report.dateClose === undefined ? null : $scope.report.dateClose,
+                    admins:     $scope.report.admins
+                };
+
+                ReportFactory.update({
+                    id: $routeParams.reportId}, reportData, function(){
+                    //FIXME not reinit select2
+                    self.getReport();
+                });
             }
         };
     }
 ]);
 
-//Configure sprint team data
+//Configure jira_sprint team data
 jiraPluginApp.controller('ConfigureSprintTeamCtrl',
     ['$scope', '$routeParams', '$uibModal', 'ReportFactory', 'UsersFactory', 'SprintsFactory', 'SprintFactory', 'SprintTeamFactory', 'CONFIG',
     function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, SprintsFactory, SprintFactory, SprintTeamFactory, CONFIG) {
@@ -181,83 +208,36 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
         };
 
 //----------------------------------------------------------------------------------------------------------------------
-//get report data
-        $scope.getReport = function () {
-            //TODO get report
-            //$scope.report = ReportFactory.get({id: $routeParams.reportId});
-            $scope.report = {
-                title: "title",
-                typeId: 2,
-                boardName: "Test",
-                isClosed: true,
-                dateClose: new Date()
-            };
-        };
-
-//----------------------------------------------------------------------------------------------------------------------
-//get sprints data
-        $scope.getSprints = function () {
-
-            var startDate = new Date();
-            var endDate = new Date();
-            endDate.setDate(endDate.getDate()+5);
-            //TODO get sprints
-            //$scope.sprints = SprintsFactory.query({reportId: $routeParams.reportId});
-            $scope.sprints = [
-                {
-                    id: 1,
-                    name: 'Sprint 1',
-                    type: 1,
-                    notCountTarget: true,
-                    showUat: true,
-                    startDate: startDate,
-                    endDate: endDate,
-                    state: "active"
-                },
-                {
-                    id: 2,
-                    name: 'Sprint 2',
-                    type: 0,
-                    notCountTarget: true,
-                    showUat: false,
-                    startDate: startDate,
-                    endDate: endDate,
-                    state: "active"
-                },
-                {
-                    id: 3,
-                    name: 'Sprint 3',
-                    type: 2,
-                    notCountTarget: false,
-                    showUat: false,
-                    startDate: startDate,
-                    endDate: endDate,
-                    state: "active"
-                }
-            ];
-        };
-
-//----------------------------------------------------------------------------------------------------------------------
-//get sprint teams data
+//get jira_sprint teams data
         $scope.getSprintTeams = function (data) {
-
+            console.log("getSprintTeams");
+            console.log(data);
+            var firstLoad = true;
             if (data === undefined) {
-                data = {id: $scope.sprints[0]};
+                if ($scope.sprints !== undefined && $scope.sprints.length > 0) {
+                    data = {id: $scope.sprints[0].id};
+                }
+            } else {
+                firstLoad = false;
             }
 
-            //TODO add get sprint teams by reportId and agileSprintId
-            //SprintTeamFactory.get({
-            //    reportId: $routeParams.reportId,
-            //    sprintId: data.id
-            //}, function (data) {
-            //    console.log(data);
-            //    //$scope.sprintTeams = data;
-            //}, function (error) {
-            //    console.log(error);
-            //    $scope.sprintTeams = [];
-            //});
+            console.log(data);
 
-            if (data.id === 2) {
+            //TODO add get jira_sprint teams by reportId and agileSprintId
+            if (data !== undefined && data.id !== undefined) {
+                SprintTeamFactory.query({
+                    reportId: $routeParams.reportId,
+                    sprintId: data.id
+                }, function (data) {
+                    //console.log(data);
+                    $scope.sprintTeams = data;
+                }, function (error) {
+                    //console.log(error);
+                    $scope.sprintTeams = [];
+                });
+            }
+
+            if (data.id === 57284) {
                 $scope.sprintTeams = [
                     {
                         id: 1,
@@ -278,6 +258,15 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 $scope.sprintTeams = [];
             }
 
+            console.log($scope.sprints);
+
+            //TODO need only in first load
+            if (firstLoad && $scope.sprints !== undefined) {
+                $scope.reportModel = {
+                    sprint: $scope.sprints[0]
+                };
+            }
+
 //----------------------------------------------------------------------------------------------------------------------
 //get developer
 //TODO need refactoring
@@ -296,24 +285,92 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
         };
 
 //----------------------------------------------------------------------------------------------------------------------
-//get sprint configure data
+//get sprints data
+        $scope.getSprints = function () {
+            var startDate = new Date();
+            var endDate = new Date();
+            endDate.setDate(endDate.getDate()+5);
+            //TODO get sprints
+            SprintsFactory.query({reportId: $routeParams.reportId}, function(data) {
+                $scope.sprints = data.sprints;
+                console.log("getSprints");
+                console.log($scope.sprints);
+                $scope.getSprintTeams();
+            });
+            //$scope.sprints = [
+            //    {
+            //        id: 1,
+            //        name: 'Sprint 1',
+            //        type: 1,
+            //        notCountTarget: true,
+            //        showUat: true,
+            //        startDate: startDate,
+            //        endDate: endDate,
+            //        state: "active"
+            //    },
+            //    {
+            //        id: 2,
+            //        name: 'Sprint 2',
+            //        type: 0,
+            //        notCountTarget: true,
+            //        showUat: false,
+            //        startDate: startDate,
+            //        endDate: endDate,
+            //        state: "active"
+            //    },
+            //    {
+            //        id: 3,
+            //        name: 'Sprint 3',
+            //        type: 2,
+            //        notCountTarget: false,
+            //        showUat: false,
+            //        startDate: startDate,
+            //        endDate: endDate,
+            //        state: "active"
+            //    }
+            //];
+        };
+
+//----------------------------------------------------------------------------------------------------------------------
+//get report data
+        $scope.getReport = function () {
+            //TODO get report
+            ReportFactory.get({id: $routeParams.reportId}, function(result){
+                $scope.report = result;
+                console.log("getReport");
+                $scope.getSprints();
+            });
+
+            //$scope.report = {
+            //    title: "title",
+            //    typeId: 2,
+            //    boardName: "Test",
+            //    isClosed: true,
+            //    dateClose: new Date()
+            //};
+        };
+
+//----------------------------------------------------------------------------------------------------------------------
+//get jira_sprint configure data
         this.getSprintConfigureData = function () {
             //get report data
             $scope.getReport();
 
-            //get sprint data
-            $scope.getSprints();
+            //get jira_sprint data
+            //$scope.getSprints();
 
-            //get sprint teams data
-            $scope.getSprintTeams();
+            //get jira_sprint teams data
+            //$scope.getSprintTeams();
 
-            //console.log($scope.report);
-            //console.log($scope.sprints);
+            console.log($scope.report);
+            console.log($scope.sprints);
             //console.log($scope.sprintTeams);
 
-            $scope.reportModel = {
-                sprint: $scope.sprints[0]
-            };
+            //if ($scope.sprints !== undefined) {
+            //    $scope.reportModel = {
+            //        jira_sprint: $scope.sprints[0]
+            //    };
+            //}
         };
 
         self.getSprintConfigureData();
@@ -357,9 +414,9 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
         };
 
 //----------------------------------------------------------------------------------------------------------------------
-//save sprint configure
+//save jira_sprint configure
         $scope.saveSprintConfigure = function () {
-            //TODO save sprint data (with sprint team)
+            //TODO save jira_sprint data (with jira_sprint team)
             var sprint = {
                 sprint:                 $scope.reportModel.sprint,
                 sprintTeams:            $scope.sprintTeams,
@@ -370,13 +427,13 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 reportId: $routeParams.reportId,
                 sprintId: $scope.reportModel.sprint.id
             }, sprint, function () {
-                console.log("Save sprint");
+                console.log("Save jira_sprint");
             });
         };
 
 
 //----------------------------------------------------------------------------------------------------------------------
-//Dlg process sprint (type: add/edit)
+//Dlg process jira_sprint (type: add/edit)
         $scope.dlgData = {};
         $scope.processSprint = function (type) {
             var modalInstance = $uibModal.open({
@@ -385,15 +442,16 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 controller: 'DlgProcessSprintCtrl',
                 resolve: {
                     dlgData: function () {
+                        console.log($scope.reportModel);
                         return {
-                            item: $scope.reportModel.sprint,
+                            item: $scope.reportModel != undefined ? $scope.reportModel.sprint : undefined,
                             type: type
                         };
                     }
                 }
             });
             modalInstance.result.then(function (data) {
-                //TODO add/edit sprint
+                //TODO add/edit jira_sprint
                 if(data.type === "add") {
                     data.sprint['type'] = 0;
                     data.sprint['notCountTarget'] = false;
@@ -411,19 +469,11 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                         self.getSprintConfigureData();
                     });
                 }
-
-                //SprintsFactory.add({
-                //    reportId: $routeParams.reportId
-                //}, data
-                //);
-                //SprintFactory.create({}, data, function(){
-                //    self.getReportsData();
-                //});
             }, function () {});
         };
 
 //----------------------------------------------------------------------------------------------------------------------
-//Dlg delete sprint
+//Dlg delete jira_sprint
         $scope.deleteSprint = function (item) {
             var modalInstance = $uibModal.open({
                 animation: true,
@@ -436,7 +486,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 }
             });
             modalInstance.result.then(function (data) {
-                SprintFactory.delete(data, function() {
+                SprintFactory.delete({reportId: $routeParams.reportId, sprintId: $scope.reportModel.sprint.id}, function() {
                     self.getSprintConfigureData();
                 });
             }, function () {});

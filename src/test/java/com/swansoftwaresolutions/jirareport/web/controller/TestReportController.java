@@ -1,11 +1,10 @@
-package com.swansoftwaresolutions.jirareport.rest.controller;
+package com.swansoftwaresolutions.jirareport.web.controller;
 
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDtoBuilder;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDtoBuilder;
 import com.swansoftwaresolutions.jirareport.core.service.ReportService;
-import com.swansoftwaresolutions.jirareport.utils.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -21,7 +20,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -51,7 +49,7 @@ public class TestReportController extends AbstractRestControllerTest {
                 .id(1L)
                 .title("Report 1")
                 .creator("Creator")
-                .creatorId(2L)
+//                .creatorId(2L)
                 .boardId(3L)
                 .createdDate(new Date())
                 .updatedDate(new Date())
@@ -62,7 +60,7 @@ public class TestReportController extends AbstractRestControllerTest {
                 .id(2L)
                 .title("Report 2")
                 .creator("Creator 2")
-                .creatorId(1L)
+//                .creatorId(1L)
                 .boardId(2L)
                 .createdDate(new Date())
                 .updatedDate(new Date())

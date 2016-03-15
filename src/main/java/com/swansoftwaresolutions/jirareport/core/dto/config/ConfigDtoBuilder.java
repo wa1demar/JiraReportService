@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.rest.builder;
+package com.swansoftwaresolutions.jirareport.core.dto.config;
 
 import com.swansoftwaresolutions.jirareport.core.dto.ConfigDto;
 

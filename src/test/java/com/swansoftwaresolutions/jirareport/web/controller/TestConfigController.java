@@ -1,10 +1,10 @@
-package com.swansoftwaresolutions.jirareport.rest.controller;
+package com.swansoftwaresolutions.jirareport.web.controller;
 
 import com.swansoftwaresolutions.jirareport.config.*;
 import com.swansoftwaresolutions.jirareport.core.dto.ConfigDto;
 import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
-import com.swansoftwaresolutions.jirareport.rest.builder.ConfigDtoBuilder;
-import com.swansoftwaresolutions.jirareport.utils.TestUtil;
+import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDtoBuilder;
+import com.swansoftwaresolutions.jirareport.web.utils.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,8 +17,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.util.Arrays;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;

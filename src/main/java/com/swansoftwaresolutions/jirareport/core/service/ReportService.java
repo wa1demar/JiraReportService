@@ -17,9 +17,9 @@ public interface ReportService {
 
     ReportDto add(NewReportDto newReportDto) throws NoSuchEntityException;
 
-    ReportDto update(ReportDto report) throws NoSuchEntityException;
+    ReportDto update(NewReportDto report, long id) throws NoSuchEntityException;
 
-    void delete(long id) throws NoSuchEntityException;
+    ReportDto delete(long id) throws NoSuchEntityException;
 
     void delete(ReportDto reportDto) throws NoSuchEntityException;
 
