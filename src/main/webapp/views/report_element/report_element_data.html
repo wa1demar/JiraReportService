@@ -49,83 +49,145 @@
                             <th style="width: 60px;">Actual <br/> Hours</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr ng-repeat="data in reportData.sprints">
-                            <td ng-click="showSprintDetails(data)"
-                                class="show-sprint-details-index text-center sprint-id sprint-{{data.state}}"
-                                data-id-sprint="{{data.id}}"
-                                data-state="{{data.state}}"
-                                data-id="{{data.id}}"
-                                style="width: 100px; cursor: pointer;"
-                                title="{{data.state}} sprint">#{{$index + 1}}</td>
-                            <td ng-click="showSprintDetails(data)"
-                                class="show-sprint-details"
-                                ng-click="changeChart(data.id)"
-                                style="cursor: pointer;"
-                                data-id-sprint="{{data.id}}"
-                                data-state="{{data.state}}"
-                                data-name="{{data.name}}"
-                                data-chart-label="{{data.chartLabel ? data.chartLabel : 0 }}"
-                                data-chart-target="{{data.chartTarget ? data.chartTarget : 0 }}"
-                                data-chart-actual="{{data.chartActual ? data.chartActual : 0 }}">
-                                <strong>Team Total <span ng-show="data.notCountTarget === 1" class="aui-icon aui-icon-small aui-iconfont-error js-copy-clipboard" title="Not count target points/hours to Project total"></span></strong>
-                            </td>
-                            <td class="text-center indicators">
-                                <!--#if($data.state == "closed")-->
-                                <!--#set($countClosedSprint = $countClosedSprint + 1)-->
-                                <!--#set($actualHours = $data.actualPoints)-->
-                                <!--#set($targetHours = $data.targetPoints)-->
-                                <!--#parse("/templates/report/iconsVelocity.vm")-->
-                                <!--#end-->
-                            </td>
-                            <td class="text-center target-points">{{data.targetPoints}}</td>
-                            <td class="text-center actual-points">{{data.actualPoints}}</td>
-                            <td class="text-center target-hours" style="display: none;">{{data.targetHours}}</td>
-                            <td class="text-center actual-hours" style="display: none;">{{data.actualHours}}</td>
-                            <td></td>
-                            <td class="text-center indicators">
-                                <!--#if($data.state == "closed")-->
-                                <!--#set($actualDefects = $data.actualQatDefects)-->
-                                <!--#set($defMin = $data.defectMin)-->
-                                <!--#set($defMax = $data.defectMax)-->
-                                <!--#parse("/templates/report/icons.vm")-->
-                                <!--#end-->
-                            </td>
-                            <td class="text-center" style="">{{data.defectMin}} - {{data.defectMax}}</td>
-                            <td class="text-center">{{data.actualQatDefects}}</td>
-                            <td class="text-center indicators">
-                                <!--#if($data.state == "closed")-->
-                                <!--#set($actualHours = $data.actualQatDefectsHours)-->
-                                <!--#set($targetHours = $data.defectHours)-->
-                                <!--#parse("/templates/report/iconsHours.vm")-->
-                                <!--#end-->
-                            </td>
-                            <td class="text-center">{{data.defectHours}}</td>
-                            <td class="text-center">{{data.actualQatDefectsHours}}</td>
-                            <td></td>
-                            <!--#set($hideUatCount = $hideUatCount + 1)-->
-                            <td ng-show="data.showUat !== 1" colspan="6" class="text-center" style="border-right: 1px solid #dddddd;"> - </td>
-                            <td ng-show="data.showUat === 1" class="text-center indicators">
-                                <!--#if($data.state == "closed")-->
-                                <!--#set($actualDefects = $data.actualUatDefects)-->
-                                <!--#set($defMin = $data.uatDefectMin)-->
-                                <!--#set($defMax = $data.uatDefectMax)-->
-                                <!--#parse("/templates/report/icons.vm")-->
-                                <!--#end-->
-                            </td>
-                            <td ng-show="data.showUat === 1" class="text-center" style="">{{data.uatDefectMin}} - {{data.uatDefectMax}}</td>
-                            <td ng-show="data.showUat === 1" class="text-center">{{data.actualUatDefects}}</td>
-                            <td ng-show="data.showUat === 1" class="text-center indicators">
-                                <!--#if($data.state == "closed")-->
-                                <!--#set($actualHours = $data.actualUatDefectsHours)-->
-                                <!--#set($targetHours = $data.uatDefectHours)-->
-                                <!--#parse("/templates/report/iconsHours.vm")-->
-                                <!--#end-->
-                            </td>
-                            <td ng-show="data.showUat === 1" class="text-center">{{data.uatDefectHours}}</td>
-                            <td ng-show="data.showUat === 1" class="text-center" style="border-right: 1px solid #dddddd;">{{data.actualUatDefectsHours}}</td>
-                        </tr>
-                        <!--<tr ng-include="'views/report_element/sprint_team.html'"></tr>-->
+                        <tbody ng-repeat="data in reportData.sprints">
+                            <tr>
+                                <td ng-click="showing=!showing" rowspan="{{data.sprintTeam.length + 1}}"
+                                    class="show-sprint-details-index text-center sprint-id sprint-{{data.state}}"
+                                    data-id-sprint="{{data.id}}"
+                                    data-state="{{data.state}}"
+                                    data-id="{{data.id}}"
+                                    style="width: 100px; cursor: pointer;"
+                                    title="{{data.state}} sprint">#{{$index + 1}}</td>
+                                <td ng-click="showSprintDetails(data)"
+                                    class="show-sprint-details"
+                                    ng-click="changeChart(data.id)"
+                                    style="cursor: pointer;"
+                                    data-id-sprint="{{data.id}}"
+                                    data-state="{{data.state}}"
+                                    data-name="{{data.name}}"
+                                    data-chart-label="{{data.chartLabel ? data.chartLabel : 0 }}"
+                                    data-chart-target="{{data.chartTarget ? data.chartTarget : 0 }}"
+                                    data-chart-actual="{{data.chartActual ? data.chartActual : 0 }}">
+                                    <strong>Team Total <span ng-show="data.notCountTarget === 1" class="aui-icon aui-icon-small aui-iconfont-error js-copy-clipboard" title="Not count target points/hours to Project total"></span></strong>
+                                </td>
+                                <td class="text-center indicators">
+                                    <!--#if($data.state == "closed")-->
+                                    <!--#set($countClosedSprint = $countClosedSprint + 1)-->
+                                    <!--#set($actualHours = $data.actualPoints)-->
+                                    <!--#set($targetHours = $data.targetPoints)-->
+                                    <!--#parse("/templates/report/iconsVelocity.vm")-->
+                                    <!--#end-->
+                                </td>
+                                <td class="text-center target-points">{{data.targetPoints}}</td>
+                                <td class="text-center actual-points">{{data.actualPoints}}</td>
+                                <td class="text-center target-hours" style="display: none;">{{data.targetHours}}</td>
+                                <td class="text-center actual-hours" style="display: none;">{{data.actualHours}}</td>
+                                <td></td>
+                                <td class="text-center indicators">
+                                    <!--#if($data.state == "closed")-->
+                                    <!--#set($actualDefects = $data.actualQatDefects)-->
+                                    <!--#set($defMin = $data.defectMin)-->
+                                    <!--#set($defMax = $data.defectMax)-->
+                                    <!--#parse("/templates/report/icons.vm")-->
+                                    <!--#end-->
+                                </td>
+                                <td class="text-center" style="">{{data.defectMin}} - {{data.defectMax}}</td>
+                                <td class="text-center">{{data.actualQatDefects}}</td>
+                                <td class="text-center indicators">
+                                    <!--#if($data.state == "closed")-->
+                                    <!--#set($actualHours = $data.actualQatDefectsHours)-->
+                                    <!--#set($targetHours = $data.defectHours)-->
+                                    <!--#parse("/templates/report/iconsHours.vm")-->
+                                    <!--#end-->
+                                </td>
+                                <td class="text-center">{{data.defectHours}}</td>
+                                <td class="text-center">{{data.actualQatDefectsHours}}</td>
+                                <td></td>
+                                <!--#set($hideUatCount = $hideUatCount + 1)-->
+                                <td ng-show="!data.showUat" colspan="6" class="text-center" style="border-right: 1px solid #dddddd;"> - </td>
+                                <td ng-show="data.showUat" class="text-center indicators">
+                                    <!--#if($data.state == "closed")-->
+                                    <!--#set($actualDefects = $data.actualUatDefects)-->
+                                    <!--#set($defMin = $data.uatDefectMin)-->
+                                    <!--#set($defMax = $data.uatDefectMax)-->
+                                    <!--#parse("/templates/report/icons.vm")-->
+                                    <!--#end-->
+                                </td>
+                                <td ng-show="data.showUat" class="text-center" style="">{{data.uatDefectMin}} - {{data.uatDefectMax}}</td>
+                                <td ng-show="data.showUat" class="text-center">{{data.actualUatDefects}}</td>
+                                <td ng-show="data.showUat" class="text-center indicators">
+                                    <!--#if($data.state == "closed")-->
+                                    <!--#set($actualHours = $data.actualUatDefectsHours)-->
+                                    <!--#set($targetHours = $data.uatDefectHours)-->
+                                    <!--#parse("/templates/report/iconsHours.vm")-->
+                                    <!--#end-->
+                                </td>
+                                <td ng-show="data.showUat" class="text-center">{{data.uatDefectHours}}</td>
+                                <td ng-show="data.showUat" class="text-center" style="border-right: 1px solid #dddddd;">{{data.actualUatDefectsHours}}</td>
+                            </tr>
+
+                            <tr ng-show="showing" ng-repeat="dataSprint in data.sprintTeam" class="sprint-team-tr" data-id-sprint="{{dataSprint.id}}" #if(!$velocityHasNext)style="border-bottom: 2px solid #cccccc;"#end>
+                                <td ng-style="$last ? 'border-bottom: 1px solid red;' : 'border-bottom: 1px solid green;'">
+                                    <span class="dev-name">{{dataSprint.devName}}</span>
+                                </td>
+                                <td class="text-center indicators">
+                                    <!--#if($state == "closed")-->
+                                    <!--#set($actualHours = dataSprint.actualPoints)-->
+                                    <!--#set($targetHours = dataSprint.targetPoints)-->
+                                    <!--#parse("/templates/report/iconsVelocity.vm")-->
+                                    <!--#end-->
+                                </td>
+                                <td class="text-center">{{dataSprint.targetPoints}}</td>
+                                <td class="text-center">{{dataSprint.actualPoints}}</td>
+                                <td class="text-center"></td>
+                                <td class="text-center indicators" style="width: 25px;">
+                                    <!--#if($state == "closed")-->
+                                    <!--#set($actualDefects = dataSprint.defectActual)-->
+                                    <!--#set($defMin = dataSprint.defectMin)-->
+                                    <!--#set($defMax = dataSprint.defectMax)-->
+                                    <!--#parse("/templates/report/icons.vm")-->
+                                    <!--#end-->
+                                </td>
+                                <td class="text-center">{{dataSprint.defectMin}} - {{dataSprint.defectMax}}</td>
+                                <td class="text-center">{{dataSprint.defectActual}}</td>
+                                <td class="text-center indicators" style="width: 50px;">
+                                    <!--#if($state == "closed")-->
+                                    <!--#set($actualHours = dataSprint.defectActualHours)-->
+                                    <!--#set($targetHours = dataSprint.defectTargetHours)-->
+                                    <!--#parse("/templates/report/iconsHours.vm")-->
+                                    <!--#end-->
+                                </td>
+                                <td class="text-center">{{dataSprint.defectTargetHours}}</td>
+                                <td class="text-center">{{dataSprint.defectActualHours}}</td>
+                                <td class="text-center"></td>
+                                <td ng-show="!data.showUat" colspan="6" class="text-center" style="border-right: 1px solid #dddddd;">-</td>
+                                <td ng-show="data.showUat" class="text-center indicators">
+                                    <!--#if($state == "closed")-->
+                                    <!--#set($actualDefects = dataSprint.uatDefectActual)-->
+                                    <!--#set($defMin = dataSprint.uatDefectMin)-->
+                                    <!--#set($defMax = dataSprint.uatDefectMax)-->
+                                    <!--#parse("/templates/report/icons.vm")-->
+                                    <!--#end-->
+                                </td>
+                                <td ng-show="data.showUat" class="text-center">{{dataSprint.uatDefectMin}} - {{dataSprint.uatDefectMax}}</td>
+                                <td ng-show="data.showUat" class="text-center">{{dataSprint.uatDefectActual}}</td>
+                                <td ng-show="data.showUat" class="text-center indicators">
+                                    <!--#if($state == "closed")-->
+                                    <!--#set($actualHours = dataSprint.uatDefectActualHours)-->
+                                    <!--#set($targetHours = dataSprint.uatDefectTargetHours)-->
+                                    <!--#parse("/templates/report/iconsHours.vm")-->
+                                    <!--#end-->
+                                </td>
+                                <td ng-show="data.showUat" class="text-center">{{dataSprint.uatDefectTargetHours}}</td>
+                                <td ng-show="data.showUat" class="text-center" style="border-right: 1px solid #dddddd;">{{dataSprint.uatDefectActualHours}}</td>
+                            </tr>
+                        </tbody>
+
+
+
+                        <!--<tr ng-repeat-end>-->
+                            <!--<td colspan="20" ng-include="'views/report_element/sprint_team.html'"></td>-->
+                        <!--</tr>-->
                         <!--##TODO change for ST-287 (Not count target)-->
                         <!--#if ($data.notCountTarget != 1)-->
                         <!--#set($targetPointsTotal = $targetPointsTotal + $data.targetPoints)-->
