@@ -90,9 +90,18 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
 
         $scope.saveConfigureGeneralData = function () {
             if($scope.generalConfigure.$valid) {
-                console.log(2222);
+                console.log("isClosed: " + $scope.report.isClosed);
                 $scope.report.dateClose = $scope.report.isClosed ? $scope.report.dateClose : null;
-                ReportFactory.update({id: $routeParams.reportId}, $scope.report, function(){
+
+                var reportData = {
+                    title:      $scope.report.title,
+                    isClosed:   $scope.report.isClosed === undefined ? false : $scope.report.isClosed,
+                    dateClose:  $scope.report.dateClose === undefined ? null : $scope.report.dateClose,
+                    admins:     $scope.report.admins
+                };
+
+                ReportFactory.update({
+                    id: $routeParams.reportId}, reportData, function(){
                     //FIXME not reinit select2
                     self.getReport();
                 });
@@ -215,18 +224,18 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             console.log(data);
 
             //TODO add get sprint teams by reportId and agileSprintId
-            //if (data !== undefined && data.id !== undefined) {
-            //    SprintTeamFactory.query({
-            //        reportId: $routeParams.reportId,
-            //        sprintId: data.id
-            //    }, function (data) {
-            //        //console.log(data);
-            //        $scope.sprintTeams = data;
-            //    }, function (error) {
-            //        //console.log(error);
-            //        $scope.sprintTeams = [];
-            //    });
-            //}
+            if (data !== undefined && data.id !== undefined) {
+                SprintTeamFactory.query({
+                    reportId: $routeParams.reportId,
+                    sprintId: data.id
+                }, function (data) {
+                    //console.log(data);
+                    $scope.sprintTeams = data;
+                }, function (error) {
+                    //console.log(error);
+                    $scope.sprintTeams = [];
+                });
+            }
 
             if (data.id === 57284) {
                 $scope.sprintTeams = [
@@ -460,14 +469,6 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                         self.getSprintConfigureData();
                     });
                 }
-
-                //SprintsFactory.add({
-                //    reportId: $routeParams.reportId
-                //}, data
-                //);
-                //SprintFactory.create({}, data, function(){
-                //    self.getReportsData();
-                //});
             }, function () {});
         };
 
