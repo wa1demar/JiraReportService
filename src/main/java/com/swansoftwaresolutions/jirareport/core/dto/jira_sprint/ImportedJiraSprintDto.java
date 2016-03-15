@@ -1,18 +1,18 @@
-package com.swansoftwaresolutions.jirareport.core.dto.sprint;
+package com.swansoftwaresolutions.jirareport.core.dto.jira_sprint;
 
 import java.util.Date;
 
 /**
  * @author Vladimir Martynyuk
  */
-public class ImportedSprintDto {
+public class ImportedJiraSprintDto {
     private int id;
     private String state;
     private String name;
     private Date startDate;
     private Date endDate;
     private Date completeDate;
-    private int originBoardId;
+    private Long originBoardId;
 
     public int getId() {
         return id;
@@ -62,11 +62,11 @@ public class ImportedSprintDto {
         this.completeDate = completeDate;
     }
 
-    public int getOriginBoardId() {
+    public Long getOriginBoardId() {
         return originBoardId;
     }
 
-    public void setOriginBoardId(int originBoardId) {
+    public void setOriginBoardId(Long originBoardId) {
         this.originBoardId = originBoardId;
     }
 }

@@ -1,11 +1,11 @@
 <div class="modal-header">
-  <h3 class="modal-title capitalize">{{dlgData.type}} sprint</h3>
+  <h3 class="modal-title capitalize">{{dlgData.type}} jiraSprint</h3>
 </div>
 <form name="processSprintForm" ng-submit="submit()" novalidate>
     <div class="content-body" style="margin: 20px;">
         <div class="field-group" ng-class="{ 'has-error': processSprintForm.$submitted || processSprintForm.name.$touched && processSprintForm.name.$invalid }">
             <label>Name: </label>
-            <input ng-model="sprint.name" type="text" class="form-control" name="name" required/>
+            <input ng-model="jiraSprint.name" type="text" class="form-control" name="name" required/>
             <div class="help-block" ng-messages="processSprintForm.name.$error" ng-if="processSprintForm.name.$touched || processSprintForm.$submitted">
                 <p ng-message="required">Name is required.</p>
             </div>
@@ -13,7 +13,7 @@
         <div class="field-group">
             <label for="start-date" class="control-label">Date start:</label>
             <p class="input-group">
-                <input ng-model="sprint.startDate" type="text" id="start-date" name="start-date" class="form-control" uib-datepicker-popup="{{format}}" is-open="popupCalenderStartDate.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" placeholder="MM/DD/YYY"/>
+                <input ng-model="jiraSprint.startDate" type="text" id="start-date" name="start-date" class="form-control" uib-datepicker-popup="{{format}}" is-open="popupCalenderStartDate.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" placeholder="MM/DD/YYY"/>
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="openCalenderStartDate()"><i class="glyphicon glyphicon-calendar"></i></button>
                 </span>
@@ -22,7 +22,7 @@
         <div class="field-group">
             <label for="end-date" class="control-label">Date end:</label>
             <p class="input-group">
-                <input ng-model="sprint.endDate" type="text" id="end-date" name="end-date" class="form-control" uib-datepicker-popup="{{format}}" is-open="popupCalenderEndDate.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" placeholder="MM/DD/YYY"/>
+                <input ng-model="jiraSprint.endDate" type="text" id="end-date" name="end-date" class="form-control" uib-datepicker-popup="{{format}}" is-open="popupCalenderEndDate.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" placeholder="MM/DD/YYY"/>
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="openCalenderEndDate()"><i class="glyphicon glyphicon-calendar"></i></button>
                 </span>
@@ -30,7 +30,7 @@
         </div>
         <div id="board-box" class="field-group">
             <label for="state" class="control-label">State:</label>
-            <select ng-model="sprint.state" id="state" name="state" class="select form-control">
+            <select ng-model="jiraSprint.state" id="state" name="state" class="select form-control">
                 <option value="active">Active</option>
                 <option value="future">Future</option>
                 <option value="closed">Closed</option>

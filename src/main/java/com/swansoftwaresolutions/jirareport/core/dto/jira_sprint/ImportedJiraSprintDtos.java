@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.core.dto.sprint;
+package com.swansoftwaresolutions.jirareport.core.dto.jira_sprint;
 
 import java.io.Serializable;
 import java.util.List;
@@ -6,10 +6,10 @@ import java.util.List;
 /**
  * @author Vladimir Martynyuk
  */
-public class ImportedSprintDtos implements Serializable {
+public class ImportedJiraSprintDtos implements Serializable {
     private int maxResults;
     private boolean isLast;
-    private List<ImportedSprintDto> values;
+    private List<ImportedJiraSprintDto> values;
 
     public int getMaxResults() {
         return maxResults;
@@ -27,11 +27,11 @@ public class ImportedSprintDtos implements Serializable {
         isLast = last;
     }
 
-    public List<ImportedSprintDto> getValues() {
+    public List<ImportedJiraSprintDto> getValues() {
         return values;
     }
 
-    public void setValues(List<ImportedSprintDto> values) {
+    public void setValues(List<ImportedJiraSprintDto> values) {
         this.values = values;
     }
 }

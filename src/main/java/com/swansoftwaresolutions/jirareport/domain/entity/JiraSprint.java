@@ -9,31 +9,22 @@ import java.util.Date;
  */
 
 @Entity
-@Table(name = "sprints")
-public class Sprint implements Serializable {
+@Table(name = "jira_sprints")
+public class JiraSprint implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "report_id")
-    private Long reportId;
-
-    @Column(name = "agile_sprint_id")
-    private Long agileSprintId;
-
-    @Column(name = "not_count_target")
-    private boolean notCountTarget;
+    @Column(name = "board_id")
+    private Long boardId;
 
     @Column(name = "name")
     private String name;
 
     @Column(name = "state")
     private String state;
-
-    @Column(name = "type")
-    private Long type;
 
     @Column(name = "start_date")
     private Date startDate;
@@ -44,39 +35,12 @@ public class Sprint implements Serializable {
     @Column(name = "complete_date")
     private Date completeDate;
 
-    @Column(name = "show_uat")
-    private boolean showUat;
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getReportId() {
-        return reportId;
-    }
-
-    public void setReportId(Long reportId) {
-        this.reportId = reportId;
-    }
-
-    public Long getAgileSprintId() {
-        return agileSprintId;
-    }
-
-    public void setAgileSprintId(Long agileSprintId) {
-        this.agileSprintId = agileSprintId;
-    }
-
-    public boolean getNotCountTarget() {
-        return notCountTarget;
-    }
-
-    public void setNotCountTarget(boolean notCountTarget) {
-        this.notCountTarget = notCountTarget;
     }
 
     public String getName() {
@@ -93,14 +57,6 @@ public class Sprint implements Serializable {
 
     public void setState(String state) {
         this.state = state;
-    }
-
-    public Long getType() {
-        return type;
-    }
-
-    public void setType(Long type) {
-        this.type = type;
     }
 
     public Date getStartDate() {
@@ -127,12 +83,13 @@ public class Sprint implements Serializable {
         this.completeDate = completeDate;
     }
 
-    public boolean getShowUat() {
-        return showUat;
+
+    public Long getBoardId() {
+        return boardId;
     }
 
-    public void setShowUat(boolean showUat) {
-        this.showUat = showUat;
+    public void setBoardId(Long boardId) {
+        this.boardId = boardId;
     }
 
     @Override
@@ -140,21 +97,27 @@ public class Sprint implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Sprint sprint = (Sprint) o;
+        JiraSprint that = (JiraSprint) o;
 
-        if (!agileSprintId.equals(sprint.agileSprintId)) return false;
-        if (!name.equals(sprint.name)) return false;
-        if (state != null ? !state.equals(sprint.state) : sprint.state != null) return false;
-        return type.equals(sprint.type);
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (!boardId.equals(that.boardId)) return false;
+        if (!name.equals(that.name)) return false;
+        if (!state.equals(that.state)) return false;
+        if (!startDate.equals(that.startDate)) return false;
+        if (endDate != null ? !endDate.equals(that.endDate) : that.endDate != null) return false;
+        return completeDate != null ? completeDate.equals(that.completeDate) : that.completeDate == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = agileSprintId.hashCode();
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + boardId.hashCode();
         result = 31 * result + name.hashCode();
-        result = 31 * result + (state != null ? state.hashCode() : 0);
-        result = 31 * result + type.hashCode();
+        result = 31 * result + state.hashCode();
+        result = 31 * result + startDate.hashCode();
+        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
+        result = 31 * result + (completeDate != null ? completeDate.hashCode() : 0);
         return result;
     }
 }

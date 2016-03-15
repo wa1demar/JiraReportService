@@ -1,11 +1,11 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
-import com.swansoftwaresolutions.jirareport.core.dto.sprint.ImportedSprintDto;
-import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDto;
-import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintsDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSprintDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.JiraSprintDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.JiraSprintsDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.SprintMapper;
-import com.swansoftwaresolutions.jirareport.domain.entity.Sprint;
-import com.swansoftwaresolutions.jirareport.domain.repository.SprintRepository;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraSprint;
+import com.swansoftwaresolutions.jirareport.domain.repository.JiraSprintRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.service.JiraSprintsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,43 +21,44 @@ import java.util.List;
 public class JiraSprintServiceImpl implements JiraSprintsService {
 
     @Autowired
-    SprintRepository sprintRepository;
+    JiraSprintRepository jiraSprintRepository;
 
     @Autowired
     SprintMapper sprintMapper;
 
     @Override
-    public SprintsDto retrieveByReportId(long reportId) {
-        List<Sprint> sprints = sprintRepository.findByReportId(reportId);
+    public JiraSprintsDto retrieveByBoardId(long boardId) {
+        List<JiraSprint> jiraSprints = jiraSprintRepository.findByBoardId(boardId);
 
-        return sprintMapper.toDto(sprints);
+        return sprintMapper.toDto(jiraSprints);
     }
 
     @Override
-    public SprintDto add(SprintDto sprint) {
-        Sprint sprintDto = sprintMapper.fromDto(sprint);
-        Sprint newSprint = sprintRepository.add(sprintDto);
-        return sprintMapper.toDto(newSprint);
+    public JiraSprintDto add(JiraSprintDto sprint) {
+        JiraSprint jiraSprintDto = sprintMapper.fromDto(sprint);
+        JiraSprint newJiraSprint = jiraSprintRepository.add(jiraSprintDto);
+        return sprintMapper.toDto(newJiraSprint);
     }
 
     @Override
-    public void add(ImportedSprintDto sprintDto) {
-        Sprint sprint = sprintMapper.fromDto(sprintDto);
-        sprintRepository.add(sprint);
+    public void add(ImportedJiraSprintDto sprintDto) {
+
+        JiraSprint jiraSprint = sprintMapper.fromDto(sprintDto);
+        jiraSprintRepository.add(jiraSprint);
     }
 
     @Override
-    public List<ImportedSprintDto> findAll() {
-        return sprintMapper.toDtos(sprintRepository.findAll());
+    public List<ImportedJiraSprintDto> findAll() {
+        return sprintMapper.toDtos(jiraSprintRepository.findAll());
     }
 
     @Override
-    public void delete(Sprint sprint) throws NoSuchEntityException {
-        sprintRepository.delete(sprint);
+    public void delete(JiraSprint jiraSprint) throws NoSuchEntityException {
+        jiraSprintRepository.delete(jiraSprint.getId());
     }
 
     @Override
     public void delete(Long sprintId) throws NoSuchEntityException {
-        sprintRepository.delete(sprintId);
+        jiraSprintRepository.delete(sprintId);
     }
 }

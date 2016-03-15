@@ -20,24 +20,53 @@ jiraPluginApp.controller('ReportElementCtrl',
                 });
 
                 $scope.reportData = {
-                        report: {
-                            id : 4,
-                            title : "Man",
-                            creator : "admin",
-                            boardId : null,
-                            boardName : null,
-                            createdDate : null,
-                            updatedDate : null,
-                            closedDate : null,
-                            typeId : 2,
-                            closed : false,
-                            admins: [
-                                {
-                                    fullName : "Alina Nor",
-                                    login : "anor",
-                                    jiraUserId : null
-                                }
-                            ],
+                    report: {
+                        id : 4,
+                        title : "Man",
+                        creator : "admin",
+                        boardId : null,
+                        boardName : null,
+                        createdDate : null,
+                        updatedDate : null,
+                        closedDate : null,
+                        typeId : 2,
+                        closed : false,
+                        admins: [
+                            {
+                                fullName : "Alina Nor",
+                                login : "anor",
+                                jiraUserId : null
+                            }
+                        ],
+                        targetPoints: 1,
+                        targetHours: 1,
+                        targetQatDefectMin: 1,
+                        targetQatDefectMax: 1,
+                        targetQatDefectHours: 1,
+                        targetUatDefectMin: 1,
+                        targetUatDefectMax: 1,
+                        targetUatDefectHours: 1,
+                        actualPoints: 1,
+                        actualHours: 1,
+                        actualQatDefectPoints: 1,
+                        actualQatDefectHours: 1,
+                        actualUatDefectPoints: 1,
+                        actualUatDefectHours: 1
+                    },
+                    sprints: [
+                        {
+                            id : 3,
+                            reportId : 4,
+                            agileSprintId : null,
+                            notCountTarget : false,
+                            name : "Sprint 1",
+                            state : "active",
+                            type : 0,
+                            startDate : 1457992800000,
+                            endDate : 1458252000000,
+                            completeDate : null,
+                            showUat : false,
+
                             targetPoints: 1,
                             targetHours: 1,
                             targetQatDefectMin: 1,
@@ -51,148 +80,119 @@ jiraPluginApp.controller('ReportElementCtrl',
                             actualQatDefectPoints: 1,
                             actualQatDefectHours: 1,
                             actualUatDefectPoints: 1,
-                            actualUatDefectHours: 1
+                            actualUatDefectHours: 1,
+
+                            sprintTeam: [
+                                {
+                                    devName: "bridoux",
+                                    engineerLevel: 3,
+                                    participationLevel: "0.5",
+                                    daysInSprint: 5,
+
+                                    targetPoints: 5,
+                                    targetHours: 5,
+                                    defectMin: 5,
+                                    defectMax: 5,
+                                    defectHours: 5,
+                                    uatDefectMin: 5,
+                                    uatDefectMax: 5,
+                                    uatDefectHours: 5,
+
+                                    actualPoints: 5,
+                                    defectActual: 5,
+                                    defectTargetHours: 5,
+                                    defectActualHours: 5,
+                                    uatDefectActual: 5,
+                                    uatDefectTargetHours: 5,
+                                    uatDefectActualHours: 5
+                                },
+                                {
+                                    id: 2,
+                                    devName: "bmurga",
+                                    engineerLevel: 1,
+                                    participationLevel: "0.6",
+                                    daysInSprint: 7,
+                                    targetPoints: 5,
+                                    targetHours: 5,
+                                    defectMin: 5,
+                                    defectMax: 5,
+                                    defectHours: 5,
+                                    uatDefectMin: 5,
+                                    uatDefectMax: 5,
+                                    uatDefectHours: 5,
+
+                                    actualPoints: 5,
+                                    defectActual: 5,
+                                    defectTargetHours: 5,
+                                    defectActualHours: 5,
+                                    uatDefectActual: 5,
+                                    uatDefectTargetHours: 5,
+                                    uatDefectActualHours: 5
+                                }
+                            ]
                         },
-                        sprints: [
-                            {
-                                id : 3,
-                                reportId : 4,
-                                agileSprintId : null,
-                                notCountTarget : false,
-                                name : "Sprint 1",
-                                state : "active",
-                                type : 0,
-                                startDate : 1457992800000,
-                                endDate : 1458252000000,
-                                completeDate : null,
-                                showUat : false,
+                        {
+                            id : 5,
+                            reportId : 6,
+                            agileSprintId : null,
+                            notCountTarget : false,
+                            name : "Sprint 2",
+                            state : "active",
+                            type : 0,
+                            startDate : 1457992800000,
+                            endDate : 1458252000000,
+                            completeDate : null,
+                            showUat : true,
+                            sprintTeam: [
+                                {
+                                    id: 7,
+                                    devName: "bridoux",
+                                    engineerLevel: 3,
+                                    participationLevel: "0.5",
+                                    daysInSprint: 5,
+                                    targetPoints: 5,
+                                    targetHours: 5,
+                                    defectMin: 5,
+                                    defectMax: 5,
+                                    defectHours: 5,
+                                    uatDefectMin: 5,
+                                    uatDefectMax: 5,
+                                    uatDefectHours: 5,
 
-                                targetPoints: 1,
-                                targetHours: 1,
-                                targetQatDefectMin: 1,
-                                targetQatDefectMax: 1,
-                                targetQatDefectHours: 1,
-                                targetUatDefectMin: 1,
-                                targetUatDefectMax: 1,
-                                targetUatDefectHours: 1,
-                                actualPoints: 1,
-                                actualHours: 1,
-                                actualQatDefectPoints: 1,
-                                actualQatDefectHours: 1,
-                                actualUatDefectPoints: 1,
-                                actualUatDefectHours: 1,
+                                    actualPoints: 5,
+                                    defectActual: 5,
+                                    defectTargetHours: 5,
+                                    defectActualHours: 5,
+                                    uatDefectActual: 5,
+                                    uatDefectTargetHours: 5,
+                                    uatDefectActualHours: 5
+                                },
+                                {
+                                    id: 8,
+                                    devName: "bmurga",
+                                    engineerLevel: 1,
+                                    participationLevel: "0.6",
+                                    daysInSprint: 7,
+                                    targetPoints: 5,
+                                    targetHours: 5,
+                                    defectMin: 5,
+                                    defectMax: 5,
+                                    defectHours: 5,
+                                    uatDefectMin: 5,
+                                    uatDefectMax: 5,
+                                    uatDefectHours: 5,
 
-                                sprintTeam: [
-                                    {
-                                        devName: "bridoux",
-                                        engineerLevel: 3,
-                                        participationLevel: "0.5",
-                                        daysInSprint: 5,
-
-                                        targetPoints: 5,
-                                        targetHours: 5,
-                                        defectMin: 5,
-                                        defectMax: 5,
-                                        defectHours: 5,
-                                        uatDefectMin: 5,
-                                        uatDefectMax: 5,
-                                        uatDefectHours: 5,
-
-                                        actualPoints: 5,
-                                        defectActual: 5,
-                                        defectTargetHours: 5,
-                                        defectActualHours: 5,
-                                        uatDefectActual: 5,
-                                        uatDefectTargetHours: 5,
-                                        uatDefectActualHours: 5
-                                    },
-                                    {
-                                        id: 2,
-                                        devName: "bmurga",
-                                        engineerLevel: 1,
-                                        participationLevel: "0.6",
-                                        daysInSprint: 7,
-                                        targetPoints: 5,
-                                        targetHours: 5,
-                                        defectMin: 5,
-                                        defectMax: 5,
-                                        defectHours: 5,
-                                        uatDefectMin: 5,
-                                        uatDefectMax: 5,
-                                        uatDefectHours: 5,
-
-                                        actualPoints: 5,
-                                        defectActual: 5,
-                                        defectTargetHours: 5,
-                                        defectActualHours: 5,
-                                        uatDefectActual: 5,
-                                        uatDefectTargetHours: 5,
-                                        uatDefectActualHours: 5
-                                    }
-                                ]
-                            },
-                            {
-                                id : 5,
-                                reportId : 6,
-                                agileSprintId : null,
-                                notCountTarget : false,
-                                name : "Sprint 2",
-                                state : "active",
-                                type : 0,
-                                startDate : 1457992800000,
-                                endDate : 1458252000000,
-                                completeDate : null,
-                                showUat : true,
-                                sprintTeam: [
-                                    {
-                                        id: 7,
-                                        devName: "bridoux",
-                                        engineerLevel: 3,
-                                        participationLevel: "0.5",
-                                        daysInSprint: 5,
-                                        targetPoints: 5,
-                                        targetHours: 5,
-                                        defectMin: 5,
-                                        defectMax: 5,
-                                        defectHours: 5,
-                                        uatDefectMin: 5,
-                                        uatDefectMax: 5,
-                                        uatDefectHours: 5,
-
-                                        actualPoints: 5,
-                                        defectActual: 5,
-                                        defectTargetHours: 5,
-                                        defectActualHours: 5,
-                                        uatDefectActual: 5,
-                                        uatDefectTargetHours: 5,
-                                        uatDefectActualHours: 5
-                                    },
-                                    {
-                                        id: 8,
-                                        devName: "bmurga",
-                                        engineerLevel: 1,
-                                        participationLevel: "0.6",
-                                        daysInSprint: 7,
-                                        targetPoints: 5,
-                                        targetHours: 5,
-                                        defectMin: 5,
-                                        defectMax: 5,
-                                        defectHours: 5,
-                                        uatDefectMin: 5,
-                                        uatDefectMax: 5,
-                                        uatDefectHours: 5,
-
-                                        actualPoints: 5,
-                                        defectActual: 5,
-                                        defectTargetHours: 5,
-                                        defectActualHours: 5,
-                                        uatDefectActual: 5,
-                                        uatDefectTargetHours: 5,
-                                        uatDefectActualHours: 5
-                                    }
-                                ]
-                            }
-                        ]
+                                    actualPoints: 5,
+                                    defectActual: 5,
+                                    defectTargetHours: 5,
+                                    defectActualHours: 5,
+                                    uatDefectActual: 5,
+                                    uatDefectTargetHours: 5,
+                                    uatDefectActualHours: 5
+                                }
+                            ]
+                        }
+                    ]
                 };
 
                 console.log($scope.report);
