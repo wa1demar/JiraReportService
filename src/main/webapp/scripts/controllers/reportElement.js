@@ -59,14 +59,23 @@ jiraPluginApp.controller('ReportElementCtrl',
                     $scope.chartData = item.chart;
                 }
 
-                $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
-                $scope.series = ['Series A', 'Series B'];
+//----------------------------------------------------------------------------------------------------------------------
+//Chart type (bad: red; good: green)
+                console.log("Data for chart: actual = "+$scope.chartData.actual[$scope.chartData.actual.length - 1]+" ; target = "+$scope.chartData.target[$scope.chartData.actual.length - 1]);
+                var actualChartColor = "#FF0000";
+                if ($scope.chartData.actual[$scope.chartData.actual.length - 1] <= $scope.chartData.target[$scope.chartData.actual.length - 1]) {
+                    actualChartColor = "#009e0f";
+                }
+
+                $scope.labels = $scope.chartData.label;
+                $scope.series = ['Actual', 'Terget'];
                 $scope.data = [
-                    [65, 59, 80, 81, 56, 55, 40],
-                    [28, 48, 40, 19, 86, 27, 90]
+                    $scope.chartData.actual,
+                    $scope.chartData.target
                 ];
-                $scope.onClick = function (points, evt) {
-                    console.log(points, evt);
+                $scope.colours = [actualChartColor, '#000000'];
+                $scope.options = {
+                    datasetFill : false
                 };
             };
 
@@ -154,9 +163,9 @@ jiraPluginApp.controller('ReportElementCtrl',
                             actualUatDefectHours: 1,
 
                             chart: {
-                                label:  ["0", "01/12/2016", "01/13/2016", "01/14/2016", "01/15/2016", "01/18/2016", "01/19/2016"],
-                                target: [46.0, 38, 31, 23, 15, 8, 0],
-                                actual: [46, 41, 34, 24, 14, 4, -6]
+                                label:  ["0", "01/27/2016", "01/28/2016", "01/29/2016", "02/01/2016", "02/02/2016"],
+                                target: [41.0, 33, 25, 16, 8, 0],
+                                actual: [41, 33, 25, 17, 7, 7]
                             },
 
                             sprintTeam: [
