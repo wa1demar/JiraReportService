@@ -6,9 +6,7 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Vladimir Martynyuk
@@ -50,8 +48,8 @@ public class Report  implements Serializable{
     @Column(name = "board_id")
     private Long boardId;
 
-    @Column(name = "creator_id")
-    private Long creatorId;
+//    @Column(name = "creator_id")
+//    private Long creatorId;
 
     @Column(name = "created_date")
     private Date createdDate;
@@ -69,13 +67,16 @@ public class Report  implements Serializable{
     private Date closedDate;
 
     @Column(name = "type_ID")
-    private Long typeId;
+    private Integer typeId;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "admins_reports", joinColumns = {
             @JoinColumn(name = "report_id") },
             inverseJoinColumns = { @JoinColumn(name = "admin_login") })
     private List<JiraUser> admins = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "report")
+    private Set<Sprint> sprints = new HashSet<>();
 
     @Column(name = "target_points")
     private Long targetPoints;
@@ -159,13 +160,13 @@ public class Report  implements Serializable{
         this.boardId = boardId;
     }
 
-    public Long getCreatorId() {
-        return creatorId;
-    }
-
-    public void setCreatorId(Long creatorId) {
-        this.creatorId = creatorId;
-    }
+//    public Long getCreatorId() {
+//        return creatorId;
+//    }
+//
+//    public void setCreatorId(Long creatorId) {
+//        this.creatorId = creatorId;
+//    }
 
     public Date getCreatedDate() {
         return createdDate;
@@ -207,11 +208,11 @@ public class Report  implements Serializable{
         this.closedDate = closedDate;
     }
 
-    public Long getTypeId() {
+    public Integer getTypeId() {
         return typeId;
     }
 
-    public void setTypeId(Long typeId) {
+    public void setTypeId(Integer typeId) {
         this.typeId = typeId;
     }
 
@@ -345,40 +346,7 @@ public class Report  implements Serializable{
         if (id != null ? !id.equals(report.id) : report.id != null) return false;
         if (!title.equals(report.title)) return false;
         if (!creator.equals(report.creator)) return false;
-        if (image != null ? !image.equals(report.image) : report.image != null) return false;
-        if (!boardId.equals(report.boardId)) return false;
-        if (!creatorId.equals(report.creatorId)) return false;
-        if (createdDate != null ? !createdDate.equals(report.createdDate) : report.createdDate != null) return false;
-        if (updatedDate != null ? !updatedDate.equals(report.updatedDate) : report.updatedDate != null) return false;
-        if (syncDate != null ? !syncDate.equals(report.syncDate) : report.syncDate != null) return false;
-        if (!isClosed.equals(report.isClosed)) return false;
-        if (closedDate != null ? !closedDate.equals(report.closedDate) : report.closedDate != null) return false;
-        if (!typeId.equals(report.typeId)) return false;
-        if (targetPoints != null ? !targetPoints.equals(report.targetPoints) : report.targetPoints != null)
-            return false;
-        if (targetHours != null ? !targetHours.equals(report.targetHours) : report.targetHours != null) return false;
-        if (targetQatDefectMin != null ? !targetQatDefectMin.equals(report.targetQatDefectMin) : report.targetQatDefectMin != null)
-            return false;
-        if (targetQatDefectMax != null ? !targetQatDefectMax.equals(report.targetQatDefectMax) : report.targetQatDefectMax != null)
-            return false;
-        if (targetQatDefectHours != null ? !targetQatDefectHours.equals(report.targetQatDefectHours) : report.targetQatDefectHours != null)
-            return false;
-        if (targetUatDefectMin != null ? !targetUatDefectMin.equals(report.targetUatDefectMin) : report.targetUatDefectMin != null)
-            return false;
-        if (targetUatDefectMax != null ? !targetUatDefectMax.equals(report.targetUatDefectMax) : report.targetUatDefectMax != null)
-            return false;
-        if (targetUatDefectHours != null ? !targetUatDefectHours.equals(report.targetUatDefectHours) : report.targetUatDefectHours != null)
-            return false;
-        if (actualPoints != null ? !actualPoints.equals(report.actualPoints) : report.actualPoints != null)
-            return false;
-        if (actualHours != null ? !actualHours.equals(report.actualHours) : report.actualHours != null) return false;
-        if (actualQatDefectPoints != null ? !actualQatDefectPoints.equals(report.actualQatDefectPoints) : report.actualQatDefectPoints != null)
-            return false;
-        if (actualQatDefectHours != null ? !actualQatDefectHours.equals(report.actualQatDefectHours) : report.actualQatDefectHours != null)
-            return false;
-        if (actualUatDefectPoints != null ? !actualUatDefectPoints.equals(report.actualUatDefectPoints) : report.actualUatDefectPoints != null)
-            return false;
-        return !(actualUatDefectHours != null ? !actualUatDefectHours.equals(report.actualUatDefectHours) : report.actualUatDefectHours != null);
+        return boardId.equals(report.boardId);
 
     }
 
@@ -387,29 +355,7 @@ public class Report  implements Serializable{
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + title.hashCode();
         result = 31 * result + creator.hashCode();
-        result = 31 * result + (image != null ? image.hashCode() : 0);
         result = 31 * result + boardId.hashCode();
-        result = 31 * result + creatorId.hashCode();
-        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
-        result = 31 * result + (updatedDate != null ? updatedDate.hashCode() : 0);
-        result = 31 * result + (syncDate != null ? syncDate.hashCode() : 0);
-        result = 31 * result + isClosed.hashCode();
-        result = 31 * result + (closedDate != null ? closedDate.hashCode() : 0);
-        result = 31 * result + typeId.hashCode();
-        result = 31 * result + (targetPoints != null ? targetPoints.hashCode() : 0);
-        result = 31 * result + (targetHours != null ? targetHours.hashCode() : 0);
-        result = 31 * result + (targetQatDefectMin != null ? targetQatDefectMin.hashCode() : 0);
-        result = 31 * result + (targetQatDefectMax != null ? targetQatDefectMax.hashCode() : 0);
-        result = 31 * result + (targetQatDefectHours != null ? targetQatDefectHours.hashCode() : 0);
-        result = 31 * result + (targetUatDefectMin != null ? targetUatDefectMin.hashCode() : 0);
-        result = 31 * result + (targetUatDefectMax != null ? targetUatDefectMax.hashCode() : 0);
-        result = 31 * result + (targetUatDefectHours != null ? targetUatDefectHours.hashCode() : 0);
-        result = 31 * result + (actualPoints != null ? actualPoints.hashCode() : 0);
-        result = 31 * result + (actualHours != null ? actualHours.hashCode() : 0);
-        result = 31 * result + (actualQatDefectPoints != null ? actualQatDefectPoints.hashCode() : 0);
-        result = 31 * result + (actualQatDefectHours != null ? actualQatDefectHours.hashCode() : 0);
-        result = 31 * result + (actualUatDefectPoints != null ? actualUatDefectPoints.hashCode() : 0);
-        result = 31 * result + (actualUatDefectHours != null ? actualUatDefectHours.hashCode() : 0);
         return result;
     }
 }

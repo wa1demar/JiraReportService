@@ -29,13 +29,59 @@ jiraPluginApp.controller('ConfigureCtrl', ['$scope',
 jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', '$uibModal', 'ReportFactory', 'UsersFactory', 'CONFIG',
     function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, CONFIG) {
 
-        //$scope.report = ReportFactory.get({id: $routeParams.reportId});
-        $scope.report = {
-            title: "title",
-            typeId: 2,
-            boardName: "Test",
-            isClosed: true,
-            dateClose: new Date()
+        var self = this;
+
+        this.getReport = function () {
+            ReportFactory.get({id: $routeParams.reportId}, function (result) {
+                $scope.report = result;
+                var admins = [];
+                for (var index = 0; index < result.admins.length; index++) {
+                    admins.push(result.admins[index].login);
+                }
+                $scope.report.admins = admins;
+            });
+        };
+
+        self.getReport();
+
+        //$scope.report = {
+        //    title: "title",
+        //    typeId: 2,
+        //    boardName: "Test",
+        //    isClosed: true,
+        //    dateClose: new Date()
+        //};
+
+//----------------------------------------------------------------------------------------------------------------------
+//Calender
+        $scope.dateOptions = {
+            dateDisabled: disabled,
+            formatYear: 'yy',
+            maxDate: new Date(2020, 5, 22),
+            minDate: new Date(),
+            startingDay: 1
+        };
+
+        // Disable weekend selection
+        function disabled(data) {
+            var date = data.date,
+                mode = data.mode;
+            return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+        }
+
+        $scope.openCalender = function() {
+            $scope.popupCalender.opened = true;
+        };
+
+        $scope.setDate = function(year, month, day) {
+            $scope.dt = new Date(year, month, day);
+        };
+
+        $scope.format = 'MM/dd/yyyy';
+        $scope.altInputFormats = ['M!/d!/yyyy'];
+
+        $scope.popupCalender = {
+            opened: false
         };
 
         var users = UsersFactory.query(function(){
@@ -44,8 +90,16 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
 
         $scope.saveConfigureGeneralData = function () {
             if($scope.generalConfigure.$valid) {
-                $scope.report.dateClose = $scope.report.isClosed ? $scope.report.dateClose : null;
-                ReportFactory.update({id: $routeParams.reportId}, $scope.report);
+                var reportData = $scope.report;
+                reportData.closedDate = reportData.closed ? reportData.closedDate : null;
+                reportData.closed = reportData.closed === undefined ? false : reportData.closed;
+                reportData.closedDate = reportData.closedDate === undefined ? null : reportData.closedDate;
+
+                ReportFactory.update({
+                    id: $routeParams.reportId}, reportData, function(){
+                    //FIXME not reinit select2
+                    self.getReport();
+                });
             }
         };
     }
@@ -53,8 +107,8 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
 
 //Configure sprint team data
 jiraPluginApp.controller('ConfigureSprintTeamCtrl',
-    ['$scope', '$routeParams', '$uibModal', 'ReportFactory', 'UsersFactory', 'SprintsFactory', 'SprintFactory', 'SprintTeamFactory', 'CONFIG',
-    function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, SprintsFactory, SprintFactory, SprintTeamFactory, CONFIG) {
+    ['$scope', '$routeParams', '$uibModal', 'ReportFactory', 'UsersFactory', 'SprintsFactory', 'SprintFactory', 'SprintTeamFactory', 'SprintWithTeamFactory', 'CONFIG',
+    function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, SprintsFactory, SprintFactory, SprintTeamFactory, SprintWithTeamFactory, CONFIG) {
 
         var self = this;
         $scope.sprintTeams = [];
@@ -69,8 +123,8 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 //Function for calc preview values
         $scope.calcParams = function(){
             var total = {
-                engineerLvl: 0,
-                participationLvl: 0,
+                engineerLevel: 0,
+                participationLevel: 0,
                 daysInSprint: 0,
 
                 targetPoints: 0,
@@ -86,20 +140,20 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             for (var index = 0; index < $scope.sprintTeams.length; index++) {
                 var value = $scope.sprintTeams[index];
 
-                var engineerLvl = parseFloat(value.engineerLvl);
-                var dv = engineerLvl == 4 ? 3 : engineerLvl;
-                var pl = parseFloat(value.participationLvl);
+                var engineerLevel = parseFloat(value.engineerLevel);
+                var dv = engineerLevel == 4 ? 3 : engineerLevel;
+                var pl = parseFloat(value.participationLevel);
                 var dis = parseFloat(value.daysInSprint);
 
                 var dDailyForMin = 1;
                 var dDailyForMax = 2;
-                if (engineerLvl == 2) {
+                if (engineerLevel == 2) {
                     dDailyForMin = 0.5;
                     dDailyForMax = 1;
-                } else if (engineerLvl == 3) {
+                } else if (engineerLevel == 3) {
                     dDailyForMin = 0.3;
                     dDailyForMax = 0.5;
-                } else if (engineerLvl == 4)  {
+                } else if (engineerLevel == 4)  {
                     dDailyForMin = 0;
                     dDailyForMax = 0.1;
                 }
@@ -121,7 +175,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 }
 
                 //Sprint teams
-                $scope.sprintTeams[index].engineerLvl = parseFloat(value.engineerLvl);
+                $scope.sprintTeams[index].engineerLevel = parseFloat(value.engineerLevel);
                 $scope.sprintTeams[index].targetPoints = tp;
                 $scope.sprintTeams[index].targetHours = th;
                 $scope.sprintTeams[index].defectMin = dMin;
@@ -132,7 +186,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 $scope.sprintTeams[index].uatDefectHours = uatdh;
 
                 //Total
-                total.engineerLvl       += (parseFloat(value.engineerLvl) === 4 ? 3 : parseFloat(value.engineerLvl));
+                total.engineerLevel       += (parseFloat(value.engineerLevel) === 4 ? 3 : parseFloat(value.engineerLevel));
 
                 total.targetPoints      += parseFloat(value.targetPoints);
                 total.targetHours       += parseFloat(value.targetHours);
@@ -149,84 +203,35 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
         };
 
 //----------------------------------------------------------------------------------------------------------------------
-//get report data
-        $scope.getReport = function () {
-            //$scope.report = ReportFactory.get({id: $routeParams.reportId});
-            $scope.report = {
-                title: "title",
-                typeId: 2,
-                boardName: "Test",
-                isClosed: true,
-                dateClose: new Date()
-            };
-        };
-
-//----------------------------------------------------------------------------------------------------------------------
-//get sprints data
-        $scope.getSprints = function () {
-            //$scope.sprints = SprintsFactory.query({reportId: $routeParams.reportId});
-            $scope.sprints = [
-                {
-                    id: 1,
-                    name: 'Sprint 1',
-                    type: 1,
-                    notCountTarget: true,
-                    showUat: true
-                },
-                {
-                    id: 2,
-                    name: 'Sprint 2',
-                    type: 0,
-                    notCountTarget: true,
-                    showUat: false
-                },
-                {
-                    id: 3,
-                    name: 'Sprint 3',
-                    type: 2,
-                    notCountTarget: false,
-                    showUat: false
-                }
-            ];
-        };
-
-//----------------------------------------------------------------------------------------------------------------------
 //get sprint teams data
         $scope.getSprintTeams = function (data) {
-
+            var firstLoad = true;
             if (data === undefined) {
-                data = {id: $scope.sprints[0]};
+                if ($scope.sprints !== undefined && $scope.sprints.length > 0) {
+                    data = {id: $scope.sprints[0].id};
+                }
+            } else {
+                firstLoad = false;
             }
 
             //TODO add get sprint teams by reportId and agileSprintId
-            //SprintTeamFactory.get({
-            //    reportId: $routeParams.reportId,
-            //    sprintId: data.id
-            //}, function (data) {
-            //    console.log(data);
-            //    //$scope.sprintTeams = data;
-            //}, function (error) {
-            //    console.log(error);
-            //    $scope.sprintTeams = [];
-            //});
+            if (data !== undefined && data.id !== undefined) {
+                SprintTeamFactory.query({
+                    sprintId: data.id
+                }, function (result) {
+                    //console.log(result);
+                    $scope.sprintTeams = result.developers;
+                }, function (error) {
+                    //console.log(error);
+                    $scope.sprintTeams = [];
+                });
+            }
 
-            if (data.id === 2) {
-                $scope.sprintTeams = [
-                    {
-                        devName: "bridoux",
-                        engineerLvl: 3,
-                        participationLvl: "0.5",
-                        daysInSprint: 5
-                    },
-                    {
-                        devName: "bmurga",
-                        engineerLvl: 1,
-                        participationLvl: "0.6",
-                        daysInSprint: 7
-                    }
-                ];
-            } else {
-                $scope.sprintTeams = [];
+            //TODO need only in first load
+            if (firstLoad && $scope.sprints !== undefined) {
+                $scope.reportModel = {
+                    sprint: $scope.sprints[0]
+                };
             }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -247,24 +252,33 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
         };
 
 //----------------------------------------------------------------------------------------------------------------------
+//get sprints data
+        $scope.getSprints = function (data) {
+            var startDate = new Date();
+            var endDate = new Date();
+            endDate.setDate(endDate.getDate()+5);
+            //TODO get sprints
+            SprintsFactory.query({reportId: $routeParams.reportId}, function(result) {
+                $scope.sprints = result.sprints;
+                $scope.getSprintTeams(data);
+            });
+        };
+
+//----------------------------------------------------------------------------------------------------------------------
+//get report data
+        $scope.getReport = function (data) {
+            //TODO get report
+            ReportFactory.get({id: $routeParams.reportId}, function(result){
+                $scope.report = result;
+                $scope.getSprints(data);
+            });
+        };
+
+//----------------------------------------------------------------------------------------------------------------------
 //get sprint configure data
-        this.getSprintConfigureData = function () {
+        this.getSprintConfigureData = function (data) {
             //get report data
-            $scope.getReport();
-
-            //get sprint data
-            $scope.getSprints();
-
-            //get sprint teams data
-            $scope.getSprintTeams();
-
-            //console.log($scope.report);
-            //console.log($scope.sprints);
-            //console.log($scope.sprintTeams);
-
-            $scope.reportModel = {
-                sprint: $scope.sprints[0]
-            };
+            $scope.getReport(data);
         };
 
         self.getSprintConfigureData();
@@ -275,11 +289,10 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             login: "add"
         };
         $scope.addDeveloper = function (item) {
-            console.log(item);
             $scope.sprintTeams.push({
                 devName: item,
-                engineerLvl: 1,
-                participationLvl: "1.0",
+                engineerLevel: 1,
+                participationLevel: "1.0",
                 daysInSprint: 1
             });
             $scope.dataDeveloper = {
@@ -293,21 +306,15 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 for (var index = 0; index < users.users.length; index++) {
                     for (var indexTeam = 0; indexTeam < $scope.sprintTeams.length; indexTeam++) {
                         if (users.users[index].login === $scope.sprintTeams[indexTeam].devName) {
-                            console.log(users.users[index].login + " --- " + $scope.sprintTeams[indexTeam].devName);
                             users.users.splice(index, 1);
                         }
                     }
                 }
-
-
                 $scope.devUsersForAdd = users.users;
-                console.log($scope.devUsersForAdd);
-                console.log($scope.sprintTeams);
             });
         };
 
         $scope.deleteDeveloper = function (item) {
-            console.log(item);
             var index = $scope.sprintTeams.indexOf(item);
             $scope.sprintTeams.splice(index, 1);
         };
@@ -316,17 +323,36 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 //save sprint configure
         $scope.saveSprintConfigure = function () {
             //TODO save sprint data (with sprint team)
-            var sprint = {
-                sprint:                 $scope.reportModel.sprint,
-                sprintTeams:            $scope.sprintTeams,
-                sprintTeamsTotalValues: $scope.totalPreviewDetails
-            };
+            var sprintData = $scope.reportModel.sprint;
 
-            SprintFactory.update({
+            sprintData.developers = [];
+            for (var index = 0; index < $scope.sprintTeams.length; index++) {
+                sprintData.developers.push(
+                    {
+                        developerName:      $scope.sprintTeams[index].devName,
+                        engineerLevel:      $scope.sprintTeams[index].engineerLevel,
+                        participationLevel: $scope.sprintTeams[index].participationLevel,
+                        daysInSprint:       $scope.sprintTeams[index].daysInSprint
+                    }
+                );
+
+                if ($scope.sprintTeams[index].id !== undefined) {
+                    sprintData.developers[index].id = $scope.sprintTeams[index].id;
+                }
+            }
+
+            SprintWithTeamFactory.update({
                 reportId: $routeParams.reportId,
                 sprintId: $scope.reportModel.sprint.id
-            }, sprint, function () {
+            }, sprintData, function () {
+                $scope.getSprintTeams({
+                    id: $scope.reportModel.sprint.id
+                });
                 console.log("Save sprint");
+            }, function (error) {
+                $scope.getSprintTeams({
+                    id: $scope.reportModel.sprint.id
+                });
             });
         };
 
@@ -342,6 +368,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 resolve: {
                     dlgData: function () {
                         return {
+                            item: $scope.reportModel != undefined ? $scope.reportModel.sprint : undefined,
                             type: type
                         };
                     }
@@ -349,30 +376,20 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             });
             modalInstance.result.then(function (data) {
                 //TODO add/edit sprint
-
                 if(data.type === "add") {
                     data.sprint['type'] = 0;
                     data.sprint['notCountTarget'] = false;
                     data.sprint['showUat'] = false;
-                    SprintsFactory.add({reportId: $routeParams.reportId}, data.sprint, function () {
+                    SprintsFactory.add({reportId: $routeParams.reportId}, data.sprint, function (result) {
                         self.getSprintConfigureData();
                     });
-
-                    console.log(data.sprint);
-
-                    self.getSprintConfigureData();
-                    $scope.sprints.push(data.sprint);
                 } else {
-
+                    SprintFactory.update({reportId: $routeParams.reportId, sprintId: $scope.reportModel.sprint.id}, data.sprint, function () {
+                        self.getSprintConfigureData({
+                            id: $scope.reportModel.sprint.id
+                        });
+                    });
                 }
-
-                //SprintsFactory.add({
-                //    reportId: $routeParams.reportId
-                //}, data
-                //);
-                //SprintFactory.create({}, data, function(){
-                //    self.getReportsData();
-                //});
             }, function () {});
         };
 
@@ -390,7 +407,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 }
             });
             modalInstance.result.then(function (data) {
-                SprintFactory.delete(data, function() {
+                SprintFactory.delete({reportId: $routeParams.reportId, sprintId: $scope.reportModel.sprint.id}, function() {
                     self.getSprintConfigureData();
                 });
             }, function () {});
@@ -398,23 +415,39 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 
 //----------------------------------------------------------------------------------------------------------------------
 //Dlg developer activity
-
+        $scope.dlgSprintTeamActivity = function (sprint, developer) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'views/report_configure/dlg/dlg_sprint_team_activity.html',
+                controller: 'DlgSprintTeamActivityCtrl',
+                size: 'lg',
+                resolve: {
+                    dlgData: function () {
+                        return {
+                            sprint:     sprint,
+                            developer:  developer
+                        };
+                    }
+                }
+            });
+            modalInstance.result.then(function (data) {
+                SprintFactory.delete(data, function() {
+                    self.getSprintConfigureData();
+                });
+            }, function () {});
+        };
     }
 ]);
 
 jiraPluginApp.controller('DlgProcessSprintCtrl',
     ['$scope', '$uibModalInstance', 'dlgData', 'SprintFactory',
     function ($scope, $uibModalInstance, dlgData, SprintFactory) {
-        $scope.dlgData = dlgData;
-        if(dlgData.type === "edit") {
-            //var sprint = SprintFactory.query(function(){
-            //    $scope.sprint = sprint;
-            //    $scope.sprint['state'] = "active";
-            //});
+        $scope.sprint = dlgData.item;
+        if (dlgData.type === "add") {
+            $scope.sprint = {
+                state: "active"
+            }
         }
-
-        $scope.sprint = {};
-        $scope.sprint['state'] = "active";
 
 //----------------------------------------------------------------------------------------------------------------------
 //Calender
@@ -472,6 +505,159 @@ jiraPluginApp.controller('DlgProcessSprintCtrl',
 ]);
 
 jiraPluginApp.controller('DlgDeleteSprintCtrl', ['$scope', '$uibModalInstance', 'dlgData',
+    function ($scope, $uibModalInstance, dlgData) {
+        $scope.dlgData = dlgData;
+
+        $scope.ok = function () {
+            $uibModalInstance.close($scope.dlgData);
+        };
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    }
+]);
+
+jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModal', '$uibModalInstance', 'dlgData', 'SprintIssuesFactory', 'SprintIssueFactory',
+    function ($scope, $uibModal, $uibModalInstance, dlgData, SprintIssuesFactory, SprintIssueFactory) {
+        var self = this;
+        $scope.dlgData = dlgData;
+
+        //get issues by sprintId and assignee
+        this.getIssues = function() {
+            SprintIssuesFactory.query({
+                sprintId: $scope.dlgData.sprint.id,
+                assignee: $scope.dlgData.developer.devName
+            }, function (data) {
+                $scope.issues = data;
+            });
+
+            $scope.data = [
+                {
+                    date: $scope.dlgData.sprint.startDate,
+                    issues: [
+                        {
+                            id: 1,
+                            typeName: "Story",
+                            statusName: "To Do",
+                            point: 3,
+                            hours: 8.0
+                        }
+                    ]
+                },
+                {
+                    date: $scope.dlgData.sprint.startDate,
+                    issues: [
+                        {
+                            id: 2,
+                            typeName: "Story",
+                            statusName: "In Progress",
+                            point: 3,
+                            hours: 8.0
+                        }
+                    ]
+                },
+                {
+                    date: $scope.dlgData.sprint.endDate,
+                    issues: []
+                },
+                {
+                    date: $scope.dlgData.sprint.endDate,
+                    issues: []
+                }
+            ]
+        };
+        self.getIssues();
+
+        //get issues by
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+
+//----------------------------------------------------------------------------------------------------------------------
+//Dlg add issue
+        $scope.processIssue = function (item, issueDate) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'views/report_configure/dlg/dlg_issue.html',
+                controller: 'DlgProcessIssueCtrl',
+                size: 'md',
+                resolve: {
+                    dlgData: function () {
+                        return {
+                            item:       item,
+                            issueDate:  issueDate
+                        };
+                    }
+                }
+            });
+            modalInstance.result.then(function (data) {
+                if (data.type === "edit") {
+                    var idIssue = data.id;
+                    delete data.id;
+                    delete data.type;
+                    SprintIssueFactory.update({issueId: idIssue}, data, function(result){
+                        self.getIssues();
+                    });
+                } else {
+                    delete data.type;
+                    SprintIssuesFactory.add({sprintId: $scope.dlgData.sprint.id, assignee: $scope.dlgData.developer.devName}, data, function(result){
+                        self.getIssues();
+                    });
+                }
+            }, function () {});
+        };
+
+//----------------------------------------------------------------------------------------------------------------------
+//Dlg delete issue
+        $scope.deleteIssue = function (item) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'views/dlg/dlg_delete_element.html',
+                controller: 'DlgDeleteIssueCtrl',
+                size: 'sm',
+                resolve: {
+                    dlgData: function () {
+                        return item;
+                    }
+                }
+            });
+            modalInstance.result.then(function (data) {
+                SprintIssueFactory.delete({issueId: data.id}, function(result){
+                    self.getIssues();
+                });
+            }, function () {});
+        };
+    }
+]);
+
+jiraPluginApp.controller('DlgProcessIssueCtrl', ['$scope', '$uibModalInstance', 'dlgData',
+    function ($scope, $uibModalInstance, dlgData) {
+        $scope.issue = dlgData.item;
+        if ($scope.issue === undefined) {
+            $scope.issue = {
+                type: "add",
+                typeName: "Story",
+                statusName: "To Do",
+                hours: 8.0,
+                issueDate: dlgData.issueDate
+            }
+        } else {
+            $scope.issue["type"] = "edit";
+        }
+
+        $scope.ok = function () {
+            $uibModalInstance.close($scope.issue);
+        };
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    }
+]);
+
+jiraPluginApp.controller('DlgDeleteIssueCtrl', ['$scope', '$uibModalInstance', 'dlgData',
     function ($scope, $uibModalInstance, dlgData) {
         $scope.dlgData = dlgData;
 

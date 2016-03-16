@@ -14,7 +14,7 @@ public class JiraBoard {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "board_id")
+    @Column(name = "jira_board_id")
     private Long boardId;
 
     @Column(name = "name")

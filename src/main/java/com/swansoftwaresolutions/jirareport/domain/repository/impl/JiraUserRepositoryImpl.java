@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Vladimir Martynyuk
@@ -36,24 +37,12 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
 //        if (user.getId() == null || findById(user.getId()) == null) {
 //            throw new NoSuchEntityException("Entity not found");
 //        }
-        return (JiraUser) sessionFactory.openSession().merge(user);
-    }
-
-    @Override
-    public JiraUser findById(long id) throws NoSuchEntityException {
-        return (JiraUser) sessionFactory.openSession()
-                .createCriteria(JiraUser.class).add(Restrictions.eq("id", id)).uniqueResult();
-    }
-
-    @Override
-    public JiraUser findByName(String name) throws NoSuchEntityException {
-        return (JiraUser) sessionFactory.openSession()
-                .createCriteria(JiraUser.class).add(Restrictions.eq("fullName", name)).uniqueResult();
+        return (JiraUser) sessionFactory.getCurrentSession().merge(user);
     }
 
     @Override
     public JiraUser findByLogin(String login) throws NoSuchEntityException {
-        return (JiraUser) sessionFactory.openSession()
+        return (JiraUser) sessionFactory.getCurrentSession()
                 .createCriteria(JiraUser.class).add(Restrictions.eq("login", login)).uniqueResult();
     }
 
@@ -64,18 +53,7 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
 
     @Override
     public void delete(JiraUser jiraUser) throws NoSuchEntityException {
-//
-
         sessionFactory.getCurrentSession().delete(jiraUser);
-    }
-
-    @Override
-    public void delete(Long jiraUserId) throws NoSuchEntityException {
-        JiraUser user = findById(jiraUserId);
-        if (user == null) {
-            throw new NoSuchEntityException("Entity not found");
-        }
-        sessionFactory.getCurrentSession().delete(user);
     }
 
     @Override

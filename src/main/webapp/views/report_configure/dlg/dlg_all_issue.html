@@ -1,0 +1,24 @@
+<table class="aui table issue-table">
+    <tr ng-show="value.issues.length > 0" ng-repeat="valueIssue in value.issues">
+        <td class="width-100">{{valueIssue.typeName}}</td>
+        <td class="width-100">
+            {{statusStyle = valueIssue.statusName === "Done" ? "aui-lozenge-success" : valueIssue.statusName === "In Progress" ? "aui-lozenge-current" : "aui-lozenge-complete"; ""}}
+            <span class="aui-lozenge aui-lozenge-subtle {{statusStyle}}">{{valueIssue.statusName}}</span>
+        </td>
+        <td class="width-100">
+            <span ng-show="valueIssue.point !== 0">{{valueIssue.point}} points</span>
+            <span ng-show="valueIssue.point === 0"> - </span>
+        </td>
+        <td class="width-100">
+            <span ng-show="valueIssue.hours !== 0">{{valueIssue.hours}} hours</span>
+            <span ng-show="valueIssue.hours === 0"> - </span>
+        </td>
+        <td style="width: 70px;">
+            <span ng-click="processIssue(valueIssue)" class="aui-icon aui-icon-small aui-iconfont-edit js-copy-clipboard edit-issue" title="Edit">Edit</span>
+            <span ng-click="deleteIssue(valueIssue)" class="aui-icon aui-icon-small aui-iconfont-close-dialog delete-issue" title="Delete">Delete</span>
+        </td>
+    </tr>
+    <tr ng-show="value.issues.length === 0">
+        <td><p class="issue-not-found">Data not found</p></td>
+    </tr>
+</table>

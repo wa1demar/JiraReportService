@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Vitaliy Holovko
@@ -29,17 +30,16 @@ import java.util.List;
 public class ReportServiceImpl implements ReportService {
 
     @Autowired
-    ReportRepository reportRepository;
+    private ReportRepository reportRepository;
 
     @Autowired
-    ReportMapper reportMapper;
+    private ReportMapper reportMapper;
 
     @Autowired
-    JiraUserMapper jiraUserMapper;
+    private JiraUserMapper jiraUserMapper;
 
     @Autowired
-    JiraUserRepository jiraUserRepository;
-
+    private JiraUserRepository jiraUserRepository;
 
     @Override
     public ReportListDto retrieveAllReportsList() {
@@ -51,7 +51,10 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public ReportDto add(NewReportDto newReportDto) throws NoSuchEntityException {
 
-        List<JiraUser> jiraUsers = jiraUserRepository.findByLogins(newReportDto.getAdmins());
+        List<JiraUser> jiraUsers = null;
+        if (newReportDto.getAdmins() != null && newReportDto.getAdmins().length > 0) {
+            jiraUsers = jiraUserRepository.findByLogins(newReportDto.getAdmins());
+        }
 
         Report newReport = reportMapper.fromDto(newReportDto);
         newReport.setAdmins(jiraUsers);
@@ -67,8 +70,17 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Report update(Report report) throws NoSuchEntityException {
-        return reportRepository.update(report);
+    public ReportDto update(NewReportDto newReportDto, long id) throws NoSuchEntityException {
+        List<JiraUser> jiraUsers = null;
+        if (newReportDto.getAdmins() != null && newReportDto.getAdmins().length > 0) {
+            jiraUsers = jiraUserRepository.findByLogins(newReportDto.getAdmins());
+        }
+
+        Report report = reportMapper.fromDto(newReportDto);
+        report.setId(id);
+        report.setAdmins(jiraUsers);
+
+        return reportMapper.toDto(reportRepository.update(report));
     }
 
     @Override
@@ -77,8 +89,8 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public void deleteById(long id) throws NoSuchEntityException {
-        reportRepository.delete(id);
+    public ReportDto delete(long id) throws NoSuchEntityException {
+        return reportMapper.toDto(reportRepository.delete(id));
     }
 
 }

@@ -31,10 +31,10 @@ public class ReportDtoBuilder {
         return this;
     }
 
-    public ReportDtoBuilder creatorId(Long creatorId) {
-        dto.setCreatorId(creatorId);
-        return this;
-    }
+//    public ReportDtoBuilder creatorId(Long creatorId) {
+//        dto.setCreatorId(creatorId);
+//        return this;
+//    }
 
     public ReportDtoBuilder boardId(Long boardId) {
         dto.setBoardId(boardId);
@@ -61,7 +61,7 @@ public class ReportDtoBuilder {
         return this;
     }
 
-    public ReportDtoBuilder typeId(long typeId) {
+    public ReportDtoBuilder typeId(int typeId) {
         dto.setTypeId(typeId);
         return this;
     }

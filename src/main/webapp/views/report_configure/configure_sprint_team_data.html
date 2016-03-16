@@ -46,12 +46,12 @@
                         <span class="aui-button delete-developer" data-id="{{data.id}}" ng-click="deleteDeveloper(data.devName)">Delete</span>
                     </td>
                     <td class="border-right-2">
-                        <select ng-change="calcParams()" class="select engineer-lvl" ng-model="data.engineerLvl" convert-to-number>
+                        <select ng-change="calcParams()" class="select engineer-lvl" ng-model="data.engineerLevel" convert-to-number>
                             <option ng-repeat="engLvl in [1, 2, 3, 4]" value="{{engLvl}}">EL{{engLvl}}</option>
                         </select>
                     </td>
                     <td class="border-right-2">
-                        <select ng-change="calcParams()" class="select participation-lvl" ng-model="data.participationLvl">
+                        <select ng-change="calcParams()" class="select participation-lvl" ng-model="data.participationLevel">
                             <option value="1.0">1.0</option>
                             <option value="0.9">0.9</option>
                             <option value="0.8">0.8</option>
@@ -66,7 +66,7 @@
                     </td>
                     <td>
                         <input ng-change="calcParams()" type="number" min="1" step="1" name="days-in-sprint" class="text days-in-sprint" ng-model="data.daysInSprint"/>
-                        <span ng-show="reportModel.sprint.type === 2" class="aui-button sprint-team-activity" data-id="{{data.id}}" style="margin-left: 10px;">Activity</span>
+                        <span ng-show="report.typeId === 2 && data.id" ng-click="dlgSprintTeamActivity(reportModel.sprint, data)" class="aui-button sprint-team-activity" style="margin-left: 10px;">Activity</span>
                     </td>
                 </tr>
                 <tr>
@@ -119,8 +119,8 @@
                     <td class="dev-name">
                         {{data.devName}}
                     </td>
-                    <td class="engineer-lvl text-center">{{data.engineerLvl === '4' ? '3' : data.engineerLvl}}</td>
-                    <td class="participation-lvl text-center">{{data.participationLvl}}</td>
+                    <td class="engineer-lvl text-center">{{data.engineerLevel === '4' ? '3' : data.engineerLevel}}</td>
+                    <td class="participation-lvl text-center">{{data.participationLevel}}</td>
                     <td class="days-in-sprint text-center">{{data.daysInSprint}}</td>
 
                     <td class="target-points text-center">{{data.targetPoints}}</td>
@@ -136,7 +136,7 @@
                 </tr>
                 <tr class="table-preview-details-row-total">
                     <td>Total</td>
-                    <td class="engineer-lvl-total text-center">{{totalPreviewDetails.engineerLvl}}</td>
+                    <td class="engineer-lvl-total text-center">{{totalPreviewDetails.engineerLevel}}</td>
                     <td class="participation-lvl-total text-center"></td>
                     <td class="days-in-sprint-total text-center"></td>
 

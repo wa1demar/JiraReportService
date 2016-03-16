@@ -5,29 +5,17 @@ import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEn
 
 import java.util.List;
 
+/**
+ * @author Vladimir Martynyuk
+ */
 public interface SprintRepository {
+    Sprint add(Sprint sprint);
 
-    List<Sprint> findAll();
+    Sprint update(Sprint sprint);
 
-    List<Sprint> findByReportId(final Long reportId);
+    List<Sprint> findByReportId(long reportId);
 
-    Sprint findByReportIdAndAgileSprintId(final Long reportId, final Long agileSprintId);
+    Sprint delete(long sprintId) throws NoSuchEntityException;
 
-    Sprint findById(final Long id);
-
-    Sprint findLast();
-
-    Sprint findByAgileSprintId(final Long agileSprintId);
-
-    Sprint add(final Sprint sprint);
-
-    Sprint update(final Sprint sprint)  throws NoSuchEntityException;
-
-    void deleteAll() throws NoSuchEntityException;
-
-    void delete(Sprint sprint) throws NoSuchEntityException;
-
-    void delete(Long id) throws NoSuchEntityException;
-
-    void deleteByReportId(Long reportId) throws NoSuchEntityException;
+    Sprint findById(long sprintId) throws NoSuchEntityException;
 }

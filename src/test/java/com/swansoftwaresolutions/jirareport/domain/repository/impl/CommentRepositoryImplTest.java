@@ -63,14 +63,14 @@ public class CommentRepositoryImplTest extends AbstractDbTest {
 //
 //    @Test
 //    public void testFindCommentByReportId() throws Exception {
-//        List<Comment> comments = commentRepository.findByReportId(2L);
+//        List<Comment> comments = commentRepository.findByBoardId(2L);
 //        assertNotNull(comments);
 //        assertEquals(2, comments.size());
 //    }
 //
 //    @Test
 //    public void testFindCommentByWrongReportId() throws Exception {
-//        List<Comment> comments = commentRepository.findByReportId(20L);
+//        List<Comment> comments = commentRepository.findByBoardId(20L);
 //        assertNotNull(comments);
 //        assertEquals(0, comments.size());
 //    }
@@ -136,7 +136,7 @@ public class CommentRepositoryImplTest extends AbstractDbTest {
 //    public void testDeleteCommentsByReportId() throws Exception {
 //        commentRepository.deleteByReportId(2L);
 //        assertEquals(3, commentRepository.findAll().size());
-//        assertEquals(0, commentRepository.findByReportId(2L).size());
+//        assertEquals(0, commentRepository.findByBoardId(2L).size());
 //    }
 //
 //    @Test(expected = NoSuchEntityException.class)

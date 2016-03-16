@@ -1,30 +1,19 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * @author Vladimir Martynyuk
  */
-
 @Entity
 @Table(name = "sprints")
-public class Sprint implements Serializable {
-
+public class Sprint {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
-    @Column(name = "report_id")
-    private Long reportId;
-
-    @Column(name = "agile_sprint_id")
-    private Long agileSprintId;
-
-    @Column(name = "not_count_target")
-    private Long notCountTarget;
 
     @Column(name = "name")
     private String name;
@@ -32,20 +21,31 @@ public class Sprint implements Serializable {
     @Column(name = "state")
     private String state;
 
-    @Column(name = "type")
-    private Long type;
-
     @Column(name = "start_date")
     private Date startDate;
 
     @Column(name = "end_date")
     private Date endDate;
 
-    @Column(name = "complete_date")
-    private Date completeDate;
-
     @Column(name = "show_uat")
-    private Long showUat;
+    private boolean showUAT;
+
+    @Column(name = "type")
+    private int type;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "jira_sprint_id")
+    private JiraSprint jiraSprint;
+
+    @Column(name = "not_count_target")
+    private boolean notCountTarget;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "report_id", nullable = false)
+    private Report report = new Report();
+
+    @OneToMany(mappedBy="sprint")
+    private Set<SprintDeveloper> developers;
 
     public Long getId() {
         return id;
@@ -53,30 +53,6 @@ public class Sprint implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getReportId() {
-        return reportId;
-    }
-
-    public void setReportId(Long reportId) {
-        this.reportId = reportId;
-    }
-
-    public Long getAgileSprintId() {
-        return agileSprintId;
-    }
-
-    public void setAgileSprintId(Long agileSprintId) {
-        this.agileSprintId = agileSprintId;
-    }
-
-    public Long getNotCountTarget() {
-        return notCountTarget;
-    }
-
-    public void setNotCountTarget(Long notCountTarget) {
-        this.notCountTarget = notCountTarget;
     }
 
     public String getName() {
@@ -95,14 +71,6 @@ public class Sprint implements Serializable {
         this.state = state;
     }
 
-    public Long getType() {
-        return type;
-    }
-
-    public void setType(Long type) {
-        this.type = type;
-    }
-
     public Date getStartDate() {
         return startDate;
     }
@@ -119,42 +87,51 @@ public class Sprint implements Serializable {
         this.endDate = endDate;
     }
 
-    public Date getCompleteDate() {
-        return completeDate;
+    public Report getReport() {
+        return report;
     }
 
-    public void setCompleteDate(Date completeDate) {
-        this.completeDate = completeDate;
+    public void setReport(Report report) {
+        this.report = report;
     }
 
-    public Long getShowUat() {
-        return showUat;
+    public boolean isShowUAT() {
+        return showUAT;
     }
 
-    public void setShowUat(Long showUat) {
-        this.showUat = showUat;
+    public void setShowUAT(boolean showUAT) {
+        this.showUAT = showUAT;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Sprint sprint = (Sprint) o;
-
-        if (!agileSprintId.equals(sprint.agileSprintId)) return false;
-        if (!name.equals(sprint.name)) return false;
-        if (state != null ? !state.equals(sprint.state) : sprint.state != null) return false;
-        return type.equals(sprint.type);
-
+    public int getType() {
+        return type;
     }
 
-    @Override
-    public int hashCode() {
-        int result = agileSprintId.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + (state != null ? state.hashCode() : 0);
-        result = 31 * result + type.hashCode();
-        return result;
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public JiraSprint getJiraSprint() {
+        return jiraSprint;
+    }
+
+    public void setJiraSprint(JiraSprint jiraSprint) {
+        this.jiraSprint = jiraSprint;
+    }
+
+    public boolean isNotCountTarget() {
+        return notCountTarget;
+    }
+
+    public void setNotCountTarget(boolean notCountTarget) {
+        this.notCountTarget = notCountTarget;
+    }
+
+    public Set<SprintDeveloper> getDevelopers() {
+        return developers;
+    }
+
+    public void setDevelopers(Set<SprintDeveloper> developers) {
+        this.developers = developers;
     }
 }

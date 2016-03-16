@@ -1,13 +1,28 @@
 'use strict';
 
-jiraPluginApp.controller('CommentCtrl', ['$scope', '$routeParams', 'CommentsFactory', 'CommentFactory', '$uibModal',
-  function($scope, $routeParams, CommentsFactory, CommentFactory, $uibModal) {
+jiraPluginApp.controller('CommentCtrl', ['$scope', '$routeParams', 'CommentsFactory', 'CommentFactory', '$uibModal', 'AuthenticationFactory',
+  function($scope, $routeParams, CommentsFactory, CommentFactory, $uibModal, AuthenticationFactory) {
     var self = this;
 
     this.getCommentsData = function () {
-      $scope.comments = CommentsFactory.query({id: $routeParams.reportId}, function() {
-
+      CommentsFactory.query({id: $routeParams.reportId}, function(data) {
+        $scope.comments = data.comments;
       });
+
+      $scope.comments = [
+        {
+          txt: "first",
+          createDate: new Date(),
+          creator: "admin",
+          creatorDisplayName: "Admin"
+        },
+        {
+          txt: "second",
+          createDate: new Date(),
+          creator: "admin",
+          creatorDisplayName: "Admin"
+        },
+      ]
     };
     self.getCommentsData();
 
@@ -19,18 +34,20 @@ jiraPluginApp.controller('CommentCtrl', ['$scope', '$routeParams', 'CommentsFact
     $scope.modelComments = {
       txt: ''
     };
-    //------------------------------------------------------------------------------------------------------------------
-    //Add comment
+
+//----------------------------------------------------------------------------------------------------------------------
+//Add comment
     $scope.addComment = function() {
+      $scope.modelComments.creator = AuthenticationFactory.user;
       $scope.modelComments.createDate = new Date();
-      CommentsFactory.create({id: $routeParams.reportId}, $scope.modelComments, function(){
+      CommentsFactory.add({id: $routeParams.reportId}, $scope.modelComments, function(){
         self.getCommentsData();
         $scope.modelComments.txt = '';
       });
     };
 
-    //------------------------------------------------------------------------------------------------------------------
-    //Dlg delete comment
+//----------------------------------------------------------------------------------------------------------------------
+//Dlg delete comment
     $scope.deleteComment = function (item) {
       var modalInstance = $uibModal.open({
         animation: true,

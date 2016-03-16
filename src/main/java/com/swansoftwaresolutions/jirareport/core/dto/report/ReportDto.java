@@ -14,13 +14,13 @@ public class ReportDto implements Serializable {
     private Long id;
     private String title;
     private String creator;
-    private Long creatorId;
+//    private Long creatorId;
     private Long boardId;
     private String boardName;
     private Date createdDate;
     private Date updatedDate;
     private Date closedDate;
-    private Long typeId;
+    private int typeId;
     private boolean closed;
     private List<JiraUserDto> admins= new ArrayList<>();
 
@@ -48,13 +48,13 @@ public class ReportDto implements Serializable {
         this.creator = creator;
     }
 
-    public Long getCreatorId() {
-        return creatorId;
-    }
-
-    public void setCreatorId(Long creatorId) {
-        this.creatorId = creatorId;
-    }
+//    public Long getCreatorId() {
+//        return creatorId;
+//    }
+//
+//    public void setCreatorId(Long creatorId) {
+//        this.creatorId = creatorId;
+//    }
 
     public Long getBoardId() {
         return boardId;
@@ -96,11 +96,11 @@ public class ReportDto implements Serializable {
         this.closedDate = closedDate;
     }
 
-    public Long getTypeId() {
+    public int getTypeId() {
         return typeId;
     }
 
-    public void setTypeId(Long typeId) {
+    public void setTypeId(int typeId) {
         this.typeId = typeId;
     }
 
@@ -118,5 +118,32 @@ public class ReportDto implements Serializable {
 
     public void setAdmins(List<JiraUserDto> admins) {
         this.admins = admins;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ReportDto reportDto = (ReportDto) o;
+
+        if (typeId != reportDto.typeId) return false;
+        if (closed != reportDto.closed) return false;
+        if (!id.equals(reportDto.id)) return false;
+        if (!title.equals(reportDto.title)) return false;
+        if (!creator.equals(reportDto.creator)) return false;
+        return boardId.equals(reportDto.boardId);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + title.hashCode();
+        result = 31 * result + creator.hashCode();
+        result = 31 * result + boardId.hashCode();
+        result = 31 * result + typeId;
+        result = 31 * result + (closed ? 1 : 0);
+        return result;
     }
 }

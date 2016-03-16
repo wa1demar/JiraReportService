@@ -17,4 +17,20 @@ public class ReportListDto implements Serializable {
     public void setReports(List<ReportDto> reports) {
         this.reports = reports;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ReportListDto that = (ReportListDto) o;
+
+        return reports.equals(that.reports);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return reports.hashCode();
+    }
 }
