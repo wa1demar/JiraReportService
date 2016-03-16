@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <configs
-            story_point_name="Story Points1"
-            agile_done_name="Done"
-            jira_dev_group_name="jira-developers"
-            bug_name="Bug"
-            non_working_days="09/05/2015, 10/15/2015"
-            auto_sync_time="10/15/2015"
-    />
+    <comments id="1"
+              report_id="1"
+              sprint_id="2"
+              tesxt="test text3"
+              creator="test1"
+              created_date="10/15/2014"
+            />
+    <comments id="2"
+              report_id="2"
+              sprint_id="2"
+              tesxt="test text3"
+              creator="test2"
+              created_date="10/15/2014"
+            />
+    <comments id="3"
+              report_id="31"
+              sprint_id="2"
+              tesxt="test text3"
+              creator="test3"
+              created_date="10/15/2014"
+            />
 </dataset>
