@@ -1,8 +1,8 @@
 'use strict';
 
 jiraPluginApp.controller('ReportElementCtrl',
-    ['$scope', '$routeParams', 'ReportsFactory', 'ReportFactory', 'ReportWithSprintsAndTeamsFactory',
-        function($scope, $routeParams, ReportsFactory, ReportFactory, ReportWithSprintsAndTeamsFactory) {
+    ['$scope', '$routeParams', 'ReportsFactory', 'ReportFactory', 'ReportWithSprintsAndTeamsFactory', '$timeout',
+        function($scope, $routeParams, ReportsFactory, ReportFactory, ReportWithSprintsAndTeamsFactory, $timeout) {
             var self = this;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -69,14 +69,18 @@ jiraPluginApp.controller('ReportElementCtrl',
 
                 $scope.labels = $scope.chartData.label;
                 $scope.series = ['Actual', 'Terget'];
-                $scope.data = [
-                    $scope.chartData.actual,
-                    $scope.chartData.target
-                ];
                 $scope.colours = [actualChartColor, '#000000'];
                 $scope.options = {
                     datasetFill : false
                 };
+
+                //FIXME fix for normal size chart
+                $timeout(function () {
+                    $scope.data = [
+                        $scope.chartData.actual,
+                        $scope.chartData.target
+                    ];
+                }, 0);
             };
 
             this.getReportsData = function () {
