@@ -11,6 +11,33 @@ jiraPluginApp.directive('printThis', function() {
   return directiveDefinitionObject;
 });
 
+//directive for indicators
+jiraPluginApp.directive('indicator', function() {
+  var directive = {
+      restrict: 'E',
+      template: "<b>{{show}}</b> <br/>"
+  };
+
+  directive.scope = {
+    show:     "=show",
+    target :  "=target",
+    actual :  "=actual"
+  };
+
+  directive.compile = function(element, attributes) {
+    element.css("border", "1px solid #cccccc");
+
+    var linkFunction = function($scope, element, attributes) {
+      element.html("<b>"+$scope.show +"</b> <br/>");
+      element.css("background-color", "#ff00ff");
+    };
+
+    return linkFunction;
+  };
+
+  return directive;
+});
+
 jiraPluginApp.directive('convertToNumber', function() {
   return {
     require: 'ngModel',
