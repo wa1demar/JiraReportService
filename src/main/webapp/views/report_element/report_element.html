@@ -3,7 +3,7 @@
         <h2>Executive Transparency Report</h2>
         <form class="aui">
             <select ng-model="reportData.report.id"
-                    ng-change="getReportAllData(reportData.report)"
+                    ng-change="changeReport(reportData.report)"
                     id="change-report-element" class="select" style="width: 300px;" convert-to-number>
                 <option ng-repeat="value in reports" value="{{value.id}}">{{value.title}}</option>
             </select>

@@ -5,17 +5,9 @@
                 <div class="report-element-chart">
                     <center><h3 id="chart-title">Project to date</h3></center>
                     <div ng-show="reportData.sprints.length > 0" id="chart-box">
-                        <!--<div class="content" style="max-width: 100%; margin: 0 auto;"></div>-->
-                        <!--<div class="content-serial">-->
-                            <!--<span id="char-actual-serial-icon" class="circle-for-chart green"></span> Actual-->
-                            <!--<span class="circle-for-chart black"></span> Planned-->
-                        <!--</div>-->
-
-                        <!--<div class="content" style="max-width: 100%; margin: 0 auto;">-->
-                            <canvas id="line" class="chart chart-line" chart-data="data" chart-options="options"
-                                    chart-labels="labels" chart-legend="true" chart-series="series" chart-colours="colours">
-                            </canvas>
-                        <!--</div>-->
+                        <canvas id="line" class="chart chart-line" chart-data="data" chart-options="options"
+                                chart-labels="labels" chart-legend="true" chart-series="series" chart-colours="colours">
+                        </canvas>
                     </div>
                     <center ng-show="reportData.sprints.length == 0">Sprints not found</center>
                 </div>

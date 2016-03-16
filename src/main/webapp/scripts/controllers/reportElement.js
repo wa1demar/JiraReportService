@@ -1,8 +1,8 @@
 'use strict';
 
 jiraPluginApp.controller('ReportElementCtrl',
-    ['$scope', '$routeParams', 'ReportsFactory', 'ReportFactory', 'ReportWithSprintsAndTeamsFactory', '$timeout',
-        function($scope, $routeParams, ReportsFactory, ReportFactory, ReportWithSprintsAndTeamsFactory, $timeout) {
+    ['$scope', '$routeParams', 'ReportsFactory', 'ReportFactory', 'ReportWithSprintsAndTeamsFactory', '$timeout', '$location',
+        function($scope, $routeParams, ReportsFactory, ReportFactory, ReportWithSprintsAndTeamsFactory, $timeout, $location) {
             var self = this;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -315,16 +315,17 @@ jiraPluginApp.controller('ReportElementCtrl',
 
             self.getReportWithSprintsAndTeamsData();
 
-            $scope.getReportAllData = function (item) {
-                console.log(item);
-            };
-
             $scope.showSprintDetails = function (item) {
                 console.log("showSprintDetails");
                 $scope.showSprintId = $scope.showSprintId == item.id ? null : item.id;
 
                 $scope.updateProgressBar(item);
                 $scope.updateChart(item);
+            };
+
+            $scope.changeReport = function (item) {
+                $location.url("/report/" + item.id);
+                //self.getReportWithSprintsAndTeamsData();
             };
         }
     ]);
