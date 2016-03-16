@@ -218,9 +218,9 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             if (data !== undefined && data.id !== undefined) {
                 SprintTeamFactory.query({
                     sprintId: data.id
-                }, function (data) {
-                    //console.log(data);
-                    $scope.sprintTeams = data.developers;
+                }, function (result) {
+                    //console.log(result);
+                    $scope.sprintTeams = result.developers;
                 }, function (error) {
                     //console.log(error);
                     $scope.sprintTeams = [];
@@ -253,32 +253,32 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 
 //----------------------------------------------------------------------------------------------------------------------
 //get sprints data
-        $scope.getSprints = function () {
+        $scope.getSprints = function (data) {
             var startDate = new Date();
             var endDate = new Date();
             endDate.setDate(endDate.getDate()+5);
             //TODO get sprints
-            SprintsFactory.query({reportId: $routeParams.reportId}, function(data) {
-                $scope.sprints = data.sprints;
-                $scope.getSprintTeams();
+            SprintsFactory.query({reportId: $routeParams.reportId}, function(result) {
+                $scope.sprints = result.sprints;
+                $scope.getSprintTeams(data);
             });
         };
 
 //----------------------------------------------------------------------------------------------------------------------
 //get report data
-        $scope.getReport = function () {
+        $scope.getReport = function (data) {
             //TODO get report
             ReportFactory.get({id: $routeParams.reportId}, function(result){
                 $scope.report = result;
-                $scope.getSprints();
+                $scope.getSprints(data);
             });
         };
 
 //----------------------------------------------------------------------------------------------------------------------
 //get sprint configure data
-        this.getSprintConfigureData = function () {
+        this.getSprintConfigureData = function (data) {
             //get report data
-            $scope.getReport();
+            $scope.getReport(data);
         };
 
         self.getSprintConfigureData();
@@ -380,12 +380,14 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                     data.sprint['type'] = 0;
                     data.sprint['notCountTarget'] = false;
                     data.sprint['showUat'] = false;
-                    SprintsFactory.add({reportId: $routeParams.reportId}, data.sprint, function () {
+                    SprintsFactory.add({reportId: $routeParams.reportId}, data.sprint, function (result) {
                         self.getSprintConfigureData();
                     });
                 } else {
                     SprintFactory.update({reportId: $routeParams.reportId, sprintId: $scope.reportModel.sprint.id}, data.sprint, function () {
-                        self.getSprintConfigureData();
+                        self.getSprintConfigureData({
+                            id: $scope.reportModel.sprint.id
+                        });
                     });
                 }
             }, function () {});
