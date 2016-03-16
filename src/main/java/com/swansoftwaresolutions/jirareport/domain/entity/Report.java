@@ -75,6 +75,9 @@ public class Report  implements Serializable{
             inverseJoinColumns = { @JoinColumn(name = "admin_login") })
     private List<JiraUser> admins = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "report")
+    private Set<Sprint> sprints = new HashSet<>();
+
     @Column(name = "target_points")
     private Long targetPoints;
 

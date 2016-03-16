@@ -25,29 +25,4 @@ public class JiraSprintController {
         return new ResponseEntity<>(jiraSprintsDto, HttpStatus.OK);
     }
 
-
-//    @RequestMapping(value = "/{report_id}/sprints", method = RequestMethod.GET)
-//    @ResponseBody
-//    public ResponseEntity<JiraSprintsDto> retrieveByReportId(@PathVariable("report_id") long report_id) {
-//        JiraSprintsDto jiraSprintsDto = jiraSprintsService.retrieveByReportId(report_id);
-//        return new ResponseEntity<>(jiraSprintsDto, HttpStatus.OK);
-//    }
-//
-//    @RequestMapping(value = "/{report_id}/sprints", method = RequestMethod.POST)
-//    @ResponseBody
-//    public ResponseEntity<JiraSprintDto> addNewSprint(@Valid @RequestBody JiraSprintDto jiraSprintDto, @PathVariable("report_id") long report_id) {
-//        jiraSprintDto.setReportId(report_id);
-//        JiraSprintDto dto = jiraSprintsService.add(jiraSprintDto);
-//
-//        return new ResponseEntity<>(dto, HttpStatus.OK);
-//    }
-//
-//    @RequestMapping(value = "/{report_id}/sprints/{id}", method = RequestMethod.DELETE)
-//    @ResponseBody
-//    public ResponseEntity<JiraSprintDto> addNewSprint(@PathVariable("report_id") long report_id, @PathVariable("id") long id) throws NoSuchEntityException {
-//
-//        jiraSprintsService.delete(id);
-//
-//        return new ResponseEntity<>(new JiraSprintDto(), HttpStatus.OK);
-//    }
 }

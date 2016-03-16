@@ -120,4 +120,5 @@ public class JiraSprint implements Serializable {
         result = 31 * result + (completeDate != null ? completeDate.hashCode() : 0);
         return result;
     }
+
 }

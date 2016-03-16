@@ -3,7 +3,7 @@ package com.swansoftwaresolutions.jirareport.core.service.impl;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.JiraSprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.JiraSprintsDto;
-import com.swansoftwaresolutions.jirareport.core.mapper.SprintMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.JiraSprintMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraSprint;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraSprintRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -24,32 +24,32 @@ public class JiraSprintServiceImpl implements JiraSprintsService {
     JiraSprintRepository jiraSprintRepository;
 
     @Autowired
-    SprintMapper sprintMapper;
+    JiraSprintMapper jiraSprintMapper;
 
     @Override
     public JiraSprintsDto retrieveByBoardId(long boardId) {
         List<JiraSprint> jiraSprints = jiraSprintRepository.findByBoardId(boardId);
 
-        return sprintMapper.toDto(jiraSprints);
+        return jiraSprintMapper.toDto(jiraSprints);
     }
 
     @Override
     public JiraSprintDto add(JiraSprintDto sprint) {
-        JiraSprint jiraSprintDto = sprintMapper.fromDto(sprint);
+        JiraSprint jiraSprintDto = jiraSprintMapper.fromDto(sprint);
         JiraSprint newJiraSprint = jiraSprintRepository.add(jiraSprintDto);
-        return sprintMapper.toDto(newJiraSprint);
+        return jiraSprintMapper.toDto(newJiraSprint);
     }
 
     @Override
     public void add(ImportedJiraSprintDto sprintDto) {
 
-        JiraSprint jiraSprint = sprintMapper.fromDto(sprintDto);
+        JiraSprint jiraSprint = jiraSprintMapper.fromDto(sprintDto);
         jiraSprintRepository.add(jiraSprint);
     }
 
     @Override
     public List<ImportedJiraSprintDto> findAll() {
-        return sprintMapper.toDtos(jiraSprintRepository.findAll());
+        return jiraSprintMapper.toDtos(jiraSprintRepository.findAll());
     }
 
     @Override
