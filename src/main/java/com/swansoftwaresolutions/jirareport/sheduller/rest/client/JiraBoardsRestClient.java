@@ -33,7 +33,7 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
     static Logger log = Logger.getLogger(JiraBoardsRestClient.class.getName());
 
     private final String BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board.json";
-    private final String ISSUES_BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board/{board_id}/issue.json";
+    private final String ISSUES_BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board/{board_id}/fields.json";
     private final String SPRINTS_BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board/{board_id}/sprint.json";
 
     @Autowired
@@ -50,6 +50,7 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
     JiraSprintMapper jiraSprintMapper;
 
 
+    @Override
     public void loadData() {
         loadDataForJiraBoards();
         loadDataForJiraSprints();
