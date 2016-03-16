@@ -1,4 +1,4 @@
-<tr ng-show="showSprintDetailsData && data.sprintTeam.length > 0" ng-repeat="dataSprint in data.sprintTeam" class="sprint-team-tr" data-id-sprint="{{dataSprint.id}}" #if(!$velocityHasNext)style="border-bottom: 2px solid #cccccc;"#end>
+<tr ng-show="showSprintDetailsData && data.sprintDevelopers.length > 0" ng-repeat="dataSprint in data.sprintDevelopers" class="sprint-team-tr" data-id-sprint="{{dataSprint.id}}" #if(!$velocityHasNext)style="border-bottom: 2px solid #cccccc;"#end>
     <td>
         <span class="dev-name">{{dataSprint.displayName}}</span>
     </td>
@@ -55,7 +55,7 @@
 </tr>
 
 
-<tr ng-show="showSprintDetailsData && (!data.sprintTeam || data.sprintTeam.length === 0)" class="sprint-team-tr" data-id-sprint="$idSprint">
+<tr ng-show="showSprintDetailsData && (!data.sprintDevelopers || data.sprintDevelopers.length === 0)" class="sprint-team-tr" data-id-sprint="$idSprint">
     <td colspan="18" style="border-right: 1px solid #dddddd;">
         <div class="team-not-configured">Team not configured!  {{showSprintDetailsData}} {{data}}</div>
     </td>

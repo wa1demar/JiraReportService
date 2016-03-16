@@ -1,0 +1,50 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="026" author="Waldemar">
+
+        <dropColumn columnName="agile_sprint_id" tableName="sprint_teams"/>
+        <dropColumn columnName="dev_name" tableName="sprint_teams"/>
+        <dropColumn columnName="target_points" tableName="sprint_teams"/>
+        <dropColumn columnName="target_hours" tableName="sprint_teams"/>
+        <dropColumn columnName="defect_min" tableName="sprint_teams"/>
+        <dropColumn columnName="defect_max" tableName="sprint_teams"/>
+        <dropColumn columnName="defect_hours" tableName="sprint_teams"/>
+        <dropColumn columnName="uat_defect_min" tableName="sprint_teams"/>
+        <dropColumn columnName="uat_defect_max" tableName="sprint_teams"/>
+        <dropColumn columnName="uat_defect_hours" tableName="sprint_teams"/>
+
+        <addColumn tableName="sprint_teams">
+            <column name="jira_user_login" type="varchar(255)" />
+        </addColumn>
+
+        <addColumn tableName="sprint_teams">
+            <column name="sprint_id" type="bigint" />
+        </addColumn>
+
+        <dropPrimaryKey constraintName="pk_sprint_teams"
+                        tableName="sprint_teams"/>
+
+        <renameTable newTableName="sprint_developers"
+                     oldTableName="sprint_teams" />
+
+        <addPrimaryKey columnNames="id"
+                       constraintName="pk_sprint_developers"
+                       tableName="sprint_developers" />
+
+        <addForeignKeyConstraint baseColumnNames="sprint_id"
+                                 baseTableName="sprint_developers"
+                                 constraintName="fk_sprint"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sprints"/>
+
+        <addForeignKeyConstraint baseColumnNames="jira_user_login"
+                                 baseTableName="sprint_developers"
+                                 constraintName="fk_sprint_developers"
+                                 referencedColumnNames="login"
+                                 referencedTableName="jira_users"/>
+
+        <comment>Change table sprint_teams</comment>
+
+    </changeSet>
+</databaseChangeLog>

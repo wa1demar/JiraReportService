@@ -27,7 +27,7 @@
         </div>
 
         <hr/>
-        <div ng-show="sprintTeams.length > 0" id="has-sprint-team-data" style="display: none"></div>
+        <div ng-show="sprintDeveloperses.length > 0" id="has-sprint-team-data" style="display: none"></div>
         <table class="aui table table-preview-details" style="width: inherit;">
             <thead>
                 <tr>
@@ -38,7 +38,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-show="sprintTeams.length > 0" ng-repeat="data in sprintTeams" class="configure-dev-row" data-id="{{data.id}}">
+                <tr ng-show="sprintDeveloperses.length > 0" ng-repeat="data in sprintDeveloperses" class="configure-dev-row" data-id="{{data.id}}">
                     <td class="border-right-2">
                         <select ui-select2 ng-model="data.devName" class="developer-name" disabled>
                             <option ng-repeat="dataUser in devUsers" value="{{dataUser.login}}">{{dataUser.fullName}}</option>
@@ -85,11 +85,11 @@
         <hr/>
         <div><strong>Preview details</strong></div>
         <div>
-            <div ng-show="!sprintTeams || sprintTeams.length === 0">
+            <div ng-show="!sprintDeveloperses || sprintDeveloperses.length === 0">
                 <p class="text-center">Data not found</p>
             </div>
 
-            <table class="aui table table-preview-details" ng-hide="sprintTeams && sprintTeams.length === 0">
+            <table class="aui table table-preview-details" ng-hide="sprintDeveloperses && sprintDeveloperses.length === 0">
                 <thead>
                     <tr>
                         <th colspan="5"></th>
@@ -115,7 +115,7 @@
                 </thead>
                 <tbody>
 
-                <tr ng-repeat="data in sprintTeams" class="table-preview-details-row" data-id="{{data.id}}">
+                <tr ng-repeat="data in sprintDeveloperses" class="table-preview-details-row" data-id="{{data.id}}">
                     <td class="dev-name">
                         {{data.devName}}
                     </td>

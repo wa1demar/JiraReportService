@@ -2,6 +2,7 @@ package com.swansoftwaresolutions.jirareport.domain.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * @author Vladimir Martynyuk
@@ -32,7 +33,7 @@ public class Sprint {
     @Column(name = "type")
     private int type;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "jira_sprint_id")
     private JiraSprint jiraSprint;
 
@@ -42,6 +43,9 @@ public class Sprint {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "report_id", nullable = false)
     private Report report = new Report();
+
+    @OneToMany(mappedBy="sprint")
+    private Set<SprintDeveloper> developers;
 
     public Long getId() {
         return id;
@@ -121,5 +125,13 @@ public class Sprint {
 
     public void setNotCountTarget(boolean notCountTarget) {
         this.notCountTarget = notCountTarget;
+    }
+
+    public Set<SprintDeveloper> getDevelopers() {
+        return developers;
+    }
+
+    public void setDevelopers(Set<SprintDeveloper> developers) {
+        this.developers = developers;
     }
 }
