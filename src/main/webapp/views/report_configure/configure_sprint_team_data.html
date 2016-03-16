@@ -27,7 +27,7 @@
         </div>
 
         <hr/>
-        <div ng-show="sprintDeveloperses.length > 0" id="has-sprint-team-data" style="display: none"></div>
+        <div ng-show="sprintTeams.length > 0" id="has-sprint-team-data" style="display: none"></div>
         <table class="aui table table-preview-details" style="width: inherit;">
             <thead>
                 <tr>
@@ -38,7 +38,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-show="sprintDeveloperses.length > 0" ng-repeat="data in sprintDeveloperses" class="configure-dev-row" data-id="{{data.id}}">
+                <tr ng-show="sprintTeams.length > 0" ng-repeat="data in sprintTeams" class="configure-dev-row" data-id="{{data.id}}">
                     <td class="border-right-2">
                         <select ui-select2 ng-model="data.devName" class="developer-name" disabled>
                             <option ng-repeat="dataUser in devUsers" value="{{dataUser.login}}">{{dataUser.fullName}}</option>
@@ -46,12 +46,12 @@
                         <span class="aui-button delete-developer" data-id="{{data.id}}" ng-click="deleteDeveloper(data.devName)">Delete</span>
                     </td>
                     <td class="border-right-2">
-                        <select ng-change="calcParams()" class="select engineer-lvl" ng-model="data.engineerLvl" convert-to-number>
+                        <select ng-change="calcParams()" class="select engineer-lvl" ng-model="data.engineerLevel" convert-to-number>
                             <option ng-repeat="engLvl in [1, 2, 3, 4]" value="{{engLvl}}">EL{{engLvl}}</option>
                         </select>
                     </td>
                     <td class="border-right-2">
-                        <select ng-change="calcParams()" class="select participation-lvl" ng-model="data.participationLvl">
+                        <select ng-change="calcParams()" class="select participation-lvl" ng-model="data.participationLevel">
                             <option value="1.0">1.0</option>
                             <option value="0.9">0.9</option>
                             <option value="0.8">0.8</option>
@@ -85,11 +85,11 @@
         <hr/>
         <div><strong>Preview details</strong></div>
         <div>
-            <div ng-show="!sprintDeveloperses || sprintDeveloperses.length === 0">
+            <div ng-show="!sprintTeams || sprintTeams.length === 0">
                 <p class="text-center">Data not found</p>
             </div>
 
-            <table class="aui table table-preview-details" ng-hide="sprintDeveloperses && sprintDeveloperses.length === 0">
+            <table class="aui table table-preview-details" ng-hide="sprintTeams && sprintTeams.length === 0">
                 <thead>
                     <tr>
                         <th colspan="5"></th>
@@ -115,12 +115,12 @@
                 </thead>
                 <tbody>
 
-                <tr ng-repeat="data in sprintDeveloperses" class="table-preview-details-row" data-id="{{data.id}}">
+                <tr ng-repeat="data in sprintTeams" class="table-preview-details-row" data-id="{{data.id}}">
                     <td class="dev-name">
                         {{data.devName}}
                     </td>
-                    <td class="engineer-lvl text-center">{{data.engineerLvl === '4' ? '3' : data.engineerLvl}}</td>
-                    <td class="participation-lvl text-center">{{data.participationLvl}}</td>
+                    <td class="engineer-lvl text-center">{{data.engineerLevel === '4' ? '3' : data.engineerLevel}}</td>
+                    <td class="participation-lvl text-center">{{data.participationLevel}}</td>
                     <td class="days-in-sprint text-center">{{data.daysInSprint}}</td>
 
                     <td class="target-points text-center">{{data.targetPoints}}</td>
@@ -136,7 +136,7 @@
                 </tr>
                 <tr class="table-preview-details-row-total">
                     <td>Total</td>
-                    <td class="engineer-lvl-total text-center">{{totalPreviewDetails.engineerLvl}}</td>
+                    <td class="engineer-lvl-total text-center">{{totalPreviewDetails.engineerLevel}}</td>
                     <td class="participation-lvl-total text-center"></td>
                     <td class="days-in-sprint-total text-center"></td>
 
