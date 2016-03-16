@@ -34,14 +34,14 @@
         <div class="field-group">
             <label for="is-closed">Closed</label>
             <span style="padding: 5px 0 0 0; font-weight: bold; float: left;">
-            <input name="is-closed" id="is-closed" type="checkbox" ng-model="report.isClosed"/>
+            <input name="is-closed" id="is-closed" type="checkbox" ng-model="report.closed"/>
         </span>
         </div>
         <div class="field-group">
             <p class="input-group" style="width: 250px;">
-                <input ng-disabled="!report.isClosed" type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="report.dateClose" is-open="popupCalender.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" placeholder="MM/DD/YYY"/>
+                <input ng-disabled="!report.closed" type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="report.closedDate" is-open="popupCalender.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" placeholder="MM/DD/YYY"/>
                 <span class="input-group-btn">
-                    <button ng-disabled="!report.isClosed" type="button" class="btn btn-default" ng-click="openCalender()"><i class="glyphicon glyphicon-calendar"></i></button>
+                    <button ng-disabled="!report.closed" type="button" class="btn btn-default" ng-click="openCalender()"><i class="glyphicon glyphicon-calendar"></i></button>
                 </span>
             </p>
         </div>
