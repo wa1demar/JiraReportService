@@ -78,7 +78,11 @@
                 <!--#set($targetHours = $data.targetPoints)-->
                 <!--#parse("/templates/report/iconsVelocity.vm")-->
                 <!--#end-->
-                <indicator show="true" target="data.actualPoints" actual="data.actualPoints"></indicator>
+                <indicator ng-show="data.state === 'closed'"
+                           show="true"
+                           type="'iconsVelocity'"
+                           target="data.targetPoints"
+                           actual="data.actualPoints"></indicator>
               </td>
               <td class="text-center target-points">{{data.targetPoints}}</td>
               <td class="text-center actual-points">{{data.actualPoints}}</td>
@@ -92,6 +96,13 @@
                 <!--#set($defMax = $data.defectMax)-->
                 <!--#parse("/templates/report/icons.vm")-->
                 <!--#end-->
+                <indicator ng-show="data.state === 'closed'"
+                           show="true"
+                           type="'icons'"
+                           target="data.targetPoints"
+                           actual="data.actualQatDefectPoints"
+                           min="data.targetQatDefectMin"
+                           max="data.targetQatDefectMax"></indicator>
               </td>
               <td class="text-center" style="">{{data.targetQatDefectMin}} - {{data.targetQatDefectMax}}</td>
               <td class="text-center">{{data.actualQatDefectPoints}}</td>
@@ -101,6 +112,11 @@
                 <!--#set($targetHours = $data.defectHours)-->
                 <!--#parse("/templates/report/iconsHours.vm")-->
                 <!--#end-->
+                <indicator ng-show="data.state === 'closed'"
+                           show="true"
+                           type="'iconsHours'"
+                           target="data.targetQatDefectHours"
+                           actual="data.actualQatDefectHours"></indicator>
               </td>
               <td class="text-center">{{data.targetQatDefectHours}}</td>
               <td class="text-center">{{data.actualQatDefectHours}}</td>
