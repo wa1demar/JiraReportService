@@ -107,7 +107,7 @@ jiraPluginApp.controller('ReportElementCtrl',
                         createdDate : null,
                         updatedDate : null,
                         closedDate : null,
-                        typeId : 1,
+                        typeId : 2,
                         closed : false,
                         admins: [
                             {
@@ -304,7 +304,20 @@ jiraPluginApp.controller('ReportElementCtrl',
                     $scope.reportData.sprints[index]['stateName'] = $scope.reportData.sprints[index].type == 1 ? "(additional blue)" : $scope.reportData.sprints[index].type == 2 ? "(additional red)" : "";
                     $scope.reportData.sprints[index]['stateClass'] = $scope.reportData.sprints[index].type == 1 ? "sprint-additional-blue" : $scope.reportData.sprints[index].type == 2 ? "sprint-additional-red" : "";
 
-                    $scope.reportData.sprints[index]['endDate'] = $scope.reportData.report.typeId === 2 ? $scope.reportData.sprints[index]['endDate'] : $scope.reportData.sprints[index]['completeDate'];
+                    //check date end or date complete
+                    if ($scope.reportData.report.typeId === 2) {
+                        if ($scope.reportData.sprints[index]['endDate'] && $scope.reportData.sprints[index]['state'] === "closed") {
+                            $scope.reportData.sprints[index]['endDate'] = $scope.reportData.sprints[index]['endDate'];
+                        } else {
+                            $scope.reportData.sprints[index]['endDate'] = false;
+                        }
+                    } else {
+                        if ($scope.reportData.sprints[index]['completeDate']) {
+                            $scope.reportData.sprints[index]['endDate'] = $scope.reportData.sprints[index]['completeDate'];
+                        } else {
+                            $scope.reportData.sprints[index]['endDate'] = false;
+                        }
+                    }
                 }
 
                 //update data for ProgressBar
