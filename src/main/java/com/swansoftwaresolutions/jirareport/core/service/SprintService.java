@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.service;
 
+import com.swansoftwaresolutions.jirareport.core.dto.sprint.FullSprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint.NewSprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDtos;
@@ -19,4 +20,6 @@ public interface SprintService {
     SprintDto delete(long sprintId) throws NoSuchEntityException;
 
     SprintDto findById(long sprintId) throws NoSuchEntityException;
+
+    FullSprintDto add(FullSprintDto sprintDto);
 }

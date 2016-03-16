@@ -1,17 +1,24 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
-import com.swansoftwaresolutions.jirareport.core.dto.sprint.NewSprintDto;
-import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDto;
-import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDtos;
+import com.swansoftwaresolutions.jirareport.core.dto.sprint.*;
+import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDeveloperDto;
+import com.swansoftwaresolutions.jirareport.core.mapper.SprintDeveloperMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.SprintMapper;
+import com.swansoftwaresolutions.jirareport.core.service.SprintDeveloperService;
 import com.swansoftwaresolutions.jirareport.core.service.SprintService;
 import com.swansoftwaresolutions.jirareport.domain.entity.Sprint;
+import com.swansoftwaresolutions.jirareport.domain.entity.SprintDeveloper;
+import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.SprintDeveloperRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.SprintRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Vladimir Martynyuk
@@ -23,8 +30,16 @@ public class SprintServiceImpl implements SprintService {
     private SprintRepository sprintRepository;
 
     @Autowired
+    private JiraUserRepository jiraUserRepository;
+
+    @Autowired
+    private SprintDeveloperRepository developerRepository;
+
+    @Autowired
     private SprintMapper sprintMapper;
 
+    @Autowired
+    private SprintDeveloperMapper developerMapper;
 
     @Override
     public SprintDto add(NewSprintDto sprintDto) {
@@ -53,6 +68,38 @@ public class SprintServiceImpl implements SprintService {
     public SprintDto findById(long sprintId) throws NoSuchEntityException {
         Sprint sprint = sprintRepository.findById(sprintId);
         return sprintMapper.toDto(sprint);
+    }
+
+    @Override
+    public FullSprintDto add(FullSprintDto sprintDto) {
+        Sprint sprint = sprintMapper.fromDto(sprintDto);
+        Sprint newSprint = sprintRepository.add(sprint);
+
+        Set<SprintDeveloper> developers = new HashSet<>();
+        for (SprintDeveloperDto dto : sprintDto.getDevelopers()) {
+            SprintDeveloper developer = developerMapper.fromDto(dto);
+            try {
+                developer.setJiraUser(jiraUserRepository.findByLogin(dto.getDeveloperName()));
+                developer.setSprint(newSprint);
+                SprintDeveloper newDeveloper = developerRepository.add(developer);
+                developers.add(newDeveloper);
+            } catch (NoSuchEntityException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return new FullSprintDtoBuilder()
+                .id(newSprint.getId())
+                .name(newSprint.getName())
+                .showUat(newSprint.isShowUAT())
+                .notCountTarget(newSprint.isNotCountTarget())
+                .state(newSprint.getState())
+                .type(newSprint.getType())
+                .endDate(newSprint.getEndDate())
+                .startDate(newSprint.getStartDate())
+                .reportId(newSprint.getReport() != null ? newSprint.getReport().getId() : null)
+                .developers(developerMapper.toDtos(developers))
+                .build();
     }
 
 

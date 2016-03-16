@@ -1,10 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
-import com.swansoftwaresolutions.jirareport.core.dto.sprint.NewSprintDto;
-import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDto;
-import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDtos;
-import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDtosBuilder;
+import com.swansoftwaresolutions.jirareport.core.dto.sprint.*;
 import com.swansoftwaresolutions.jirareport.core.mapper.SprintMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.Sprint;
 import org.modelmapper.ModelMapper;
@@ -48,5 +45,9 @@ public class SprintMapperImpl implements SprintMapper {
         return new SprintDtosBuilder().sprints(sprintDtos).build();
     }
 
+    @Override
+    public Sprint fromDto(FullSprintDto sprintDto) {
+        return modelMapper.map(sprintDto, Sprint.class);
+    }
 
 }

@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.web.controller;
+package com.swansoftwaresolutions.jirareport.web.handler;
 
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.springframework.http.HttpStatus;
