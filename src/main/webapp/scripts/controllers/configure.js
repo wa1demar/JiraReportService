@@ -90,15 +90,10 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
 
         $scope.saveConfigureGeneralData = function () {
             if($scope.generalConfigure.$valid) {
-                console.log("isClosed: " + $scope.report.isClosed);
-                $scope.report.dateClose = $scope.report.isClosed ? $scope.report.dateClose : null;
-
-                var reportData = {
-                    title:      $scope.report.title,
-                    isClosed:   $scope.report.isClosed === undefined ? false : $scope.report.isClosed,
-                    dateClose:  $scope.report.dateClose === undefined ? null : $scope.report.dateClose,
-                    admins:     $scope.report.admins
-                };
+                var reportData = $scope.report;
+                reportData.closedDate = reportData.closed ? reportData.closedDate : null;
+                reportData.closed = reportData.closed === undefined ? false : reportData.closed;
+                reportData.closedDate = reportData.closedDate === undefined ? null : reportData.closedDate;
 
                 ReportFactory.update({
                     id: $routeParams.reportId}, reportData, function(){
@@ -237,35 +232,15 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 });
             }
 
-            if (data.id === 57284) {
-                $scope.sprintTeams = [
-                    {
-                        id: 1,
-                        devName: "bridoux",
-                        engineerLvl: 3,
-                        participationLvl: "0.5",
-                        daysInSprint: 5
-                    },
-                    {
-                        id: 2,
-                        devName: "bmurga",
-                        engineerLvl: 1,
-                        participationLvl: "0.6",
-                        daysInSprint: 7
-                    }
-                ];
-            } else {
-                $scope.sprintTeams = [];
-            }
-
-            console.log($scope.sprints);
-
             //TODO need only in first load
             if (firstLoad && $scope.sprints !== undefined) {
                 $scope.reportModel = {
                     sprint: $scope.sprints[0]
                 };
             }
+
+            console.log("------------------");
+            console.log($scope.reportModel);
 
 //----------------------------------------------------------------------------------------------------------------------
 //get developer
@@ -417,7 +392,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 //save jira_sprint configure
         $scope.saveSprintConfigure = function () {
             //TODO save jira_sprint data (with jira_sprint team)
-            var sprint = {
+            var sprintData = {
                 sprint:                 $scope.reportModel.sprint,
                 sprintTeams:            $scope.sprintTeams,
                 sprintTeamsTotalValues: $scope.totalPreviewDetails
@@ -426,7 +401,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             SprintFactory.update({
                 reportId: $routeParams.reportId,
                 sprintId: $scope.reportModel.sprint.id
-            }, sprint, function () {
+            }, sprintData, function () {
                 console.log("Save jira_sprint");
             });
         };
@@ -460,10 +435,10 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                         self.getSprintConfigureData();
                     });
 
-                    console.log(data.sprint);
-
-                    self.getSprintConfigureData();
-                    $scope.sprints.push(data.sprint);
+                    //console.log(data.sprint);
+                    //
+                    //self.getSprintConfigureData();
+                    //$scope.sprints.push(data.sprint);
                 } else {
                     SprintFactory.update({reportId: $routeParams.reportId, sprintId: $scope.reportModel.sprint.id}, data.sprint, function () {
                         self.getSprintConfigureData();

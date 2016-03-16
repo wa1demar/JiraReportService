@@ -5,6 +5,71 @@ jiraPluginApp.controller('ReportElementCtrl',
         function($scope, $routeParams, ReportsFactory, ReportFactory, ReportWithSprintsAndTeamsFactory) {
             var self = this;
 
+//----------------------------------------------------------------------------------------------------------------------
+//update ProgressBar
+            $scope.updateProgressBar = function (item) {
+                console.log($scope.showSprintId);
+                var actualPoints,
+                    actualHours,
+                    targetPoints,
+                    targetHours;
+
+                if ($scope.showSprintId === null || $scope.showSprintId === undefined) {
+                    console.log("update ProgressBar for report");
+                    console.log($scope.reportData.report);
+                    actualPoints = $scope.reportData.report.actualPoints;
+                    actualHours  = $scope.reportData.report.actualHours;
+                    targetPoints = $scope.reportData.report.targetPoints;
+                    targetHours  = $scope.reportData.report.targetHours;
+                } else {
+                    console.log("update ProgressBar for sprint");
+                    console.log(item);
+
+                    actualPoints = item.actualPoints;
+                    actualHours  = item.actualHours;
+                    targetPoints = item.targetPoints;
+                    targetHours  = item.targetHours;
+                }
+
+                actualHours = Math.round(actualHours*100)/100;
+                console.log("Data for Progress bar: actualHours = " + actualHours + " ; targetHours = " + targetHours);
+
+                var percentPoints = targetPoints == 0 ? "~" : Math.round(100 * actualPoints / targetPoints);
+                var percentHours = targetHours == 0 ? "~" : Math.round(100 * actualHours / targetHours);
+
+                $scope.progressBarData = {
+                    actualHours: actualHours,
+                    targetHours: targetHours,
+                    actualPoints: actualPoints,
+                    targetPoints: targetPoints,
+                    percentPoints: percentPoints,
+                    percentHours: percentHours
+                };
+            };
+
+//----------------------------------------------------------------------------------------------------------------------
+//update chart
+            $scope.updateChart = function (item) {
+                console.log($scope.showSprintId);
+                if ($scope.showSprintId === null || $scope.showSprintId === undefined) {
+                    console.log("update Chart for report");
+                    $scope.chartData = $scope.reportData.report.chart;
+                } else {
+                    console.log("update Chart for sprint");
+                    $scope.chartData = item.chart;
+                }
+
+                $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
+                $scope.series = ['Series A', 'Series B'];
+                $scope.data = [
+                    [65, 59, 80, 81, 56, 55, 40],
+                    [28, 48, 40, 19, 86, 27, 90]
+                ];
+                $scope.onClick = function (points, evt) {
+                    console.log(points, evt);
+                };
+            };
+
             this.getReportsData = function () {
                 var dataOngoing = ReportsFactory.query({}, function(){
                     $scope.reports = dataOngoing.reports;
@@ -21,7 +86,7 @@ jiraPluginApp.controller('ReportElementCtrl',
 
                 $scope.reportData = {
                     report: {
-                        id : 4,
+                        id : 1,
                         title : "Man",
                         creator : "admin",
                         boardId : null,
@@ -29,7 +94,7 @@ jiraPluginApp.controller('ReportElementCtrl',
                         createdDate : null,
                         updatedDate : null,
                         closedDate : null,
-                        typeId : 2,
+                        typeId : 1,
                         closed : false,
                         admins: [
                             {
@@ -51,7 +116,13 @@ jiraPluginApp.controller('ReportElementCtrl',
                         actualQatDefectPoints: 1,
                         actualQatDefectHours: 1,
                         actualUatDefectPoints: 1,
-                        actualUatDefectHours: 1
+                        actualUatDefectHours: 1,
+
+                        chart: {
+                            label:  [0, 1, 2, 3],
+                            target: [129, 83, 41, 0],
+                            actual: [129, 77, 31, -3]
+                        }
                     },
                     sprints: [
                         {
@@ -81,6 +152,12 @@ jiraPluginApp.controller('ReportElementCtrl',
                             actualQatDefectHours: 12,
                             actualUatDefectPoints: 1,
                             actualUatDefectHours: 1,
+
+                            chart: {
+                                label:  ["0", "01/12/2016", "01/13/2016", "01/14/2016", "01/15/2016", "01/18/2016", "01/19/2016"],
+                                target: [46.0, 38, 31, 23, 15, 8, 0],
+                                actual: [46, 41, 34, 24, 14, 4, -6]
+                            },
 
                             sprintTeam: [
                                 {
@@ -128,10 +205,10 @@ jiraPluginApp.controller('ReportElementCtrl',
                             id : 5,
                             reportId : 6,
                             agileSprintId : null,
-                            notCountTarget : false,
+                            notCountTarget : true,
                             name : "Sprint 2",
                             state : "active",
-                            type : 0,
+                            type : 2,
                             startDate : 1457992800000,
                             endDate : 1458252000000,
                             completeDate : null,
@@ -151,6 +228,12 @@ jiraPluginApp.controller('ReportElementCtrl',
                             actualQatDefectHours: 1,
                             actualUatDefectPoints: 1,
                             actualUatDefectHours: 1,
+
+                            chart: {
+                                label:  ["0", "01/12/2016", "01/13/2016", "01/14/2016", "01/15/2016", "01/18/2016", "01/19/2016"],
+                                target: [46.0, 38, 31, 23, 15, 8, 0],
+                                actual: [46, 41, 34, 24, 14, 4, -6]
+                            },
 
                             sprintTeam: [
                                 {
@@ -198,7 +281,23 @@ jiraPluginApp.controller('ReportElementCtrl',
                     ]
                 };
 
-                console.log($scope.report);
+                //count hideUatCount, closedSprintCount and add some new fields
+                $scope.hideUatCount = 0;
+                $scope.closedSprintCount = 0;
+                for(var index = 0; index < $scope.reportData.sprints.length; index++) {
+                    $scope.hideUatCount = !$scope.reportData.sprints[index].showUat ? $scope.hideUatCount + 1 : $scope.hideUatCount;
+                    $scope.closedSprintCount = $scope.reportData.sprints[index].state === "closed" ? $scope.closedSprintCount + 1 : $scope.closedSprintCount;
+
+                    $scope.reportData.sprints[index]['stateName'] = $scope.reportData.sprints[index].type == 1 ? "(additional blue)" : $scope.reportData.sprints[index].type == 2 ? "(additional red)" : "";
+                    $scope.reportData.sprints[index]['stateClass'] = $scope.reportData.sprints[index].type == 1 ? "sprint-additional-blue" : $scope.reportData.sprints[index].type == 2 ? "sprint-additional-red" : "";
+
+                    $scope.reportData.sprints[index]['endDate'] = $scope.reportData.report.typeId === 2 ? $scope.reportData.sprints[index]['endDate'] : $scope.reportData.sprints[index]['completeDate'];
+                }
+
+                //update data for ProgressBar
+                $scope.updateProgressBar();
+                //update data for chart
+                $scope.updateChart();
             };
 
             self.getReportWithSprintsAndTeamsData();
@@ -209,7 +308,10 @@ jiraPluginApp.controller('ReportElementCtrl',
 
             $scope.showSprintDetails = function (item) {
                 console.log("showSprintDetails");
-            };
+                $scope.showSprintId = $scope.showSprintId == item.id ? null : item.id;
 
+                $scope.updateProgressBar(item);
+                $scope.updateChart(item);
+            };
         }
     ]);
