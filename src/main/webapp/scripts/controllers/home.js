@@ -1,7 +1,7 @@
 'use strict';
 
-jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibModal', 'ReportsFactory', 'ReportFactory', 'CopyReportFactory', 'Notification',
-    function($scope, AuthenticationFactory, $uibModal, ReportsFactory, ReportFactory, CopyReportFactory, Notification) {
+jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibModal', 'ReportsFactory', 'ReportsClosedFactory', 'ReportFactory', 'CopyReportFactory', 'Notification',
+    function($scope, AuthenticationFactory, $uibModal, ReportsFactory, ReportsClosedFactory, ReportFactory, CopyReportFactory, Notification) {
 
         var self = this;
         $scope.loaderShow = true;
@@ -12,7 +12,9 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibMo
                 $scope.loaderShow = false;
             });
 
-            $scope.dataClosed = [];
+            ReportsClosedFactory.query({}, function(result){
+                $scope.dataClosed = result.reports;
+            });
         };
 
         self.getReportsData();

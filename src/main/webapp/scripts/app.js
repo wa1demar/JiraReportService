@@ -31,32 +31,32 @@ jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
                 requiredLogin: false
             }
         }).when('/', {
-        templateUrl: 'views/home.html',
-        controller: 'HomeCtrl',
-        access: {
-            requiredLogin: true
-        }
-    }).when('/report/:reportId', {
-        templateUrl: 'views/report_element/report_element.html',
-        controller: 'ReportElementCtrl',
-        access: {
-            requiredLogin: true
-        }
-    }).when('/report/:reportId/configure', {
-        templateUrl: 'views/report_configure/configure.html',
-        controller: 'ConfigureCtrl',
-        access: {
-            requiredLogin: true
-        }
-    }).when('/portfolio', {
-        templateUrl: 'views/report_portfolio/main.html',
-        controller: 'PortfolioCtrl',
-        access: {
-            requiredLogin: true
-        }
-    }).otherwise({
-        redirectTo: '/login'
-    });
+            templateUrl: 'views/home.html',
+            controller: 'HomeCtrl',
+            access: {
+                requiredLogin: true
+            }
+        }).when('/report/:reportId', {
+            templateUrl: 'views/report_element/report_element.html',
+            controller: 'ReportElementCtrl',
+            access: {
+                requiredLogin: true
+            }
+        }).when('/report/:reportId/configure', {
+            templateUrl: 'views/report_configure/configure.html',
+            controller: 'ConfigureCtrl',
+            access: {
+                requiredLogin: true
+            }
+        }).when('/portfolio', {
+            templateUrl: 'views/report_portfolio/main.html',
+            controller: 'PortfolioCtrl',
+            access: {
+                requiredLogin: true
+            }
+        }).otherwise({
+            redirectTo: '/login'
+        });
 });
 
 jiraPluginApp.run(function($rootScope, $window, $location, AuthenticationFactory) {
