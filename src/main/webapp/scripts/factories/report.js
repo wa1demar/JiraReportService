@@ -22,8 +22,8 @@ jiraPluginApp.factory('ReportFactory', ['$resource', 'CONFIG', function ($resour
 }]);
 
 jiraPluginApp.factory('CopyReportFactory', ['$resource', 'CONFIG', function ($resource, CONFIG) {
-  return $resource(CONFIG.API_PATH + '/report/copy', {}, {
-    copy:   { method: 'POST' }
+  return $resource(CONFIG.API_PATH + '/reports/:reportId/copy', {reportId: "@reportId"}, {
+    copy:   { method: 'GET' }
   });
 }]);
 

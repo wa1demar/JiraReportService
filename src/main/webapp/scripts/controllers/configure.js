@@ -227,9 +227,11 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 }, function (result) {
                     //console.log(result);
                     $scope.sprintTeams = result.developers;
+                    $scope.calcParams();
                 }, function (error) {
                     //console.log(error);
                     $scope.sprintTeams = [];
+                    $scope.calcParams();
                 });
             }
 
@@ -254,10 +256,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 }
             });
 
-            $scope.calcParams();
-
             $scope.loaderShow = false;
-
             $scope.loaderShowSprintTeam = false;
         };
 

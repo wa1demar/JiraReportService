@@ -104,7 +104,7 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibMo
                 }
             });
             modalInstance.result.then(function (data) {
-                CopyReportFactory.copy(data, {}, function(){
+                CopyReportFactory.copy({reportId: data.id}, function(){
                     self.getReportsData();
                     Notification.success("Copy report success");
                 }, function () {
