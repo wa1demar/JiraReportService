@@ -44,7 +44,7 @@ public class ReportController {
 
     @RequestMapping(value = "/v1/reports/{id}", method = RequestMethod.GET)
     private ResponseEntity<ReportDto> getReportById(@PathVariable("id") long id) throws NoSuchEntityException {
-        ReportDto reportDto = reportService.retrieveReportByID(id);
+        ReportDto reportDto = reportService.findById(id);
 
         return new ResponseEntity<>(reportDto, HttpStatus.OK);
     }
