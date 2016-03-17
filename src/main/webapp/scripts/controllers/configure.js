@@ -244,7 +244,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 $scope.devUsersForAdd = users.users;
                 for (var index = 0; index < $scope.devUsersForAdd.length; index++) {
                     for (var indexTeam = 0; indexTeam < $scope.sprintTeams.length; indexTeam++) {
-                        if ($scope.devUsersForAdd[index].login === $scope.sprintTeams[indexTeam].devName) {
+                        if ($scope.devUsersForAdd[index].login === $scope.sprintTeams[indexTeam].developerLogin) {
                             $scope.devUsersForAdd.splice(index, 1);
                         }
                     }
@@ -297,7 +297,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
         };
         $scope.addDeveloper = function (item) {
             $scope.sprintTeams.push({
-                devName: item,
+                developerLogin: item,
                 engineerLevel: 1,
                 participationLevel: "1.0",
                 daysInSprint: 1
@@ -312,7 +312,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             var users = UsersFactory.query(function(){
                 for (var index = 0; index < users.users.length; index++) {
                     for (var indexTeam = 0; indexTeam < $scope.sprintTeams.length; indexTeam++) {
-                        if (users.users[index].login === $scope.sprintTeams[indexTeam].devName) {
+                        if (users.users[index].login === $scope.sprintTeams[indexTeam].developerLogin) {
                             users.users.splice(index, 1);
                         }
                     }
@@ -336,7 +336,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             for (var index = 0; index < $scope.sprintTeams.length; index++) {
                 sprintData.developers.push(
                     {
-                        developerName:      $scope.sprintTeams[index].devName,
+                        developerName:      $scope.sprintTeams[index].developerLogin,
                         engineerLevel:      $scope.sprintTeams[index].engineerLevel,
                         participationLevel: $scope.sprintTeams[index].participationLevel,
                         daysInSprint:       $scope.sprintTeams[index].daysInSprint
@@ -534,7 +534,7 @@ jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModal', '$
         this.getIssues = function() {
             SprintIssuesFactory.query({
                 sprintId: $scope.dlgData.sprint.id,
-                assignee: $scope.dlgData.developer.devName
+                assignee: $scope.dlgData.developer.developerLogin
             }, function (data) {
                 $scope.issues = data;
             });
@@ -609,7 +609,7 @@ jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModal', '$
                     });
                 } else {
                     delete data.type;
-                    SprintIssuesFactory.add({sprintId: $scope.dlgData.sprint.id, assignee: $scope.dlgData.developer.devName}, data, function(result){
+                    SprintIssuesFactory.add({sprintId: $scope.dlgData.sprint.id, assignee: $scope.dlgData.developer.developerLogin}, data, function(result){
                         self.getIssues();
                     });
                 }
