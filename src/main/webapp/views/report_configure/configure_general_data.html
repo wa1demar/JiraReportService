@@ -6,7 +6,7 @@
 
     <form ng-submit="submit()" id="general-configure" name="generalConfigure" class="aui" novalidate>
         <div class="field-group" ng-class="{ 'has-error': generalConfigure.$submitted && generalConfigure.title.$invalid }">
-            <label>Dashboard name:</label>
+            <label for="title">Dashboard name:</label>
             <input id="title" type="text" class="text" name="title" ng-model="report.title" required/>
             <div class="help-block" ng-messages="generalConfigure.title.$error" ng-if="generalConfigure.$submitted && generalConfigure.title.$invalid">
                 <p ng-message="required">Title is required.</p>
