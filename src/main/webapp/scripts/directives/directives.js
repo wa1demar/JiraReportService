@@ -25,6 +25,20 @@ jiraPluginApp.directive('convertToNumber', function() {
     };
 });
 
+jiraPluginApp.directive('convertToDouble', function() {
+    return {
+        require: 'ngModel',
+        link: function(scope, element, attrs, ngModel) {
+            ngModel.$parsers.push(function(val) {
+                return parseFloat(val);
+            });
+            ngModel.$formatters.push(function(val) {
+                return '' + val;
+            });
+        }
+    };
+});
+
 //directive for indicators
 jiraPluginApp.directive('indicator', function() {
     var directive = {

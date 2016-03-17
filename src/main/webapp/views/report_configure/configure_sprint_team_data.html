@@ -51,8 +51,8 @@
                         </select>
                     </td>
                     <td class="border-right-2">
-                        <select ng-change="calcParams()" class="select participation-lvl" ng-model="data.participationLevel">
-                            <option value="1.0">1.0</option>
+                        <select ng-change="calcParams()" class="select participation-lvl" ng-model="data.participationLevel" convert-to-double>
+                            <option value="1">1.0</option>
                             <option value="0.9">0.9</option>
                             <option value="0.8">0.8</option>
                             <option value="0.7">0.7</option>
@@ -120,7 +120,7 @@
                         {{data.developerName}}
                     </td>
                     <td class="engineer-lvl text-center">{{data.engineerLevel === '4' ? '3' : data.engineerLevel}}</td>
-                    <td class="participation-lvl text-center">{{data.participationLevel}}</td>
+                    <td class="participation-lvl text-center">{{data.participationLevel | number:1}}</td>
                     <td class="days-in-sprint text-center">{{data.daysInSprint}}</td>
 
                     <td class="target-points text-center">{{data.targetPoints}}</td>
