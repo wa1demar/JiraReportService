@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -51,7 +52,7 @@ public class Sprint {
     private Report report = new Report();
 
     @OneToMany(cascade={CascadeType.ALL}, mappedBy="sprint", orphanRemoval = true)
-    private List<SprintDeveloper> developers;
+    private List<SprintDeveloper> developers = new ArrayList<>();
 
     public Long getId() {
         return id;
