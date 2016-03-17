@@ -61,7 +61,7 @@ public class Report  implements Serializable{
     private Date syncDate;
 
     @Column(name = "is_closed")
-    private Boolean isClosed;
+    private boolean isClosed;
 
     @Column(name = "closed_date")
     private Date closedDate;
@@ -78,47 +78,6 @@ public class Report  implements Serializable{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "report")
     private Set<Sprint> sprints = new HashSet<>();
 
-    @Column(name = "target_points")
-    private Long targetPoints;
-
-    @Column(name = "target_hours")
-    private Long targetHours;
-
-    @Column(name = "target_qat_defect_min")
-    private Long targetQatDefectMin;
-
-    @Column(name = "target_qat_defect_max")
-    private Long targetQatDefectMax;
-
-    @Column(name = "target_qat_defect_hours")
-    private Long targetQatDefectHours;
-
-    @Column(name = "target_uat_defect_min")
-    private Long targetUatDefectMin;
-
-    @Column(name = "target_uat_defect_max")
-    private Long targetUatDefectMax;
-
-    @Column(name = "target_uat_defect_hours")
-    private Long targetUatDefectHours;
-
-    @Column(name = "actual_points")
-    private Long actualPoints;
-
-    @Column(name = "actual_hours")
-    private Double actualHours;
-
-    @Column(name = "actual_qat_defect_points")
-    private Long actualQatDefectPoints;
-
-    @Column(name = "actual_qat_defect_hours")
-    private Double actualQatDefectHours;
-
-    @Column(name = "actual_uat_defect_points")
-    private Long actualUatDefectPoints;
-
-    @Column(name = "actual_uat_defect_hours")
-    private Double actualUatDefectHours;
 
     public Long getId() {
         return id;
@@ -192,11 +151,11 @@ public class Report  implements Serializable{
         this.syncDate = syncDate;
     }
 
-    public Boolean getClosed() {
+    public boolean getClosed() {
         return isClosed;
     }
 
-    public void setClosed(Boolean closed) {
+    public void setClosed(boolean closed) {
         isClosed = closed;
     }
 
@@ -224,117 +183,6 @@ public class Report  implements Serializable{
         this.admins = admins;
     }
 
-    public Long getTargetPoints() {
-        return targetPoints;
-    }
-
-    public void setTargetPoints(Long targetPoints) {
-        this.targetPoints = targetPoints;
-    }
-
-    public Long getTargetHours() {
-        return targetHours;
-    }
-
-    public void setTargetHours(Long targetHours) {
-        this.targetHours = targetHours;
-    }
-
-    public Long getTargetQatDefectMin() {
-        return targetQatDefectMin;
-    }
-
-    public void setTargetQatDefectMin(Long targetQatDefectMin) {
-        this.targetQatDefectMin = targetQatDefectMin;
-    }
-
-    public Long getTargetQatDefectMax() {
-        return targetQatDefectMax;
-    }
-
-    public void setTargetQatDefectMax(Long targetQatDefectMax) {
-        this.targetQatDefectMax = targetQatDefectMax;
-    }
-
-    public Long getTargetQatDefectHours() {
-        return targetQatDefectHours;
-    }
-
-    public void setTargetQatDefectHours(Long targetQatDefectHours) {
-        this.targetQatDefectHours = targetQatDefectHours;
-    }
-
-    public Long getTargetUatDefectMin() {
-        return targetUatDefectMin;
-    }
-
-    public void setTargetUatDefectMin(Long targetUatDefectMin) {
-        this.targetUatDefectMin = targetUatDefectMin;
-    }
-
-    public Long getTargetUatDefectMax() {
-        return targetUatDefectMax;
-    }
-
-    public void setTargetUatDefectMax(Long targetUatDefectMax) {
-        this.targetUatDefectMax = targetUatDefectMax;
-    }
-
-    public Long getTargetUatDefectHours() {
-        return targetUatDefectHours;
-    }
-
-    public void setTargetUatDefectHours(Long targetUatDefectHours) {
-        this.targetUatDefectHours = targetUatDefectHours;
-    }
-
-    public Long getActualPoints() {
-        return actualPoints;
-    }
-
-    public void setActualPoints(Long actualPoints) {
-        this.actualPoints = actualPoints;
-    }
-
-    public Double getActualHours() {
-        return actualHours;
-    }
-
-    public void setActualHours(Double actualHours) {
-        this.actualHours = actualHours;
-    }
-
-    public Long getActualQatDefectPoints() {
-        return actualQatDefectPoints;
-    }
-
-    public void setActualQatDefectPoints(Long actualQatDefectPoints) {
-        this.actualQatDefectPoints = actualQatDefectPoints;
-    }
-
-    public Double getActualQatDefectHours() {
-        return actualQatDefectHours;
-    }
-
-    public void setActualQatDefectHours(Double actualQatDefectHours) {
-        this.actualQatDefectHours = actualQatDefectHours;
-    }
-
-    public Long getActualUatDefectPoints() {
-        return actualUatDefectPoints;
-    }
-
-    public void setActualUatDefectPoints(Long actualUatDefectPoints) {
-        this.actualUatDefectPoints = actualUatDefectPoints;
-    }
-
-    public Double getActualUatDefectHours() {
-        return actualUatDefectHours;
-    }
-
-    public void setActualUatDefectHours(Double actualUatDefectHours) {
-        this.actualUatDefectHours = actualUatDefectHours;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -357,5 +205,13 @@ public class Report  implements Serializable{
         result = 31 * result + creator.hashCode();
         result = 31 * result + boardId.hashCode();
         return result;
+    }
+
+    public Set<Sprint> getSprints() {
+        return sprints;
+    }
+
+    public void setSprints(Set<Sprint> sprints) {
+        this.sprints = sprints;
     }
 }
