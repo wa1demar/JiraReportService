@@ -1,26 +1,54 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
+import javax.persistence.*;
+
 /**
  * @author Vitaliy Holovko
  */
+@Entity
+@Table(name = "points")
 public class Point {
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "user_login")
     private String userLogin;
+
+    @Column(name = "sprint_id")
     private Long sprintId;
+
+    @Column(name = "report_id")
     private int reportId;
+
+    @Column(name = "points")
     private float points;
+
+    @Column(name = "issue_count")
     private int issueCount;
+
+    @Column(name = "issue_hourse")
     private Long issueHourse;
+
+    @Column(name = "uat_count")
     private int bugUATCount;
+
+    @Column(name = "uat_hours")
     private Long bugUATHours;
+
+    @Column(name = "qat_count")
     private int bugQATCount;
+
+    @Column(name = "qat_hours")
     private Long bugQATHourse;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
