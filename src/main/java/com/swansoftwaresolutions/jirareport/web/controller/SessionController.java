@@ -1,29 +1,31 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
+import com.swansoftwaresolutions.jirareport.core.dto.user.SessionDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
 
 /**
  * @author Vladimir Martynyuk
  */
 @RestController
-@RequestMapping("/rest/v1/check_session")
+@RequestMapping("/rest/v1")
 public class SessionController {
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/check_session", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity getSprint() {
+    public ResponseEntity<SessionDto> getSprint() {
+        SessionDto sessionDto = new SessionDto();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (!(auth instanceof AnonymousAuthenticationToken)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        sessionDto.setUsername(auth.getName());
+        sessionDto.setSessionId(RequestContextHolder.currentRequestAttributes().getSessionId());
+
+        return new ResponseEntity<SessionDto>(sessionDto, HttpStatus.OK);
     }
 }
