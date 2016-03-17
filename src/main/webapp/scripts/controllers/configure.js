@@ -26,8 +26,8 @@ jiraPluginApp.controller('ConfigureCtrl', ['$scope',
 ]);
 
 //General Settings
-jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', '$uibModal', 'ReportFactory', 'UsersFactory',
-    function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory) {
+jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', '$uibModal', 'ReportFactory', 'UsersFactory', 'Notification',
+    function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, Notification) {
         var self = this;
         $scope.loaderShow = true;
 
@@ -101,6 +101,9 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
                     id: $routeParams.reportId}, reportData, function(){
                     //FIXME not reinit select2
                     self.getReport();
+                    Notification.success('Save report success');
+                }, function () {
+                    Notification.error('Server error');
                 });
             }
         };
@@ -109,8 +112,8 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
 
 //Configure sprint team data
 jiraPluginApp.controller('ConfigureSprintTeamCtrl',
-    ['$scope', '$routeParams', '$uibModal', 'ReportFactory', 'UsersFactory', 'SprintsFactory', 'SprintFactory', 'SprintTeamFactory', 'SprintWithTeamFactory',
-    function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, SprintsFactory, SprintFactory, SprintTeamFactory, SprintWithTeamFactory) {
+    ['$scope', '$routeParams', '$uibModal', 'ReportFactory', 'UsersFactory', 'SprintsFactory', 'SprintFactory', 'SprintTeamFactory', 'SprintWithTeamFactory', 'Notification',
+    function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, SprintsFactory, SprintFactory, SprintTeamFactory, SprintWithTeamFactory, Notification) {
         var self = this;
         $scope.loaderShow = true;
         $scope.sprintTeams = [];
@@ -303,7 +306,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 daysInSprint: 1
             });
             $scope.dataDeveloper = "";
-            console.log($scope.sprintTeams);
+
             $scope.calcParams();
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -368,10 +371,12 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                     id: $scope.reportModel.sprint.id
                 });
                 console.log("Save sprint");
+                Notification.success('Data save success');
             }, function (error) {
                 $scope.getSprintTeams({
                     id: $scope.reportModel.sprint.id
                 });
+                Notification.error("Server error");
             });
         };
 
@@ -401,12 +406,18 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                     data.sprint['showUat'] = false;
                     SprintsFactory.add({reportId: $routeParams.reportId}, data.sprint, function (result) {
                         self.getSprintConfigureData();
+                        Notification.success('New sprint add success');
+                    }, function () {
+                        Notification.error("Server error");
                     });
                 } else {
                     SprintFactory.update({reportId: $routeParams.reportId, sprintId: $scope.reportModel.sprint.id}, data.sprint, function () {
                         self.getSprintConfigureData({
                             id: $scope.reportModel.sprint.id
                         });
+                        Notification.success('Edit sprint success');
+                    }, function () {
+                        Notification.error("Server error");
                     });
                 }
             }, function () {});
@@ -428,6 +439,9 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             modalInstance.result.then(function (data) {
                 SprintFactory.delete({reportId: $routeParams.reportId, sprintId: $scope.reportModel.sprint.id}, function() {
                     self.getSprintConfigureData();
+                    Notification.success('Delete sprint success');
+                }, function () {
+                    Notification.error("Server error");
                 });
             }, function () {});
         };
@@ -452,6 +466,9 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             modalInstance.result.then(function (data) {
                 SprintFactory.delete(data, function() {
                     self.getSprintConfigureData();
+                    Notification.success('Delete success');
+                }, function () {
+                    Notification.error('Server error');
                 });
             }, function () {});
         };
