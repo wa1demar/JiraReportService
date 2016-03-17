@@ -1,12 +1,15 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
+import com.swansoftwaresolutions.jirareport.core.dto.PointDto;
+import com.swansoftwaresolutions.jirareport.core.dto.ReportResponceDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.NewReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
+import com.swansoftwaresolutions.jirareport.core.mapper.PointMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.ReportMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.mappings.NewReportDtoModelMap;
 import com.swansoftwaresolutions.jirareport.core.mapper.mappings.UpdatedReportDtoModelMap;
+import com.swansoftwaresolutions.jirareport.domain.entity.Point;
 import com.swansoftwaresolutions.jirareport.domain.entity.Report;
-import com.swansoftwaresolutions.jirareport.core.dto.ReportResponceDto;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,50 +22,30 @@ import java.util.List;
  * @author Vitaliy Holovko
  */
 @Component
-public class PointMapperImpl implements ReportMapper {
+public class PointMapperImpl implements PointMapper {
 
     ModelMapper modelMapper;
 
-    @Autowired
-    public PointMapperImpl(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-        modelMapper.addMappings(new NewReportDtoModelMap());
-        modelMapper.addMappings(new UpdatedReportDtoModelMap());
+    @Override
+    public PointDto toDto(Point report) {
+        return modelMapper.map(report, PointDto.class);
     }
 
     @Override
-    public Report fromDto(NewReportDto newReportDto) {
-        return modelMapper.map(newReportDto, Report.class);
-    }
-
-    @Override
-    public ReportDto toDto(Report report) {
-        return modelMapper.map(report, ReportDto.class);
-    }
-
-    @Override
-    public List<ReportDto> toDtos(List<Report> reportList) {
-//        modelMapper.addMappings(new ReportModelMap());
-        Type targetistType = new TypeToken<List<ReportDto>>(){}.getType();
+    public List<PointDto> toDtos(List<Point> reportList) {
+        Type targetistType = new TypeToken<List<PointDto>>(){}.getType();
         return modelMapper.map(reportList, targetistType);
     }
 
     @Override
-    public Report fromDto(ReportDto reportDto) {
-        return modelMapper.map(reportDto, Report.class);
+    public Point fromDto(PointDto reportDto) {
+        return modelMapper.map(reportDto, Point.class);
     }
 
     @Override
-    public List<Report> fromDtos(List<ReportDto> reportDtos) {
-        Type targetistType = new TypeToken<List<Report>>(){}.getType();
+    public List<Point> fromDtos(List<PointDto> reportDtos) {
+        Type targetistType = new TypeToken<List<Point>>(){}.getType();
         return modelMapper.map(reportDtos, targetistType);
     }
 
-    @Override
-    public ReportResponceDto toResponceDto(ReportDto reportDto) {
-        ReportResponceDto reportResponceDto = modelMapper.map(reportDto, ReportResponceDto.class);
-//        reportResponceDto.setAdmins(reportDto.getAdmins());
-
-        return reportResponceDto;
-    }
 }

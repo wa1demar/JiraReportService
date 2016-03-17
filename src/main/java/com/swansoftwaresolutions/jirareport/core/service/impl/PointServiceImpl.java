@@ -1,16 +1,9 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
-import com.swansoftwaresolutions.jirareport.core.dto.report.NewReportDto;
-import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDto;
-import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDtoBuilder;
-import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
-import com.swansoftwaresolutions.jirareport.core.mapper.ReportMapper;
-import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
-import com.swansoftwaresolutions.jirareport.domain.entity.Report;
-import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
-import com.swansoftwaresolutions.jirareport.domain.repository.ReportRepository;
-import com.swansoftwaresolutions.jirareport.core.service.ReportService;
-import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
+import com.swansoftwaresolutions.jirareport.core.dto.PointDto;
+import com.swansoftwaresolutions.jirareport.core.mapper.PointMapper;
+import com.swansoftwaresolutions.jirareport.core.service.PointService;
+import com.swansoftwaresolutions.jirareport.domain.repository.PointRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,78 +12,44 @@ import java.util.List;
 
 /**
  * @author Vitaliy Holovko
- *         on 04.03.16.
  */
 
 @Service
-public class PointServiceImpl implements ReportService {
+public class PointServiceImpl implements PointService {
 
     @Autowired
-    private ReportRepository reportRepository;
+    private PointRepository pointRepository;
 
     @Autowired
-    private ReportMapper reportMapper;
-
-    @Autowired
-    private JiraUserMapper jiraUserMapper;
-
-    @Autowired
-    private JiraUserRepository jiraUserRepository;
+    private PointMapper pointMapper;
 
     @Override
-    public ReportListDto retrieveAllReportsList() {
-        List<ReportDto> reportDtos = reportMapper.toDtos(reportRepository.findAll());
-
-        return new ReportListDtoBuilder().reportsDto(reportDtos).build();
+    public PointDto add(PointDto pointDto) throws NoSuchEntityException {
+        return pointMapper.toDto(pointRepository.add(pointMapper.fromDto(pointDto)));
     }
 
     @Override
-    public ReportDto add(NewReportDto newReportDto) throws NoSuchEntityException {
-
-        List<JiraUser> jiraUsers = null;
-        if (newReportDto.getAdmins() != null && newReportDto.getAdmins().length > 0) {
-            jiraUsers = jiraUserRepository.findByLogins(newReportDto.getAdmins());
-        }
-
-        Report newReport = reportMapper.fromDto(newReportDto);
-        newReport.setAdmins(jiraUsers);
-
-        Report addedReport = reportRepository.add(newReport);
-
-        return reportMapper.toDto(addedReport);
+    public PointDto update(PointDto pointDto) throws NoSuchEntityException {
+        return pointMapper.toDto(pointRepository.update(pointMapper.fromDto(pointDto)));
     }
 
     @Override
-    public ReportDto retrieveReportByID(long id) {
-        return reportMapper.toDto(reportRepository.findById(id));
+    public void delete(PointDto pointDto) throws NoSuchEntityException {
+        pointRepository.delete(pointMapper.fromDto(pointDto));
     }
 
     @Override
-    public ReportDto update(NewReportDto newReportDto, long id) throws NoSuchEntityException {
-        List<JiraUser> jiraUsers = null;
-        if (newReportDto.getAdmins() != null && newReportDto.getAdmins().length > 0) {
-            jiraUsers = jiraUserRepository.findByLogins(newReportDto.getAdmins());
-        }
-
-        Report report = reportMapper.fromDto(newReportDto);
-        report.setId(id);
-        report.setAdmins(jiraUsers);
-
-        return reportMapper.toDto(reportRepository.update(report));
+    public void delete(Long id) throws NoSuchEntityException {
+        pointRepository.delete(id);
     }
 
     @Override
-    public void delete(ReportDto reportDto) throws NoSuchEntityException {
-        reportRepository.delete(reportMapper.fromDto(reportDto));
+    public List<PointDto> findAll() throws NoSuchEntityException {
+        return pointMapper.toDtos(pointRepository.findAll());
     }
 
     @Override
-    public ReportDto delete(long id) throws NoSuchEntityException {
-        return reportMapper.toDto(reportRepository.delete(id));
-    }
-
-    @Override
-    public ReportDto findByBoardId(Long boardId) throws NoSuchEntityException {
-        return reportMapper.toDto(reportRepository.findByBoardId(boardId));
+    public PointDto findById(Long pointId) throws NoSuchEntityException {
+        return pointMapper.toDto(pointRepository.findById(pointId));
     }
 }

@@ -1,9 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.mapper;
 
-import com.swansoftwaresolutions.jirareport.core.dto.report.NewReportDto;
-import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
-import com.swansoftwaresolutions.jirareport.domain.entity.Report;
-import com.swansoftwaresolutions.jirareport.core.dto.ReportResponceDto;
+import com.swansoftwaresolutions.jirareport.core.dto.PointDto;
+import com.swansoftwaresolutions.jirareport.domain.entity.Point;
 
 import java.util.List;
 
@@ -12,12 +10,9 @@ import java.util.List;
  */
 public interface PointMapper {
 
-    ReportDto toDto(Report report);
-    List<ReportDto> toDtos(List<Report> reportList);
-    Report fromDto(ReportDto reportDto);
-    List<Report> fromDtos(List<ReportDto> reportDto);
+    PointDto toDto(Point point);
+    List<PointDto> toDtos(List<Point> pointList);
+    Point fromDto(PointDto pointDto);
+    List<Point> fromDtos(List<PointDto> pointDto);
 
-    ReportResponceDto toResponceDto(ReportDto reportDto);
-
-    Report fromDto(NewReportDto newReportDto);
 }

@@ -18,6 +18,7 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 /**
  * @author Vladimir Martynyuk
+ * @author Vitaliy Holovko
  */
 @Configuration
 @ComponentScan("com.swansoftwaresolutions.jirareport.sheduller.rest.client")
@@ -37,10 +38,10 @@ public class QuartzConfig {
         quartzScheduler.setJobFactory(jobFactory);
 
         Trigger[] triggers = {
-                loadProjectsTrigger().getObject(),
-                loadJiraUsersTrigger().getObject(),
-                loadJiraBoardsTrigger().getObject()
-//                loadIssuesTrigger().getObject()
+//                loadProjectsTrigger().getObject(),
+//                loadJiraUsersTrigger().getObject(),
+//                loadJiraBoardsTrigger().getObject()
+                loadIssuesTrigger().getObject()
         };
 
         quartzScheduler.setTriggers(triggers);
@@ -68,7 +69,7 @@ public class QuartzConfig {
     CronTriggerFactoryBean loadIssuesTrigger() {
         CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
         cronTriggerFactoryBean.setJobDetail(loadIssuesJobDetail().getObject());
-        cronTriggerFactoryBean.setCronExpression("0 0/2 * * * ?");
+        cronTriggerFactoryBean.setCronExpression("0 0/5 * * * ?");
 //        cronTriggerFactoryBean.setCronExpression("12 0 * * * ?");
         return cronTriggerFactoryBean;
     }

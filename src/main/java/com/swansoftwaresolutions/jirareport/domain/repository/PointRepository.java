@@ -1,47 +1,26 @@
 package com.swansoftwaresolutions.jirareport.domain.repository;
 
-import com.swansoftwaresolutions.jirareport.domain.entity.Report;
+import com.swansoftwaresolutions.jirareport.domain.entity.Point;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 
-import java.util.Date;
 import java.util.List;
 
 /**
- * @author Vladimir Martynyuk
+ * @author Vitaliy Holovko
  */
 public interface PointRepository {
 
-    List<Report> findAll();
+    List<Point> findAll();
 
-    List<Report> getAllOngoingReports();
+    Point findById(Long id) throws NoSuchEntityException;
 
-    List<Report> getAllAutomaticOngoingReports();
+    Point add(Point point);
 
-    List<Report> getAllManualOngoingReports();
-
-    List<Report> getAllClosedReports();
-
-    List<Report> getAllAutomaticClosedReports();
-
-    List<Report> getAllManualClosedReports();
-
-    List<Report> getAllClosedReportsByDateClose(final Date dateFrom, final Date dateTo);
-
-    List<Report> getLastUpdatedReports();
-
-    Report findById(final Long id);
-
-    Report findByBoardId(Long boardId) throws NoSuchEntityException;
-
-    Report getLastAddedReport();
-
-    Report add(Report report);
-
-    Report update(Report report) throws NoSuchEntityException;
+    Point update(Point point) throws NoSuchEntityException;
 
     void deleteAll() throws NoSuchEntityException;
 
-    Report delete(Report report) throws NoSuchEntityException;
+    Point delete(Point point) throws NoSuchEntityException;
 
-    Report delete(Long reportId) throws NoSuchEntityException;
+    Point delete(Long pointId) throws NoSuchEntityException;
 }

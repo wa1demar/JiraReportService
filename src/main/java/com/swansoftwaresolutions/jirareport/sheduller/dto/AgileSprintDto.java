@@ -12,6 +12,6 @@ public class AgileSprintDto {
     public Date startDate;
     public Date endDate;
     public Date completedDate;
-    public int oroginBoardId;
+    public int originBoardId;
 
 }
