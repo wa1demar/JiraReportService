@@ -26,4 +26,6 @@ public interface ReportService {
     ReportListDto retrieveAllReportsList();
 
     ReportDto retrieveReportByID(long id);
+
+    ReportListDto retrieveAllClosedReportsList();
 }
