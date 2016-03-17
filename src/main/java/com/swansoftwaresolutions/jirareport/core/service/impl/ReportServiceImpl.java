@@ -70,6 +70,13 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    public ReportListDto retrieveAllClosedReportsList() {
+        List<ReportDto> reportDtos = reportMapper.toDtos(reportRepository.findAllClosed());
+
+        return new ReportListDtoBuilder().reportsDto(reportDtos).build();
+    }
+
+    @Override
     public ReportDto update(NewReportDto newReportDto, long id) throws NoSuchEntityException {
         List<JiraUser> jiraUsers = null;
         if (newReportDto.getAdmins() != null && newReportDto.getAdmins().length > 0) {

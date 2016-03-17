@@ -66,6 +66,12 @@ public class ReportController {
         return new ResponseEntity<>(new ReportDto(), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/v1/reports/closed", method = RequestMethod.GET)
+    private ResponseEntity<ReportListDto> getAllClosedReports() {
+        ReportListDto reportDtos = reportService.retrieveAllClosedReportsList();
+        return new ResponseEntity<>(reportDtos, HttpStatus.OK);
+    }
+
 //    @RequestMapping(value = "/v1/report/copy", method = RequestMethod.POST)
 //    private ResponseEntity<ResponceReportDto> makeReportCopyById(@RequestParam(value = "id") long id, @RequestParam(value = "name") String reportName) {
 //        ResponceReportDto responsePostDto;
