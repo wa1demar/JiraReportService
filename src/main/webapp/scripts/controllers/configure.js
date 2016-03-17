@@ -321,7 +321,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
         };
 
         $scope.deleteDeveloper = function (item) {
-            var index = $scope.sprintTeams.indexOf(item);
+            var index = $scope.sprintTeams.indexOf(_.findWhere($scope.sprintTeams, {developerLogin: item}));
             $scope.sprintTeams.splice(index, 1);
 
 //----------------------------------------------------------------------------------------------------------------------
