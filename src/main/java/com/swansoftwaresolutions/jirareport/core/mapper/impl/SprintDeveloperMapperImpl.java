@@ -5,6 +5,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDeve
 import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDevelopersDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDevelopersDtoBuilder;
 import com.swansoftwaresolutions.jirareport.core.mapper.SprintDeveloperMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.mappings.SprintDeveloperDtoMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.SprintDeveloper;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -23,8 +24,13 @@ import java.util.Set;
 @Component
 public class SprintDeveloperMapperImpl implements SprintDeveloperMapper {
 
-    @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    public SprintDeveloperMapperImpl(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+        modelMapper.addMappings(new SprintDeveloperDtoMapper());
+    }
 
     @Override
     public SprintDevelopersDto toDto(List<SprintDeveloper> developers) {
