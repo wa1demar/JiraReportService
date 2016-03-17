@@ -116,7 +116,7 @@ jiraPluginApp.controller("PortfolioCtrl", ['$scope', 'PortfoliosFactory', '$time
                     chart: {
                         label:  [0, 1, 2, 3],
                         target: [129, 83, 41, 0],
-                        actual: [129, 77, 31, -3]
+                        actual: [129, 77, 31, 2]
                     },
 
                     showUat: true,
