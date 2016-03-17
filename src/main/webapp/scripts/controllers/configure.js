@@ -117,8 +117,8 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 
 //----------------------------------------------------------------------------------------------------------------------
 //get developer
-        var users = UsersFactory.query(function() {
-            $scope.devUsers = users.users;
+        UsersFactory.query(function(result) {
+            $scope.devUsers = result.users;
         });
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -296,6 +296,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             login: "add"
         };
         $scope.addDeveloper = function (item) {
+            console.log(item);
             $scope.sprintTeams.push({
                 developerLogin: item,
                 engineerLevel: 1,
@@ -305,6 +306,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             $scope.dataDeveloper = {
                 login: "add"
             };
+            console.log($scope.sprintTeams);
             $scope.calcParams();
 
 //----------------------------------------------------------------------------------------------------------------------

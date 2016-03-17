@@ -41,7 +41,7 @@
                 <tr ng-show="sprintTeams.length > 0" ng-repeat="data in sprintTeams" class="configure-dev-row" data-id="{{data.id}}">
                     <td class="border-right-2">
                         <select ui-select2 ng-model="data.developerLogin" class="developer-name" disabled>
-                            <option ng-repeat="dataUser in devUsers" value="{{dataUser.login}}">{{dataUser.developerName}}</option>
+                            <option ng-repeat="dataUser in devUsers" value="{{dataUser.login}}">{{dataUser.fullName}}</option>
                         </select>
                         <span class="aui-button delete-developer" data-id="{{data.id}}" ng-click="deleteDeveloper(data.developerLogin)">Delete</span>
                     </td>
