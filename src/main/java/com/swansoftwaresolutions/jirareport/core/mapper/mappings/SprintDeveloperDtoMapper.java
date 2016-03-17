@@ -12,9 +12,9 @@ public class SprintDeveloperDtoMapper extends PropertyMap<SprintDeveloper, Sprin
 
     @Override
     protected void configure() {
-        if (source.getJiraUser() != null) {
-            map().setDeveloperLogin(source.getJiraUser().getLogin());
-            map().setDeveloperName(source.getJiraUser().getFullName());
-        }
+
+        map().setDeveloperLogin(source.getJiraUser().getLogin());
+        map().setDeveloperName(source.getJiraUser().getFullName());
+
     }
 }
