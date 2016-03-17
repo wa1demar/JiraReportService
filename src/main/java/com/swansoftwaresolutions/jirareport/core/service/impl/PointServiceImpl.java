@@ -23,7 +23,7 @@ import java.util.List;
  */
 
 @Service
-public class ReportServiceImpl implements ReportService {
+public class PointServiceImpl implements ReportService {
 
     @Autowired
     private ReportRepository reportRepository;
@@ -61,7 +61,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public ReportDto findById(long id) {
+    public ReportDto retrieveReportByID(long id) {
         return reportMapper.toDto(reportRepository.findById(id));
     }
 
