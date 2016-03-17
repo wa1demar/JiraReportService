@@ -34,7 +34,7 @@ public class SprintDeveloperMapperImpl implements SprintDeveloperMapper {
 
     @Override
     public SprintDevelopersDto toDto(List<SprintDeveloper> developers) {
-        Type targetistType = new TypeToken<List<SprintDeveloperDto>>(){}.getType();
+        Type targetistType = new TypeToken<ArrayList<SprintDeveloperDto>>(){}.getType();
         List<SprintDeveloperDto> developersDto = modelMapper.map(developers, targetistType);
         return new SprintDevelopersDtoBuilder().developers(developersDto).build();
     }
