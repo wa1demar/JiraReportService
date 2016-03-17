@@ -22,4 +22,6 @@ public interface SprintService {
     SprintDto findById(long sprintId) throws NoSuchEntityException;
 
     FullSprintDto add(FullSprintDto sprintDto);
+
+    FullSprintDto update(FullSprintDto sprintDto);
 }

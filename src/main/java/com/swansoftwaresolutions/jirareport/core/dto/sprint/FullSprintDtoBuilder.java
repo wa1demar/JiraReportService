@@ -4,6 +4,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDeve
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Vladimir Martynyuk

@@ -5,6 +5,7 @@ import com.swansoftwaresolutions.jirareport.domain.entity.SprintDeveloper;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Vladimir Martynyuk
@@ -99,5 +100,32 @@ public class FullSprintDto {
 
     public void setDevelopers(List<SprintDeveloperDto> developers) {
         this.developers = developers;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FullSprintDto that = (FullSprintDto) o;
+
+        if (notCountTarget != that.notCountTarget) return false;
+        if (showUat != that.showUat) return false;
+        if (type != that.type) return false;
+        if (!name.equals(that.name)) return false;
+        if (!state.equals(that.state)) return false;
+        return reportId.equals(that.reportId);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + (notCountTarget ? 1 : 0);
+        result = 31 * result + (showUat ? 1 : 0);
+        result = 31 * result + state.hashCode();
+        result = 31 * result + type;
+        result = 31 * result + reportId.hashCode();
+        return result;
     }
 }

@@ -19,7 +19,7 @@ public class SprintDeveloper implements Serializable {
     @JoinColumn(name = "jira_user_login")
     private JiraUser jiraUser;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name="sprint_id")
     private Sprint sprint;
 
@@ -79,4 +79,31 @@ public class SprintDeveloper implements Serializable {
     public void setSprint(Sprint sprint) {
         this.sprint = sprint;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SprintDeveloper developer = (SprintDeveloper) o;
+
+        if (daysInSprint != developer.daysInSprint) return false;
+        if (!id.equals(developer.id)) return false;
+        if (!jiraUser.equals(developer.jiraUser)) return false;
+        if (sprint != null ? !sprint.equals(developer.sprint) : developer.sprint != null) return false;
+        if (!engineerLevel.equals(developer.engineerLevel)) return false;
+        return participationLevel.equals(developer.participationLevel);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = jiraUser.hashCode();
+        result = 31 * result + (sprint != null ? sprint.hashCode() : 0);
+        result = 31 * result + engineerLevel.hashCode();
+        result = 31 * result + participationLevel.hashCode();
+        result = 31 * result + daysInSprint;
+        return result;
+    }
 }
+

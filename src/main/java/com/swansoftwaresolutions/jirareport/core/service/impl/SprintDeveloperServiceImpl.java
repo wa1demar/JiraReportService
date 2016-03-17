@@ -36,7 +36,7 @@ public class SprintDeveloperServiceImpl implements SprintDeveloperService {
     @Override
     public SprintDevelopersDto findBySprint(long sprintId) {
         List<SprintDeveloper> developers = developerRepository.findBySprintId(sprintId);
-        return developerMapper.toDtos(developers);
+        return developerMapper.toDto(developers);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class SprintDeveloperServiceImpl implements SprintDeveloperService {
         developer.setSprint(sprintRepository.findById(sprintId));
 
         SprintDeveloper newDeveloper = developerRepository.add(developer);
-        return developerMapper.toDtos(newDeveloper);
+        return developerMapper.toDto(newDeveloper);
     }
 
 

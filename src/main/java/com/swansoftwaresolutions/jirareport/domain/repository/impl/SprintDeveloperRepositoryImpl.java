@@ -34,4 +34,12 @@ public class SprintDeveloperRepositoryImpl implements SprintDeveloperRepository 
         sessionFactory.getCurrentSession().save(developer);
         return developer;
     }
+
+    @Override
+    public void delete(List<Long> ids, Long sprintId) {
+        Query query = sessionFactory.getCurrentSession().createQuery("DELETE FROM SprintDeveloper dev WHERE dev.sprint.id = :sprintId and dev.id NOT IN :ids");
+        query.setParameter("sprintId", sprintId);
+        query.setParameterList("ids", ids);
+        query.executeUpdate();
+    }
 }

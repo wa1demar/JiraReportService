@@ -29,7 +29,7 @@ public class SprintRepositoryImpl implements SprintRepository {
 
     @Override
     public Sprint update(Sprint sprint) {
-        sessionFactory.getCurrentSession().update(sprint);
+        sessionFactory.getCurrentSession().saveOrUpdate(sprint);
         return sprint;
     }
 
