@@ -131,6 +131,13 @@ public class ReportRepositoryImpl implements ReportRepository{
     }
 
     @Override
+    public Report findByBoardId(Long boardId) throws NoSuchEntityException{
+        return (Report) sessionFactory.getCurrentSession()
+                .createCriteria(Report.class).add(Restrictions.eq("boardId", boardId)).uniqueResult();
+
+    }
+
+    @Override
     public Report getLastAddedReport() {
         Query query = sessionFactory.getCurrentSession().getNamedQuery("Report.findLastAddedReport");
 
