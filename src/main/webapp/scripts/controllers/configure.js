@@ -292,20 +292,17 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 
 //----------------------------------------------------------------------------------------------------------------------
 //work with developers
-        $scope.dataDeveloper = {
-            login: "add"
-        };
+        $scope.dataDeveloper = "";
         $scope.addDeveloper = function (item) {
-            console.log(item);
+            item = JSON.parse(item);
             $scope.sprintTeams.push({
-                developerLogin: item,
+                developerLogin: item.login,
+                developerName: item.fullName,
                 engineerLevel: 1,
                 participationLevel: "1.0",
                 daysInSprint: 1
             });
-            $scope.dataDeveloper = {
-                login: "add"
-            };
+            $scope.dataDeveloper = "";
             console.log($scope.sprintTeams);
             $scope.calcParams();
 
@@ -326,6 +323,19 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
         $scope.deleteDeveloper = function (item) {
             var index = $scope.sprintTeams.indexOf(item);
             $scope.sprintTeams.splice(index, 1);
+
+//----------------------------------------------------------------------------------------------------------------------
+//get developer
+            var users = UsersFactory.query(function(){
+                for (var index = 0; index < users.users.length; index++) {
+                    for (var indexTeam = 0; indexTeam < $scope.sprintTeams.length; indexTeam++) {
+                        if (users.users[index].login === $scope.sprintTeams[indexTeam].developerLogin) {
+                            users.users.splice(index, 1);
+                        }
+                    }
+                }
+                $scope.devUsersForAdd = users.users;
+            });
         };
 
 //----------------------------------------------------------------------------------------------------------------------

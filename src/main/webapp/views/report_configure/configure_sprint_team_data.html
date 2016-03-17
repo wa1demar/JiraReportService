@@ -71,12 +71,12 @@
                 </tr>
                 <tr>
                     <td class="border-right-2">
-                        <select ui-select2 class="developer-name" ng-model="dataDeveloper.login" style="width: 180px; margin-right: 5px;">
-                            <option value="add">Add ...</option>
-                            <option ng-repeat="dataUser in devUsersForAdd" value="{{dataUser.login}}" style="float: left;">{{dataUser.fullName}}</option>
+                        <select ui-select2 class="developer-name" ng-model="dataDeveloper" style="width: 180px; margin-right: 5px;">
+                            <option value="">Add ...</option>
+                            <option ng-repeat="dataUser in devUsersForAdd" value="{{dataUser}}" style="float: left;">{{dataUser.fullName}}</option>
                         </select>
-                        <span ng-disabled="!dataDeveloper.login || dataDeveloper.login === 'add'"
-                              ng-click="dataDeveloper.login && dataDeveloper.login !== 'add' ? addDeveloper(dataDeveloper.login) : ''"
+                        <span ng-disabled="!dataDeveloper || dataDeveloper === ''"
+                              ng-click="dataDeveloper && dataDeveloper !== '' ? addDeveloper(dataDeveloper) : ''"
                               id="add-sprint-team" class="aui-button">Add</span>
                     </td>
                 </tr>
