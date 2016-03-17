@@ -7,11 +7,11 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibMo
         $scope.loaderShow = true;
 
         this.getReportsData = function () {
-            // console.log(ReportFactory.get({id: 2}));
-            var dataOngoing = ReportsFactory.query({}, function(){
-                $scope.dataOngoing = dataOngoing.reports;
+            ReportsFactory.query({}, function(result){
+                $scope.dataOngoing = result.reports;
                 $scope.loaderShow = false;
             });
+
             $scope.dataClosed = [];
         };
 
