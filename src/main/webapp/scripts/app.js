@@ -11,7 +11,8 @@ var jiraPluginApp = angular.module('jiraPluginApp', [
     'ui.bootstrap',
     'ui.select2',
     'ngMessages',
-    'chart.js'
+    'chart.js',
+    'ui-notification'
 ]);
 
 jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {

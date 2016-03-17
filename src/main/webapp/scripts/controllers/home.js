@@ -1,7 +1,7 @@
 'use strict';
 
-jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibModal', 'ReportsFactory', 'ReportFactory', 'CopyReportFactory', 'CONFIG',
-    function($scope, AuthenticationFactory, $uibModal, ReportsFactory, ReportFactory, CopyReportFactory, CONFIG) {
+jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibModal', 'ReportsFactory', 'ReportFactory', 'CopyReportFactory', 'Notification',
+    function($scope, AuthenticationFactory, $uibModal, ReportsFactory, ReportFactory, CopyReportFactory, Notification) {
 
         var self = this;
         $scope.loaderShow = true;
@@ -57,6 +57,9 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibMo
                 data['creator'] = AuthenticationFactory.user;
                 ReportsFactory.create({}, data, function(){
                     self.getReportsData();
+                    Notification.success("Add new report success");
+                }, function () {
+                    Notification.error("Server error");
                 });
             }, function () {});
         };
@@ -77,6 +80,9 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibMo
             modalInstance.result.then(function (data) {
                 ReportFactory.delete({id: data.id}, function() {
                     self.getReportsData();
+                    Notification.success("Delete report success");
+                }, function () {
+                    Notification.success("Server error");
                 });
             }, function () {});
         };
@@ -98,6 +104,9 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibMo
             modalInstance.result.then(function (data) {
                 CopyReportFactory.copy(data, {}, function(){
                     self.getReportsData();
+                    Notification.success("Copy report success");
+                }, function () {
+                    Notification.error("Server error");
                 });
             }, function () {});
         };
