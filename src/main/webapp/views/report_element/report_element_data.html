@@ -5,18 +5,9 @@
                 <div class="report-element-chart">
                     <center><h3 id="chart-title">Project to date</h3></center>
                     <div ng-show="reportData.sprints.length > 0" id="chart-box">
-                        <!--<div class="content" style="max-width: 100%; margin: 0 auto;"></div>-->
-                        <!--<div class="content-serial">-->
-                            <!--<span id="char-actual-serial-icon" class="circle-for-chart green"></span> Actual-->
-                            <!--<span class="circle-for-chart black"></span> Planned-->
-                        <!--</div>-->
-
-                        <!--<div class="content" style="max-width: 100%; margin: 0 auto;">-->
-                            <canvas id="line" class="chart chart-line" chart-data="data"
-                                    chart-labels="labels" chart-legend="true" chart-series="series"
-                                    chart-click="onClick">
-                            </canvas>
-                        <!--</div>-->
+                        <canvas id="line" class="chart chart-line" chart-data="data" chart-options="options"
+                                chart-labels="labels" chart-legend="true" chart-series="series" chart-colours="colours">
+                        </canvas>
                     </div>
                     <center ng-show="reportData.sprints.length == 0">Sprints not found</center>
                 </div>
@@ -61,21 +52,11 @@
                                 <td ng-click="showSprintDetails(data)"
                                     rowspan="{{data.sprintTeam.length + 1}}"
                                     class="show-sprint-details-index text-center sprint-id sprint-{{data.state}} {{data.stateClass}}"
-                                    data-id-sprint="{{data.id}}"
-                                    data-state="{{data.state}}"
-                                    data-id="{{data.id}}"
                                     style="width: 100px; cursor: pointer;"
                                     title="{{data.state}} sprint {{data.stateName}}">#{{$index + 1}}</td>
                                 <td ng-click="showSprintDetails(data)"
                                     class="show-sprint-details"
-                                    ng-click="changeChart(data.id)"
-                                    style="cursor: pointer;"
-                                    data-id-sprint="{{data.id}}"
-                                    data-state="{{data.state}}"
-                                    data-name="{{data.name}}"
-                                    data-chart-label="{{data.chartLabel ? data.chartLabel : 0 }}"
-                                    data-chart-target="{{data.chartTarget ? data.chartTarget : 0 }}"
-                                    data-chart-actual="{{data.chartActual ? data.chartActual : 0 }}">
+                                    style="cursor: pointer;">
                                     <strong>Team Total <span ng-show="data.notCountTarget" class="aui-icon aui-icon-small aui-iconfont-error js-copy-clipboard" title="Not count target points/hours to Project total"></span></strong>
                                 </td>
                                 <td class="text-center indicators">
@@ -107,7 +88,6 @@
                                 <td class="text-center">{{data.targetQatDefectHours}}</td>
                                 <td class="text-center">{{data.actualQatDefectHours}}</td>
                                 <td></td>
-                                <!--#set($hideUatCount = $hideUatCount + 1)-->
                                 <td ng-show="!data.showUat" colspan="6" class="text-center" style="border-right: 1px solid #dddddd;"> - </td>
                                 <td ng-show="data.showUat" class="text-center indicators">
                                     <indicator ng-show="data.state === 'closed'"
@@ -281,78 +261,58 @@
 
     <table ng-show="reportData.sprints.length > 0" class="aui table table-sprint" style="width: 800px; margin: 20px auto;">
         <thead>
-        <tr>
-            <td></td>
-            <td ng-repeat="data in reportData.sprints" style="border-left: 1px solid #dddddd; min-width: 100px; text-align: center;" class="{{data.stateClass}}">
-
-                {{data.endDate | date:'MM/dd/yyyy'}}
-
-                <!--{{(reportData.idType && reportData.idType == 2) ? (data.endDate && data.state === "closed") ? data.endDate | date:'MM/dd/yyyy' : '-' : data.completeDate ? (data.completeDate | date:'MM/dd/yyyy') : '-' }}-->
-
-                <!--#if ($reportData.idType && $reportData.idType == 2)-->
-                    <!--#if($data.endDate && $data.state == "closed")-->
-                        <!--#set($String = '')-->
-                        <!--$String.format('%1$tm.%1$td.%1$tY', $data.endDate)-->
-                    <!--#else-->
-                        <!-- - -->
-                    <!--#end-->
-                <!--#else-->
-                    <!--#if($data.completeDate)-->
-                        <!--#set($String = '')-->
-                        <!--$String.format('%1$tm.%1$td.%1$tY', $data.completeDate)-->
-                    <!--#else-->
-                        <!-- - -->
-                    <!--#end-->
-                <!--#end-->
-
-            </td>
-        </tr>
+            <tr>
+                <td></td>
+                <td ng-repeat="data in reportData.sprints" style="border-left: 1px solid #dddddd; min-width: 100px; text-align: center;" class="{{data.stateClass}}">
+                    {{data.endDate ? (data.endDate | date:'MM/dd/yyyy') : '-'}}
+                </td>
+            </tr>
         </thead>
         <tbody>
-        <tr>
-            <td rowspan="3" style="border-left: 1px solid #dddddd; background-color: #F0F0F0; margin: 0; padding: 0; width: 10px;">
-                <div style="-moz-transform: rotate(-90deg); -webkit-transform: rotate(-90deg); -o-transform: rotate(-90deg); position: relative;">
-                    Points
-                </div>
-            </td>
-            <td ng-repeat="data in reportData.sprints" style="{{!$last ? 'text-align: center; border-left: 1px solid #dddddd;' : 'text-align: center; border-left: 1px solid #dddddd; border-right: 1px solid #dddddd;'}}">{{data.actualPoints}}</td>
-        </tr>
-        <tr>
-            <td colspan="{{reportData.sprints.length}}" class="tr-for-progress-bar">
-                <div class="progress-bar-box">
-                    <div id="points-progress-bar" class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: {{progressBarData.percentPoints}}%">
-                        <div class="progress-bar-content">&nbsp;</div>
+            <tr>
+                <td rowspan="3" style="border-left: 1px solid #dddddd; background-color: #F0F0F0; margin: 0; padding: 0; width: 10px;">
+                    <div style="-moz-transform: rotate(-90deg); -webkit-transform: rotate(-90deg); -o-transform: rotate(-90deg); position: relative;">
+                        Points
                     </div>
-                    <div id="points-progress-bar-percent">{{progressBarData.actualPoints}}/{{progressBarData.percentPoints}}%</div>
-                </div>
-                <div id="points-progress-bar-total">{{progressBarData.targetPoints}}</div>
-            </td>
-        </tr>
+                </td>
+                <td ng-repeat="data in reportData.sprints" style="{{!$last ? 'text-align: center; border-left: 1px solid #dddddd;' : 'text-align: center; border-left: 1px solid #dddddd; border-right: 1px solid #dddddd;'}}">{{data.actualPoints}}</td>
+            </tr>
+            <tr>
+                <td colspan="{{reportData.sprints.length}}" class="tr-for-progress-bar">
+                    <div class="progress-bar-box">
+                        <div id="points-progress-bar" class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: {{progressBarData.percentPoints}}%">
+                            <div class="progress-bar-content">&nbsp;</div>
+                        </div>
+                        <div id="points-progress-bar-percent">{{progressBarData.actualPoints}}/{{progressBarData.percentPoints}}%</div>
+                    </div>
+                    <div id="points-progress-bar-total">{{progressBarData.targetPoints}}</div>
+                </td>
+            </tr>
         </tbody>
     </table>
     <table ng-show="reportData.sprints.length > 0" class="aui table table-sprint" style="width: 800px; margin: 20px auto;">
         <thead>
         </thead>
         <tbody>
-        <tr>
-            <td rowspan="3" style="border-left: 1px solid #dddddd; background-color: #F0F0F0; margin: 0; padding: 0; width: 10px;">
-                <div style="-moz-transform: rotate(-90deg); -webkit-transform: rotate(-90deg); -o-transform: rotate(-90deg); position: relative;">
-                    Hours
-                </div>
-            </td>
-            <td ng-repeat="data in reportData.sprints" style="{{!$last ? 'text-align: center; border-left: 1px solid #dddddd; min-width: 100px;' : 'text-align: center; border-left: 1px solid #dddddd; min-width: 100px; border-right: 1px solid #dddddd;'}}">{{data.actualHours}}</td>
-        </tr>
-        <tr>
-            <td colspan="{{reportData.sprints.length}}" class="tr-for-progress-bar">
-                <div class="progress-bar-box">
-                    <div id="hours-progress-bar" class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: {{progressBarData.percentHours}}%;">
-                        <div class="progress-bar-content">&nbsp;</div>
+            <tr>
+                <td rowspan="3" style="border-left: 1px solid #dddddd; background-color: #F0F0F0; margin: 0; padding: 0; width: 10px;">
+                    <div style="-moz-transform: rotate(-90deg); -webkit-transform: rotate(-90deg); -o-transform: rotate(-90deg); position: relative;">
+                        Hours
                     </div>
-                    <div id="hours-progress-bar-percent">{{progressBarData.actualHours}}/{{progressBarData.percentHours}}%</div>
-                </div>
-                <div id="hours-progress-bar-total">{{progressBarData.targetHours}}</div>
-            </td>
-        </tr>
+                </td>
+                <td ng-repeat="data in reportData.sprints" style="{{!$last ? 'text-align: center; border-left: 1px solid #dddddd; min-width: 100px;' : 'text-align: center; border-left: 1px solid #dddddd; min-width: 100px; border-right: 1px solid #dddddd;'}}">{{data.actualHours}}</td>
+            </tr>
+            <tr>
+                <td colspan="{{reportData.sprints.length}}" class="tr-for-progress-bar">
+                    <div class="progress-bar-box">
+                        <div id="hours-progress-bar" class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: {{progressBarData.percentHours}}%;">
+                            <div class="progress-bar-content">&nbsp;</div>
+                        </div>
+                        <div id="hours-progress-bar-percent">{{progressBarData.actualHours}}/{{progressBarData.percentHours}}%</div>
+                    </div>
+                    <div id="hours-progress-bar-total">{{progressBarData.targetHours}}</div>
+                </td>
+            </tr>
         </tbody>
     </table>
     <center ng-show="reportData.sprints.length == 0">Sprints not found</center>

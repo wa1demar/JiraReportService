@@ -1,10 +1,10 @@
 'use strict';
 
 jiraPluginApp.controller('ReportElementCtrl',
-    ['$scope', '$routeParams', 'ReportsFactory', 'ReportFactory', 'ReportWithSprintsAndTeamsFactory',
-        function($scope, $routeParams, ReportsFactory, ReportFactory, ReportWithSprintsAndTeamsFactory) {
+    ['$scope', '$routeParams', 'ReportsFactory', 'ReportFactory', 'ReportWithSprintsAndTeamsFactory', '$timeout', '$location',
+        function($scope, $routeParams, ReportsFactory, ReportFactory, ReportWithSprintsAndTeamsFactory, $timeout, $location) {
             var self = this;
-
+            $scope.loaderShow = true;
 //----------------------------------------------------------------------------------------------------------------------
 //update ProgressBar
             $scope.updateProgressBar = function (item) {
@@ -59,21 +59,33 @@ jiraPluginApp.controller('ReportElementCtrl',
                     $scope.chartData = item.chart;
                 }
 
-                $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
-                $scope.series = ['Series A', 'Series B'];
-                $scope.data = [
-                    [65, 59, 80, 81, 56, 55, 40],
-                    [28, 48, 40, 19, 86, 27, 90]
-                ];
-                $scope.onClick = function (points, evt) {
-                    console.log(points, evt);
+//----------------------------------------------------------------------------------------------------------------------
+//Chart type (bad: red; good: green)
+                console.log("Data for chart: actual = "+$scope.chartData.actual[$scope.chartData.actual.length - 1]+" ; target = "+$scope.chartData.target[$scope.chartData.actual.length - 1]);
+                var actualChartColor = "#FF0000";
+                if ($scope.chartData.actual[$scope.chartData.actual.length - 1] <= $scope.chartData.target[$scope.chartData.actual.length - 1]) {
+                    actualChartColor = "#009e0f";
+                }
+
+                $scope.labels = $scope.chartData.label;
+                $scope.series = ['Actual', 'Terget'];
+                $scope.colours = [actualChartColor, '#000000'];
+                $scope.options = {
+                    datasetFill : false
                 };
+
+                //FIXME fix for normal size chart
+                $timeout(function () {
+                    $scope.data = [
+                        $scope.chartData.actual,
+                        $scope.chartData.target
+                    ];
+                }, 0);
             };
 
             this.getReportsData = function () {
-                var dataOngoing = ReportsFactory.query({}, function(){
-                    $scope.reports = dataOngoing.reports;
-                    $scope.loaderShow = false;
+                ReportsFactory.query({}, function(result){
+                    $scope.reports = result.reports;
                 });
             };
 
@@ -94,7 +106,7 @@ jiraPluginApp.controller('ReportElementCtrl',
                         createdDate : null,
                         updatedDate : null,
                         closedDate : null,
-                        typeId : 1,
+                        typeId : 2,
                         closed : false,
                         admins: [
                             {
@@ -154,9 +166,9 @@ jiraPluginApp.controller('ReportElementCtrl',
                             actualUatDefectHours: 1,
 
                             chart: {
-                                label:  ["0", "01/12/2016", "01/13/2016", "01/14/2016", "01/15/2016", "01/18/2016", "01/19/2016"],
-                                target: [46.0, 38, 31, 23, 15, 8, 0],
-                                actual: [46, 41, 34, 24, 14, 4, -6]
+                                label:  ["0", "01/27/2016", "01/28/2016", "01/29/2016", "02/01/2016", "02/02/2016"],
+                                target: [41.0, 33, 25, 16, 8, 0],
+                                actual: [41, 33, 25, 17, 7, 7]
                             },
 
                             sprintTeam: [
@@ -291,20 +303,31 @@ jiraPluginApp.controller('ReportElementCtrl',
                     $scope.reportData.sprints[index]['stateName'] = $scope.reportData.sprints[index].type == 1 ? "(additional blue)" : $scope.reportData.sprints[index].type == 2 ? "(additional red)" : "";
                     $scope.reportData.sprints[index]['stateClass'] = $scope.reportData.sprints[index].type == 1 ? "sprint-additional-blue" : $scope.reportData.sprints[index].type == 2 ? "sprint-additional-red" : "";
 
-                    $scope.reportData.sprints[index]['endDate'] = $scope.reportData.report.typeId === 2 ? $scope.reportData.sprints[index]['endDate'] : $scope.reportData.sprints[index]['completeDate'];
+                    //check date end or date complete
+                    if ($scope.reportData.report.typeId === 2) {
+                        if ($scope.reportData.sprints[index]['endDate'] && $scope.reportData.sprints[index]['state'] === "closed") {
+                            $scope.reportData.sprints[index]['endDate'] = $scope.reportData.sprints[index]['endDate'];
+                        } else {
+                            $scope.reportData.sprints[index]['endDate'] = false;
+                        }
+                    } else {
+                        if ($scope.reportData.sprints[index]['completeDate']) {
+                            $scope.reportData.sprints[index]['endDate'] = $scope.reportData.sprints[index]['completeDate'];
+                        } else {
+                            $scope.reportData.sprints[index]['endDate'] = false;
+                        }
+                    }
                 }
 
                 //update data for ProgressBar
                 $scope.updateProgressBar();
                 //update data for chart
                 $scope.updateChart();
+
+                $scope.loaderShow = false;
             };
 
             self.getReportWithSprintsAndTeamsData();
-
-            $scope.getReportAllData = function (item) {
-                console.log(item);
-            };
 
             $scope.showSprintDetails = function (item) {
                 console.log("showSprintDetails");
@@ -312,6 +335,11 @@ jiraPluginApp.controller('ReportElementCtrl',
 
                 $scope.updateProgressBar(item);
                 $scope.updateChart(item);
+            };
+
+            $scope.changeReport = function (item) {
+                $location.url("/report/" + item.id);
+                //self.getReportWithSprintsAndTeamsData();
             };
         }
     ]);

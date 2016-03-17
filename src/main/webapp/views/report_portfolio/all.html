@@ -1,0 +1,141 @@
+<table ng-show="reportsData.length > 0" class="aui table">
+    <tbody>
+        <tr class="element-row" ng-repeat="data in filtered = (reportsData | filter:query)">
+            <td class="report-element-table-chart">
+                <div class="name-box" style="font-size: 16px; font-weight: bold;">
+                    <a ng-href="#/report/{{data.id}}">
+                        {{data.title}}
+                    </a>
+                </div>
+
+                <div class="report-element-chart">
+                    <div id="chart-box-$data.id">
+                        <div class="content" style="max-width: 350px; margin: 0 auto;">
+                            <canvas ng-show="!loaderShow" id="line-{{data.id}}" class="chart chart-line"
+                                    chart-data="data.chart.data"
+                                    chart-options="data.chart.options"
+                                    chart-labels="data.chart.labels"
+                                    chart-legend="true"
+                                    chart-series="data.chart.series"
+                                    chart-colours="data.chart.colours" style="width: 100%;">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td class="report-element-table-sprint">
+                <div class="report-element-sprint-table">
+                    <table class="aui table table-sprint">
+                        <thead>
+                            <tr>
+                                <th colspan="2"></th>
+                                <th colspan="3" style="border-left: 1px solid #cccccc; border-right: 1px solid #cccccc; color: #cccccc;">Velocity</th>
+                                <th></th>
+                                <th colspan="6" style="border-left: 1px solid #cccccc; border-right: 1px solid #cccccc; color: #cccccc;">QAT Defects</th>
+                                <th></th>
+                                <th colspan="6" style="border-left: 1px solid #cccccc; border-right: 1px solid #cccccc; color: #cccccc;">UAT Defects</th>
+                            </tr>
+                            <tr>
+                                <th colspan="2"></th>
+                                <th style="width: 50px;"></th>
+                                <th style="width: 60px;">Target <br/> Points</th>
+                                <th style="width: 60px;">Actual <br/> Points</th>
+                                <th style="display: none;">Target <br/> Hours</th>
+                                <th style="display: none;">Actual <br/> Hours</th>
+                                <th style="width: 10px;"></th>
+                                <th style="width: 25px;"></th>
+                                <th style="width: 90px;">Target</th>
+                                <th style="width: 60px;">Actual</th>
+                                <th style="width: 50px;"></th>
+                                <th style="width: 60px;">Target <br/> Hours</th>
+                                <th style="width: 60px;">Actual <br/> Hours</th>
+                                <th style="width: 10px;"></th>
+                                <th style="width: 50px;"></th>
+                                <th style="width: 60px;">Target</th>
+                                <th style="width: 60px;">Actual</th>
+                                <th style="width: 50px;"></th>
+                                <th style="width: 60px;">Target <br/> Hours</th>
+                                <th style="width: 60px;">Actual <br/> Hours</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="2" class="sprint-total total"><strong>Project total</strong></td>
+                                <td class="text-center indicators">
+                                    <indicator ng-show="data.closedSprintCount !== 0"
+                                               type="'iconsVelocity'"
+                                               target="data.targetPoints"
+                                               actual="data.actualPoints"></indicator>
+                                </td>
+                                <td class="text-center total-target-points">{{data.targetPoints}}</td>
+                                <td class="text-center total-actual-points">{{data.actualPoints}}</td>
+                                <td class="text-center total-target-hours" style="display: none;">{{data.targetHours}}</td>
+                                <td class="text-center total-actual-hours" style="display: none;">{{data.actualHours}}</td>
+                                <td></td>
+                                <td class="text-center indicators">
+                                    <indicator ng-show="data.closedSprintCount !== 0"
+                                               type="'icons'"
+                                               actual="data.actualQatDefectPoints"
+                                               min="data.targetQatDefectMin"
+                                               max="data.targetQatDefectMax"></indicator>
+                                </td>
+                                <td class="text-center">{{data.targetQatDefectMin}} - {{data.targetQatDefectMax}}</td>
+                                <td class="text-center">{{data.actualQatDefectPoints}}</td>
+                                <td class="text-center indicators">
+                                    <indicator ng-show="data.closedSprintCount !== 0"
+                                               type="'iconsHours'"
+                                               target="data.targetQatDefectHours"
+                                               actual="data.actualQatDefectHours"></indicator>
+                                </td>
+                                <td class="text-center">{{data.targetQatDefectHours}}</td>
+                                <td class="text-center">{{data.actualQatDefectHours}}</td>
+                                <td></td>
+                                <td ng-show="!data.showUat" colspan="6" class="text-center" style="border-right: 1px solid #dddddd;"> - </td>
+                                <td ng-show="data.showUat" class="text-center indicators">
+                                    <indicator ng-show="data.closedSprintCount !== 0"
+                                               type="'icons'"
+                                               actual="data.actualUatDefectPoints"
+                                               min="data.targetUatDefectMin"
+                                               max="data.targetUatDefectMax"></indicator>
+                                </td>
+                                <td ng-show="data.showUat" class="text-center">{{data.targetUatDefectMin}} - {{data.targetUatDefectMax}}</td>
+                                <td ng-show="data.showUat" class="text-center">{{data.actualUatDefectPoints}}</td>
+                                <td ng-show="data.showUat" class="text-center indicators">
+                                    <indicator ng-show="data.closedSprintCount !== 0"
+                                               type="'iconsHours'"
+                                               target="data.targetUatDefectHours"
+                                               actual="data.actualUatDefectHours"></indicator>
+                                </td>
+                                <td ng-show="data.showUat" class="text-center">{{data.targetUatDefectHours}}</td>
+                                <td ng-show="data.showUat" class="text-center" style="border-right: 1px solid #dddddd;">{{data.actualUatDefectHours}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>Points</p>
+                    <div class="progress-bar-box tr-for-progress-bar">
+                        <div class="progress-bar-box">
+                            <div id="points-progress-bar" class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: {{data.progressBarData.percentPoints}}%;">
+                                <div class="progress-bar-content">&nbsp;</div>
+                            </div>
+                            <div id="points-progress-bar-percent">{{data.progressBarData.actualPoints}}/{{data.progressBarData.percentPoints}}</div>
+                        </div>
+                        <div id="points-progress-bar-total">{{data.progressBarData.targetPoints}}</div>
+                    </div>
+
+                    <p>Hours</p>
+                    <div class="progress-bar-box tr-for-progress-bar">
+                        <div class="progress-bar-box">
+                            <div id="hours-progress-bar" class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: {{data.progressBarData.percentHours}}%;">
+                                <div class="progress-bar-content">&nbsp;</div>
+                            </div>
+                            <div id="hours-progress-bar-percent">{{data.progressBarData.actualHours}}/{{data.progressBarData.percentHours}}</div>
+                        </div>
+                        <div id="hours-progress-bar-total">{{data.progressBarData.targetHours}}</div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<center><h2 ng-show="reportsData.length === 0">Data not found</h2></center>

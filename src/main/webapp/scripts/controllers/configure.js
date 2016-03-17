@@ -26,10 +26,10 @@ jiraPluginApp.controller('ConfigureCtrl', ['$scope',
 ]);
 
 //General Settings
-jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', '$uibModal', 'ReportFactory', 'UsersFactory', 'CONFIG',
-    function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, CONFIG) {
-
+jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', '$uibModal', 'ReportFactory', 'UsersFactory',
+    function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory) {
         var self = this;
+        $scope.loaderShow = true;
 
         this.getReport = function () {
             ReportFactory.get({id: $routeParams.reportId}, function (result) {
@@ -39,6 +39,8 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
                     admins.push(result.admins[index].login);
                 }
                 $scope.report.admins = admins;
+
+                $scope.loaderShow = false;
             });
         };
 
@@ -107,10 +109,10 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
 
 //Configure sprint team data
 jiraPluginApp.controller('ConfigureSprintTeamCtrl',
-    ['$scope', '$routeParams', '$uibModal', 'ReportFactory', 'UsersFactory', 'SprintsFactory', 'SprintFactory', 'SprintTeamFactory', 'SprintWithTeamFactory', 'CONFIG',
-    function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, SprintsFactory, SprintFactory, SprintTeamFactory, SprintWithTeamFactory, CONFIG) {
-
+    ['$scope', '$routeParams', '$uibModal', 'ReportFactory', 'UsersFactory', 'SprintsFactory', 'SprintFactory', 'SprintTeamFactory', 'SprintWithTeamFactory',
+    function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, SprintsFactory, SprintFactory, SprintTeamFactory, SprintWithTeamFactory) {
         var self = this;
+        $scope.loaderShow = true;
         $scope.sprintTeams = [];
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -205,6 +207,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //get sprint teams data
         $scope.getSprintTeams = function (data) {
+            $scope.loaderShowSprintTeam = true;
             var firstLoad = true;
             if (data === undefined) {
                 if ($scope.sprints !== undefined && $scope.sprints.length > 0) {
@@ -249,6 +252,10 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             });
 
             $scope.calcParams();
+
+            $scope.loaderShow = false;
+
+            $scope.loaderShowSprintTeam = false;
         };
 
 //----------------------------------------------------------------------------------------------------------------------
