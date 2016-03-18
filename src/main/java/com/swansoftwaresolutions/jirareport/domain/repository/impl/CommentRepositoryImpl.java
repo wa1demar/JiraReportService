@@ -87,11 +87,13 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     @Override
     public void deleteByReportId(Long reportId) throws NoSuchEntityException {
-        Comment comment =(Comment) sessionFactory.openSession()
-                .createCriteria(Comment.class).add(Restrictions.eq("reportId", reportId)).uniqueResult();
+        List<Comment> comments =(List<Comment>) sessionFactory.openSession()
+                .createCriteria(Comment.class).add(Restrictions.eq("reportId", reportId)).list();
 
-        if (comment != null) {
-            sessionFactory.getCurrentSession().delete(comment);
+        if (comments != null) {
+            for (Comment comment: comments) {
+                sessionFactory.getCurrentSession().delete(comment);
+            }
         } else {
             throw new NoSuchEntityException("Entity Not Found");
         }

@@ -7,11 +7,8 @@ import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.swansoftwaresolutions.jirareport.domain.entity.Config;
 import com.swansoftwaresolutions.jirareport.domain.repository.ConfigRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
-import org.dbunit.dataset.IDataSet;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DateFormat;

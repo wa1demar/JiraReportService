@@ -60,4 +60,9 @@ public class JiraUserServiceImpl implements JiraUserService {
     public void delete(JiraUser jiraUser) throws NoSuchEntityException {
         jiraUserRepository.delete(jiraUser);
     }
+
+    @Override
+    public JiraUser findByLogin(String login) throws NoSuchEntityException{
+        return jiraUserRepository.findByLogin(login);
+    }
 }

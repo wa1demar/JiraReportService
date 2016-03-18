@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.config;
 
 import com.swansoftwaresolutions.jirareport.sheduller.rest.client.JiraBoardsRestClient;
+import com.swansoftwaresolutions.jirareport.sheduller.rest.client.IssueRestClient;
 import com.swansoftwaresolutions.jirareport.sheduller.rest.client.JiraUsersRestClient;
 import com.swansoftwaresolutions.jirareport.sheduller.job.*;
 import com.swansoftwaresolutions.jirareport.sheduller.rest.client.ProjectsRestClient;
@@ -17,6 +18,7 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 /**
  * @author Vladimir Martynyuk
+ * @author Vitaliy Holovko
  */
 @Configuration
 @ComponentScan("com.swansoftwaresolutions.jirareport.sheduller.rest.client")
@@ -37,9 +39,9 @@ public class QuartzConfig {
 
         Trigger[] triggers = {
 //                loadProjectsTrigger().getObject(),
-//                loadIssuesTrigger().getObject(),
 //                loadJiraUsersTrigger().getObject(),
-//                loadJiraBoardsTrigger().getObject()
+//                loadJiraBoardsTrigger().getObject(),
+                loadIssuesTrigger().getObject()
         };
 
         quartzScheduler.setTriggers(triggers);
@@ -67,8 +69,8 @@ public class QuartzConfig {
     CronTriggerFactoryBean loadIssuesTrigger() {
         CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
         cronTriggerFactoryBean.setJobDetail(loadIssuesJobDetail().getObject());
-//        cronTriggerFactoryBean.setCronExpression("0 0/2 * * * ?");
-        cronTriggerFactoryBean.setCronExpression("12 0 * * * ?");
+        cronTriggerFactoryBean.setCronExpression("0 0/10 * * * ?");
+//        cronTriggerFactoryBean.setCronExpression("12 0 * * * ?");
         return cronTriggerFactoryBean;
     }
 
@@ -100,7 +102,7 @@ public class QuartzConfig {
     CronTriggerFactoryBean loadJiraBoardsTrigger() {
         CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
         cronTriggerFactoryBean.setJobDetail(loadJiraBoardsJobDetail().getObject());
-        cronTriggerFactoryBean.setCronExpression("12 0/2 * * * ?");
+        cronTriggerFactoryBean.setCronExpression("0 0/2 * * * ?");
         return cronTriggerFactoryBean;
     }
 
@@ -125,5 +127,10 @@ public class QuartzConfig {
     @Bean
     RestClient jiraBoardRestClient() {
         return new JiraBoardsRestClient();
+    }
+
+    @Bean
+    RestClient issueRestClient() {
+        return new IssueRestClient();
     }
 }
