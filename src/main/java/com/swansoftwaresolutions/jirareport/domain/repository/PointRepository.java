@@ -1,6 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository;
 
-import com.swansoftwaresolutions.jirareport.domain.entity.Point;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraPoint;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 
 import java.util.List;
@@ -10,17 +10,19 @@ import java.util.List;
  */
 public interface PointRepository {
 
-    List<Point> findAll();
+    List<JiraPoint> findAll();
 
-    Point findById(Long id) throws NoSuchEntityException;
+    JiraPoint findById(Long id) throws NoSuchEntityException;
 
-    Point add(Point point);
+    JiraPoint add(JiraPoint jiraPoint);
 
-    Point update(Point point) throws NoSuchEntityException;
+    JiraPoint update(JiraPoint jiraPoint) throws NoSuchEntityException;
 
     void deleteAll() throws NoSuchEntityException;
 
-    Point delete(Point point) throws NoSuchEntityException;
+    JiraPoint delete(JiraPoint jiraPoint) throws NoSuchEntityException;
 
-    Point delete(Long pointId) throws NoSuchEntityException;
+    JiraPoint delete(Long pointId) throws NoSuchEntityException;
+
+    JiraPoint findByLoginAndSprintId(String login, Long sprint) throws NoSuchEntityException;
 }

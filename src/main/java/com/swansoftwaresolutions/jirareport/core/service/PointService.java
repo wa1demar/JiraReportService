@@ -1,10 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.service;
 
-import com.swansoftwaresolutions.jirareport.core.dto.PointDto;
-import com.swansoftwaresolutions.jirareport.core.dto.report.NewReportDto;
-import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
-import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDto;
-import com.swansoftwaresolutions.jirareport.domain.entity.Point;
+import com.swansoftwaresolutions.jirareport.core.dto.JiraPointDto;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 
 import java.util.List;
@@ -14,16 +10,16 @@ import java.util.List;
  */
 public interface PointService {
 
-    PointDto add(PointDto newReportDto) throws NoSuchEntityException;
+    JiraPointDto add(JiraPointDto newReportDto) throws NoSuchEntityException;
 
-    PointDto update(PointDto report) throws NoSuchEntityException;
+    JiraPointDto update(JiraPointDto report) throws NoSuchEntityException;
 
     void delete(Long id) throws NoSuchEntityException;
 
-    void delete(PointDto reportDto) throws NoSuchEntityException;
+    void delete(JiraPointDto reportDto) throws NoSuchEntityException;
 
-    List<PointDto> findAll() throws NoSuchEntityException;
+    List<JiraPointDto> findAll() throws NoSuchEntityException;
 
-    PointDto findById(Long pointId) throws NoSuchEntityException;
+    JiraPointDto findById(Long pointId) throws NoSuchEntityException;
 
 }

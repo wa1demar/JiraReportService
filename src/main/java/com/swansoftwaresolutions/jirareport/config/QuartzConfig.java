@@ -40,7 +40,7 @@ public class QuartzConfig {
         Trigger[] triggers = {
 //                loadProjectsTrigger().getObject(),
 //                loadJiraUsersTrigger().getObject(),
-//                loadJiraBoardsTrigger().getObject()
+//                loadJiraBoardsTrigger().getObject(),
                 loadIssuesTrigger().getObject()
         };
 
@@ -69,7 +69,7 @@ public class QuartzConfig {
     CronTriggerFactoryBean loadIssuesTrigger() {
         CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
         cronTriggerFactoryBean.setJobDetail(loadIssuesJobDetail().getObject());
-        cronTriggerFactoryBean.setCronExpression("0 0/5 * * * ?");
+        cronTriggerFactoryBean.setCronExpression("0 0/10 * * * ?");
 //        cronTriggerFactoryBean.setCronExpression("12 0 * * * ?");
         return cronTriggerFactoryBean;
     }

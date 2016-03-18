@@ -1,6 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
-import com.swansoftwaresolutions.jirareport.domain.entity.Point;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraPoint;
 import com.swansoftwaresolutions.jirareport.domain.repository.PointRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.hibernate.Criteria;
@@ -18,70 +18,87 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class PointRepositoryImpl implements PointRepository{
+public class PointRepositoryImpl implements PointRepository {
 
     @Autowired
     private SessionFactory sessionFactory;
 
     @Override
-    public List<Point> findAll() {
-        return sessionFactory.getCurrentSession().createCriteria(Point.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+    public List<JiraPoint> findAll() {
+        return sessionFactory.getCurrentSession().createCriteria(JiraPoint.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
     }
 
     @Override
-    public Point add(Point point) {
-        sessionFactory.getCurrentSession().save(point);
-        return point;
+    public JiraPoint add(JiraPoint jiraPoint) {
+        JiraPoint jiraPointExist = new JiraPoint();
+        try {
+            jiraPointExist = findByLoginAndSprintId(jiraPoint.getUserLogin(), jiraPoint.getSprintId());
+        } catch (NoSuchEntityException e) {
+            e.printStackTrace();
+        }
+
+        if (jiraPointExist == null) {
+            sessionFactory.getCurrentSession().save(jiraPoint);
+        } else {
+            sessionFactory.openSession().update(jiraPoint);
+        }
+
+        return jiraPoint;
     }
 
     @Override
-    public Point findById(Long id) throws NoSuchEntityException {
-        return (Point) sessionFactory.openSession()
-                .createCriteria(Point.class).add(Restrictions.eq("id", id)).uniqueResult();
+    public JiraPoint findById(Long id) throws NoSuchEntityException {
+        return (JiraPoint) sessionFactory.openSession()
+                .createCriteria(JiraPoint.class).add(Restrictions.eq("id", id)).uniqueResult();
     }
 
     @Override
-    public Point update(Point point) throws NoSuchEntityException {
-        if (findById(point.getId()) == null) {
+    public JiraPoint update(JiraPoint jiraPoint) throws NoSuchEntityException {
+        if (findById(jiraPoint.getId()) == null) {
             throw new NoSuchEntityException("Entity not found");
         }
 
-        sessionFactory.openSession().update(point);
+        sessionFactory.openSession().update(jiraPoint);
 
-        return point;
+        return jiraPoint;
     }
 
     @Override
     public void deleteAll() throws NoSuchEntityException {
-    List<Point> reports = findAll();
-        for (Point report : reports){
+        List<JiraPoint> reports = findAll();
+        for (JiraPoint report : reports) {
             delete(report);
         }
     }
 
     @Override
-    public Point delete(Point report)  throws NoSuchEntityException {
-        Point deletePoint = findById(report.getId());
+    public JiraPoint delete(JiraPoint report) throws NoSuchEntityException {
+        JiraPoint deleteJiraPoint = findById(report.getId());
 
-        if (deletePoint != null) {
+        if (deleteJiraPoint != null) {
             sessionFactory.getCurrentSession().delete(report);
         } else {
             throw new NoSuchEntityException("Entity Not Found");
         }
 
-        return deletePoint;
+        return deleteJiraPoint;
     }
 
     @Override
-    public Point delete(Long reportId) throws NoSuchEntityException {
-        Point point = findById(reportId);
-        if (point != null) {
-            sessionFactory.getCurrentSession().delete(point);
+    public JiraPoint delete(Long reportId) throws NoSuchEntityException {
+        JiraPoint jiraPoint = findById(reportId);
+        if (jiraPoint != null) {
+            sessionFactory.getCurrentSession().delete(jiraPoint);
         } else {
             throw new NoSuchEntityException("Entity Not Found");
         }
 
-        return point;
+        return jiraPoint;
     }
 
+    @Override
+    public JiraPoint findByLoginAndSprintId(String login, Long sprint) throws NoSuchEntityException {
+        return (JiraPoint) sessionFactory.openSession()
+                .createCriteria(JiraPoint.class).add(Restrictions.eq("userLogin", login)).add(Restrictions.eq("sprintId", sprint)).uniqueResult();
+    }
 }

@@ -3,7 +3,7 @@
                    xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
     <changeSet id="031" author="viholovko">
 
-        <createTable tableName="points">
+        <createTable tableName="jira_points">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -40,7 +40,7 @@
 
 
         </createTable>
-        <comment>Create table points</comment>
+        <comment>Create table jira_points</comment>
 
     </changeSet>
 </databaseChangeLog>

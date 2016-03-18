@@ -1,7 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
-import com.swansoftwaresolutions.jirareport.core.dto.PointDto;
-import com.swansoftwaresolutions.jirareport.core.mapper.PointMapper;
+import com.swansoftwaresolutions.jirareport.core.dto.JiraPointDto;
+import com.swansoftwaresolutions.jirareport.core.mapper.JiraPointMapper;
 import com.swansoftwaresolutions.jirareport.core.service.PointService;
 import com.swansoftwaresolutions.jirareport.domain.repository.PointRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -21,21 +21,21 @@ public class PointServiceImpl implements PointService {
     private PointRepository pointRepository;
 
     @Autowired
-    private PointMapper pointMapper;
+    private JiraPointMapper jiraPointMapper;
 
     @Override
-    public PointDto add(PointDto pointDto) throws NoSuchEntityException {
-        return pointMapper.toDto(pointRepository.add(pointMapper.fromDto(pointDto)));
+    public JiraPointDto add(JiraPointDto jiraPointDto) throws NoSuchEntityException {
+        return jiraPointMapper.toDto(pointRepository.add(jiraPointMapper.fromDto(jiraPointDto)));
     }
 
     @Override
-    public PointDto update(PointDto pointDto) throws NoSuchEntityException {
-        return pointMapper.toDto(pointRepository.update(pointMapper.fromDto(pointDto)));
+    public JiraPointDto update(JiraPointDto jiraPointDto) throws NoSuchEntityException {
+        return jiraPointMapper.toDto(pointRepository.update(jiraPointMapper.fromDto(jiraPointDto)));
     }
 
     @Override
-    public void delete(PointDto pointDto) throws NoSuchEntityException {
-        pointRepository.delete(pointMapper.fromDto(pointDto));
+    public void delete(JiraPointDto jiraPointDto) throws NoSuchEntityException {
+        pointRepository.delete(jiraPointMapper.fromDto(jiraPointDto));
     }
 
     @Override
@@ -44,12 +44,12 @@ public class PointServiceImpl implements PointService {
     }
 
     @Override
-    public List<PointDto> findAll() throws NoSuchEntityException {
-        return pointMapper.toDtos(pointRepository.findAll());
+    public List<JiraPointDto> findAll() throws NoSuchEntityException {
+        return jiraPointMapper.toDtos(pointRepository.findAll());
     }
 
     @Override
-    public PointDto findById(Long pointId) throws NoSuchEntityException {
-        return pointMapper.toDto(pointRepository.findById(pointId));
+    public JiraPointDto findById(Long pointId) throws NoSuchEntityException {
+        return jiraPointMapper.toDto(pointRepository.findById(pointId));
     }
 }

@@ -1,8 +1,7 @@
 package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
-import com.swansoftwaresolutions.jirareport.core.dto.PointDto;
+import com.swansoftwaresolutions.jirareport.core.dto.JiraPointDto;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
-import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
 import com.swansoftwaresolutions.jirareport.core.service.JiraBoardService;
 import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
 import com.swansoftwaresolutions.jirareport.core.service.PointService;
@@ -87,29 +86,29 @@ public class IssueRestClient extends RestClientBase implements RestClient {
 
             Map<String, List<JiraIssueDto>> mapPoints = grupByUser(jiraIssueList);
 
-            List<PointDto> points = new ArrayList<>();
+            List<JiraPointDto> points = new ArrayList<>();
 
             for (Map.Entry<String, List<JiraIssueDto>> entry : mapPoints.entrySet()) {
                 String key = entry.getKey();
                 List<JiraIssueDto> thing = entry.getValue();
 
-                PointDto pointDto = new PointDto();
-                pointDto.setUserLogin(key);
-                pointDto.setSprintId(agileSprintDto.id);
+                JiraPointDto jiraPointDto = new JiraPointDto();
+                jiraPointDto.setUserLogin(key);
+                jiraPointDto.setSprintId(agileSprintDto.id);
                 try {
 
                     for (JiraIssueDto jiraIssueDto : thing) {
                         if (!jiraIssueDto.getIssueTypeName().equals("Bug")) {
-                            pointDto.setIssueCount(pointDto.getIssueCount()+1);
-                            pointDto.setIssueHourse(checkNotNull(pointDto.getIssueHourse())+checkNotNull(jiraIssueDto.getTimeSpent()));
-                            pointDto.setPoints(pointDto.getPoints() +jiraIssueDto.getPoints());
+                            jiraPointDto.setIssueCount(jiraPointDto.getIssueCount()+1);
+                            jiraPointDto.setIssueHourse(checkNotNull(jiraPointDto.getIssueHourse())+checkNotNull(jiraIssueDto.getTimeSpent()));
+                            jiraPointDto.setPoints(jiraPointDto.getPoints() +jiraIssueDto.getPoints());
                         } else {
 //                            if (report!=null && checkAdmin(report.getAdmins(), jiraIssueDto.getCreatorName())){
 //                                pointDto.setBugUATCount(pointDto.getBugQATCount()+1);
 //                                pointDto.setBugUATHours(checkNotNull(pointDto.getBugUATHours()) + checkNotNull(jiraIssueDto.getTimeSpent()));
 //                            } else {
-                                pointDto.setBugQATCount(pointDto.getBugQATCount() + 1);
-                                pointDto.setBugQATHourse(checkNotNull(pointDto.getBugQATHourse())+checkNotNull(jiraIssueDto.getTimeSpent()));
+                                jiraPointDto.setBugQATCount(jiraPointDto.getBugQATCount() + 1);
+                                jiraPointDto.setBugQATHourse(checkNotNull(jiraPointDto.getBugQATHourse())+checkNotNull(jiraIssueDto.getTimeSpent()));
 //                            }
 
                         }
@@ -120,8 +119,8 @@ public class IssueRestClient extends RestClientBase implements RestClient {
                 } catch (Exception sj) {
                     log.warning("!!!!!!!!!!");
                 }
-                points.add(pointDto);
-                pointDto = pointService.add(pointDto);
+                points.add(jiraPointDto);
+                jiraPointDto = pointService.add(jiraPointDto);
             }
 
             log.info("completed " + points.size());

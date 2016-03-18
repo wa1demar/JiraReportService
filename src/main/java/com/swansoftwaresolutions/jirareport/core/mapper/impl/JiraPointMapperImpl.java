@@ -1,6 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
-import com.swansoftwaresolutions.jirareport.core.dto.PointDto;
+import com.swansoftwaresolutions.jirareport.core.dto.JiraPointDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraPointMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraPoint;
 import org.modelmapper.ModelMapper;
@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * @author Vitaliy Holovko
  */
+
 @Component
 public class JiraPointMapperImpl implements JiraPointMapper {
 
@@ -21,23 +22,23 @@ public class JiraPointMapperImpl implements JiraPointMapper {
     ModelMapper modelMapper;
 
     @Override
-    public PointDto toDto(JiraPoint report) {
-        return modelMapper.map(report, PointDto.class);
+    public JiraPointDto toDto(JiraPoint report) {
+        return modelMapper.map(report, JiraPointDto.class);
     }
 
     @Override
-    public List<PointDto> toDtos(List<JiraPoint> reportList) {
-        Type targetistType = new TypeToken<List<PointDto>>(){}.getType();
+    public List<JiraPointDto> toDtos(List<JiraPoint> reportList) {
+        Type targetistType = new TypeToken<List<JiraPointDto>>(){}.getType();
         return modelMapper.map(reportList, targetistType);
     }
 
     @Override
-    public JiraPoint fromDto(PointDto reportDto) {
+    public JiraPoint fromDto(JiraPointDto reportDto) {
         return modelMapper.map(reportDto, JiraPoint.class);
     }
 
     @Override
-    public List<JiraPoint> fromDtos(List<PointDto> reportDtos) {
+    public List<JiraPoint> fromDtos(List<JiraPointDto> reportDtos) {
         Type targetistType = new TypeToken<List<JiraPoint>>(){}.getType();
         return modelMapper.map(reportDtos, targetistType);
     }

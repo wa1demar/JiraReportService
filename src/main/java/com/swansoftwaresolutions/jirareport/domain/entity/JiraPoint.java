@@ -6,7 +6,7 @@ import javax.persistence.*;
  * @author Vitaliy Holovko
  */
 @Entity
-@Table(name = "points")
+@Table(name = "jira_points")
 public class JiraPoint {
 
     @Id
