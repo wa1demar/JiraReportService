@@ -46,14 +46,6 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
         var self = this;
         $scope.loaderShow = true;
 
-        //$scope.report = {
-        //    title: "title",
-        //    typeId: 2,
-        //    boardName: "Test",
-        //    isClosed: true,
-        //    dateClose: new Date()
-        //};
-
 //----------------------------------------------------------------------------------------------------------------------
 //Calender
         $scope.dateOptions = {
@@ -233,11 +225,9 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 SprintTeamFactory.query({
                     sprintId: data.id
                 }, function (result) {
-                    //console.log(result.developers);
                     $scope.sprintTeams = result.developers;
 
                     if (result.developers.length > 0) {
-                        console.log("developers count:" + result.developers.length);
                         sprintTeamDataForAutoFill = {
                             sprintName:  data.name,
                             sprintTeams: result.developers
@@ -247,8 +237,6 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                             showAutoFillLabel: false
                         };
                     } else {
-                        console.log(result.developers.length);
-                        console.log(sprintTeamDataForAutoFill);
                         $scope.sprintTeams = sprintTeamDataForAutoFill.sprintTeams;
 
                         for (var index = 0; index < $scope.sprintTeams.length; index++) {
@@ -259,11 +247,9 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                             sprintName:  sprintTeamDataForAutoFill.sprintName,
                             showAutoFillLabel: true
                         };
-                        console.log($scope.showAutoFillData);
                     }
                     $scope.calcParams();
                 }, function (error) {
-                    //console.log(error);
                     $scope.sprintTeams = [];
                     $scope.calcParams();
                 });
