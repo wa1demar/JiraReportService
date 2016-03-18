@@ -1,8 +1,23 @@
 'use strict';
 
-jiraPluginApp.controller('ConfigureCtrl', ['$scope',
-    function($scope) {
+jiraPluginApp.controller('ConfigureCtrl', ['$scope', '$routeParams', 'ReportFactory',
+    function($scope, $routeParams, ReportFactory) {
         var self = this;
+
+        this.getReport = function () {
+            ReportFactory.get({id: $routeParams.reportId}, function (result) {
+                $scope.report = result;
+                var admins = [];
+                for (var index = 0; index < result.admins.length; index++) {
+                    admins.push(result.admins[index].login);
+                }
+                $scope.report.admins = admins;
+                $scope.loaderShow = false;
+            });
+        };
+
+        self.getReport();
+
 //--------------------------------------------------------------------------------------------------------------
 //Tabs
         $scope.tabs = [{
@@ -30,21 +45,6 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
     function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, Notification) {
         var self = this;
         $scope.loaderShow = true;
-
-        this.getReport = function () {
-            ReportFactory.get({id: $routeParams.reportId}, function (result) {
-                $scope.report = result;
-                var admins = [];
-                for (var index = 0; index < result.admins.length; index++) {
-                    admins.push(result.admins[index].login);
-                }
-                $scope.report.admins = admins;
-
-                $scope.loaderShow = false;
-            });
-        };
-
-        self.getReport();
 
         //$scope.report = {
         //    title: "title",
@@ -107,6 +107,8 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
                 });
             }
         };
+
+        $scope.loaderShow = false;
     }
 ]);
 
