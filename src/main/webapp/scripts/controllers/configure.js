@@ -227,27 +227,27 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 }, function (result) {
                     $scope.sprintTeams = result.developers;
 
-                    if (result.developers.length > 0) {
-                        sprintTeamDataForAutoFill = {
-                            sprintName:  data.name,
-                            sprintTeams: result.developers
-                        };
-
-                        $scope.showAutoFillData = {
-                            showAutoFillLabel: false
-                        };
-                    } else {
-                        $scope.sprintTeams = sprintTeamDataForAutoFill.sprintTeams;
-
-                        for (var index = 0; index < $scope.sprintTeams.length; index++) {
-                            delete $scope.sprintTeams[index].id;
-                        }
-
-                        $scope.showAutoFillData = {
-                            sprintName:  sprintTeamDataForAutoFill.sprintName,
-                            showAutoFillLabel: true
-                        };
-                    }
+                    //if (result.developers.length > 0) {
+                    //    sprintTeamDataForAutoFill = {
+                    //        sprintName:  data.name,
+                    //        sprintTeams: result.developers
+                    //    };
+                    //
+                    //    $scope.showAutoFillData = {
+                    //        showAutoFillLabel: false
+                    //    };
+                    //} else {
+                    //    $scope.sprintTeams = sprintTeamDataForAutoFill.sprintTeams;
+                    //
+                    //    for (var index = 0; index < $scope.sprintTeams.length; index++) {
+                    //        delete $scope.sprintTeams[index].id;
+                    //    }
+                    //
+                    //    $scope.showAutoFillData = {
+                    //        sprintName:  sprintTeamDataForAutoFill.sprintName,
+                    //        showAutoFillLabel: true
+                    //    };
+                    //}
                     $scope.calcParams();
                 }, function (error) {
                     $scope.sprintTeams = [];
