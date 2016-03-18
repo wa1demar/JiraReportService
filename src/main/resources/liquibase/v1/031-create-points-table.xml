@@ -1,0 +1,46 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="031" author="viholovko">
+
+        <createTable tableName="points">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_login" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sprint_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="report_id" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="issue_count" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="points" type="double">
+                <constraints nullable="true"/>
+            </column>
+            <column name="issue_hourse" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="uat_count" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="uat_hours" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="qat_count" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="qat_hours" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+
+
+        </createTable>
+        <comment>Create table points</comment>
+
+    </changeSet>
+</databaseChangeLog>

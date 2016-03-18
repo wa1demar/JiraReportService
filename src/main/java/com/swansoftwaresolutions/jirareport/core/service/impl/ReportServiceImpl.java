@@ -7,7 +7,6 @@ import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.ReportMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.Report;
-import com.swansoftwaresolutions.jirareport.domain.entity.builder.JiraUserBuilder;
 import com.swansoftwaresolutions.jirareport.domain.entity.builder.ReportBuilder;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.ReportRepository;
@@ -17,14 +16,10 @@ import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEn
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Vitaliy Holovko
- *         on 04.03.16.
  */
 
 @Service
@@ -66,7 +61,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public ReportDto retrieveReportByID(long id) {
+    public ReportDto findById(long id) {
         return reportMapper.toDto(reportRepository.findById(id));
     }
 
@@ -121,4 +116,8 @@ public class ReportServiceImpl implements ReportService {
         return reportMapper.toDto(reportRepository.delete(id));
     }
 
+    @Override
+    public ReportDto findByBoardId(Long boardId) throws NoSuchEntityException {
+        return reportMapper.toDto(reportRepository.findByBoardId(boardId));
+    }
 }
