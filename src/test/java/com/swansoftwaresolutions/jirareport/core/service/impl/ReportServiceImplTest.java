@@ -55,7 +55,7 @@ public class ReportServiceImplTest extends AbstractServiceImplTest {
 
         when(reportRepositoryMock.findById(1L)).thenReturn(model);
 
-        ReportDto actual = reportService.retrieveReportByID(1L);
+        ReportDto actual = reportService.findById(1L);
 
         verify(reportRepositoryMock, times(1)).findById(1L);
         verifyNoMoreInteractions(reportRepositoryMock);

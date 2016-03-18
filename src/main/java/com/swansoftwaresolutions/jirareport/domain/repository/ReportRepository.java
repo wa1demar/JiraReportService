@@ -32,6 +32,8 @@ public interface ReportRepository {
 
     Report findById(final Long id) throws NoSuchEntityException;
 
+    Report findByBoardId(Long boardId) throws NoSuchEntityException;
+
     Report getLastAddedReport();
 
     Report add(Report report);

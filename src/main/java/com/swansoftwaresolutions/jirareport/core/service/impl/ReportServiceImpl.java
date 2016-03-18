@@ -7,7 +7,6 @@ import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.ReportMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.Report;
-import com.swansoftwaresolutions.jirareport.domain.entity.builder.JiraUserBuilder;
 import com.swansoftwaresolutions.jirareport.domain.entity.builder.ReportBuilder;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.ReportRepository;
@@ -22,7 +21,6 @@ import java.util.stream.Collectors;
 
 /**
  * @author Vitaliy Holovko
- *         on 04.03.16.
  */
 
 @Service
@@ -123,4 +121,8 @@ public class ReportServiceImpl implements ReportService {
         return reportMapper.toDto(reportRepository.delete(id));
     }
 
+    @Override
+    public ReportDto findByBoardId(Long boardId) throws NoSuchEntityException {
+        return reportMapper.toDto(reportRepository.findByBoardId(boardId));
+    }
 }

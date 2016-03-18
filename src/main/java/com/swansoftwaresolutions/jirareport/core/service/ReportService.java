@@ -2,12 +2,8 @@ package com.swansoftwaresolutions.jirareport.core.service;
 
 import com.swansoftwaresolutions.jirareport.core.dto.report.NewReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDto;
-import com.swansoftwaresolutions.jirareport.domain.entity.Report;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
-import com.swansoftwaresolutions.jirareport.core.dto.ReportResponceDto;
-
-import java.util.List;
 
 /**
  * @author Vitaliy Holovko
@@ -30,4 +26,8 @@ public interface ReportService {
     ReportListDto retrieveAllClosedReportsList();
 
     ReportDto copy(long id) throws NoSuchEntityException;
+
+    ReportDto findByBoardId(Long id) throws NoSuchEntityException;
+
+
 }

@@ -631,7 +631,7 @@ jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModal', '$
         };
 
 //----------------------------------------------------------------------------------------------------------------------
-//Dlg add issue
+//Dlg add fields
         $scope.processIssue = function (item, issueDate) {
             var modalInstance = $uibModal.open({
                 animation: true,
@@ -665,7 +665,7 @@ jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModal', '$
         };
 
 //----------------------------------------------------------------------------------------------------------------------
-//Dlg delete issue
+//Dlg delete fields
         $scope.deleteIssue = function (item) {
             var modalInstance = $uibModal.open({
                 animation: true,
