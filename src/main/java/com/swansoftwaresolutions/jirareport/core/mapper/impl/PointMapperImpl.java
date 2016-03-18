@@ -24,6 +24,7 @@ import java.util.List;
 @Component
 public class PointMapperImpl implements PointMapper {
 
+    @Autowired
     ModelMapper modelMapper;
 
     @Override
