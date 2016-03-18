@@ -56,7 +56,7 @@ public class SprintController {
 
     @RequestMapping(value = "/{report_id}/sprints_with_team/{sprint_id}", method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseEntity<FullSprintDto> updateSprintWithTeam(@Valid @RequestBody FullSprintDto sprintDto, @PathVariable("report_id") long reportId, @PathVariable("sprint_id") long sprintId) {
+    public ResponseEntity<FullSprintDto> updateSprintWithTeam(@Valid @RequestBody FullSprintDto sprintDto, @PathVariable("report_id") long reportId, @PathVariable("sprint_id") long sprintId) throws NoSuchEntityException {
         sprintDto.setReportId(reportId);
         sprintDto.setId(sprintId);
         FullSprintDto dto = sprintService.update(sprintDto);

@@ -24,7 +24,7 @@ public class JiraUser {
     @Column(name = "jira_user_id")
     private Long jiraUserId;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "admins")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "admins", cascade = CascadeType.ALL)
     private List<Report> reports = new ArrayList<>();
 
 

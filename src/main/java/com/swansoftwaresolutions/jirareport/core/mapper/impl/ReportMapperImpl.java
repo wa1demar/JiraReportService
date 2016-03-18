@@ -4,6 +4,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.report.NewReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.ReportMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.mappings.NewReportDtoModelMap;
+import com.swansoftwaresolutions.jirareport.core.mapper.mappings.ReportModelMap;
 import com.swansoftwaresolutions.jirareport.core.mapper.mappings.UpdatedReportDtoModelMap;
 import com.swansoftwaresolutions.jirareport.domain.entity.Report;
 import com.swansoftwaresolutions.jirareport.core.dto.ReportResponceDto;
@@ -28,6 +29,7 @@ public class ReportMapperImpl implements ReportMapper {
         this.modelMapper = modelMapper;
         modelMapper.addMappings(new NewReportDtoModelMap());
         modelMapper.addMappings(new UpdatedReportDtoModelMap());
+        modelMapper.addMappings(new ReportModelMap());
     }
 
     @Override

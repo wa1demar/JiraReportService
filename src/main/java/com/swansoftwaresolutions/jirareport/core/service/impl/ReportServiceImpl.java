@@ -17,10 +17,8 @@ import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEn
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Vitaliy Holovko
@@ -66,7 +64,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public ReportDto retrieveReportByID(long id) {
+    public ReportDto retrieveReportByID(long id) throws NoSuchEntityException {
         return reportMapper.toDto(reportRepository.findById(id));
     }
 
@@ -78,7 +76,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public ReportDto copy(long id) {
+    public ReportDto copy(long id) throws NoSuchEntityException {
 
         Report report = reportRepository.findById(id);
 
@@ -98,10 +96,14 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public ReportDto update(NewReportDto newReportDto, long id) throws NoSuchEntityException {
+    public ReportDto update(ReportDto newReportDto, long id) throws NoSuchEntityException {
         List<JiraUser> jiraUsers = null;
-        if (newReportDto.getAdmins() != null && newReportDto.getAdmins().length > 0) {
-            jiraUsers = jiraUserRepository.findByLogins(newReportDto.getAdmins());
+        if (newReportDto.getAdmins() != null && newReportDto.getAdmins().size() > 0) {
+            List<String> admins = newReportDto.getAdmins().stream().map(sd -> sd.getLogin()).collect(Collectors.toList());
+            String[] logins = new String[admins.size()];
+            jiraUsers = jiraUserRepository.findByLogins(admins.toArray(logins));
+        } else {
+            jiraUsers = new ArrayList<>();
         }
 
         Report report = reportMapper.fromDto(newReportDto);

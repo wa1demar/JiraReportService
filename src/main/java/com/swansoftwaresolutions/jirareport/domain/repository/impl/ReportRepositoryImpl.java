@@ -1,10 +1,8 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
-import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.Report;
 import com.swansoftwaresolutions.jirareport.domain.repository.ReportRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -29,8 +27,8 @@ public class ReportRepositoryImpl implements ReportRepository{
     @Override
     public List<Report> findAll() {
         Query query = sessionFactory.getCurrentSession().createQuery("FROM Report r");
-
-        return query.list();
+        List<Report> reports = query.list();
+        return reports;
     }
 
     @Override
@@ -124,10 +122,16 @@ public class ReportRepositoryImpl implements ReportRepository{
     }
 
     @Override
-    public Report findById(Long id) {
-        return (Report) sessionFactory.getCurrentSession()
-                .createCriteria(Report.class).add(Restrictions.eq("id", id)).uniqueResult();
+    public Report findById(Long id) throws NoSuchEntityException {
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM Report r WHERE r.id = :id");
+        query.setParameter("id", id);
 
+        Report report = (Report) query.uniqueResult();
+        if (report != null) {
+            return report;
+        }
+
+        throw new NoSuchEntityException("Report Not Found");
     }
 
     @Override
@@ -152,7 +156,7 @@ public class ReportRepositoryImpl implements ReportRepository{
             throw new NoSuchEntityException("Entity not found");
         }
 
-        sessionFactory.getCurrentSession().update(report);
+        sessionFactory.getCurrentSession().merge(report);
 
         return report;
     }

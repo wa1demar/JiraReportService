@@ -30,7 +30,7 @@ public interface ReportRepository {
 
     List<Report> getLastUpdatedReports();
 
-    Report findById(final Long id);
+    Report findById(final Long id) throws NoSuchEntityException;
 
     Report getLastAddedReport();
 

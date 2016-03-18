@@ -52,6 +52,7 @@ public class SprintRepositoryImpl implements SprintRepository {
         return sprint;
     }
 
+    @Override
     public Sprint findById(long sprintId) throws NoSuchEntityException {
         Query query = sessionFactory.getCurrentSession().createQuery("FROM Sprint s WHERE s.id = :sprintId");
         query.setParameter("sprintId", sprintId);

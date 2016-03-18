@@ -107,7 +107,7 @@ public class SprintServiceImpl implements SprintService {
     }
 
     @Override
-    public FullSprintDto update(FullSprintDto sprintDto) {
+    public FullSprintDto update(FullSprintDto sprintDto) throws NoSuchEntityException {
         Sprint sprint = sprintMapper.fromDto(sprintDto);
 
         List<SprintDeveloper> developers = new ArrayList<>();

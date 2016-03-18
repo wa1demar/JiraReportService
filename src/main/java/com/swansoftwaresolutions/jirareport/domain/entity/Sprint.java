@@ -47,11 +47,11 @@ public class Sprint {
     @Column(name = "not_count_target")
     private boolean notCountTarget;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "report_id", nullable = false)
     private Report report = new Report();
 
-    @OneToMany(cascade={CascadeType.ALL}, mappedBy="sprint", orphanRemoval = true)
+    @OneToMany(cascade={CascadeType.ALL}, mappedBy="sprint", orphanRemoval = true, fetch = FetchType.EAGER)
     private List<SprintDeveloper> developers = new ArrayList<>();
 
     public Long getId() {
@@ -94,6 +94,7 @@ public class Sprint {
         this.endDate = endDate;
     }
 
+    @Transient
     public Report getReport() {
         return report;
     }
@@ -142,30 +143,4 @@ public class Sprint {
         this.developers = developers;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Sprint sprint = (Sprint) o;
-
-        if (showUAT != sprint.showUAT) return false;
-        if (type != sprint.type) return false;
-        if (notCountTarget != sprint.notCountTarget) return false;
-        if (!name.equals(sprint.name)) return false;
-        if (!state.equals(sprint.state)) return false;
-        return report.equals(sprint.report);
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + state.hashCode();
-        result = 31 * result + (showUAT ? 1 : 0);
-        result = 31 * result + type;
-        result = 31 * result + (notCountTarget ? 1 : 0);
-        result = 31 * result + report.hashCode();
-        return result;
-    }
 }
