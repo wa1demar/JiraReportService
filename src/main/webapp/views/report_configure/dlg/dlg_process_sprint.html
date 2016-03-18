@@ -4,28 +4,34 @@
 <form name="processSprintForm" ng-submit="submit()" novalidate>
     <div class="content-body" style="margin: 20px;">
         <div class="field-group" ng-class="{ 'has-error': processSprintForm.$submitted || processSprintForm.name.$touched && processSprintForm.name.$invalid }">
-            <label>Name: </label>
-            <input ng-model="sprint.name" type="text" class="form-control" name="name" required/>
+            <label for="name" class="control-label">Name: </label>
+            <input ng-model="sprint.name" type="text" class="form-control" id="name" name="name" required/>
             <div class="help-block" ng-messages="processSprintForm.name.$error" ng-if="processSprintForm.name.$touched || processSprintForm.$submitted">
                 <p ng-message="required">Name is required.</p>
             </div>
         </div>
-        <div class="field-group">
-            <label for="start-date" class="control-label">Date start:</label>
+        <div class="field-group" ng-class="{ 'has-error': processSprintForm.$submitted || processSprintForm.startDate.$touched && processSprintForm.startDate.$invalid }">
+            <label for="startDate" class="control-label">Date start:</label>
             <p class="input-group">
-                <input ng-model="sprint.startDate" type="text" id="start-date" name="start-date" class="form-control" uib-datepicker-popup="{{format}}" is-open="popupCalenderStartDate.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" placeholder="MM/DD/YYY"/>
+                <input ng-model="sprint.startDate" type="text" id="startDate" name="startDate" class="form-control" uib-datepicker-popup="{{format}}" is-open="popupCalenderStartDate.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" placeholder="MM/DD/YYY" required/>
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="openCalenderStartDate()"><i class="glyphicon glyphicon-calendar"></i></button>
                 </span>
+                <div class="help-block" ng-messages="processSprintForm.startDate.$error" ng-if="processSprintForm.startDate.$touched || processSprintForm.$submitted">
+                    <p ng-message="required">Date start is required.</p>
+                </div>
             </p>
         </div>
-        <div class="field-group">
-            <label for="end-date" class="control-label">Date end:</label>
+        <div class="field-group" ng-class="{ 'has-error': processSprintForm.$submitted || processSprintForm.endDate.$touched && processSprintForm.endDate.$invalid }">
+            <label for="endDate" class="control-label">Date end:</label>
             <p class="input-group">
-                <input ng-model="sprint.endDate" type="text" id="end-date" name="end-date" class="form-control" uib-datepicker-popup="{{format}}" is-open="popupCalenderEndDate.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" placeholder="MM/DD/YYY"/>
+                <input ng-model="sprint.endDate" type="text" id="endDate" name="endDate" class="form-control" uib-datepicker-popup="{{format}}" is-open="popupCalenderEndDate.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" placeholder="MM/DD/YYY" required/>
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="openCalenderEndDate()"><i class="glyphicon glyphicon-calendar"></i></button>
                 </span>
+                <div class="help-block" ng-messages="processSprintForm.endDate.$error" ng-if="processSprintForm.endDate.$touched || processSprintForm.$submitted">
+                    <p ng-message="required">Date end is required.</p>
+                </div>
             </p>
         </div>
         <div id="board-box" class="field-group">

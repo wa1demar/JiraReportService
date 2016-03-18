@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
+import com.swansoftwaresolutions.jirareport.core.dto.sprint.FullSprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint.NewSprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDtos;
@@ -32,12 +33,33 @@ public class SprintController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/{report_id}/sprints_with_team", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<FullSprintDto> addNewSprintWithDevelopers(@Valid @RequestBody FullSprintDto sprintDto, @PathVariable("report_id") long reportId) {
+        sprintDto.setReportId(reportId);
+
+        FullSprintDto dto = sprintService.add(sprintDto);
+
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/{report_id}/sprints/{sprint_id}", method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<SprintDto> updateSprint(@Valid @RequestBody SprintDto sprintDto, @PathVariable("report_id") long reportId, @PathVariable("sprint_id") long sprintId) {
         sprintDto.setReportId(reportId);
         sprintDto.setId(sprintId);
         SprintDto dto = sprintService.update(sprintDto);
+
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/{report_id}/sprints_with_team/{sprint_id}", method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseEntity<FullSprintDto> updateSprintWithTeam(@Valid @RequestBody FullSprintDto sprintDto, @PathVariable("report_id") long reportId, @PathVariable("sprint_id") long sprintId) {
+        sprintDto.setReportId(reportId);
+        sprintDto.setId(sprintId);
+        FullSprintDto dto = sprintService.update(sprintDto);
 
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }

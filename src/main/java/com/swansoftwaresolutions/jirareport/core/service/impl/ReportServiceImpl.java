@@ -8,6 +8,7 @@ import com.swansoftwaresolutions.jirareport.core.mapper.ReportMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.Report;
 import com.swansoftwaresolutions.jirareport.domain.entity.builder.JiraUserBuilder;
+import com.swansoftwaresolutions.jirareport.domain.entity.builder.ReportBuilder;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.ReportRepository;
 import com.swansoftwaresolutions.jirareport.core.service.ReportService;
@@ -67,6 +68,33 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public ReportDto retrieveReportByID(long id) {
         return reportMapper.toDto(reportRepository.findById(id));
+    }
+
+    @Override
+    public ReportListDto retrieveAllClosedReportsList() {
+        List<ReportDto> reportDtos = reportMapper.toDtos(reportRepository.findAllClosed());
+
+        return new ReportListDtoBuilder().reportsDto(reportDtos).build();
+    }
+
+    @Override
+    public ReportDto copy(long id) {
+
+        Report report = reportRepository.findById(id);
+
+        Report newReport = new ReportBuilder()
+                .title("Copy of " + report.getTitle())
+                .creator(report.getCreator())
+                .boardId(report.getBoardId())
+                .isClosed(report.getClosed())
+                .admins(report.getAdmins())
+                .closedDate(report.getClosedDate())
+                .createdDate(report.getCreatedDate())
+                .syncDate(report.getSyncDate())
+                .typeId(report.getTypeId())
+                .build();
+
+        return reportMapper.toDto(reportRepository.add(newReport));
     }
 
     @Override

@@ -7,6 +7,12 @@ jiraPluginApp.factory('ReportsFactory', ['$resource', 'CONFIG', function ($resou
   });
 }]);
 
+jiraPluginApp.factory('ReportsClosedFactory', ['$resource', 'CONFIG', function ($resource, CONFIG) {
+  return $resource(CONFIG.API_PATH + '/reports/closed ', {}, {
+    query:  { method: 'GET', isArray: false }
+  });
+}]);
+
 jiraPluginApp.factory('ReportFactory', ['$resource', 'CONFIG', function ($resource, CONFIG) {
   return $resource(CONFIG.API_PATH + '/reports/:id', {id: "@id"}, {
     get:    { method: 'GET' },
@@ -16,8 +22,8 @@ jiraPluginApp.factory('ReportFactory', ['$resource', 'CONFIG', function ($resour
 }]);
 
 jiraPluginApp.factory('CopyReportFactory', ['$resource', 'CONFIG', function ($resource, CONFIG) {
-  return $resource(CONFIG.API_PATH + '/report/copy', {}, {
-    copy:   { method: 'POST' }
+  return $resource(CONFIG.API_PATH + '/reports/:reportId/copy', {reportId: "@reportId"}, {
+    copy:   { method: 'GET' }
   });
 }]);
 

@@ -1,0 +1,26 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="030" author="Vladimir Martynyuk">
+
+        <dropColumn columnName="target_points" tableName="reports"/>
+        <dropColumn columnName="target_hours" tableName="reports"/>
+        <dropColumn columnName="target_qat_defect_min" tableName="reports"/>
+        <dropColumn columnName="target_qat_defect_max" tableName="reports"/>
+        <dropColumn columnName="target_qat_defect_hours" tableName="reports"/>
+        <dropColumn columnName="target_uat_defect_min" tableName="reports"/>
+        <dropColumn columnName="target_uat_defect_max" tableName="reports"/>
+        <dropColumn columnName="target_uat_defect_hours" tableName="reports"/>
+        <dropColumn columnName="actual_points" tableName="reports"/>
+        <dropColumn columnName="actual_hours" tableName="reports"/>
+        <dropColumn columnName="actual_qat_defect_points" tableName="reports"/>
+        <dropColumn columnName="actual_qat_defect_hours" tableName="reports"/>
+        <dropColumn columnName="actual_uat_defect_points" tableName="reports"/>
+        <dropColumn columnName="actual_uat_defect_hours" tableName="reports"/>
+
+        <addDefaultValue columnName="is_closed"
+                         defaultValueBoolean="false"
+                         tableName="reports"/>
+
+    </changeSet>
+</databaseChangeLog>

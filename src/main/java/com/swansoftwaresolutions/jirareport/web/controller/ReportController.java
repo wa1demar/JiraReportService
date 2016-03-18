@@ -66,30 +66,18 @@ public class ReportController {
         return new ResponseEntity<>(new ReportDto(), HttpStatus.OK);
     }
 
-//    @RequestMapping(value = "/v1/report/copy", method = RequestMethod.POST)
-//    private ResponseEntity<ResponceReportDto> makeReportCopyById(@RequestParam(value = "id") long id, @RequestParam(value = "name") String reportName) {
-//        ResponceReportDto responsePostDto;
-//        HttpStatus httpStatus;
-//
-////        try {
-////            ReportDto newReportDto = reportService.findById(id);
-////            newReportDto.setTitle(reportName);
-////            newReportDto.setId(null);
-////            if (reportService.add(newReportDto) != null) {
-////                responsePostDto = new ResponceReportDto(true, "Report added successfully.");
-////                httpStatus = HttpStatus.OK;
-////            } else {
-////                responsePostDto = new ResponceReportDto(false, "Can't added Report.");
-////                httpStatus = HttpStatus.NOT_FOUND;
-////            }
-////        } catch (NoSuchEntityException e) {
-////            e.printStackTrace();
-////            responsePostDto = new ResponceReportDto(false, "Can't added Report.");
-////            httpStatus = HttpStatus.NOT_FOUND;
-////        }
-//
-//        return new ResponseEntity<>(responsePostDto, httpStatus);
-//    }
+    @RequestMapping(value = "/v1/reports/closed", method = RequestMethod.GET)
+    private ResponseEntity<ReportListDto> getAllClosedReports() {
+        ReportListDto reportDtos = reportService.retrieveAllClosedReportsList();
+        return new ResponseEntity<>(reportDtos, HttpStatus.OK);
+    }
 
+
+    @RequestMapping(value = "/v1/reports/{report_id}/copy", method = RequestMethod.GET)
+    private ResponseEntity<ReportDto> copyReport(@PathVariable("report_id") long id) throws NoSuchEntityException {
+        ReportDto reportDto = reportService.copy(id);
+
+        return new ResponseEntity<>(reportDto, HttpStatus.OK);
+    }
 
 }

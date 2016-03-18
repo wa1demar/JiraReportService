@@ -26,37 +26,6 @@ public class ConfigRepositoryImplTest extends AbstractDbTest {
     DateFormat dataFormatnew;
 
     @Test
-    @Transactional
-    @ExpectedDatabase("/dbtest/config/expectedData.xml")
-    @DatabaseTearDown(value = {"/dbtest/config/expectedData.xml"}, type = DatabaseOperation.DELETE_ALL)
-    public void testAddNewConfig() throws Exception {
-        dataFormatnew = new SimpleDateFormat("dd/MM/yyyy");
-
-        Config config = new Config();
-        config.setStoryPointsName("Story Points");
-        config.setAgileDoneName("jira-developers");
-        config.setBugName("Bug");
-        config.setNonWorkingDays("09/05/2015, 10/15/2015");
-        config.setAutoSyncTime(dataFormatnew.format(new Date()));
-
-        Config newConfig = configRepository.add(config);
-
-        assertNotNull(newConfig.getId());
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void testAddWrongParseDataNewConfig() throws Exception {
-        Config config = new Config();
-        config.setStoryPointsName("Story Point");
-        config.setAgileDoneName("Dev Done");
-        config.setBugName("Bug");
-        config.setNonWorkingDays("Sunday");
-        config.setAutoSyncTime(dataFormatnew.format(new Date()));
-
-        configRepository.add(config);
-    }
-
-    @Test
     public void testUpdateConfig() throws Exception {
         dataFormatnew = new SimpleDateFormat("MM-dd-yyyy");
 

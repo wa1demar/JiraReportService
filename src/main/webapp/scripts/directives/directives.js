@@ -11,15 +11,42 @@ jiraPluginApp.directive('printThis', function() {
     return directiveDefinitionObject;
 });
 
+jiraPluginApp.directive('convertToNumber', function() {
+    return {
+        require: 'ngModel',
+        link: function(scope, element, attrs, ngModel) {
+            ngModel.$parsers.push(function(val) {
+                return parseInt(val, 10);
+            });
+            ngModel.$formatters.push(function(val) {
+                return '' + val;
+            });
+        }
+    };
+});
+
+jiraPluginApp.directive('convertToDouble', function() {
+    return {
+        require: 'ngModel',
+        link: function(scope, element, attrs, ngModel) {
+            ngModel.$parsers.push(function(val) {
+                return parseFloat(val);
+            });
+            ngModel.$formatters.push(function(val) {
+                return '' + val;
+            });
+        }
+    };
+});
+
 //directive for indicators
 jiraPluginApp.directive('indicator', function() {
     var directive = {
         restrict: 'E',
-        template: "<b>{{show}}</b> <br/>"
+        template: ""
     };
 
     directive.scope = {
-        show:     "=show",
         type:     "=type",
         target :  "=target",
         actual :  "=actual",
@@ -72,18 +99,4 @@ jiraPluginApp.directive('indicator', function() {
     };
 
     return directive;
-});
-
-jiraPluginApp.directive('convertToNumber', function() {
-    return {
-        require: 'ngModel',
-        link: function(scope, element, attrs, ngModel) {
-            ngModel.$parsers.push(function(val) {
-                return parseInt(val, 10);
-            });
-            ngModel.$formatters.push(function(val) {
-                return '' + val;
-            });
-        }
-    };
 });
