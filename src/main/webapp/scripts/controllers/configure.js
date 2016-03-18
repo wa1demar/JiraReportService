@@ -115,6 +115,9 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
     ['$scope', '$routeParams', '$uibModal', 'ReportFactory', 'UsersFactory', 'SprintsFactory', 'SprintFactory', 'SprintTeamFactory', 'SprintWithTeamFactory', 'Notification',
     function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, SprintsFactory, SprintFactory, SprintTeamFactory, SprintWithTeamFactory, Notification) {
         var self = this;
+        var sprintTeamDataForAutoFill = {};
+        $scope.showAutoFillData = {};
+
         $scope.loaderShow = true;
         $scope.sprintTeams = [];
 
@@ -214,7 +217,10 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             var firstLoad = true;
             if (data === undefined) {
                 if ($scope.sprints !== undefined && $scope.sprints.length > 0) {
-                    data = {id: $scope.sprints[0].id};
+                    data = {
+                        id: $scope.sprints[0].id,
+                        name: $scope.sprints[0].name
+                    };
                 }
             } else {
                 firstLoad = false;
@@ -225,8 +231,34 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 SprintTeamFactory.query({
                     sprintId: data.id
                 }, function (result) {
-                    //console.log(result);
+                    //console.log(result.developers);
                     $scope.sprintTeams = result.developers;
+
+                    if (result.developers.length > 0) {
+                        console.log("developers count:" + result.developers.length);
+                        sprintTeamDataForAutoFill = {
+                            sprintName:  data.name,
+                            sprintTeams: result.developers
+                        };
+
+                        $scope.showAutoFillData = {
+                            showAutoFillLabel: false
+                        };
+                    } else {
+                        console.log(result.developers.length);
+                        console.log(sprintTeamDataForAutoFill);
+                        $scope.sprintTeams = sprintTeamDataForAutoFill.sprintTeams;
+
+                        for (var index = 0; index < $scope.sprintTeams.length; index++) {
+                            delete $scope.sprintTeams[index].id;
+                        }
+
+                        $scope.showAutoFillData = {
+                            sprintName:  sprintTeamDataForAutoFill.sprintName,
+                            showAutoFillLabel: true
+                        };
+                        console.log($scope.showAutoFillData);
+                    }
                     $scope.calcParams();
                 }, function (error) {
                     //console.log(error);
@@ -301,7 +333,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 developerLogin: item.login,
                 developerName: item.fullName,
                 engineerLevel: 1,
-                participationLevel: "1.0",
+                participationLevel: 1,
                 daysInSprint: 1
             });
             $scope.dataDeveloper = "";
