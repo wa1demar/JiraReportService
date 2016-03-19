@@ -1,38 +1,45 @@
 'use strict';
 
-jiraPluginApp.factory('AuthenticationFactory', ['$window', '$http', 'CONFIG', function($window, $http, CONFIG) {
+jiraPluginApp.factory('AuthenticationFactory', ['$window', '$http', 'CONFIG', '$q', function($window, $http, CONFIG, $q) {
     var auth = {
         isLogged: false,
         check: function() {
             var self = this;
-            //Check session
-            //$http({
-            //    method: 'GET',
-            //    url: CONFIG.API_PATH + '/check_session'
-            //}).then(function successCallback(response) {
-            //    console.log("Succes");
-            //    console.log(response);
-            //    if ($window.localStorage.token && $window.localStorage.user) {
-            //        self.isLogged = true;
-            //    } else {
-            //        self.isLogged = false;
-            //        delete self.user;
-            //    }
-            //}, function errorCallback(response) {
-            //    console.log("Error");
-            //    if (response.status === 401) {
-            //        console.log(11111111);
-            //        self.isLogged = false;
-            //        delete self.user;
-            //    }
-            //});
-
             if ($window.localStorage.token && $window.localStorage.user) {
                 self.isLogged = true;
             } else {
                 self.isLogged = false;
                 delete self.user;
             }
+        },
+        checkSession: function () {
+            //Check session
+            var self = this;
+            var def = $q.defer();
+
+            $http({
+                method: 'GET',
+                url: CONFIG.API_PATH + '/check_session'
+            }).then(function successCallback(response) {
+                console.log("Succes");
+                console.log(response);
+                if ($window.localStorage.token && $window.localStorage.user) {
+                    self.isLogged = true;
+                } else {
+                    self.isLogged = false;
+                    delete self.user;
+                }
+                def.resolve(response);
+            }, function errorCallback(response) {
+                console.log("Error");
+                if (response.status === 401) {
+                    self.isLogged = false;
+                    delete self.user;
+                }
+                def.reject();
+            });
+
+            return def.promise;
         }
     };
 
