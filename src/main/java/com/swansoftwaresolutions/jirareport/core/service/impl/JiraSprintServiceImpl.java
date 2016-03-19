@@ -42,13 +42,18 @@ public class JiraSprintServiceImpl implements JiraSprintsService {
 
     @Override
     public void add(ImportedJiraSprintDto sprintDto) {
-
         JiraSprint jiraSprint = jiraSprintMapper.fromDto(sprintDto);
         jiraSprintRepository.add(jiraSprint);
     }
 
     @Override
-    public List<ImportedJiraSprintDto> findAll() {
+    public void addOrUpdate(ImportedJiraSprintDto sprint) {
+        JiraSprint jiraSprint = jiraSprintMapper.fromDto(sprint);
+        jiraSprintRepository.addOrUpdate(jiraSprint);
+    }
+
+    @Override
+    public List<ImportedJiraSprintDto> findAll() throws NoSuchEntityException{
         return jiraSprintMapper.toDtos(jiraSprintRepository.findAll());
     }
 

@@ -17,7 +17,9 @@ public interface JiraSprintsService {
 
     void add(ImportedJiraSprintDto sprint);
 
-    List<ImportedJiraSprintDto> findAll();
+    void addOrUpdate(ImportedJiraSprintDto sprint);
+
+    List<ImportedJiraSprintDto> findAll() throws NoSuchEntityException;
 
     void delete(JiraSprint jiraSprint) throws NoSuchEntityException;
 

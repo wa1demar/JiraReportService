@@ -29,22 +29,13 @@ public class ProjectsRestClient extends RestClientBase implements RestClient {
 
     @Override
     public void loadData() {
-        log.info("+++++++++++++++++++++++++++++++++++");
-        log.info("-----------------------------------");
-        log.info("-------Project Scheduler-----------");
-
         final String uri = "https://swansoftwaresolutions.atlassian.net/rest/api/2/project.json";
 
         HttpEntity<String> request = new HttpEntity<>(getHeaders());
         RestTemplate restTemplate = new RestTemplate();
         ProjectDto[] projectDtos = restTemplate.exchange(uri, HttpMethod.GET, request, ProjectDto[].class).getBody();
 
-        log.info("   Project on Cloud : " + projectDtos.length);
         insertDataToDataBase(projectDtos);
-
-        log.info("---Project Scheduler Completed-----");
-        log.info("-----------------------------------");
-        log.info("");
     }
 
     private void insertDataToDataBase(ProjectDto[] projectDtos) {

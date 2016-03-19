@@ -76,21 +76,23 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
             importedJiraSprintDto.setEndDate(agileSprintDto.endDate);
             importedJiraSprintDto.setEndDate(agileSprintDto.endDate);
             importedJiraSprintDto.setStartDate(agileSprintDto.startDate);
+            importedJiraSprintDto.setOriginBoardId(boardId);
 
             list.add(importedJiraSprintDto);
         }
 
-        List<ImportedJiraSprintDto> sprints = sprintsService.findAll();
+        List<ImportedJiraSprintDto> sprints = new ArrayList<>();
 
         try {
-            list.removeAll(sprints);
-        } catch (NullPointerException ex) {
-            log.warning("NullPointerExeption !!!");
+            sprints = sprintsService.findAll();
+        } catch (NoSuchEntityException e) {
+            e.printStackTrace();
         }
 
+        if (sprints!=null) list.removeAll(sprints);
+
         for (ImportedJiraSprintDto sprint : list) {
-            sprint.setOriginBoardId(boardId);
-            sprintsService.add(sprint);
+            sprintsService.addOrUpdate(sprint);
         }
     }
 
