@@ -13,15 +13,15 @@ import java.util.Set;
  */
 public interface SprintDeveloperMapper {
 
-    SprintDevelopersDto toDtos(List<SprintDeveloper> developers);
+    SprintDevelopersDto toDto(List<SprintDeveloper> developers);
 
     SprintDeveloper fromDto(NewSprintDeveloperDto dto);
 
-    SprintDeveloperDto toDtos(SprintDeveloper newDeveloper);
+    SprintDeveloperDto toDto(SprintDeveloper newDeveloper);
 
     List<SprintDeveloper> fromDtos(List<SprintDeveloperDto> developers);
 
-    List<SprintDeveloperDto> toDtos(Set<SprintDeveloper> developers);
+    List<SprintDeveloperDto> toDtos(List<SprintDeveloper> developers);
 
     SprintDeveloper fromDto(SprintDeveloperDto dto);
 }

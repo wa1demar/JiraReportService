@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface JiraSprintRepository {
 
-    List<JiraSprint> findAll();
+    List<JiraSprint> findAll() throws NoSuchEntityException;
 
     List<JiraSprint> findByBoardId(final Long boardId);
 
@@ -15,10 +15,14 @@ public interface JiraSprintRepository {
 
     JiraSprint add(final JiraSprint jiraSprint);
 
+    JiraSprint addOrUpdate(JiraSprint jiraSprint);
+
     JiraSprint update(final JiraSprint jiraSprint) throws NoSuchEntityException;
 
     void deleteAll();
 
     void delete(Long id) throws NoSuchEntityException;
+
+    JiraSprint findByNameAndBoardId(String name, Long boardId) throws NoSuchEntityException;
 
 }

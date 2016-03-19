@@ -17,12 +17,15 @@
           <option value="2">Manual</option>
         </select>
       </div>
-      <div class="form-group" ng-show="model.typeId === 1">
-        <label for="id-board">Report:</label>
-        <select ui-select2 ng-model="model.boardId" data-placeholder="Select board" id="id-board" name="id-board" style="width: 100%;" convert-to-number>
+      <div class="form-group" ng-if="model.typeId === 1" ng-class="{ 'has-error': processReportForm.$submitted || processReportForm.boardId.$touched && processReportForm.boardId.$invalid }">
+        <label for="boardId">Project:</label>
+        <select ui-select2 ng-model="model.boardId" data-placeholder="Select board" id="boardId" name="boardId" style="width: 100%;" convert-to-number required>
           <option value=""></option>
           <option ng-repeat="board in dlgData.boards" value="{{board.id}}">{{board.name}}</option>
         </select>
+        <div class="help-block" ng-messages="processReportForm.boardId.$error" ng-if="processReportForm.boardId.$touched || processReportForm.$submitted">
+          <p ng-message="required">Project is required.</p>
+        </div>
       </div>
       <div class="form-group">
         <label for="admins">admins:</label>

@@ -25,7 +25,6 @@ public class JiraSprintRepositoryImpl implements JiraSprintRepository {
     private SessionFactory sessionFactory;
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<JiraSprint> findAll() {
         return sessionFactory.getCurrentSession().createCriteria(JiraSprint.class)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
@@ -46,6 +45,24 @@ public class JiraSprintRepositoryImpl implements JiraSprintRepository {
     @Override
     public JiraSprint add(JiraSprint jiraSprint) {
         sessionFactory.getCurrentSession().save(jiraSprint);
+        return jiraSprint;
+    }
+
+    @Override
+    public JiraSprint addOrUpdate(JiraSprint jiraSprint) {
+        JiraSprint sprint = new JiraSprint();
+        try {
+            sprint = findByNameAndBoardId(jiraSprint.getName(), jiraSprint.getBoardId());
+        } catch (NoSuchEntityException e) {
+            e.printStackTrace();
+        }
+
+        if (sprint == null){
+            sessionFactory.getCurrentSession().save(jiraSprint);
+        } else {
+            jiraSprint.setId(sprint.getId());
+            sessionFactory.getCurrentSession().update(jiraSprint);
+        }
         return jiraSprint;
     }
 
@@ -75,4 +92,10 @@ public class JiraSprintRepositoryImpl implements JiraSprintRepository {
         }
     }
 
+    @Override
+    public JiraSprint findByNameAndBoardId(String name, Long boardId) throws NoSuchEntityException {
+        return (JiraSprint) sessionFactory.openSession()
+                .createCriteria(JiraSprint.class).add(Restrictions.eq("name", name)).
+                        add(Restrictions.eq("boardId", boardId)).uniqueResult();
+    }
 }

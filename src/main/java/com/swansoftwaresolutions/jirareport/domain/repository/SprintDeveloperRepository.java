@@ -9,4 +9,6 @@ public interface SprintDeveloperRepository {
     List<SprintDeveloper> findBySprintId(long sprintId);
 
     SprintDeveloper add(SprintDeveloper developer);
+
+    void delete(List<Long> ids, Long sprintId);
 }

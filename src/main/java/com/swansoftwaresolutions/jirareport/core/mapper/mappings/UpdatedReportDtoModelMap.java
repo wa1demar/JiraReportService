@@ -10,12 +10,7 @@ import org.modelmapper.PropertyMap;
 public class UpdatedReportDtoModelMap extends PropertyMap<ReportDto, Report> {
     @Override
     protected void configure() {
-        map().setTargetUatDefectHours(null);
-        map().setActualHours(null);
-        map().setActualQatDefectHours(null);
-        map().setActualUatDefectHours(null);
         map().setSyncDate(null);
-        map().setTargetHours(null);
-        map().setTargetQatDefectHours(null);
+
     }
 }

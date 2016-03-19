@@ -4,7 +4,7 @@ jiraPluginApp.controller('ReportElementCtrl',
     ['$scope', '$routeParams', 'ReportsFactory', 'ReportFactory', 'ReportWithSprintsAndTeamsFactory', '$timeout', '$location',
         function($scope, $routeParams, ReportsFactory, ReportFactory, ReportWithSprintsAndTeamsFactory, $timeout, $location) {
             var self = this;
-
+            $scope.loaderShow = true;
 //----------------------------------------------------------------------------------------------------------------------
 //update ProgressBar
             $scope.updateProgressBar = function (item) {
@@ -84,9 +84,8 @@ jiraPluginApp.controller('ReportElementCtrl',
             };
 
             this.getReportsData = function () {
-                var dataOngoing = ReportsFactory.query({}, function(){
-                    $scope.reports = dataOngoing.reports;
-                    $scope.loaderShow = false;
+                ReportsFactory.query({}, function(result){
+                    $scope.reports = result.reports;
                 });
             };
 
@@ -324,6 +323,8 @@ jiraPluginApp.controller('ReportElementCtrl',
                 $scope.updateProgressBar();
                 //update data for chart
                 $scope.updateChart();
+
+                $scope.loaderShow = false;
             };
 
             self.getReportWithSprintsAndTeamsData();

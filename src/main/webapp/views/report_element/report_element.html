@@ -19,7 +19,8 @@
             <section class="aui-page-panel-content" id="ghx-content-main">
                 <div class="ghx-page-panel-content-item">
                     <div id="report-element-box">
-                        <div ng-include="'views/report_element/report_element_data.html'"></div>
+                        <div ng-show="loaderShow" class="text-center"><span class="aui-icon aui-icon-wait">Loading...</span></div>
+                        <div ng-show="!loaderShow" ng-include="'views/report_element/report_element_data.html'"></div>
                     </div>
                 </div>
             </section>

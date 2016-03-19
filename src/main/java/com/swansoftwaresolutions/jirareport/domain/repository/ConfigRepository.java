@@ -9,8 +9,6 @@ public interface ConfigRepository {
 
     Config findById(Long id);
 
-    Config add(Config config);
-
     Config update(Config config);
 
     void delete(Config config) throws NoSuchEntityException;

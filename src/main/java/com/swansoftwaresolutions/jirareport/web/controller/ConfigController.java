@@ -27,7 +27,7 @@ public class ConfigController {
         return new ResponseEntity<>(configService.retrieveConfig(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/v1/config", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/v1/config", method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<ConfigDto> patchConfig(@Valid @RequestBody ConfigDto configDto) throws NoSuchEntityException {
 

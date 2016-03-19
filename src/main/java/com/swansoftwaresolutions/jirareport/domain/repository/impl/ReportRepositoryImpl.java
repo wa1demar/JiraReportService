@@ -131,6 +131,13 @@ public class ReportRepositoryImpl implements ReportRepository{
     }
 
     @Override
+    public Report findByBoardId(Long boardId) throws NoSuchEntityException{
+        return (Report) sessionFactory.getCurrentSession()
+                .createCriteria(Report.class).add(Restrictions.eq("boardId", boardId)).uniqueResult();
+
+    }
+
+    @Override
     public Report getLastAddedReport() {
         Query query = sessionFactory.getCurrentSession().getNamedQuery("Report.findLastAddedReport");
 
@@ -152,7 +159,7 @@ public class ReportRepositoryImpl implements ReportRepository{
             throw new NoSuchEntityException("Entity not found");
         }
 
-        sessionFactory.openSession().update(report);
+        sessionFactory.getCurrentSession().update(report);
 
         return report;
     }
@@ -188,6 +195,12 @@ public class ReportRepositoryImpl implements ReportRepository{
         }
 
         return report;
+    }
+
+    @Override
+    public List<Report> findAllClosed() {
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM Report r WHERE r.isClosed = true");
+        return query.list();
     }
 
 }

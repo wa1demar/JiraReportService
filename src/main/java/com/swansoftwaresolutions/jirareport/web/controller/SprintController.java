@@ -53,6 +53,17 @@ public class SprintController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
+
+    @RequestMapping(value = "/{report_id}/sprints_with_team/{sprint_id}", method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseEntity<FullSprintDto> updateSprintWithTeam(@Valid @RequestBody FullSprintDto sprintDto, @PathVariable("report_id") long reportId, @PathVariable("sprint_id") long sprintId) {
+        sprintDto.setReportId(reportId);
+        sprintDto.setId(sprintId);
+        FullSprintDto dto = sprintService.update(sprintDto);
+
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/{report_id}/sprints", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<SprintDtos> getByReportId(@PathVariable("report_id") long reportId) {

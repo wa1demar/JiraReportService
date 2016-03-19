@@ -1,7 +1,14 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
+import org.hibernate.annotations.*;
+
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -33,7 +40,7 @@ public class Sprint {
     @Column(name = "type")
     private int type;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "jira_sprint_id")
     private JiraSprint jiraSprint;
 
@@ -44,8 +51,8 @@ public class Sprint {
     @JoinColumn(name = "report_id", nullable = false)
     private Report report = new Report();
 
-    @OneToMany(mappedBy="sprint")
-    private Set<SprintDeveloper> developers;
+    @OneToMany(cascade={CascadeType.ALL}, mappedBy="sprint", orphanRemoval = true)
+    private List<SprintDeveloper> developers = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -127,11 +134,38 @@ public class Sprint {
         this.notCountTarget = notCountTarget;
     }
 
-    public Set<SprintDeveloper> getDevelopers() {
+    public List<SprintDeveloper> getDevelopers() {
         return developers;
     }
 
-    public void setDevelopers(Set<SprintDeveloper> developers) {
+    public void setDevelopers(List<SprintDeveloper> developers) {
         this.developers = developers;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Sprint sprint = (Sprint) o;
+
+        if (showUAT != sprint.showUAT) return false;
+        if (type != sprint.type) return false;
+        if (notCountTarget != sprint.notCountTarget) return false;
+        if (!name.equals(sprint.name)) return false;
+        if (!state.equals(sprint.state)) return false;
+        return report.equals(sprint.report);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + state.hashCode();
+        result = 31 * result + (showUAT ? 1 : 0);
+        result = 31 * result + type;
+        result = 31 * result + (notCountTarget ? 1 : 0);
+        result = 31 * result + report.hashCode();
+        return result;
     }
 }

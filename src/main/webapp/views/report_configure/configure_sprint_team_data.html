@@ -1,5 +1,7 @@
 <form class="aui">
-    <div class="autofill-box"></div>
+    <div class="autofill-box">
+        <span ng-show="showAutoFillData.showAutoFillLabel" class="aui-lozenge aui-lozenge-current">Autofill {{showAutoFillData.sprintName}}</span>
+    </div>
     <div id="sprint-autofill-box">
         <div>
             Sprint type:
@@ -40,10 +42,10 @@
             <tbody>
                 <tr ng-show="sprintTeams.length > 0" ng-repeat="data in sprintTeams" class="configure-dev-row" data-id="{{data.id}}">
                     <td class="border-right-2">
-                        <select ui-select2 ng-model="data.devName" class="developer-name" disabled>
+                        <select ui-select2 ng-model="data.developerLogin" class="developer-name" disabled>
                             <option ng-repeat="dataUser in devUsers" value="{{dataUser.login}}">{{dataUser.fullName}}</option>
                         </select>
-                        <span class="aui-button delete-developer" data-id="{{data.id}}" ng-click="deleteDeveloper(data.devName)">Delete</span>
+                        <span class="aui-button delete-developer" data-id="{{data.id}}" ng-click="deleteDeveloper(data.developerLogin)">Delete</span>
                     </td>
                     <td class="border-right-2">
                         <select ng-change="calcParams()" class="select engineer-lvl" ng-model="data.engineerLevel" convert-to-number>
@@ -51,8 +53,8 @@
                         </select>
                     </td>
                     <td class="border-right-2">
-                        <select ng-change="calcParams()" class="select participation-lvl" ng-model="data.participationLevel">
-                            <option value="1.0">1.0</option>
+                        <select ng-change="calcParams()" class="select participation-lvl" ng-model="data.participationLevel" convert-to-double>
+                            <option value="1">1.0</option>
                             <option value="0.9">0.9</option>
                             <option value="0.8">0.8</option>
                             <option value="0.7">0.7</option>
@@ -71,12 +73,12 @@
                 </tr>
                 <tr>
                     <td class="border-right-2">
-                        <select ui-select2 class="developer-name" ng-model="dataDeveloper.login" style="width: 180px; margin-right: 5px;">
-                            <option value="add">Add ...</option>
-                            <option ng-repeat="dataUser in devUsersForAdd" value="{{dataUser.login}}" style="float: left;">{{dataUser.fullName}}</option>
+                        <select ui-select2 class="developer-name" ng-model="dataDeveloper" style="width: 180px; margin-right: 5px;">
+                            <option value="">Add ...</option>
+                            <option ng-repeat="dataUser in devUsersForAdd" value="{{dataUser}}" style="float: left;">{{dataUser.fullName}}</option>
                         </select>
-                        <span ng-disabled="!dataDeveloper.login || dataDeveloper.login === 'add'"
-                              ng-click="dataDeveloper.login && dataDeveloper.login !== 'add' ? addDeveloper(dataDeveloper.login) : ''"
+                        <span ng-disabled="!dataDeveloper || dataDeveloper === ''"
+                              ng-click="dataDeveloper && dataDeveloper !== '' ? addDeveloper(dataDeveloper) : ''"
                               id="add-sprint-team" class="aui-button">Add</span>
                     </td>
                 </tr>
@@ -117,10 +119,10 @@
 
                 <tr ng-repeat="data in sprintTeams" class="table-preview-details-row" data-id="{{data.id}}">
                     <td class="dev-name">
-                        {{data.devName}}
+                        {{data.developerName}}
                     </td>
                     <td class="engineer-lvl text-center">{{data.engineerLevel === '4' ? '3' : data.engineerLevel}}</td>
-                    <td class="participation-lvl text-center">{{data.participationLevel}}</td>
+                    <td class="participation-lvl text-center">{{data.participationLevel | number:1}}</td>
                     <td class="days-in-sprint text-center">{{data.daysInSprint}}</td>
 
                     <td class="target-points text-center">{{data.targetPoints}}</td>

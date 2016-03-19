@@ -1,24 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <comments id="1"
-              report_id="1"
-              sprint_id="2"
-              tesxt="test text3"
-              creator="test1"
-              created_date="10/15/2014"
-            />
-    <comments id="2"
-              report_id="2"
-              sprint_id="2"
-              tesxt="test text3"
-              creator="test2"
-              created_date="10/15/2014"
-            />
-    <comments id="3"
-              report_id="31"
-              sprint_id="2"
-              tesxt="test text3"
-              creator="test3"
-              created_date="10/15/2014"
+    <comments
+            report_id="1"
+            sprint_id="1"
+            text="Test comment text"
+            creator="Test User"
             />
 </dataset>

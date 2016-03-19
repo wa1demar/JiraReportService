@@ -7,11 +7,8 @@ import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.swansoftwaresolutions.jirareport.domain.entity.Config;
 import com.swansoftwaresolutions.jirareport.domain.repository.ConfigRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
-import org.dbunit.dataset.IDataSet;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DateFormat;
@@ -27,37 +24,6 @@ public class ConfigRepositoryImplTest extends AbstractDbTest {
     ConfigRepository configRepository;
 
     DateFormat dataFormatnew;
-
-    @Test
-    @Transactional
-    @ExpectedDatabase("/dbtest/config/expectedData.xml")
-    @DatabaseTearDown(value = {"/dbtest/config/expectedData.xml"}, type = DatabaseOperation.DELETE_ALL)
-    public void testAddNewConfig() throws Exception {
-        dataFormatnew = new SimpleDateFormat("dd/MM/yyyy");
-
-        Config config = new Config();
-        config.setStoryPointsName("Story Points");
-        config.setAgileDoneName("jira-developers");
-        config.setBugName("Bug");
-        config.setNonWorkingDays("09/05/2015, 10/15/2015");
-        config.setAutoSyncTime(dataFormatnew.format(new Date()));
-
-        Config newConfig = configRepository.add(config);
-
-        assertNotNull(newConfig.getId());
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void testAddWrongParseDataNewConfig() throws Exception {
-        Config config = new Config();
-        config.setStoryPointsName("Story Point");
-        config.setAgileDoneName("Dev Done");
-        config.setBugName("Bug");
-        config.setNonWorkingDays("Sunday");
-        config.setAutoSyncTime(dataFormatnew.format(new Date()));
-
-        configRepository.add(config);
-    }
 
     @Test
     public void testUpdateConfig() throws Exception {

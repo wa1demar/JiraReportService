@@ -23,12 +23,6 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     private SessionFactory sessionFactory;
 
     @Override
-    public Config add(Config config) {
-            sessionFactory.getCurrentSession().persist(config);
-            return config;
-    }
-
-    @Override
     public Config findFirst() {
         Config config = (Config) sessionFactory.getCurrentSession().createCriteria(Config.class).
                 setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).uniqueResult();
@@ -36,7 +30,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
         if (config != null) {
             return config;
         } else {
-            return add(new ConfigBuilder()
+            return update(new ConfigBuilder()
                     .agileDoneName("")
                     .autoSyncTime("")
                     .bugName("")
@@ -76,10 +70,8 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
     @Override
     public Config update(Config config){
-        if (config.getId() == null || findById(config.getId()) == null) {
-            return add(config);
-        }
-        return (Config) sessionFactory.openSession().merge(config);
+        sessionFactory.getCurrentSession().saveOrUpdate(config);
+        return config;
     }
 
 }

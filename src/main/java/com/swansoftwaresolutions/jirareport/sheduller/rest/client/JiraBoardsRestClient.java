@@ -1,7 +1,6 @@
 package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
 import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSprintDto;
-import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSprintDtos;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraSprintMapper;
 import com.swansoftwaresolutions.jirareport.core.service.JiraBoardService;
 import com.swansoftwaresolutions.jirareport.core.service.JiraSprintsService;
@@ -13,14 +12,11 @@ import com.swansoftwaresolutions.jirareport.sheduller.job.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -32,9 +28,7 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
 
     static Logger log = Logger.getLogger(JiraBoardsRestClient.class.getName());
 
-    private final String BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board.json";
-    private final String ISSUES_BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board/{board_id}/issue.json";
-    private final String SPRINTS_BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board/{board_id}/sprint.json";
+    final String URL_SPRINT = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board/{boardId}/sprint";
 
     @Autowired
     JiraBoardService jiraBoardService;
@@ -50,62 +44,63 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
     JiraSprintMapper jiraSprintMapper;
 
 
+    @Override
     public void loadData() {
         loadDataForJiraBoards();
         loadDataForJiraSprints();
     }
 
     private void loadDataForJiraSprints() {
-        log.info("get all boards from db");
-        List<JiraBoard> boards = jiraBoardService.findAll();
+        List<JiraBoard> boards = new ArrayList<>();
+        try {
+            boards = jiraBoardService.findAll();
+        } catch (NoSuchEntityException e) {
+            log.warning("List<JiraBoard> NoSuchEntityException");
+        }
         for (JiraBoard jiraBoard : boards) {
-            log.info("-----------------------------------");
-            log.info("-------Jira Sprint Scheduler--------");
-
             HttpEntity<String> request = new HttpEntity<>(getHeaders());
             RestTemplate restTemplate = new RestTemplate();
 
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("board_id", String.valueOf(jiraBoard.getBoardId()));
-
-            ResponseEntity<ImportedJiraSprintDtos> responseEntity = restTemplate.exchange(SPRINTS_BOARD_URL, HttpMethod.GET, request, ImportedJiraSprintDtos.class, params);
-            log.info("STATUS: " + responseEntity.getStatusCode());
-            ImportedJiraSprintDtos sprintDtos = responseEntity.getBody();
-            saveSprintsToDataBase(sprintDtos.getValues(), jiraBoard.getId());
-
-
-            log.info("");
+            AgileSprintsDto agileSprints = restTemplate.exchange(URL_SPRINT.replace("{boardId}", String.valueOf(jiraBoard.getBoardId())), HttpMethod.GET, request, AgileSprintsDto.class).getBody();
+            saveSprintsToDataBase(agileSprints.values, jiraBoard.getId());
         }
     }
 
-    private void saveSprintsToDataBase(List<ImportedJiraSprintDto> values, long boardId) {
-        List<ImportedJiraSprintDto> sprints = sprintsService.findAll();
+    private void saveSprintsToDataBase(AgileSprintDto[] values, long boardId) {
+        List<ImportedJiraSprintDto> list = new ArrayList<>();
+        for (AgileSprintDto agileSprintDto: values){
+            ImportedJiraSprintDto importedJiraSprintDto = new ImportedJiraSprintDto();
+            importedJiraSprintDto.setName(agileSprintDto.name);
+            importedJiraSprintDto.setState(agileSprintDto.state);
+            importedJiraSprintDto.setCompleteDate(agileSprintDto.completedDate);
+            importedJiraSprintDto.setEndDate(agileSprintDto.endDate);
+            importedJiraSprintDto.setEndDate(agileSprintDto.endDate);
+            importedJiraSprintDto.setStartDate(agileSprintDto.startDate);
+            importedJiraSprintDto.setOriginBoardId(boardId);
 
-        //TODO Need to be change
+            list.add(importedJiraSprintDto);
+        }
+
+        List<ImportedJiraSprintDto> sprints = new ArrayList<>();
+
         try {
-            values.removeAll(sprints);
-        } catch (NullPointerException ex) {
-            log.warning("NullPointerExeption !!!");
+            sprints = sprintsService.findAll();
+        } catch (NoSuchEntityException e) {
+            e.printStackTrace();
         }
 
-        for (ImportedJiraSprintDto sprint : values) {
-            sprint.setOriginBoardId(boardId);
-            sprintsService.add(sprint);
-        }
+        if (sprints!=null) list.removeAll(sprints);
+
+        list.forEach(sprintsService::addOrUpdate);
     }
 
     private void loadDataForJiraBoards() {
-        log.info("-----------------------------------");
-        log.info("-------Jira Board Scheduler--------");
-
         HttpEntity<String> request = new HttpEntity<>(getHeaders());
         RestTemplate restTemplate = new RestTemplate();
+        String BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board";
         JiraBoardObjectDto jiraBoardDtos = restTemplate.exchange(BOARD_URL, HttpMethod.GET, request, JiraBoardObjectDto.class).getBody();
 
         insertDataToDataBase(jiraBoardDtos.getValues());
-
-        log.info("--- Jira Board Scheduler Completed ---");
-        log.info("");
     }
 
     private void insertDataToDataBase(List<JiraBoardDto> jiraBoardDtos) {
@@ -113,23 +108,21 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
     }
 
     private void removeDublicateAndSave(List<JiraBoard> jiraBoards) {
-        jiraBoards.removeAll(jiraBoardService.findAll());
-
-        for (JiraBoard jiraBoard : jiraBoards) {
-            if (jiraBoard.getProjectKey() != null) {
-                jiraBoardService.save(jiraBoard);
-            }
+        try {
+            jiraBoards.removeAll(jiraBoardService.findAll());
+        } catch (NoSuchEntityException e) {
+            log.warning("List<JiraBoard> NoSuchEntityException");
         }
+
+        jiraBoards.stream().filter(jiraBoard -> jiraBoard.getProjectKey() != null).forEach(jiraBoardService::save);
     }
 
     private JiraBoardDto getProjectInformationForBoard(JiraBoardDto jiraBoardDto) throws NoSuchEntityException {
         HttpEntity<String> request = new HttpEntity<>(getHeaders());
         RestTemplate restTemplate = new RestTemplate();
 
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("board_id", String.valueOf(jiraBoardDto.getId()));
-
-        IssuesForJiraBoard jiraBoardDtos = restTemplate.exchange(ISSUES_BOARD_URL, HttpMethod.GET, request, IssuesForJiraBoard.class, params).getBody();
+        String ISSUES_BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board/{boardId}/issue";
+        IssuesForJiraBoard jiraBoardDtos = restTemplate.exchange(ISSUES_BOARD_URL.replace("{boardId}", String.valueOf(jiraBoardDto.getId())), HttpMethod.GET, request, IssuesForJiraBoard.class).getBody();
 
         if (jiraBoardDtos.issues.length > 0) {
             jiraBoardDto.setProjectKey(jiraBoardDtos.issues[0].fields.project.getKey());

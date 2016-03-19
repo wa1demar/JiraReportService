@@ -24,7 +24,8 @@
       </div>
       <section class="aui-page-panel-content">
           <div id="report-box">
-            <div ng-include="currentTab"></div>
+            <div ng-show="loaderShow" class="text-center"><span class="aui-icon aui-icon-wait">Loading...</span></div>
+            <div ng-show="!loaderShow" ng-include="currentTab"></div>
           </div>
       </section>
     </div>

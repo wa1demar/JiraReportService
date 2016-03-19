@@ -49,9 +49,6 @@ public class JiraUsersRestClient extends RestClientBase implements RestClient {
 
     @Override
     public void loadData() {
-        log.info("-----------------------------------");
-        log.info("-------Users Scheduler-----------");
-
         Set<JiraUserAutoDto> jiraUsers = new HashSet<>();
 
         for (char cha : getCharArray()) {
@@ -63,16 +60,11 @@ public class JiraUsersRestClient extends RestClientBase implements RestClient {
                 jiraUsers.add(fromDto(userDto));
             }
         }
-        log.info("   Users on Cloud : " + jiraUsers.size());
 
         try {
             jiraUserService.saveAll(new ArrayList<>(jiraUsers));
         } catch (NoSuchEntityException e) {
             log.warning("Can't to add JiraUsers");
         }
-
-        log.info("---User Scheduler Completed-----");
-        log.info("-----------------------------------");
-        log.info("");
     }
 }
