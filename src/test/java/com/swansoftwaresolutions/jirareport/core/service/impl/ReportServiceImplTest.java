@@ -47,22 +47,22 @@ public class ReportServiceImplTest extends AbstractServiceImplTest {
         assertEquals(expected, actual);
     }
 
-    @Test
-    public void testRetrieveReportByID() throws Exception {
-        Report model = new ReportBuilder().id(1L).boardId(2L).creator("Username").isClosed(false).title("report").build();
-
-        ReportDto expected = new ReportDtoBuilder().id(1L).boardId(2L).creator("Username").closed(false).title("report").build();
-
-        when(reportRepositoryMock.findById(1L)).thenReturn(model);
-
-        ReportDto actual = reportService.findById(1L);
-
-        verify(reportRepositoryMock, times(1)).findById(1L);
-        verifyNoMoreInteractions(reportRepositoryMock);
-
-        assertEquals(expected, actual);
-
-    }
+//    @Test
+//    public void testRetrieveReportByID() throws Exception {
+//        Report model = new ReportBuilder().id(1L).boardId(2L).creator("Username").isClosed(false).title("report").build();
+//
+//        ReportDto expected = new ReportDtoBuilder().id(1L).boardId(2L).creator("Username").closed(false).title("report").build();
+//
+//        when(reportRepositoryMock.findById(1L)).thenReturn(model);
+//
+//        ReportDto actual = reportService.findById(1L);
+//
+//        verify(reportRepositoryMock, times(1)).findById(1L);
+//        verifyNoMoreInteractions(reportRepositoryMock);
+//
+//        assertEquals(expected, actual);
+//
+//    }
 
     @Test
     public void testAddNewReport() throws Exception {
