@@ -1,13 +1,13 @@
 <ul ng-if="comments.length > 0" class="comments-ul">
-  <li ng-repeat="data in comments">
-    <p>
-      <a ng-href="https://swansoftwaresolutions.atlassian.net/secure/ViewProfile.jspa?name={{data.creator}}" class="activity-item-user activity-item-author" target="_parent">
-        <span class="comments-creator">{{data.creatorDisplayName !== null ? data.creatorDisplayName : data.creator}}</span>
-      </a>
-      <span class="comments-date">{{data.createdDate | date:'MM/dd/yyyy HH:mm'}}</span>
-      <span class="aui-icon aui-icon-small aui-iconfont-remove delete-comment" original-title="remove" title="Delete comment" ng-click="deleteComment(data)" style="float: right; cursor: pointer;"></span>
-    </p>
-    <p>{{data.text}}</p>
-  </li>
+    <li ng-repeat="data in comments">
+        <p>
+            <a ng-href="https://swansoftwaresolutions.atlassian.net/secure/ViewProfile.jspa?name={{data.creator}}" class="activity-item-user activity-item-author" target="_parent">
+                <span class="comments-creator">{{data.creatorDisplayName !== null ? data.creatorDisplayName : data.creator}}</span>
+            </a>
+            <span class="comments-date">{{data.createdDate | date:'MM/dd/yyyy HH:mm'}}</span>
+            <span class="aui-icon aui-icon-small aui-iconfont-remove delete-comment" original-title="remove" title="Delete comment" ng-click="deleteComment(data)" style="float: right; cursor: pointer;"></span>
+        </p>
+        <p>{{data.text}}</p>
+    </li>
 </ul>
 <p ng-if="comments.length === 0" class="comments-not-found">Comments not found</p>
