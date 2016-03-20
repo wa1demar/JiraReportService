@@ -8,21 +8,6 @@ jiraPluginApp.controller('CommentCtrl', ['$scope', '$routeParams', 'CommentsFact
             CommentsFactory.query({id: $routeParams.reportId}, function(data) {
                 $scope.comments = data.comments;
             });
-
-            $scope.comments = [
-                {
-                    txt: "first",
-                    createDate: new Date(),
-                    creator: "admin",
-                    creatorDisplayName: "Admin"
-                },
-                {
-                    txt: "second",
-                    createDate: new Date(),
-                    creator: "admin",
-                    creatorDisplayName: "Admin"
-                },
-            ]
         };
         self.getCommentsData();
 
@@ -32,21 +17,25 @@ jiraPluginApp.controller('CommentCtrl', ['$scope', '$routeParams', 'CommentsFact
         };
 
         $scope.modelComments = {
-            txt: ''
+            text: ''
         };
 
 //----------------------------------------------------------------------------------------------------------------------
 //Add comment
         $scope.addComment = function() {
-            $scope.modelComments.creator = AuthenticationFactory.user;
-            $scope.modelComments.createDate = new Date();
-            CommentsFactory.add({id: $routeParams.reportId}, $scope.modelComments, function(){
-                self.getCommentsData();
-                $scope.modelComments.txt = '';
-                Notification.success("Add comment success");
-            }, function () {
-                Notification.error("Server error");
-            });
+            if($scope.processCommentForm.$valid) {
+                $scope.modelComments.creator = AuthenticationFactory.user;
+                //$scope.modelComments.createDate = new Date();
+                CommentsFactory.add({id: $routeParams.reportId}, $scope.modelComments, function(){
+                    self.getCommentsData();
+                    $scope.modelComments.text = '';
+                    Notification.success("Add comment success");
+                }, function () {
+                    Notification.error("Server error");
+                });
+            } else {
+                Notification.error("Comment text is required");
+            }
         };
 
 //----------------------------------------------------------------------------------------------------------------------
