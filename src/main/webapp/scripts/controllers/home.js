@@ -1,18 +1,18 @@
 'use strict';
 
-jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibModal', 'ReportsFactory', 'ReportsClosedFactory', 'ReportFactory', 'CopyReportFactory', 'Notification',
-    function($scope, AuthenticationFactory, $uibModal, ReportsFactory, ReportsClosedFactory, ReportFactory, CopyReportFactory, Notification) {
+jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibModal', 'ReportsFactory', 'ReportFactory', 'CopyReportFactory', 'Notification',
+    function($scope, AuthenticationFactory, $uibModal, ReportsFactory, ReportFactory, CopyReportFactory, Notification) {
 
         var self = this;
         $scope.loaderShow = true;
 
         this.getReportsData = function () {
-            ReportsFactory.query({}, function(result){
+            ReportsFactory.query({type: "ongoing"}, function(result){
                 $scope.dataOngoing = result.reports;
                 $scope.loaderShow = false;
             });
 
-            ReportsClosedFactory.query({}, function(result){
+            ReportsFactory.query({type: "closed"}, function(result){
                 $scope.dataClosed = result.reports;
             });
         };
