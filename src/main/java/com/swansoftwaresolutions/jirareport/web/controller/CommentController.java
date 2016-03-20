@@ -1,7 +1,6 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
 import com.swansoftwaresolutions.jirareport.core.dto.CommentDto;
-import com.swansoftwaresolutions.jirareport.core.dto.SprintIssueDto;
 import com.swansoftwaresolutions.jirareport.core.service.CommentService;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.dto.responce.ResponceCommentDto;
@@ -10,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +29,7 @@ public class CommentController {
 
 
     @RequestMapping(value = "/v1/reports/{reportId}/comments", method = RequestMethod.POST)
-    private ResponseEntity<ResponceCommentDto> addNewComment(@RequestParam(value = "id") Long reportId, @RequestBody CommentDto commentDto) throws NoSuchEntityException {
+    private ResponseEntity<ResponceCommentDto> addNewComment(@PathVariable(value = "reportId") Long reportId, @RequestBody CommentDto commentDto) throws NoSuchEntityException {
         ResponceCommentDto responseCommentDto;
         HttpStatus httpStatus;
         commentDto = commentService.save(commentDto);
@@ -47,7 +45,7 @@ public class CommentController {
     }
 
     @RequestMapping(value = "/v1/comments/{id}", method = RequestMethod.DELETE)
-    private ResponseEntity<ResponceCommentDto> deleteCommentById(@RequestParam(value = "id") Long id) {
+    private ResponseEntity<ResponceCommentDto> deleteCommentById(@PathVariable(value = "id") Long id) {
         ResponceCommentDto responseCommentDto;
         HttpStatus httpStatus;
 
