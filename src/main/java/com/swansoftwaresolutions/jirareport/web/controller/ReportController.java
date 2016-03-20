@@ -1,5 +1,8 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
+import com.swansoftwaresolutions.jirareport.core.dto.ProjectDasboard.Chart;
+import com.swansoftwaresolutions.jirareport.core.dto.ProjectDasboard.ProjectDashboardDto;
+import com.swansoftwaresolutions.jirareport.core.dto.ProjectDasboard.ProjectReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.NewReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDto;
@@ -82,6 +85,60 @@ public class ReportController {
         ReportDto reportDto = reportService.copy(id);
 
         return new ResponseEntity<>(reportDto, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "v1/reports/{id}/data_with_sprints_and_teams", method = RequestMethod.GET)
+    private ResponseEntity<ProjectDashboardDto> dataWithSprintsAndTeams(@PathVariable("id") Long id){
+        ProjectDashboardDto projectDashboardDto = new ProjectDashboardDto();
+        projectDashboardDto.setReport(buildProjectReport(id));
+        
+        return new ResponseEntity<ProjectDashboardDto>(projectDashboardDto, HttpStatus.OK);
+    }
+
+    private ProjectReportDto buildProjectReport(Long id) {
+        ProjectReportDto projectReportDto = new ProjectReportDto();
+        try {
+            ReportDto reportDto = reportService.retrieveReportByID(id);
+            projectReportDto.setId(reportDto.getId());
+            projectReportDto.setTitle(reportDto.getTitle());
+            projectReportDto.setCreator(reportDto.getCreator());
+            projectReportDto.setBoardId(reportDto.getBoardId());
+            projectReportDto.setBoardName(reportDto.getBoardName());
+            projectReportDto.setCreatedDate(reportDto.getCreatedDate());
+            projectReportDto.setUpdatedDate(reportDto.getUpdatedDate());
+            projectReportDto.setClosedDate(reportDto.getClosedDate());
+            projectReportDto.setTypeId(reportDto.getTypeId());
+            projectReportDto.setClosed(reportDto.isClosed());
+            projectReportDto.setAdmins(reportDto.getAdmins());
+
+            projectReportDto.setTargetPoints(0);
+            projectReportDto.setTargetHours(0L);
+            projectReportDto.setTargetQatDefectHours(0L);
+            projectReportDto.setTargetQatDefectMin(0);
+            projectReportDto.setTargetQatDefectMax(0);
+            projectReportDto.setTargetUatDefectHours(0L);
+            projectReportDto.setTargetUatDefectMin(0);
+            projectReportDto.setTargetUatDefectMax(0);
+
+            projectReportDto.setActualHours(0L);
+            projectReportDto.setActualPoints(0);
+            projectReportDto.setActualQatDefectHours(0L);
+            projectReportDto.setActualQatDefectPoints(0);
+            projectReportDto.setActualUatDefectHours(0L);
+            projectReportDto.setActualUatDefectPoints(0);
+
+            Chart chart = new Chart();
+            chart.setLabel(new String[]{ "hello", "foo", "bar" });
+            chart.setActual(new int[]{ 1,2,3 });
+            chart.setTarget(new int[]{ 3,2,1 });
+
+            projectReportDto.setChart(chart);
+
+        } catch (NoSuchEntityException e) {
+            e.printStackTrace();
+        }
+
+        return projectReportDto;
     }
 
 }
