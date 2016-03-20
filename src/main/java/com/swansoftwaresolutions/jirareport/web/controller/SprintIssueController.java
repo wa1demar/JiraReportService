@@ -20,13 +20,13 @@ public class SprintIssueController {
     SprintIssueService sprintIssueService;
 
     @RequestMapping(value = "/v1/sprint_issues/{sprintId}/{assignee}", method = RequestMethod.GET)
-    private ResponseEntity<SprintIssueListDto> getAllSprintIssues(@PathVariable("sprintId") Long sprintId, @PathVariable("assignee") String assignee) {
+    private ResponseEntity<SprintIssueListDto> getAllIssues(@PathVariable("sprintId") Long sprintId, @PathVariable("assignee") String assignee) {
         SprintIssueListDto sprintIssueListDto = sprintIssueService.findBySprintIdAndAsignee(sprintId, assignee);
         return new ResponseEntity<>(sprintIssueListDto, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/v1/sprint_issues/{sprintId}/{assignee}", method = RequestMethod.POST)
-    private ResponseEntity<SprintIssueDto> addReport(@PathVariable("sprintId") Long sprintId, @PathVariable("assignee") String assignee, @RequestBody SprintIssueDto newSprintIssue) throws NoSuchEntityException {
+    private ResponseEntity<SprintIssueDto> addIssue(@PathVariable("sprintId") Long sprintId, @PathVariable("assignee") String assignee, @RequestBody SprintIssueDto newSprintIssue) throws NoSuchEntityException {
         newSprintIssue.setSprintId(sprintId);
         newSprintIssue.setAssignee(assignee);
         SprintIssueDto sprintIssueDto = sprintIssueService.add(newSprintIssue);
@@ -35,10 +35,30 @@ public class SprintIssueController {
     }
 
     @RequestMapping(value = "/v1/sprint_issues/", method = RequestMethod.POST)
-    private ResponseEntity<SprintIssueDto> addReportNew(@RequestBody SprintIssueDto newSprintIssue) throws NoSuchEntityException {
+    private ResponseEntity<SprintIssueDto> addIssueNew(@RequestBody SprintIssueDto newSprintIssue) throws NoSuchEntityException {
         SprintIssueDto sprintIssueDto = sprintIssueService.add(newSprintIssue);
 
         return new ResponseEntity<>(sprintIssueDto, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/v1/sprint_issues/{issueId}/", method = RequestMethod.PUT)
+    private ResponseEntity<SprintIssueDto> updateIssue(@PathVariable("issueId") Long issueId, @RequestBody SprintIssueDto newSprintIssue) throws NoSuchEntityException {
+        newSprintIssue.setId(issueId);
+        SprintIssueDto sprintIssueDto = sprintIssueService.update(newSprintIssue);
+
+        return new ResponseEntity<>(sprintIssueDto, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/v1/sprint_issues/", method = RequestMethod.PUT)
+    private ResponseEntity<SprintIssueDto> updateIssueNew(@RequestBody SprintIssueDto newSprintIssue) throws NoSuchEntityException {
+        SprintIssueDto sprintIssueDto = sprintIssueService.update(newSprintIssue);
+        return new ResponseEntity<>(sprintIssueDto, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/v1/sprint_issues/{issueId}/", method = RequestMethod.DELETE)
+    private ResponseEntity<SprintIssueDto> delete(@PathVariable("issueId") Long issueId) throws NoSuchEntityException {
+        sprintIssueService.delete(issueId);
+        return new ResponseEntity<>(new SprintIssueDto(), HttpStatus.OK);
     }
 
 }

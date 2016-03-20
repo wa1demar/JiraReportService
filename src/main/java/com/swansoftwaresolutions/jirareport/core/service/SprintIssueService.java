@@ -2,7 +2,6 @@ package com.swansoftwaresolutions.jirareport.core.service;
 
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssue.SprintIssueListDto;
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssueDto;
-import com.swansoftwaresolutions.jirareport.domain.entity.SprintIssue;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 
 import java.util.List;
@@ -17,4 +16,8 @@ public interface SprintIssueService {
     SprintIssueListDto findBySprintIdAndAsignee(Long sprintId, String assignee);
 
     SprintIssueDto add(SprintIssueDto sprintIssueDto);
+
+    SprintIssueDto update(SprintIssueDto sprintIssueDto);
+
+    void delete(Long issueId) throws NoSuchEntityException;
 }
