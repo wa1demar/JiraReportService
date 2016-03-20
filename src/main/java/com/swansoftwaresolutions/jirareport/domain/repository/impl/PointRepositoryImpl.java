@@ -40,7 +40,7 @@ public class PointRepositoryImpl implements PointRepository {
         if (jiraPointExist == null) {
             sessionFactory.getCurrentSession().save(jiraPoint);
         } else {
-            sessionFactory.openSession().update(jiraPoint);
+            sessionFactory.getCurrentSession().update(jiraPoint);
         }
 
         return jiraPoint;
@@ -48,7 +48,7 @@ public class PointRepositoryImpl implements PointRepository {
 
     @Override
     public JiraPoint findById(Long id) throws NoSuchEntityException {
-        return (JiraPoint) sessionFactory.openSession()
+        return (JiraPoint) sessionFactory.getCurrentSession()
                 .createCriteria(JiraPoint.class).add(Restrictions.eq("id", id)).uniqueResult();
     }
 
@@ -58,7 +58,7 @@ public class PointRepositoryImpl implements PointRepository {
             throw new NoSuchEntityException("Entity not found");
         }
 
-        sessionFactory.openSession().update(jiraPoint);
+        sessionFactory.getCurrentSession().update(jiraPoint);
 
         return jiraPoint;
     }
@@ -98,7 +98,7 @@ public class PointRepositoryImpl implements PointRepository {
 
     @Override
     public JiraPoint findByLoginAndSprintId(String login, Long sprint) throws NoSuchEntityException {
-        return (JiraPoint) sessionFactory.openSession()
+        return (JiraPoint) sessionFactory.getCurrentSession()
                 .createCriteria(JiraPoint.class).add(Restrictions.eq("userLogin", login)).add(Restrictions.eq("sprintId", sprint)).uniqueResult();
     }
 }

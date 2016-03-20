@@ -44,7 +44,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
     @Override
     public Config findById(Long id) {
-        return (Config) sessionFactory.openSession()
+        return (Config) sessionFactory.getCurrentSession()
                 .createCriteria(Config.class).add(Restrictions.eq("id", id)).uniqueResult();
     }
 

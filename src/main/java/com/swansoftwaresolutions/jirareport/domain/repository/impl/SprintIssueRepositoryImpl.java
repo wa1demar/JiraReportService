@@ -30,19 +30,19 @@ public class SprintIssueRepositoryImpl implements SprintIssueRepository {
 
     @Override
     public List<SprintIssue> findBySprintId(Long sprintId){
-        return (List<SprintIssue>) sessionFactory.openSession()
+        return (List<SprintIssue>) sessionFactory.getCurrentSession()
                 .createCriteria(SprintIssue.class).add(Restrictions.eq("reportId", sprintId)).list();
     }
 
     @Override
     public List<SprintIssue> findBySprintIdAndAssignee(Long sprintId, String assignee) {
-        return (List<SprintIssue>) sessionFactory.openSession()
+        return (List<SprintIssue>) sessionFactory.getCurrentSession()
                 .createCriteria(SprintIssue.class).add(Restrictions.eq("sprintId", sprintId)).add(Restrictions.eq("assignee", assignee)).list();
     }
 
     @Override
     public List<SprintIssue> findBySprintIdAndAssigneeAndIssueDate(Long sprintId, String assignee, String issueDate) {
-        return (List<SprintIssue>) sessionFactory.openSession()
+        return (List<SprintIssue>) sessionFactory.getCurrentSession()
                 .createCriteria(SprintIssue.class).
                         add(Restrictions.eq("sprintId", sprintId)).
                         add(Restrictions.eq("assignee", assignee)).
@@ -51,7 +51,7 @@ public class SprintIssueRepositoryImpl implements SprintIssueRepository {
 
     @Override
     public SprintIssue findById(Long id) {
-        return (SprintIssue) sessionFactory.openSession()
+        return (SprintIssue) sessionFactory.getCurrentSession()
                 .createCriteria(SprintIssue.class).add(Restrictions.eq("id", id)).uniqueResult();
     }
 
@@ -68,7 +68,7 @@ public class SprintIssueRepositoryImpl implements SprintIssueRepository {
             throw new NoSuchEntityException("Entity not found");
         }
 
-        return (SprintIssue) sessionFactory.openSession().merge(sprintIssue);
+        return (SprintIssue) sessionFactory.getCurrentSession().merge(sprintIssue);
     }
 
     @Override

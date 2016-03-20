@@ -35,7 +35,7 @@ public class JiraBoardRepositoryImpl implements JiraBoardRepository {
 
     @Override
     public JiraBoard findById(Long jiraBoardId) {
-        return (JiraBoard) sessionFactory.openSession()
+        return (JiraBoard) sessionFactory.getCurrentSession()
                 .createCriteria(JiraBoard.class).add(Restrictions.eq("id", jiraBoardId)).uniqueResult();
 
     }
@@ -67,6 +67,6 @@ public class JiraBoardRepositoryImpl implements JiraBoardRepository {
         if (findById(jiraBoard.getId()) == null) {
             throw new NoSuchEntityException("Entity not found");
         }
-        return (JiraBoard) sessionFactory.openSession().merge(jiraBoard);
+        return (JiraBoard) sessionFactory.getCurrentSession().merge(jiraBoard);
     }
 }

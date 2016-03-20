@@ -32,13 +32,13 @@ public class JiraSprintRepositoryImpl implements JiraSprintRepository {
 
     @Override
     public List<JiraSprint> findByBoardId(Long boardId) {
-        return (List<JiraSprint>) sessionFactory.openSession()
+        return (List<JiraSprint>) sessionFactory.getCurrentSession()
                 .createCriteria(JiraSprint.class).add(Restrictions.eq("boardId", boardId)).list();
     }
 
     @Override
     public JiraSprint findById(Long id) {
-        return (JiraSprint) sessionFactory.openSession()
+        return (JiraSprint) sessionFactory.getCurrentSession()
                 .createCriteria(JiraSprint.class).add(Restrictions.eq("id", id)).uniqueResult();
     }
 
@@ -73,7 +73,7 @@ public class JiraSprintRepositoryImpl implements JiraSprintRepository {
             throw new NoSuchEntityException("Entity not found");
         }
 
-        return (JiraSprint) sessionFactory.openSession().merge(jiraSprint);
+        return (JiraSprint) sessionFactory.getCurrentSession().merge(jiraSprint);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class JiraSprintRepositoryImpl implements JiraSprintRepository {
 
     @Override
     public JiraSprint findByNameAndBoardId(String name, Long boardId) throws NoSuchEntityException {
-        return (JiraSprint) sessionFactory.openSession()
+        return (JiraSprint) sessionFactory.getCurrentSession()
                 .createCriteria(JiraSprint.class).add(Restrictions.eq("name", name)).
                         add(Restrictions.eq("boardId", boardId)).uniqueResult();
     }

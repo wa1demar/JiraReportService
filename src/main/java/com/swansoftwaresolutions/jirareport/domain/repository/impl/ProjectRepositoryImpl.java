@@ -35,7 +35,7 @@ public class ProjectRepositoryImpl implements ProjectRepository {
         if (findById(project.getId()) == null) {
             throw new NoSuchEntityException("Entity not found");
         }
-        return (Project) sessionFactory.openSession().merge(project);
+        return (Project) sessionFactory.getCurrentSession().merge(project);
     }
 
     @Override
@@ -45,13 +45,13 @@ public class ProjectRepositoryImpl implements ProjectRepository {
 
     @Override
     public Project findById(Long projectId) {
-        return (Project) sessionFactory.openSession()
+        return (Project) sessionFactory.getCurrentSession()
                 .createCriteria(Project.class).add(Restrictions.eq("id", projectId)).uniqueResult();
     }
 
     @Override
     public Project findByKey(String key) throws NoSuchEntityException{
-        return (Project) sessionFactory.openSession()
+        return (Project) sessionFactory.getCurrentSession()
                 .createCriteria(Project.class).add(Restrictions.eq("key", key)).uniqueResult();
     }
 

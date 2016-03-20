@@ -43,7 +43,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User findById(Long id) {
-        return (User) sessionFactory.openSession()
+        return (User) sessionFactory.getCurrentSession()
                 .createCriteria(User.class).add(Restrictions.eq("id", id)).uniqueResult();
     }
 
@@ -74,6 +74,6 @@ public class UserRepositoryImpl implements UserRepository {
         if (findById(user.getId()) == null) {
             throw new NoSuchEntityException("Entity not found");
         }
-        return (User) sessionFactory.openSession().merge(user);
+        return (User) sessionFactory.getCurrentSession().merge(user);
     }
 }

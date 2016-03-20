@@ -25,14 +25,14 @@ public class CommentRepositoryImpl implements CommentRepository {
     @Override
     @SuppressWarnings("unchecked")
     public List<Comment> findAll() {
-        return sessionFactory.openSession().createCriteria(Comment.class)
+        return sessionFactory.getCurrentSession().createCriteria(Comment.class)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<Comment> findByReportId(Long reportId) {
-        return (List<Comment>) sessionFactory.openSession()
+        return (List<Comment>) sessionFactory.getCurrentSession()
                 .createCriteria(Comment.class)
                 .add(Restrictions.eq("reportId", reportId))
                 .list();
@@ -40,7 +40,7 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     @Override
     public Comment findById(Long id) {
-        return (Comment) sessionFactory.openSession()
+        return (Comment) sessionFactory.getCurrentSession()
                 .createCriteria(Comment.class).add(Restrictions.eq("id", id)).uniqueResult();
     }
 
@@ -55,7 +55,7 @@ public class CommentRepositoryImpl implements CommentRepository {
         if (findById(comment.getId()) == null) {
             throw new NoSuchEntityException("Entity not found");
         }
-        return (Comment) sessionFactory.openSession().merge(comment);
+        return (Comment) sessionFactory.getCurrentSession().merge(comment);
     }
 
     @Override
@@ -87,7 +87,7 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     @Override
     public void deleteByReportId(Long reportId) throws NoSuchEntityException {
-        List<Comment> comments =(List<Comment>) sessionFactory.openSession()
+        List<Comment> comments =(List<Comment>) sessionFactory.getCurrentSession()
                 .createCriteria(Comment.class).add(Restrictions.eq("reportId", reportId)).list();
 
         if (comments != null) {
