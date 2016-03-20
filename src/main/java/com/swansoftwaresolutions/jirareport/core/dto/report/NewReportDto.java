@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.dto.report;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author Vladimir Martynyuk
@@ -11,6 +12,8 @@ public class NewReportDto implements Serializable {
     private Long boardId;
     private Integer typeId;
     private String[] admins;
+    private boolean closed;
+    private Date closedDate;
 
     public String getTitle() {
         return title;
@@ -50,5 +53,21 @@ public class NewReportDto implements Serializable {
 
     public void setAdmins(String[] admins) {
         this.admins = admins;
+    }
+
+    public boolean isClosed() {
+        return closed;
+    }
+
+    public void setClosed(boolean closed) {
+        this.closed = closed;
+    }
+
+    public Date getClosedDate() {
+        return closedDate;
+    }
+
+    public void setClosedDate(Date closedDate) {
+        this.closedDate = closedDate;
     }
 }

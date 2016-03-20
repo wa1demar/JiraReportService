@@ -12,7 +12,7 @@ public interface ReportService {
 
     ReportDto add(NewReportDto newReportDto) throws NoSuchEntityException;
 
-    ReportDto update(ReportDto report, long id) throws NoSuchEntityException;
+    ReportDto update(NewReportDto report, long id) throws NoSuchEntityException;
 
     ReportDto delete(long id) throws NoSuchEntityException;
 
