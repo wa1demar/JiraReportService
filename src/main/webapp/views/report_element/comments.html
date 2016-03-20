@@ -5,7 +5,7 @@
       <span class="comments-date">{{data.createDate | date:'MM/dd/yyyy HH:mm'}}</span>
       <span class="aui-icon aui-icon-small aui-iconfont-remove delete-comment" original-title="remove" title="Delete comment" ng-click="deleteComment(data)" style="float: right; cursor: pointer;"></span>
     </p>
-    <p>{{data.txt}}</p>
+    <p>{{data.text}}</p>
   </li>
 </ul>
 <p ng-if="comments.length === 0" class="comments-not-found">Comments not found</p>

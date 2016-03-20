@@ -241,8 +241,12 @@
                     </h5>
                     <div class="comments-box" ng-hide="commentsHide">
                         <div class="aui">
-                            <textarea ng-model="modelComments.txt" class="comments-data textarea" name="comments-data" id="comments-data" placeholder="Your comment here..." rows="5" cols="50"></textarea>
-                            <p><span id="add-comment" class="aui-button add-comment" ng-click="addComment()">Add comment</span></p>
+                            <form name="processCommentForm" ng-submit="submit()" novalidate>
+                                <textarea ng-model="modelComments.text" class="comments-data textarea" name="commentsData" id="commentsData" placeholder="Your comment here..." rows="5" cols="50" required></textarea>
+                                <p>
+                                    <button class="aui-button add-comment" type="submit" ng-click="addComment()">Add comment</button>
+                                </p>
+                            </form>
                         </div>
                         <div class="comments-all">
                             <div ng-include="'views/report_element/comments.html'"></div>
