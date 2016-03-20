@@ -39,7 +39,7 @@ jiraPluginApp.controller('CommentCtrl', ['$scope', '$routeParams', 'CommentsFact
 //Add comment
         $scope.addComment = function() {
             $scope.modelComments.creator = AuthenticationFactory.user;
-            $scope.modelComments.createDate = new Date();
+            //$scope.modelComments.createDate = new Date();
             CommentsFactory.add({id: $routeParams.reportId}, $scope.modelComments, function(){
                 self.getCommentsData();
                 $scope.modelComments.txt = '';
