@@ -47,4 +47,6 @@ public interface ReportRepository {
     Report delete(Long reportId) throws NoSuchEntityException;
 
     List<Report> findAllClosed();
+
+    List<Report> findAllOpened();
 }

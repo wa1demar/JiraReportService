@@ -14,5 +14,7 @@ public class ReportModelMap extends PropertyMap<Report, ReportDto> {
         map().setCreator(source.getCreator());
         map().setTypeId(source.getTypeId());
         map().setBoardId(source.getBoardId());
+
+
     }
 }

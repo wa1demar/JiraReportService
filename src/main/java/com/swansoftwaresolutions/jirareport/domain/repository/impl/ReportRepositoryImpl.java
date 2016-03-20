@@ -207,4 +207,10 @@ public class ReportRepositoryImpl implements ReportRepository{
         return query.list();
     }
 
+    @Override
+    public List<Report> findAllOpened() {
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM Report r WHERE r.isClosed = false ");
+        return query.list();
+    }
+
 }

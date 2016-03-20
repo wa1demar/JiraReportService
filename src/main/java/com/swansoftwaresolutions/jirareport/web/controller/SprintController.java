@@ -66,7 +66,7 @@ public class SprintController {
 
     @RequestMapping(value = "/{report_id}/sprints", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<SprintDtos> getByReportId(@PathVariable("report_id") long reportId) {
+    public ResponseEntity<SprintDtos> getByReportId(@PathVariable("report_id") long reportId) throws NoSuchEntityException {
         SprintDtos dtos = sprintService.findByReportId(reportId);
 
         return new ResponseEntity<>(dtos, HttpStatus.OK);

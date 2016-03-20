@@ -5,8 +5,10 @@ import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDeve
 import com.swansoftwaresolutions.jirareport.core.mapper.SprintDeveloperMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.SprintMapper;
 import com.swansoftwaresolutions.jirareport.core.service.SprintService;
+import com.swansoftwaresolutions.jirareport.domain.entity.Report;
 import com.swansoftwaresolutions.jirareport.domain.entity.Sprint;
 import com.swansoftwaresolutions.jirareport.domain.entity.SprintDeveloper;
+import com.swansoftwaresolutions.jirareport.domain.entity.builder.SprintBuilder;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.ReportRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.SprintDeveloperRepository;
@@ -56,10 +58,32 @@ public class SprintServiceImpl implements SprintService {
     }
 
     @Override
-    public SprintDtos findByReportId(long reportId) {
+    public SprintDtos findByReportId(long reportId) throws NoSuchEntityException {
+        Report report = reportRepository.findById(reportId);
         List<Sprint> sprints = sprintRepository.findByReportId(reportId);
+        if (report.getTypeId() == 1) {
+           List<Sprint> spr = new ArrayList<>();
+            for (Sprint s : sprints) {
+                if (s.getJiraSprint() != null) {
+                    spr.add(new SprintBuilder()
+                            .id(s.getId())
+                            .name(s.getJiraSprint().getName())
+                            .startDate(s.getJiraSprint().getStartDate())
+                            .endDate(s.getJiraSprint().getEndDate())
+                            .state(s.getJiraSprint().getState())
+                            .type(s.getType())
+                            .showUAT(s.isShowUAT())
+                            .notCountTarget(s.isNotCountTarget())
+                            .jiraSprint(s.getJiraSprint())
+                            .build());
+                }
+            }
 
-        return sprintMapper.toDto(sprints);
+            return sprintMapper.toDto(spr);
+        } else {
+            return sprintMapper.toDto(sprints);
+        }
+
     }
 
     @Override
@@ -123,9 +147,12 @@ public class SprintServiceImpl implements SprintService {
 
         }
 
+        Sprint oldSprint = sprintRepository.findById(sprintDto.getId());
+
         sprint.setDevelopers(developers);
 
         sprint.setReport(reportRepository.findById(sprintDto.getReportId()));
+        sprint.setJiraSprint(oldSprint.getJiraSprint());
 
         Sprint updatedSprint = sprintRepository.update(sprint);
 

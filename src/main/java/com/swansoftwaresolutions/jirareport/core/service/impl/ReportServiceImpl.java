@@ -5,11 +5,13 @@ import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDtoBuilder;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.ReportMapper;
+import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraSprint;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.Report;
+import com.swansoftwaresolutions.jirareport.domain.entity.Sprint;
 import com.swansoftwaresolutions.jirareport.domain.entity.builder.ReportBuilder;
-import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
-import com.swansoftwaresolutions.jirareport.domain.repository.ReportRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.*;
 import com.swansoftwaresolutions.jirareport.core.service.ReportService;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -30,10 +32,16 @@ public class ReportServiceImpl implements ReportService {
     private ReportRepository reportRepository;
 
     @Autowired
-    private ReportMapper reportMapper;
+    ProjectRepository projectRepository;
 
     @Autowired
-    private JiraUserMapper jiraUserMapper;
+    JiraSprintRepository jiraSprintRepository;
+
+    @Autowired
+    SprintRepository sprintRepository;
+
+    @Autowired
+    private ReportMapper reportMapper;
 
     @Autowired
     private JiraUserRepository jiraUserRepository;
@@ -41,6 +49,12 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public ReportListDto retrieveAllReportsList() {
         List<ReportDto> reportDtos = reportMapper.toDtos(reportRepository.findAll());
+
+        for (ReportDto dto : reportDtos) {
+            if (dto.getBoardId() != null) {
+                dto.setBoardName(projectRepository.findById(dto.getBoardId()).getName());
+            }
+        }
 
         return new ReportListDtoBuilder().reportsDto(reportDtos).build();
     }
@@ -58,7 +72,22 @@ public class ReportServiceImpl implements ReportService {
 
         Report addedReport = reportRepository.add(newReport);
 
-        return reportMapper.toDto(addedReport);
+        List<JiraSprint> jiraSprints = jiraSprintRepository.findByBoardId(addedReport.getBoardId());
+
+        for(JiraSprint jiraSprint : jiraSprints) {
+            Sprint sprint = new Sprint();
+            sprint.setJiraSprint(jiraSprint);
+            sprint.setReport(addedReport);
+
+            sprintRepository.add(sprint);
+        }
+
+        ReportDto reportDto = reportMapper.toDto(addedReport);
+        if (reportDto.getBoardId() != null) {
+            reportDto.setBoardName(projectRepository.findById(reportDto.getBoardId()).getName());
+        }
+
+        return reportDto;
     }
 
     @Override
@@ -69,6 +98,12 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public ReportListDto retrieveAllClosedReportsList() {
         List<ReportDto> reportDtos = reportMapper.toDtos(reportRepository.findAllClosed());
+
+        for (ReportDto dto : reportDtos) {
+            if (dto.getBoardId() != null) {
+                dto.setBoardName(projectRepository.findById(dto.getBoardId()).getName());
+            }
+        }
 
         return new ReportListDtoBuilder().reportsDto(reportDtos).build();
     }
@@ -124,5 +159,18 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public ReportDto findByBoardId(Long boardId) throws NoSuchEntityException {
         return reportMapper.toDto(reportRepository.findByBoardId(boardId));
+    }
+
+    @Override
+    public ReportListDto retrieveAllOngoingReportsList() {
+        List<ReportDto> reportDtos = reportMapper.toDtos(reportRepository.findAllOpened());
+
+        for (ReportDto dto : reportDtos) {
+            if (dto.getBoardId() != null) {
+                dto.setBoardName(projectRepository.findById(dto.getBoardId()).getName());
+            }
+        }
+
+        return new ReportListDtoBuilder().reportsDto(reportDtos).build();
     }
 }

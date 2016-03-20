@@ -69,7 +69,7 @@ public class Report  implements Serializable{
     @Column(name = "type_ID")
     private Integer typeId;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "admins_reports", joinColumns = {
             @JoinColumn(name = "report_id") },
             inverseJoinColumns = { @JoinColumn(name = "admin_login") })
@@ -77,7 +77,6 @@ public class Report  implements Serializable{
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "report")
     private Set<Sprint> sprints = new HashSet<>();
-
 
     public Long getId() {
         return id;
@@ -214,4 +213,5 @@ public class Report  implements Serializable{
     public void setSprints(Set<Sprint> sprints) {
         this.sprints = sprints;
     }
+
 }

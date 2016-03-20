@@ -72,6 +72,12 @@ public class ReportController {
         return new ResponseEntity<>(reportDtos, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/v1/reports/ongoing", method = RequestMethod.GET)
+    private ResponseEntity<ReportListDto> getAllOngoingReports() {
+        ReportListDto reportDtos = reportService.retrieveAllOngoingReportsList();
+        return new ResponseEntity<>(reportDtos, HttpStatus.OK);
+    }
+
 
     @RequestMapping(value = "/v1/reports/{report_id}/copy", method = RequestMethod.GET)
     private ResponseEntity<ReportDto> copyReport(@PathVariable("report_id") long id) throws NoSuchEntityException {

@@ -39,7 +39,8 @@ public class ReportMapperImpl implements ReportMapper {
 
     @Override
     public ReportDto toDto(Report report) {
-        return modelMapper.map(report, ReportDto.class);
+        ReportDto reportDto = modelMapper.map(report, ReportDto.class);
+        return reportDto;
     }
 
     @Override

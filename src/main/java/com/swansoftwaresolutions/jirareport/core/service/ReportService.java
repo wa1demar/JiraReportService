@@ -30,4 +30,6 @@ public interface ReportService {
     ReportDto findByBoardId(Long id) throws NoSuchEntityException;
 
 
+    ReportListDto retrieveAllOngoingReportsList();
+
 }

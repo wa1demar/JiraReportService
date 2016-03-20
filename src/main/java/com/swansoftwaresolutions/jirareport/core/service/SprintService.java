@@ -15,7 +15,7 @@ public interface SprintService {
 
     SprintDto update(SprintDto sprintDto);
 
-    SprintDtos findByReportId(long reportId);
+    SprintDtos findByReportId(long reportId) throws NoSuchEntityException;
 
     SprintDto delete(long sprintId) throws NoSuchEntityException;
 
