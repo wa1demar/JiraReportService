@@ -63,5 +63,12 @@ public class SprintRepositoryImpl implements SprintRepository {
         return sprint;
     }
 
+    @Override
+    public void deleteByReportId(long id) {
+        Query query = sessionFactory.getCurrentSession().createQuery("DELETE FROM Sprint s WHERE s.report.id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
+    }
+
 
 }

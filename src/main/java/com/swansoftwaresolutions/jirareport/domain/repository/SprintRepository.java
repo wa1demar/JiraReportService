@@ -18,4 +18,6 @@ public interface SprintRepository {
     Sprint delete(long sprintId) throws NoSuchEntityException;
 
     Sprint findById(long sprintId) throws NoSuchEntityException;
+
+    void deleteByReportId(long id);
 }

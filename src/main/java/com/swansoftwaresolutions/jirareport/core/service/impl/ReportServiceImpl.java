@@ -3,13 +3,8 @@ package com.swansoftwaresolutions.jirareport.core.service.impl;
 import com.swansoftwaresolutions.jirareport.core.dto.report.NewReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDtoBuilder;
-import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.ReportMapper;
-import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
-import com.swansoftwaresolutions.jirareport.domain.entity.JiraSprint;
-import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
-import com.swansoftwaresolutions.jirareport.domain.entity.Report;
-import com.swansoftwaresolutions.jirareport.domain.entity.Sprint;
+import com.swansoftwaresolutions.jirareport.domain.entity.*;
 import com.swansoftwaresolutions.jirareport.domain.entity.builder.ReportBuilder;
 import com.swansoftwaresolutions.jirareport.domain.repository.*;
 import com.swansoftwaresolutions.jirareport.core.service.ReportService;
@@ -38,13 +33,17 @@ public class ReportServiceImpl implements ReportService {
     JiraSprintRepository jiraSprintRepository;
 
     @Autowired
+    SprintDeveloperRepository sprintDeveloperRepository;
+
+    @Autowired
+    JiraUserRepository jiraUserRepository;
+
+    @Autowired
     SprintRepository sprintRepository;
 
     @Autowired
     private ReportMapper reportMapper;
 
-    @Autowired
-    private JiraUserRepository jiraUserRepository;
 
     @Override
     public ReportListDto retrieveAllReportsList() {
@@ -113,19 +112,51 @@ public class ReportServiceImpl implements ReportService {
 
         Report report = reportRepository.findById(id);
 
+        List<String> adminLogins = report.getAdmins().stream().map(sd -> sd.getLogin()).collect(Collectors.toList());
+        String[] adminLoginArray = new String[adminLogins.size()];
+        List<JiraUser> admin = jiraUserRepository.findByLogins(adminLogins.toArray(adminLoginArray));
+
         Report newReport = new ReportBuilder()
                 .title("Copy of " + report.getTitle())
                 .creator(report.getCreator())
                 .boardId(report.getBoardId())
                 .isClosed(report.getClosed())
-                .admins(report.getAdmins())
+                .admins(admin)
                 .closedDate(report.getClosedDate())
                 .createdDate(report.getCreatedDate())
                 .syncDate(report.getSyncDate())
                 .typeId(report.getTypeId())
                 .build();
 
-        return reportMapper.toDto(reportRepository.add(newReport));
+        Report addedReport = reportRepository.add(newReport);
+
+        List<Sprint> targetSprints = sprintRepository.findByReportId(id);
+
+        for(Sprint target : targetSprints) {
+            Sprint sprint = new Sprint();
+            sprint.setJiraSprint(target.getJiraSprint());
+            sprint.setReport(addedReport);
+            sprint.setNotCountTarget(target.isNotCountTarget());
+            sprint.setShowUAT(target.isShowUAT());
+            sprint.setType(target.getType());
+
+            List<SprintDeveloper> developers = sprintDeveloperRepository.findBySprintId(target.getId());
+
+            Sprint newSprint = sprintRepository.add(sprint);
+
+            for (SprintDeveloper developer : developers) {
+                developer.setId(null);
+                developer.setSprint(newSprint);
+
+                sprintDeveloperRepository.add(developer);
+            }
+        }
+
+
+
+
+
+        return reportMapper.toDto(addedReport);
     }
 
     @Override
@@ -153,6 +184,7 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public ReportDto delete(long id) throws NoSuchEntityException {
+        sprintRepository.deleteByReportId(id);
         return reportMapper.toDto(reportRepository.delete(id));
     }
 

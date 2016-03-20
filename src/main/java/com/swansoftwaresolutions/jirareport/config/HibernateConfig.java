@@ -53,6 +53,21 @@ public class HibernateConfig {
     @Value("${hibernate.format_sql}")
     private String hibernateFormatSql;
 
+    @Value("${hibernate.c3p0.min_size}")
+    private String c3poMinSize;
+
+    @Value("${hibernate.c3p0.max_size}")
+    private String c3poMaxSize;
+
+    @Value("${hibernate.c3p0.timeout}")
+    private String c3poTimeout;
+
+    @Value("${hibernate.c3p0.max_statements}")
+    private String c3poMaxStatements;
+
+    @Value("${hibernate.c3p0.idle_test_period}")
+    private String c3poTestPeriod;
+
 
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
@@ -80,6 +95,12 @@ public class HibernateConfig {
 //        properties.put("hibernate.hbm2ddl.auto", hibernateToDll);
         properties.put("hibernate.characterEncoding", hibernateCharacterEncoding);
         properties.put("hibernate.format_sql", hibernateFormatSql);
+
+        properties.put("hibernate.c3p0.min_size", c3poMinSize);
+        properties.put("hibernate.c3p0.max_size", c3poMaxSize);
+        properties.put("hibernate.c3p0.timeout", c3poTimeout);
+        properties.put("hibernate.c3p0.max_statements", c3poMaxStatements);
+        properties.put("hibernate.c3p0.idle_test_period", c3poTestPeriod);
         return properties;
     }
 

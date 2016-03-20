@@ -39,7 +39,9 @@ dependencies {
     compile 'org.springframework.security:spring-security-config:4.0.3.RELEASE'
     compile 'org.springframework.security:spring-security-taglibs:4.0.3.RELEASE'
 
-    compile 'org.hibernate:hibernate-core:4.3.6.Final'
+    compile 'org.hibernate:hibernate-core:4.3.11.Final'
+    compile 'org.hibernate:hibernate-c3p0:4.3.11.Final'
+
     compile 'postgresql:postgresql:9.1-901-1.jdbc4'
     compile 'org.liquibase:liquibase-core:3.4.2'
 
