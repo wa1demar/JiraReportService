@@ -1,5 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.dto;
 
+import java.util.Date;
+
 /**
  * @author Vitaliy Holovko
  */
@@ -12,6 +14,7 @@ public class SprintIssueDto {
     private float hours;
     private String assignee;
     private Long sprintId;
+    private String issueDate;
 
     public Long getId() {
         return id;
@@ -67,5 +70,13 @@ public class SprintIssueDto {
 
     public void setSprintId(Long sprintId) {
         this.sprintId = sprintId;
+    }
+
+    public String getIssueDate() {
+        return issueDate;
+    }
+
+    public void setIssueDate(String issueDate) {
+        this.issueDate = issueDate;
     }
 }
