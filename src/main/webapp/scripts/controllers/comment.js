@@ -6,7 +6,7 @@ jiraPluginApp.controller('CommentCtrl', ['$scope', '$routeParams', 'CommentsFact
 
         this.getCommentsData = function () {
             CommentsFactory.query({id: $routeParams.reportId}, function(data) {
-                $scope.comments = data.comments;
+                $scope.comments = data;
             });
         };
         self.getCommentsData();
@@ -52,9 +52,9 @@ jiraPluginApp.controller('CommentCtrl', ['$scope', '$routeParams', 'CommentsFact
                 }
             });
             modalInstance.result.then(function (data) {
-                //TODO delete comment
+                //delete comment
                 console.log(data);
-                CommentFactory.delete({id: 1}, function() {
+                CommentFactory.delete({id: data.id}, function() {
                     self.getCommentsData();
                     Notification.success("Delete comment success");
                 }, function () {
