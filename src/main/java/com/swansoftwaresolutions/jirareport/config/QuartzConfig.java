@@ -40,7 +40,7 @@ public class QuartzConfig {
         Trigger[] triggers = {
 //                loadProjectsTrigger().getObject(),
 //                loadJiraUsersTrigger().getObject(),
-                loadJiraBoardsTrigger().getObject(),
+//                loadJiraBoardsTrigger().getObject(),
 //                loadIssuesTrigger().getObject()
         };
 

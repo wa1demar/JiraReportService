@@ -4,7 +4,7 @@ jiraPluginApp.controller('ConfigureCtrl', ['$scope', '$routeParams', 'ReportFact
     function($scope, $routeParams, ReportFactory) {
         var self = this;
 
-        this.getReport = function () {
+        $scope.getReport = function () {
             ReportFactory.get({id: $routeParams.reportId}, function (result) {
                 $scope.report = result;
                 var admins = [];
@@ -16,7 +16,7 @@ jiraPluginApp.controller('ConfigureCtrl', ['$scope', '$routeParams', 'ReportFact
             });
         };
 
-        self.getReport();
+        $scope.getReport();
 
 //--------------------------------------------------------------------------------------------------------------
 //Tabs
@@ -92,7 +92,7 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
                 ReportFactory.update({
                     id: $routeParams.reportId}, reportData, function(){
                     //FIXME not reinit select2
-                    self.getReport();
+                    $scope.$parent.getReport();
                     Notification.success('Save report success');
                 }, function () {
                     Notification.error('Server error');
@@ -584,43 +584,43 @@ jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModal', '$
                 sprintId: $scope.dlgData.sprint.id,
                 assignee: $scope.dlgData.developer.developerLogin
             }, function (data) {
-                $scope.issues = data;
+                $scope.data = data.sprintIssueDtos;
             });
 
-            $scope.data = [
-                {
-                    date: $scope.dlgData.sprint.startDate,
-                    issues: [
-                        {
-                            id: 1,
-                            typeName: "Story",
-                            statusName: "To Do",
-                            point: 3,
-                            hours: 8.0
-                        }
-                    ]
-                },
-                {
-                    date: $scope.dlgData.sprint.startDate,
-                    issues: [
-                        {
-                            id: 2,
-                            typeName: "Story",
-                            statusName: "In Progress",
-                            point: 3,
-                            hours: 8.0
-                        }
-                    ]
-                },
-                {
-                    date: $scope.dlgData.sprint.endDate,
-                    issues: []
-                },
-                {
-                    date: $scope.dlgData.sprint.endDate,
-                    issues: []
-                }
-            ]
+            //$scope.data = [
+            //    {
+            //        date: $scope.dlgData.sprint.startDate,
+            //        issues: [
+            //            {
+            //                id: 1,
+            //                typeName: "Story",
+            //                statusName: "To Do",
+            //                point: 3,
+            //                hours: 8.0
+            //            }
+            //        ]
+            //    },
+            //    {
+            //        date: $scope.dlgData.sprint.startDate,
+            //        issues: [
+            //            {
+            //                id: 2,
+            //                typeName: "Story",
+            //                statusName: "In Progress",
+            //                point: 3,
+            //                hours: 8.0
+            //            }
+            //        ]
+            //    },
+            //    {
+            //        date: $scope.dlgData.sprint.endDate,
+            //        issues: []
+            //    },
+            //    {
+            //        date: $scope.dlgData.sprint.endDate,
+            //        issues: []
+            //    }
+            //]
         };
         self.getIssues();
 
