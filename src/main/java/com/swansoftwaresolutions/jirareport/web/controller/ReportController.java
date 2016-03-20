@@ -97,72 +97,63 @@ public class ReportController {
     }
 
     @RequestMapping(value = "v1/reports/{id}/data_with_sprints_and_teams", method = RequestMethod.GET)
-    private ResponseEntity<ProjectDashboardDto> dataWithSprintsAndTeams(@PathVariable("id") Long id){
+    private ResponseEntity<ProjectDashboardDto> dataWithSprintsAndTeams(@PathVariable("id") Long id) {
         ProjectDashboardDto projectDashboardDto = new ProjectDashboardDto();
         projectDashboardDto.setReport(buildProjectReport(id));
-        projectDashboardDto.setSprints(buildProjectSprints(projectDashboardDto.getReport().getBoardId()));
-        return new ResponseEntity<ProjectDashboardDto>(projectDashboardDto, HttpStatus.OK);
+        if (projectDashboardDto.getReport().getBoardId() == null) {
+            projectDashboardDto.setSprints(buildProjectSprintsByBoardId(projectDashboardDto.getReport().getId()));
+        } else {
+            projectDashboardDto.setSprints(buildProjectSprintsByBoardId(projectDashboardDto.getReport().getId()));
+        }
+        return new ResponseEntity<>(projectDashboardDto, HttpStatus.OK);
     }
 
-    private List<SprintProjectReportDto> buildProjectSprints(Long boardId) {
+    private List<SprintProjectReportDto> buildProjectSprintsByBoardId(Long reportId) {
         List<SprintProjectReportDto> sprints = new ArrayList<>();
-        SprintDtos sprintIssueDto= new SprintDtos();
-        if (boardId !=null){
-            try {
-                sprintIssueDto = sprintService.findByReportId(boardId);
-            } catch (NoSuchEntityException e) {
-                e.printStackTrace();
+        SprintDtos sprintIssueDto = new SprintDtos();
+        try {
+            sprintIssueDto = sprintService.findByReportId(reportId);
+
+            for (SprintDto sprintDto : sprintIssueDto.getSprints()) {
+                SprintProjectReportDto sprintProj = new SprintProjectReportDto();
+                sprintProj.setId(sprintDto.getId());
+                sprintProj.setName(sprintDto.getName());
+                sprintProj.setNotCountTarget(sprintDto.isNotCountTarget());
+                sprintProj.setShowUat(sprintDto.isShowUat());
+                sprintProj.setState(sprintDto.getState());
+                sprintProj.setType(sprintDto.getType());
+                sprintProj.setStartDate(sprintDto.getStartDate());
+                sprintProj.setEndDate(sprintDto.getEndDate());
+                sprintProj.setCompleteDate(sprintDto.getEndDate());
+
+                sprintProj.setTargetPoints(0);
+                sprintProj.setTargetHours(0L);
+                sprintProj.setTargetQatDefectHours(0L);
+                sprintProj.setTargetQatDefectMin(0);
+                sprintProj.setTargetQatDefectMax(0);
+                sprintProj.setTargetUatDefectHours(0L);
+                sprintProj.setTargetUatDefectMin(0);
+                sprintProj.setTargetUatDefectMax(0);
+
+                sprintProj.setActualHours(0L);
+                sprintProj.setActualPoints(0);
+                sprintProj.setActualQatDefectHours(0L);
+                sprintProj.setActualQatDefectPoints(0);
+                sprintProj.setActualUatDefectHours(0L);
+                sprintProj.setActualUatDefectPoints(0);
+
+                Chart chart = new Chart();
+                chart.setLabel(new String[]{"hello", "foo", "bar"});
+                chart.setActual(new int[]{1, 2, 3});
+                chart.setTarget(new int[]{3, 2, 1});
+
+                sprintProj.setChart(chart);
+
+                sprints.add(sprintProj);
             }
-        } else {
-            try {
-                sprintIssueDto = sprintService.findByReportId(boardId);
-
-                for (SprintDto sprintDto : sprintIssueDto.getSprints()){
-                    SprintProjectReportDto sprintProj = new SprintProjectReportDto();
-                    sprintProj.setId(sprintDto.getId());
-                    sprintProj.setName(sprintDto.getName());
-                    sprintProj.setNotCountTarget(sprintDto.isNotCountTarget());
-                    sprintProj.setShowUat(sprintDto.isShowUat());
-                    sprintProj.setState(sprintDto.getState());
-                    sprintProj.setType(sprintDto.getType());
-                    sprintProj.setStartDate(sprintDto.getStartDate());
-                    sprintProj.setEndDate(sprintDto.getEndDate());
-                    sprintProj.setCompleteDate(sprintDto.getEndDate());
-
-                    sprintProj.setTargetPoints(0);
-                    sprintProj.setTargetHours(0L);
-                    sprintProj.setTargetQatDefectHours(0L);
-                    sprintProj.setTargetQatDefectMin(0);
-                    sprintProj.setTargetQatDefectMax(0);
-                    sprintProj.setTargetUatDefectHours(0L);
-                    sprintProj.setTargetUatDefectMin(0);
-                    sprintProj.setTargetUatDefectMax(0);
-
-                    sprintProj.setActualHours(0L);
-                    sprintProj.setActualPoints(0);
-                    sprintProj.setActualQatDefectHours(0L);
-                    sprintProj.setActualQatDefectPoints(0);
-                    sprintProj.setActualUatDefectHours(0L);
-                    sprintProj.setActualUatDefectPoints(0);
-
-                    Chart chart = new Chart();
-                    chart.setLabel(new String[]{ "hello", "foo", "bar" });
-                    chart.setActual(new int[]{ 1,2,3 });
-                    chart.setTarget(new int[]{3, 2, 1});
-
-                    sprintProj.setChart(chart);
-
-
-                    sprints.add(sprintProj);
-                }
-
-
-            } catch (NoSuchEntityException e) {
-                e.printStackTrace();
-            }
+        } catch (NoSuchEntityException e) {
+            e.printStackTrace();
         }
-
-
 
         return sprints;
     }
@@ -200,8 +191,8 @@ public class ReportController {
             projectReportDto.setActualUatDefectPoints(0);
 
             Chart chart = new Chart();
-            chart.setLabel(new String[]{ "hello", "foo", "bar" });
-            chart.setActual(new int[]{ 1,2,3 });
+            chart.setLabel(new String[]{"hello", "foo", "bar"});
+            chart.setActual(new int[]{1, 2, 3});
             chart.setTarget(new int[]{3, 2, 1});
 
             projectReportDto.setChart(chart);

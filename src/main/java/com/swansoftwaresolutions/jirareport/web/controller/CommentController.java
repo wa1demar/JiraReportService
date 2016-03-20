@@ -3,7 +3,6 @@ package com.swansoftwaresolutions.jirareport.web.controller;
 import com.swansoftwaresolutions.jirareport.core.dto.CommentDto;
 import com.swansoftwaresolutions.jirareport.core.service.CommentService;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
-import com.swansoftwaresolutions.jirareport.core.dto.responce.ResponceCommentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
