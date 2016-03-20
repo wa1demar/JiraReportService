@@ -10,6 +10,8 @@ public class SprintIssueDto {
     private String statusName;
     private int point;
     private float hours;
+    private String assignee;
+    private Long sprintId;
 
     public Long getId() {
         return id;
@@ -49,5 +51,21 @@ public class SprintIssueDto {
 
     public void setHours(float hours) {
         this.hours = hours;
+    }
+
+    public String getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(String assignee) {
+        this.assignee = assignee;
+    }
+
+    public Long getSprintId() {
+        return sprintId;
+    }
+
+    public void setSprintId(Long sprintId) {
+        this.sprintId = sprintId;
     }
 }
