@@ -3,10 +3,14 @@ package com.swansoftwaresolutions.jirareport.web.controller;
 import com.swansoftwaresolutions.jirareport.core.dto.ProjectDasboard.Chart;
 import com.swansoftwaresolutions.jirareport.core.dto.ProjectDasboard.ProjectDashboardDto;
 import com.swansoftwaresolutions.jirareport.core.dto.ProjectDasboard.ProjectReportDto;
+import com.swansoftwaresolutions.jirareport.core.dto.ProjectDasboard.SprintProjectReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.NewReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDto;
+import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDto;
+import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDtos;
 import com.swansoftwaresolutions.jirareport.core.service.ReportService;
+import com.swansoftwaresolutions.jirareport.core.service.SprintService;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Vitaliy Holovko
@@ -25,9 +31,12 @@ public class ReportController {
 
     private ReportService reportService;
 
+    private SprintService sprintService;
+
     @Autowired
-    public ReportController(ReportService reportService) {
+    public ReportController(ReportService reportService, SprintService sprintService) {
         this.reportService = reportService;
+        this.sprintService = sprintService;
     }
 
     @RequestMapping(value = "/v1/reports", method = RequestMethod.GET)
@@ -91,8 +100,71 @@ public class ReportController {
     private ResponseEntity<ProjectDashboardDto> dataWithSprintsAndTeams(@PathVariable("id") Long id){
         ProjectDashboardDto projectDashboardDto = new ProjectDashboardDto();
         projectDashboardDto.setReport(buildProjectReport(id));
-        
+        projectDashboardDto.setSprints(buildProjectSprints(projectDashboardDto.getReport().getBoardId()));
         return new ResponseEntity<ProjectDashboardDto>(projectDashboardDto, HttpStatus.OK);
+    }
+
+    private List<SprintProjectReportDto> buildProjectSprints(Long boardId) {
+        List<SprintProjectReportDto> sprints = new ArrayList<>();
+        SprintDtos sprintIssueDto= new SprintDtos();
+        if (boardId !=null){
+            try {
+                sprintIssueDto = sprintService.findByReportId(boardId);
+            } catch (NoSuchEntityException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                sprintIssueDto = sprintService.findByReportId(boardId);
+
+                for (SprintDto sprintDto : sprintIssueDto.getSprints()){
+                    SprintProjectReportDto sprintProj = new SprintProjectReportDto();
+                    sprintProj.setId(sprintDto.getId());
+                    sprintProj.setName(sprintDto.getName());
+                    sprintProj.setNotCountTarget(sprintDto.isNotCountTarget());
+                    sprintProj.setShowUat(sprintDto.isShowUat());
+                    sprintProj.setState(sprintDto.getState());
+                    sprintProj.setType(sprintDto.getType());
+                    sprintProj.setStartDate(sprintDto.getStartDate());
+                    sprintProj.setEndDate(sprintDto.getEndDate());
+                    sprintProj.setCompleteDate(sprintDto.getEndDate());
+
+                    sprintProj.setTargetPoints(0);
+                    sprintProj.setTargetHours(0L);
+                    sprintProj.setTargetQatDefectHours(0L);
+                    sprintProj.setTargetQatDefectMin(0);
+                    sprintProj.setTargetQatDefectMax(0);
+                    sprintProj.setTargetUatDefectHours(0L);
+                    sprintProj.setTargetUatDefectMin(0);
+                    sprintProj.setTargetUatDefectMax(0);
+
+                    sprintProj.setActualHours(0L);
+                    sprintProj.setActualPoints(0);
+                    sprintProj.setActualQatDefectHours(0L);
+                    sprintProj.setActualQatDefectPoints(0);
+                    sprintProj.setActualUatDefectHours(0L);
+                    sprintProj.setActualUatDefectPoints(0);
+
+                    Chart chart = new Chart();
+                    chart.setLabel(new String[]{ "hello", "foo", "bar" });
+                    chart.setActual(new int[]{ 1,2,3 });
+                    chart.setTarget(new int[]{3, 2, 1});
+
+                    sprintProj.setChart(chart);
+
+
+                    sprints.add(sprintProj);
+                }
+
+
+            } catch (NoSuchEntityException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+        return sprints;
     }
 
     private ProjectReportDto buildProjectReport(Long id) {
@@ -130,7 +202,7 @@ public class ReportController {
             Chart chart = new Chart();
             chart.setLabel(new String[]{ "hello", "foo", "bar" });
             chart.setActual(new int[]{ 1,2,3 });
-            chart.setTarget(new int[]{ 3,2,1 });
+            chart.setTarget(new int[]{3, 2, 1});
 
             projectReportDto.setChart(chart);
 
