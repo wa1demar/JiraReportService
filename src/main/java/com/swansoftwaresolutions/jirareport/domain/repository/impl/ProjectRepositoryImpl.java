@@ -50,7 +50,7 @@ public class ProjectRepositoryImpl implements ProjectRepository {
     }
 
     @Override
-    public Project findByKey(String key) {
+    public Project findByKey(String key) throws NoSuchEntityException{
         return (Project) sessionFactory.openSession()
                 .createCriteria(Project.class).add(Restrictions.eq("key", key)).uniqueResult();
     }

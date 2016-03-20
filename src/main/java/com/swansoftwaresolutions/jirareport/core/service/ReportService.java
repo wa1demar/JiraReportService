@@ -7,7 +7,6 @@ import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
 
 /**
  * @author Vitaliy Holovko
- *         on 04.03.16.
  */
 public interface ReportService {
 

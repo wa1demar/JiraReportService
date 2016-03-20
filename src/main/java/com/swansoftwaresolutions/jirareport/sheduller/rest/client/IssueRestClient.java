@@ -47,7 +47,12 @@ public class IssueRestClient extends RestClientBase implements RestClient {
 
     @Override
     public void loadData() {
-        List<JiraBoard> jiraBoardList = jiraBoardService.findAll();
+        List<JiraBoard> jiraBoardList = null;
+        try {
+            jiraBoardList = jiraBoardService.findAll();
+        } catch (NoSuchEntityException e) {
+            e.printStackTrace();
+        }
 
         combineInformationForPoint(jiraBoardList);
     }

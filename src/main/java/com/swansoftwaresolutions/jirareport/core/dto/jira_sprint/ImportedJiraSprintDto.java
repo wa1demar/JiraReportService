@@ -69,4 +69,28 @@ public class ImportedJiraSprintDto {
     public void setOriginBoardId(Long originBoardId) {
         this.originBoardId = originBoardId;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ImportedJiraSprintDto that = (ImportedJiraSprintDto) o;
+
+        if (!name.equals(that.name)) return false;
+        if (!originBoardId.equals(that.originBoardId)) return false;
+        if (!startDate.equals(that.startDate)) return false;
+        if (state != null ? !state.equals(that.state) : that.state != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + startDate.hashCode();
+        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
+        result = 31 * result + originBoardId.hashCode();
+        return result;
+    }
 }

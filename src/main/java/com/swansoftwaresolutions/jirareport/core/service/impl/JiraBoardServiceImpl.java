@@ -31,7 +31,7 @@ public class JiraBoardServiceImpl implements JiraBoardService {
     }
 
     @Override
-    public List<JiraBoard> findAll() {
+    public List<JiraBoard> findAll() throws NoSuchEntityException {
         return jiraBoardRepository.findAll();
     }
 
@@ -41,12 +41,12 @@ public class JiraBoardServiceImpl implements JiraBoardService {
     }
 
     @Override
-    public List<JiraBoardInfoDto> findAllBoardForInfo() {
+    public List<JiraBoardInfoDto> findAllBoardForInfo() throws NoSuchEntityException {
         return jiraBoardMapper.toInfoDtos(jiraBoardRepository.findAll());
     }
 
     @Override
-    public JiraBoardsDto retrieveAllBoards() {
+    public JiraBoardsDto retrieveAllBoards() throws NoSuchEntityException {
         List<JiraBoard> boards = jiraBoardRepository.findAll();
         JiraBoardsDto boardsDto = new JiraBoardsDto(jiraBoardMapper.toDtos(boards));
         return boardsDto;

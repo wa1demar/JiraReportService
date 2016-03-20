@@ -12,7 +12,7 @@ public interface JiraBoardRepository {
 
     JiraBoard add(JiraBoard jiraBoard);
 
-    List<JiraBoard> findAll();
+    List<JiraBoard> findAll() throws NoSuchEntityException;
 
     JiraBoard findById(Long jiraBoardId);
 
