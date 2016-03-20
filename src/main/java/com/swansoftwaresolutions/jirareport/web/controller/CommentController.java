@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,59 +30,32 @@ public class CommentController {
 
 
     @RequestMapping(value = "/v1/reports/{reportId}/comments", method = RequestMethod.POST)
-    private ResponseEntity<ResponceCommentDto> addNewComment(@PathVariable(value = "reportId") Long reportId, @RequestBody CommentDto commentDto) throws NoSuchEntityException {
-        ResponceCommentDto responseCommentDto;
-        HttpStatus httpStatus;
+    private ResponseEntity<CommentDto> addNewComment(@PathVariable(value = "reportId") Long reportId, @RequestBody CommentDto commentDto) throws NoSuchEntityException {
+        commentDto.setCreatedDate(new Date());
         commentDto = commentService.save(commentDto);
 
-        if (commentDto != null) {
-            responseCommentDto = new ResponceCommentDto(true, "Comment added successfully.", commentDto);
-            httpStatus = HttpStatus.OK;
-        } else {
-            responseCommentDto = new ResponceCommentDto(false, "Can't add Comment.");
-            httpStatus = HttpStatus.NOT_IMPLEMENTED;
-        }
-        return new ResponseEntity<>(responseCommentDto, httpStatus);
+        return new ResponseEntity<>(commentDto, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/v1/comments/{id}", method = RequestMethod.DELETE)
-    private ResponseEntity<ResponceCommentDto> deleteCommentById(@PathVariable(value = "id") Long id) {
-        ResponceCommentDto responseCommentDto;
-        HttpStatus httpStatus;
-
+    private ResponseEntity<CommentDto> deleteCommentById(@PathVariable(value = "id") Long id) {
         try {
-            if (commentService.findById(id) != null) {
-                commentService.delete(id);
-                responseCommentDto = new ResponceCommentDto(true, "Comment deleted successfully.");
-                httpStatus = HttpStatus.OK;
-            } else {
-                responseCommentDto = new ResponceCommentDto(false, "Can't found Comment.");
-                httpStatus = HttpStatus.NOT_FOUND;
-            }
+            commentService.delete(id);
         } catch (NoSuchEntityException e) {
             e.printStackTrace();
-            responseCommentDto = new ResponceCommentDto(false, "Can't found Comment.");
-            httpStatus = HttpStatus.NOT_FOUND;
         }
-
-        return new ResponseEntity<>(responseCommentDto, httpStatus);
+        return new ResponseEntity<>(new CommentDto(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "v1/reports/{reportId}/comments", method = RequestMethod.GET)
-    private ResponseEntity<ResponceCommentDto> findAllComments(@PathVariable("reportId") Long reportId) {
-        ResponceCommentDto responseCommentDto;
-        HttpStatus httpStatus;
-
+    private ResponseEntity<List<CommentDto>> findAllComments(@PathVariable("reportId") Long reportId) {
         List<CommentDto> commentDtoList = new ArrayList<>();
         try {
             commentDtoList = commentService.findByReportId(reportId);
-            responseCommentDto = new ResponceCommentDto(true, "Comment found successfully.", commentDtoList);
-            httpStatus = HttpStatus.OK;
         } catch (NoSuchEntityException e) {
-            responseCommentDto = new ResponceCommentDto(false, "Can't found Comments.", commentDtoList);
-            httpStatus = HttpStatus.NOT_FOUND;
+            e.printStackTrace();
         }
-        return new ResponseEntity<>(responseCommentDto, httpStatus);
+        return new ResponseEntity<>(commentDtoList, HttpStatus.OK);
     }
 
 }
