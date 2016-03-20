@@ -588,7 +588,7 @@ jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModal', '$
                 sprintId: $scope.dlgData.sprint.id,
                 assignee: $scope.dlgData.developer.developerLogin
             }, function (data) {
-                $scope.data = data.sprintIssueDtos;
+                $scope.data = data;
             });
 
             //$scope.data = [
