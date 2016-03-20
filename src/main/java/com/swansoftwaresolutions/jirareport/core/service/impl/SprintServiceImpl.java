@@ -18,9 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -62,7 +60,7 @@ public class SprintServiceImpl implements SprintService {
         Report report = reportRepository.findById(reportId);
         List<Sprint> sprints = sprintRepository.findByReportId(reportId);
         if (report.getTypeId() == 1) {
-           List<Sprint> spr = new ArrayList<>();
+            List<Sprint> spr = new ArrayList<>();
             for (Sprint s : sprints) {
                 if (s.getJiraSprint() != null) {
                     spr.add(new SprintBuilder()
@@ -87,8 +85,16 @@ public class SprintServiceImpl implements SprintService {
     }
 
     @Override
-    public SprintDto delete(long sprintId) throws NoSuchEntityException {
-        Sprint sprint = sprintRepository.delete(sprintId);
+    public SprintDto delete(long sprintId, long reportId) throws NoSuchEntityException {
+        Report report = reportRepository.findById(reportId);
+
+        Sprint sprint = null;
+        if (report.getTypeId() != 2) {
+            developerRepository.deleteBySprintId(sprintId);
+            sprint = sprintRepository.findById(sprintId);
+        } else {
+            sprint = sprintRepository.delete(sprintId);
+        }
         return sprintMapper.toDto(sprint);
     }
 

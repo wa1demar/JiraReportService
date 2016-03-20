@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository;
 
+import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.SprintDeveloper;
 
 import java.util.List;
@@ -11,4 +12,7 @@ public interface SprintDeveloperRepository {
     SprintDeveloper add(SprintDeveloper developer);
 
     void delete(List<Long> ids, Long sprintId);
+
+    void deleteBySprintId(Long sprintId);
+
 }

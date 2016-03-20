@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
+import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.SprintDeveloper;
 import com.swansoftwaresolutions.jirareport.domain.repository.SprintDeveloperRepository;
 import org.hibernate.Query;
@@ -41,6 +42,13 @@ public class SprintDeveloperRepositoryImpl implements SprintDeveloperRepository 
         Query query = sessionFactory.getCurrentSession().createQuery("DELETE FROM SprintDeveloper dev WHERE dev.sprint.id = :sprintId and dev.id NOT IN :ids");
         query.setParameter("sprintId", sprintId);
         query.setParameterList("ids", ids.size() > 0 ? ids : new ArrayList<Long>(){{ add(0L);}});
+        query.executeUpdate();
+    }
+
+    @Override
+    public void deleteBySprintId(Long sprintId) {
+        Query query = sessionFactory.getCurrentSession().createQuery("DELETE FROM SprintDeveloper dev WHERE dev.sprint.id = :sprintId");
+        query.setParameter("sprintId", sprintId);
         query.executeUpdate();
     }
 }
