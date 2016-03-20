@@ -28,6 +28,9 @@ public class Comment implements Serializable {
     @Column(name = "creator")
     private String creator;
 
+    @Column(name = "creator_name")
+    private String creatorDisplayName;
+
     @Column(name = "created_date")
     private Date createdDate;
 

@@ -32,6 +32,7 @@ public class CommentController {
     @RequestMapping(value = "/v1/reports/{reportId}/comments", method = RequestMethod.POST)
     private ResponseEntity<CommentDto> addNewComment(@PathVariable(value = "reportId") Long reportId, @RequestBody CommentDto commentDto) throws NoSuchEntityException {
         commentDto.setCreatedDate(new Date());
+        commentDto.setReportId(reportId);
         commentDto = commentService.save(commentDto);
 
         return new ResponseEntity<>(commentDto, HttpStatus.OK);

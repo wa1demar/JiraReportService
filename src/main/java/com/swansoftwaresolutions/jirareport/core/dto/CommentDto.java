@@ -12,6 +12,7 @@ public class CommentDto implements Serializable {
     private Long reportId;
     private String text;
     private String creator;
+    private String creatorDisplayName;
     private Date createdDate;
 
     public Long getId() {
@@ -52,5 +53,13 @@ public class CommentDto implements Serializable {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getCreatorDisplayName() {
+        return creatorDisplayName;
+    }
+
+    public void setCreatorDisplayName(String creatorDisplayName) {
+        this.creatorDisplayName = creatorDisplayName;
     }
 }
