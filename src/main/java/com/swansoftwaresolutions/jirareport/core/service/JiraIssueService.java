@@ -14,12 +14,12 @@ public interface JiraIssueService {
 
     JiraBoard save(JiraBoard jiraBoard);
 
-    List<JiraBoard> findAll();
+    List<JiraBoard> findAll() throws NoSuchEntityException;
 
     void delete(JiraBoard jiraBoard) throws NoSuchEntityException;
 
-    List<JiraBoardInfoDto> findAllBoardForInfo();
+    List<JiraBoardInfoDto> findAllBoardForInfo() throws NoSuchEntityException;
 
-    JiraBoardsDto retrieveAllBoards();
+    JiraBoardsDto retrieveAllBoards() throws NoSuchEntityException;
 
 }

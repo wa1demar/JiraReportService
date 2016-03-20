@@ -2,6 +2,7 @@ package com.swansoftwaresolutions.jirareport.web.controller;
 
 import com.swansoftwaresolutions.jirareport.core.dto.JiraBoardsDto;
 import com.swansoftwaresolutions.jirareport.core.service.JiraBoardService;
+import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,13 @@ public class JiraBoardController {
     @RequestMapping(value = "/v1/boards", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<JiraBoardsDto> getAllBoards() {
-        return new ResponseEntity<>(jiraBoardService.retrieveAllBoards(), HttpStatus.OK);
+        JiraBoardsDto jiraBoardDto = new JiraBoardsDto();
+        try {
+            jiraBoardDto = jiraBoardService.retrieveAllBoards();
+        } catch (NoSuchEntityException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(jiraBoardDto, HttpStatus.OK);
     }
 
 }
