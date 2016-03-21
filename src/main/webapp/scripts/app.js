@@ -12,7 +12,8 @@ var jiraPluginApp = angular.module('jiraPluginApp', [
     'ui.select2',
     'ngMessages',
     'chart.js',
-    'ui-notification'
+    'ui-notification',
+    'nl2br'
 ]);
 
 jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
@@ -67,6 +68,9 @@ jiraPluginApp.run(function($rootScope, $window, $location, AuthenticationFactory
     AuthenticationFactory.check();
 
     $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute) {
+        //Check session on server
+        AuthenticationFactory.checkSession();
+
         if ((nextRoute.access && nextRoute.access.requiredLogin) && !AuthenticationFactory.isLogged) {
             $location.path("/login");
         } else {

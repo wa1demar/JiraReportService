@@ -5,6 +5,7 @@ jiraPluginApp.controller('ReportElementCtrl',
         function($scope, $routeParams, ReportsFactory, ReportFactory, ReportWithSprintsAndTeamsFactory, $timeout, $location) {
             var self = this;
             $scope.loaderShow = true;
+            $scope.hasSprintTeam = true;
 //----------------------------------------------------------------------------------------------------------------------
 //update ProgressBar
             $scope.updateProgressBar = function (item) {
@@ -16,15 +17,12 @@ jiraPluginApp.controller('ReportElementCtrl',
 
                 if ($scope.showSprintId === null || $scope.showSprintId === undefined) {
                     console.log("update ProgressBar for report");
-                    console.log($scope.reportData.report);
                     actualPoints = $scope.reportData.report.actualPoints;
                     actualHours  = $scope.reportData.report.actualHours;
                     targetPoints = $scope.reportData.report.targetPoints;
                     targetHours  = $scope.reportData.report.targetHours;
                 } else {
                     console.log("update ProgressBar for sprint");
-                    console.log(item);
-
                     actualPoints = item.actualPoints;
                     actualHours  = item.actualHours;
                     targetPoints = item.targetPoints;
@@ -330,9 +328,15 @@ jiraPluginApp.controller('ReportElementCtrl',
             self.getReportWithSprintsAndTeamsData();
 
             $scope.showSprintDetails = function (item) {
+                $scope.hasSprintTeam = true;
+                if (item.sprintTeam.length === 0) {
+                    $scope.hasSprintTeam = false;
+                }
+
                 if ($scope.showSprintId == item.id) {
                     $scope.showSprintId = null;
                     $scope.showSprintName = undefined;
+                    $scope.hasSprintTeam = true;
                 } else {
                     $scope.showSprintId = item.id;
                     $scope.showSprintName = item.name;
