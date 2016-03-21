@@ -364,6 +364,8 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 }
                 $scope.devUsersForAdd = users.users;
             });
+
+            $scope.calcParams();
         };
 
 //----------------------------------------------------------------------------------------------------------------------
