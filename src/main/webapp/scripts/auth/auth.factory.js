@@ -21,8 +21,6 @@ jiraPluginApp.factory('AuthenticationFactory', ['$window', '$http', 'CONFIG', '$
                 method: 'GET',
                 url: CONFIG.API_PATH + '/check_session'
             }).then(function successCallback(response) {
-                console.log("Succes");
-                console.log(response);
                 if ($window.localStorage.token && $window.localStorage.user) {
                     self.isLogged = true;
                 } else {
@@ -31,10 +29,14 @@ jiraPluginApp.factory('AuthenticationFactory', ['$window', '$http', 'CONFIG', '$
                 }
                 def.resolve(response);
             }, function errorCallback(response) {
-                console.log("Error");
                 if (response.status === 401) {
+                    console.log("Error status 401");
                     self.isLogged = false;
                     delete self.user;
+
+                    delete $window.localStorage.token;
+                    delete $window.localStorage.user;
+                    delete $window.localStorage.userRole;
                 }
                 def.reject();
             });
