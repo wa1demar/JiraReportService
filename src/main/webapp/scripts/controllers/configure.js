@@ -229,27 +229,29 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 //TODO need more tests
 //----------------------------------------------------------------------------------------------------------------------
 //Autofill
-//                    if (result.developers.length > 0) {
-//                        sprintTeamDataForAutoFill = {
-//                            sprintName:  data.name,
-//                            sprintTeams: result.developers
-//                        };
-//
-//                        $scope.showAutoFillData = {
-//                            showAutoFillLabel: false
-//                        };
-//                    } else {
-//                        $scope.sprintTeams = sprintTeamDataForAutoFill.sprintTeams;
-//
-//                        for (var index = 0; index < $scope.sprintTeams.length; index++) {
-//                            delete $scope.sprintTeams[index].id;
-//                        }
-//
-//                        $scope.showAutoFillData = {
-//                            sprintName:  sprintTeamDataForAutoFill.sprintName,
-//                            showAutoFillLabel: true
-//                        };
-//                    }
+                    if (result.developers.length > 0) {
+                        sprintTeamDataForAutoFill = {
+                            sprintName:  data.name,
+                            sprintTeams: result.developers
+                        };
+
+                        $scope.showAutoFillData = {
+                            showAutoFillLabel: false
+                        };
+                    } else {
+                        if (sprintTeamDataForAutoFill.sprintTeams !== undefined && sprintTeamDataForAutoFill.sprintTeams.length > 0) {
+                            $scope.sprintTeams = sprintTeamDataForAutoFill.sprintTeams;
+
+                            for (var index = 0; index < $scope.sprintTeams.length; index++) {
+                                delete $scope.sprintTeams[index].id;
+                            }
+
+                            $scope.showAutoFillData = {
+                                sprintName:  sprintTeamDataForAutoFill.sprintName,
+                                showAutoFillLabel: true
+                            };
+                        }
+                    }
 //----------------------------------------------------------------------------------------------------------------------
 
                     $scope.calcParams();
@@ -395,7 +397,8 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 sprintId: $scope.reportModel.sprint.id
             }, sprintData, function () {
                 $scope.getSprintTeams({
-                    id: $scope.reportModel.sprint.id
+                    id: $scope.reportModel.sprint.id,
+                    name: $scope.reportModel.sprint.name
                 });
                 console.log("Save sprint");
                 Notification.success('Data save success');
