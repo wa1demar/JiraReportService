@@ -8,6 +8,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDto;
 import com.swansoftwaresolutions.jirareport.core.service.SprintIssueService;
 import com.swansoftwaresolutions.jirareport.core.service.SprintService;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
+import com.swansoftwaresolutions.jirareport.web.controller.helper.HelperMethods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,52 +33,7 @@ public class SprintIssueController {
 
     @RequestMapping(value = "/v1/sprint_issues/{sprintId}/{assignee}", method = RequestMethod.GET)
     private ResponseEntity<List<IssuesByDayDto>> getAllIssues(@PathVariable("sprintId") Long sprintId, @PathVariable("assignee") String assignee) {
-
-        List<IssuesByDayDto> results = new ArrayList<>();
-
-        long oneDayMilSec = 86400000; // number of milliseconds in one day
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-
-        SprintDto sprint = new SprintDto();
-
-        SprintIssuesDto result = new SprintIssuesDto();
-
-        SprintIssueListDto sprintIssueListDto = sprintIssueService.findBySprintIdAndAsignee(sprintId, assignee);
-        try {
-            sprint = sprintService.findById(sprintId);
-
-            Date startDate = sprint.getStartDate();
-            Date endDate = sprint.getEndDate();
-
-            long startDateMilSec = startDate.getTime();
-            long endDateMilSec = endDate.getTime();
-
-            for(long d=startDateMilSec; d<=endDateMilSec; d=d+oneDayMilSec){
-                List<SprintIssueDto> issues = new ArrayList<>();
-                Date date1 = new Date();
-                Date date2 = new Date();
-                for (SprintIssueDto sprintIssueDto: sprintIssueListDto.getSprintIssueDtos()){
-                    try {
-                        date1 = new Date(d);
-                        date2 = sdf.parse(sprintIssueDto.getIssueDate());
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    if (isSameDate(date1,date2)){
-                        issues.add(sprintIssueDto);
-                    }
-                }
-
-                IssuesByDayDto issuesByDayDto = new IssuesByDayDto();
-                issuesByDayDto.setDate(sdf.format(d));
-                issuesByDayDto.setIssues(issues);
-                results.add(issuesByDayDto);
-            }
-
-        } catch (NoSuchEntityException e) {
-           e.printStackTrace();
-        }
-
+        List<IssuesByDayDto> results = sprintIssueService.getIssuesByDay(sprintId, assignee);
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
 
@@ -115,31 +71,6 @@ public class SprintIssueController {
     private ResponseEntity<SprintIssueDto> delete(@PathVariable("issueId") Long issueId) throws NoSuchEntityException {
         sprintIssueService.delete(issueId);
         return new ResponseEntity<>(new SprintIssueDto(), HttpStatus.OK);
-    }
-
-    public  boolean isSameDate(Date date, Date anotherDate) {
-        if(date==null && anotherDate==null){
-            return true;
-        }
-        else if(date==null || anotherDate==null){
-            return false;
-        }
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
-
-        Calendar anotherCalendar = Calendar.getInstance();
-        anotherCalendar.setTime(anotherDate);
-        anotherCalendar.set(Calendar.HOUR_OF_DAY, 0);
-        anotherCalendar.set(Calendar.MINUTE, 0);
-        anotherCalendar.set(Calendar.SECOND, 0);
-        anotherCalendar.set(Calendar.MILLISECOND, 0);
-        anotherCalendar.setTimeZone(TimeZone.getTimeZone("UTC"));
-        return calendar.compareTo(anotherCalendar) == 0;
     }
 
 }

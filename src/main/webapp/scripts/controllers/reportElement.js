@@ -330,8 +330,13 @@ jiraPluginApp.controller('ReportElementCtrl',
             self.getReportWithSprintsAndTeamsData();
 
             $scope.showSprintDetails = function (item) {
-                console.log("showSprintDetails");
-                $scope.showSprintId = $scope.showSprintId == item.id ? null : item.id;
+                if ($scope.showSprintId == item.id) {
+                    $scope.showSprintId = null;
+                    $scope.showSprintName = undefined;
+                } else {
+                    $scope.showSprintId = item.id;
+                    $scope.showSprintName = item.name;
+                }
 
                 $scope.updateProgressBar(item);
                 $scope.updateChart(item);

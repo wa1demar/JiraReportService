@@ -59,7 +59,10 @@ jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
         });
 });
 
-jiraPluginApp.run(function($rootScope, $window, $location, AuthenticationFactory) {
+jiraPluginApp.run(function($rootScope, $window, $location, AuthenticationFactory, CONFIG) {
+
+    $rootScope.CONFIG = CONFIG;
+
     // when the page refreshes, check if the user is already logged in
     AuthenticationFactory.check();
 
