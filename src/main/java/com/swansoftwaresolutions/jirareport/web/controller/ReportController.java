@@ -354,9 +354,9 @@ public class ReportController {
             projectReportDto.setActualUatDefectPoints(0);
 
             Chart chart = new Chart();
-            chart.setLabel(new String[]{"hello", "foo", "bar"});
-            chart.setActual(new int[]{1, 2, 3});
-            chart.setTarget(new int[]{3, 2, 1});
+            chart.setLabel(new String[]{"0", "1", "2"});
+            chart.setActual(new int[]{3, 2, 1});
+            chart.setTarget(new int[]{3, 3, 0});
 
             projectReportDto.setChart(chart);
 

@@ -33,60 +33,7 @@ public class SprintIssueController {
 
     @RequestMapping(value = "/v1/sprint_issues/{sprintId}/{assignee}", method = RequestMethod.GET)
     private ResponseEntity<List<IssuesByDayDto>> getAllIssues(@PathVariable("sprintId") Long sprintId, @PathVariable("assignee") String assignee) {
-
-        HelperMethods helperMethods = new HelperMethods();
-
-        List<IssuesByDayDto> results = new ArrayList<>();
-
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-
-        SprintIssuesDto result = new SprintIssuesDto();
-
-        SprintIssueListDto sprintIssueListDto = sprintIssueService.findBySprintIdAndAsignee(sprintId, assignee);
-        try {
-            SprintDto sprint = sprintService.findById(sprintId);
-
-            Calendar startDate = Calendar.getInstance();
-            startDate.setTime(sprint.getStartDate());
-
-            Calendar endDate = Calendar.getInstance();
-            endDate.setTime(sprint.getEndDate());
-
-            while(!startDate.after(endDate)){
-                Date currentDate = startDate.getTime();
-
-                List<SprintIssueDto> issues = new ArrayList<>();
-
-                if (helperMethods.isWeekend(currentDate)){
-                    startDate.add(Calendar.DATE, 1);
-                    continue;
-                }
-
-                for (SprintIssueDto sprintIssueDto: sprintIssueListDto.getSprintIssueDtos()){
-                    Date date2 = null;
-                    try {
-                        date2 = sdf.parse(sprintIssueDto.getIssueDate());
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-
-                    if (helperMethods.isSameDate(currentDate,date2)){
-                        issues.add(sprintIssueDto);
-                    }
-                }
-
-                IssuesByDayDto issuesByDayDto = new IssuesByDayDto();
-                issuesByDayDto.setDate(sdf.format(currentDate));
-                issuesByDayDto.setIssues(issues);
-                results.add(issuesByDayDto);
-
-                startDate.add(Calendar.DATE, 1);
-            }
-
-        } catch (NoSuchEntityException e) {
-           e.printStackTrace();
-        }
-
+        List<IssuesByDayDto> results = sprintIssueService.getIssuesByDay(sprintId, assignee);
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
 

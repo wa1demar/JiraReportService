@@ -1,14 +1,23 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
+import com.swansoftwaresolutions.jirareport.core.dto.SprintIssue.IssuesByDayDto;
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssue.SprintIssueListDto;
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssueDto;
+import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.SprintIssueMapper;
 import com.swansoftwaresolutions.jirareport.core.service.SprintIssueService;
+import com.swansoftwaresolutions.jirareport.core.service.SprintService;
 import com.swansoftwaresolutions.jirareport.domain.repository.SprintIssueRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
+import com.swansoftwaresolutions.jirareport.web.controller.helper.HelperMethods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,6 +31,9 @@ public class SprintIssueServiceImpl implements SprintIssueService {
 
     @Autowired
     SprintIssueRepository sprintIssueRepository;
+
+    @Autowired
+    SprintService sprintService;
 
     @Override
     public List<SprintIssueDto> findAll() throws NoSuchEntityException {
@@ -63,6 +75,60 @@ public class SprintIssueServiceImpl implements SprintIssueService {
     @Override
     public void delete(Long issueId) throws NoSuchEntityException {
         sprintIssueRepository.delete(issueId);
+    }
+
+    @Override
+    public List<IssuesByDayDto> getIssuesByDay(Long sprintId, String assignee) {
+        List<IssuesByDayDto> results = new ArrayList<>();
+
+        HelperMethods helperMethods = new HelperMethods();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+
+        SprintIssueListDto sprintIssueListDto = findBySprintIdAndAsignee(sprintId, assignee);
+        try {
+            SprintDto sprint = sprintService.findById(sprintId);
+
+            Calendar startDate = Calendar.getInstance();
+            startDate.setTime(sprint.getStartDate());
+
+            Calendar endDate = Calendar.getInstance();
+            endDate.setTime(sprint.getEndDate());
+
+            while(!startDate.after(endDate)){
+                Date currentDate = startDate.getTime();
+
+                List<SprintIssueDto> issues = new ArrayList<>();
+
+                if (helperMethods.isWeekend(currentDate)){
+                    startDate.add(Calendar.DATE, 1);
+                    continue;
+                }
+
+                for (SprintIssueDto sprintIssueDto: sprintIssueListDto.getSprintIssueDtos()){
+                    Date date2 = null;
+                    try {
+                        date2 = sdf.parse(sprintIssueDto.getIssueDate());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (helperMethods.isSameDate(currentDate,date2)){
+                        issues.add(sprintIssueDto);
+                    }
+                }
+
+                IssuesByDayDto issuesByDayDto = new IssuesByDayDto();
+                issuesByDayDto.setDate(sdf.format(currentDate));
+                issuesByDayDto.setIssues(issues);
+                results.add(issuesByDayDto);
+
+                startDate.add(Calendar.DATE, 1);
+            }
+
+        } catch (NoSuchEntityException e) {
+            e.printStackTrace();
+        }
+        return results;
     }
 }
 
