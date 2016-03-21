@@ -51,7 +51,7 @@
                             <tr>
                                 <td ng-click="showSprintDetails(data)"
                                     rowspan="{{data.sprintTeam.length + 1}}"
-                                    class="show-sprint-details-index text-center sprint-id sprint-{{data.state}} {{data.stateClass}}"
+                                    class="show-sprint-details-index text-center sprint-id sprint-{{data.state}} {{data.stateClass}} {{showSprintId == data.id ? 'open' : ''}}"
                                     style="width: 100px; cursor: pointer;"
                                     title="{{data.state}} sprint {{data.stateName}}">#{{$index + 1}}</td>
                                 <td ng-click="showSprintDetails(data)"
