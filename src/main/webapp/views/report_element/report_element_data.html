@@ -50,7 +50,7 @@
                         <tbody ng-repeat="data in reportData.sprints">
                             <tr>
                                 <td ng-click="showSprintDetails(data)"
-                                    rowspan="{{data.sprintTeam.length + 1}}"
+                                    rowspan="{{(data.sprintTeam === undefined || data.sprintTeam.length === 0 && showSprintId === data.id) ? 2 : data.sprintTeam.length + 1}}"
                                     class="show-sprint-details-index text-center sprint-id sprint-{{data.state}} {{data.stateClass}} {{showSprintId == data.id ? 'open' : ''}}"
                                     style="width: 100px; cursor: pointer;"
                                     title="{{data.state}} sprint {{data.stateName}}">#{{$index + 1}}</td>
@@ -108,7 +108,7 @@
                                 <td ng-show="data.showUat" class="text-center" style="border-right: 1px solid #dddddd;">{{data.actualUatDefectHours}}</td>
                             </tr>
 
-                            <tr ng-show="showSprintId == data.id" ng-repeat="sprintTeam in data.sprintTeam" class="sprint-team-tr" data-id-sprint="{{sprintTeam.id}}" #if(!$velocityHasNext)style="border-bottom: 2px solid #cccccc;"#end>
+                            <tr ng-show="data.sprintTeam.length > 0 && showSprintId == data.id" ng-repeat="sprintTeam in data.sprintTeam" class="sprint-team-tr" data-id-sprint="{{sprintTeam.id}}" #if(!$velocityHasNext)style="border-bottom: 2px solid #cccccc;"#end>
                                 <td ng-style="$last ? 'border-bottom: 1px solid red;' : 'border-bottom: 1px solid green;'">
                                     <span class="dev-name">{{sprintTeam.devName}}</span>
                                 </td>
@@ -157,6 +157,12 @@
                                 </td>
                                 <td ng-show="data.showUat" class="text-center">{{sprintTeam.uatDefectTargetHours}}</td>
                                 <td ng-show="data.showUat" class="text-center" style="border-right: 1px solid #dddddd;">{{sprintTeam.uatDefectActualHours}}</td>
+                            </tr>
+
+                            <tr ng-show="data.sprintTeam === undefined || data.sprintTeam.length === 0 && showSprintId === data.id" class="sprint-team-tr" data-id-sprint="{{sprintTeam.id}}" #if(!$velocityHasNext)style="border-bottom: 2px solid #cccccc;"#end>
+                                <td colspan="19" class="text-center" style="border-right: 1px solid #dddddd;">
+                                    Sprint team not configured
+                                </td>
                             </tr>
                         </tbody>
                             <tr>

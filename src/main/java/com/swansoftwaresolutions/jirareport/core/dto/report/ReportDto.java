@@ -16,6 +16,7 @@ public class ReportDto implements Serializable {
     private String creator;
 //    private Long creatorId;
     private Long boardId;
+    private Long jiraBoardId;
     private String boardName;
     private Date createdDate;
     private Date updatedDate;
@@ -145,5 +146,13 @@ public class ReportDto implements Serializable {
         result = 31 * result + typeId;
         result = 31 * result + (closed ? 1 : 0);
         return result;
+    }
+
+    public Long getJiraBoardId() {
+        return jiraBoardId;
+    }
+
+    public void setJiraBoardId(Long jiraBoardId) {
+        this.jiraBoardId = jiraBoardId;
     }
 }

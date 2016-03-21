@@ -4,6 +4,7 @@ import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraBoardRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,9 @@ public class JiraBoardRepositoryImpl implements JiraBoardRepository {
 
     @Override
     public List<JiraBoard> findAll() throws NoSuchEntityException {
-        return sessionFactory.getCurrentSession().createCriteria(JiraBoard.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list(); }
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM JiraBoard jb ORDER BY jb.name ASC");
+        return query.list();
+    }
 
     @Override
     public JiraBoard add(JiraBoard jiraBoard) {

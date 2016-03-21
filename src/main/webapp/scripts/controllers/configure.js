@@ -52,7 +52,7 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
             dateDisabled: disabled,
             formatYear: 'yy',
             maxDate: new Date(2020, 5, 22),
-            minDate: new Date(),
+            //minDate: new Date(),
             startingDay: 1
         };
 
@@ -364,6 +364,8 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 }
                 $scope.devUsersForAdd = users.users;
             });
+
+            $scope.calcParams();
         };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -521,7 +523,7 @@ jiraPluginApp.controller('DlgProcessSprintCtrl',
             dateDisabled: disabled,
             formatYear: 'yy',
             maxDate: new Date(2020, 5, 22),
-            minDate: new Date(),
+            //minDate: new Date(),
             startingDay: 1
         };
 
