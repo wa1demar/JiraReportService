@@ -1,7 +1,5 @@
 package com.swansoftwaresolutions.jirareport.core.dto;
 
-import java.util.Date;
-
 /**
  * @author Vitaliy Holovko
  */

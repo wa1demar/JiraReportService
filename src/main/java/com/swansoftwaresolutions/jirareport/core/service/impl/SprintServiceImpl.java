@@ -144,7 +144,7 @@ public class SprintServiceImpl implements SprintService {
         for (SprintDeveloperDto dto : sprintDto.getSprintTeams()) {
             SprintDeveloper developer = developerMapper.fromDto(dto);
             try {
-                developer.setJiraUser(jiraUserRepository.findByLogin(dto.getDeveloperName()));
+                developer.setJiraUser(jiraUserRepository.findByLogin(dto.getDeveloperLogin()));
                 developer.setSprint(sprint);
                 developers.add(developer);
             } catch (NoSuchEntityException e) {

@@ -14,12 +14,16 @@ public class SprintDeveloperDto {
     private Double defectHours;
     private Double defectMax;
     private Double defectMin;
-    private Double targetHours;
+    private Long targetHours;
     private int targetPoints;
     private Double uatDefectHours;
     private Double uatDefectMax;
     private Double uatDefectMin;
-    private int points;
+    private int actualPoints;
+    private int defectActual;
+    private Long actualHours;
+    private Long defectActualHours;
+
 
     public Long getId() {
         return id;
@@ -85,11 +89,11 @@ public class SprintDeveloperDto {
         this.defectMin = defectMin;
     }
 
-    public Double getTargetHours() {
+    public Long getTargetHours() {
         return targetHours;
     }
 
-    public void setTargetHours(Double targetHours) {
+    public void setTargetHours(Long targetHours) {
         this.targetHours = targetHours;
     }
 
@@ -133,12 +137,35 @@ public class SprintDeveloperDto {
         this.developerName = developerName;
     }
 
-    public int getPoints() {
-        return points;
+    public int getActualPoints() {
+        return actualPoints;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
+    public void setActualPoints(int actualPoints) {
+        this.actualPoints = actualPoints;
     }
 
+    public Long getActualHours() {
+        return actualHours;
+    }
+
+    public void setActualHours(Long actualHours) {
+        this.actualHours = actualHours;
+    }
+
+    public int getDefectActual() {
+        return defectActual;
+    }
+
+    public void setDefectActual(int defectActual) {
+        this.defectActual = defectActual;
+    }
+
+    public Long getDefectActualHours() {
+        return defectActualHours;
+    }
+
+    public void setDefectActualHours(Long defectActualHours) {
+        this.defectActualHours = defectActualHours;
+    }
 }

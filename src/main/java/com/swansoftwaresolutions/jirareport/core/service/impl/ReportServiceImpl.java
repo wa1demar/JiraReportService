@@ -279,15 +279,25 @@ public class ReportServiceImpl implements ReportService {
                 if (sprintDevList != null) {
                     List<SprintDeveloperDto> sprintDevelopers = new ArrayList<>();
                     for (SprintDeveloperDto developerDto : sprintDevList) {
+                        Set<SprintIssueDto> issuesSet = new HashSet<>();
                         for (IssuesByDayDto issuesByDayDto : issuesByDayList) {
-                            for (SprintIssueDto issue : issuesByDayDto.getIssues())
+                            for (SprintIssueDto issue : issuesByDayDto.getIssues()) {
+                                issuesSet.add(issue);
+                            }
+                        }
+
+                        for (SprintIssueDto issue : issuesSet) {
+                            if (developerDto.getDeveloperLogin().equals(issue.getAssignee())) {
                                 if (issue.getTypeName().equals("Story")) {
-                                    developerDto.setPoints(developerDto.getPoints() + issue.getPoint());
+                                    developerDto.setActualPoints(developerDto.getActualPoints() + issue.getPoint());
                                 } else if (issue.getTypeName().equals("QAT Defect")) {
-                                    developerDto.setDefectHours(developerDto.getDefectHours() + issue.getHours());
-                                } else {
+                                    developerDto.setDefectActual(developerDto.getDefectActual()+1);
+                                    developerDto.setDefectActualHours(helperMethods.isNull(developerDto.getDefectActualHours()) + (long)issue.getHours());
+                                    developerDto.setTargetHours(helperMethods.isNull(developerDto.getTargetHours())+ (long)issue.getHours());
+                                } else if (issue.getTypeName().equals("UAT Defect")) {
                                     developerDto.setUatDefectHours(developerDto.getDefectHours() + issue.getHours());
                                 }
+                            }
                         }
 
                         sprintDevelopers.add(developerDto);
@@ -296,20 +306,21 @@ public class ReportServiceImpl implements ReportService {
                     sprintProj.setSprintTeam(sprintDevelopers);
                     for (SprintDeveloperDto dev : sprintDevelopers) {
                         sprintProj.setTargetPoints(sprintProj.getTargetPoints() + dev.getTargetPoints());
-                        sprintProj.setTargetHours(helperMethods.isNull(sprintProj.getTargetHours()) + helperMethods.isNullDoubleToInt(dev.getTargetHours()));
-                        sprintProj.setTargetQatDefectHours(helperMethods.isNull(sprintProj.getTargetQatDefectHours()) + helperMethods.isNullDoubleToInt(dev.getDefectHours()));
-                        sprintProj.setTargetQatDefectMin(sprintProj.getTargetQatDefectMin()+helperMethods.isNullDoubleToInt(dev.getDefectMin()));
-                        sprintProj.setTargetQatDefectMax(sprintProj.getTargetQatDefectMax()+helperMethods.isNullDoubleToInt(dev.getDefectMax()));
+                        sprintProj.setTargetHours(5L);
+                        sprintProj.setActualHours(7L);
+                        sprintProj.setTargetQatDefectHours(6L);
+                        sprintProj.setTargetQatDefectMin(sprintProj.getTargetQatDefectMin() + helperMethods.isNullDoubleToInt(dev.getDefectMin()));
+                        sprintProj.setTargetQatDefectMax(sprintProj.getTargetQatDefectMax() + helperMethods.isNullDoubleToInt(dev.getDefectMax()));
                         if (sprintProj.isShowUat()) {
                             sprintProj.setTargetUatDefectHours(helperMethods.isNull(sprintProj.getTargetQatDefectHours()) + helperMethods.isNullDoubleToInt(dev.getUatDefectHours()));
                             sprintProj.setTargetUatDefectMin(sprintProj.getTargetUatDefectMin() + helperMethods.isNullDoubleToInt(dev.getUatDefectMin()));
                             sprintProj.setTargetUatDefectMax(sprintProj.getTargetUatDefectMax() + helperMethods.isNullDoubleToInt(dev.getUatDefectMax()));
-                            sprintProj.setActualUatDefectHours(helperMethods.isNull(sprintProj.getActualUatDefectHours()) + helperMethods.isNullDoubleToInt(dev.getTargetHours()));
+                            sprintProj.setActualUatDefectHours(helperMethods.isNull(sprintProj.getActualUatDefectHours()) + helperMethods.isNull(dev.getTargetHours()));
                             sprintProj.setActualUatDefectPoints(0);
                         }
 
                         sprintProj.setActualHours(0L);
-                        sprintProj.setActualPoints(sprintProj.getActualPoints() + dev.getPoints());
+                        sprintProj.setActualPoints(sprintProj.getActualPoints() + dev.getActualPoints());
                         sprintProj.setActualQatDefectHours(0L);
                         sprintProj.setActualQatDefectPoints(0);
                     }
