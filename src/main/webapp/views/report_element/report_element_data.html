@@ -110,7 +110,7 @@
 
                             <tr ng-show="data.sprintTeam.length > 0 && showSprintId == data.id" ng-repeat="sprintTeam in data.sprintTeam" class="sprint-team-tr" data-id-sprint="{{sprintTeam.id}}" #if(!$velocityHasNext)style="border-bottom: 2px solid #cccccc;"#end>
                                 <td ng-style="$last ? 'border-bottom: 1px solid red;' : 'border-bottom: 1px solid green;'">
-                                    <span class="dev-name">{{sprintTeam.devName}}</span>
+                                    <span class="dev-name">{{sprintTeam.developerName}}</span>
                                 </td>
                                 <td class="text-center indicators">
                                     <indicator ng-show="data.state === 'closed'"
