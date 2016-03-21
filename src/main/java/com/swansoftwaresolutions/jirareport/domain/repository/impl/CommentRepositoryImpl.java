@@ -4,6 +4,7 @@ import com.swansoftwaresolutions.jirareport.domain.entity.Comment;
 import com.swansoftwaresolutions.jirareport.domain.repository.CommentRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +33,9 @@ public class CommentRepositoryImpl implements CommentRepository {
     @Override
     @SuppressWarnings("unchecked")
     public List<Comment> findByReportId(Long reportId) {
-        return (List<Comment>) sessionFactory.getCurrentSession()
-                .createCriteria(Comment.class)
-                .add(Restrictions.eq("reportId", reportId))
-                .list();
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM Comment c WHERE c.reportId = :reportId ORDER BY c.id DESC");
+        query.setParameter("reportId", reportId);
+        return query.list();
     }
 
     @Override

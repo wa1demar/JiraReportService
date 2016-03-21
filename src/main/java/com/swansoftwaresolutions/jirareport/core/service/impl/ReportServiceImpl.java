@@ -91,7 +91,12 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public ReportDto retrieveReportByID(long id) throws NoSuchEntityException {
-        return reportMapper.toDto(reportRepository.findById(id));
+        ReportDto rDto =  reportMapper.toDto(reportRepository.findById(id));
+        if (rDto.getBoardId() != null) {
+            rDto.setBoardName(projectRepository.findById(rDto.getBoardId()).getName());
+        }
+
+        return rDto;
     }
 
     @Override
