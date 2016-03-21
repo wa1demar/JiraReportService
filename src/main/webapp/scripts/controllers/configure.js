@@ -386,6 +386,10 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
                 }
             }
 
+            //values for sprintTeams and total sprint values
+            sprintData['sprintTeams'] = $scope.sprintTeams;
+            sprintData['sprintTeamsTotalValues'] = $scope.totalPreviewDetails;
+
             SprintWithTeamFactory.update({
                 reportId: $routeParams.reportId,
                 sprintId: $scope.reportModel.sprint.id
@@ -654,8 +658,8 @@ jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModal', '$
             modalInstance.result.then(function (data) {
                 if (data.type === "edit") {
                     var idIssue = data.id;
-                    delete data.id;
-                    delete data.type;
+                    //delete data.id;
+                    //delete data.type;
                     SprintIssueFactory.update({issueId: idIssue}, data, function(result){
                         self.getIssues();
                         Notification.success("Issue edit success");
