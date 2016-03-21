@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.service;
 
+import com.swansoftwaresolutions.jirareport.core.dto.ProjectDasboard.ProjectDashboardDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.NewReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDto;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -31,4 +32,5 @@ public interface ReportService {
 
     ReportListDto retrieveAllOngoingReportsList();
 
+    ProjectDashboardDto findProjectDashboard(Long id);
 }

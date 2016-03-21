@@ -188,7 +188,13 @@ public class SprintServiceImpl implements SprintService {
 
         for (SprintDto sprintDto:sprints.getSprints()) {
             List<SprintDeveloperDto> developers = new ArrayList<>();
-            developers = developerMapper.toDtos(developerRepository.findBySprintId(sprintDto.getId()));
+
+            for(SprintDeveloper developer : developerRepository.findBySprintId(sprintDto.getId())){
+                SprintDeveloperDto developerDto = developerMapper.toDto(developer);
+                developerDto.setDeveloperName(developer.getJiraUser().getFullName());
+                developerDto.setDeveloperLogin(developer.getJiraUser().getLogin());
+                developers.add(developerDto);
+            }
 
             FullSprintDto fullSpr = new FullSprintDto();
             fullSpr.setId(sprintDto.getId());

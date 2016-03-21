@@ -43,4 +43,18 @@ public class HelperMethods {
         anotherCalendar.setTimeZone(TimeZone.getTimeZone("UTC"));
         return calendar.compareTo(anotherCalendar) == 0;
     }
+
+    public Long isNull(Long hours) {
+        if (hours == null){
+            return 0L;
+        }
+        return hours;
+    }
+
+    public int isNullDoubleToInt(Double targetHours) {
+        if (targetHours!=null){
+            return targetHours.intValue();
+        }
+        return 0;
+    }
 }
