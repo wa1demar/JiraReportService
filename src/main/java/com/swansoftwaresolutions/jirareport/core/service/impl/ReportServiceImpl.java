@@ -213,7 +213,9 @@ public class ReportServiceImpl implements ReportService {
 
         for (ReportDto dto : reportDtos) {
             if (dto.getBoardId() != null) {
-                dto.setBoardName(projectRepository.findById(dto.getBoardId()).getName());
+                JiraBoard board = jiraBoardRepository.findById(dto.getBoardId());
+                dto.setBoardName(board.getName());
+                dto.setJiraBoardId(board.getBoardId());
             }
         }
 
