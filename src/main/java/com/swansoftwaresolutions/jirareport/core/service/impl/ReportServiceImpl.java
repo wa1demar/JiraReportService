@@ -39,6 +39,9 @@ public class ReportServiceImpl implements ReportService {
     JiraUserRepository jiraUserRepository;
 
     @Autowired
+    JiraBoardRepository jiraBoardRepository;
+
+    @Autowired
     SprintRepository sprintRepository;
 
     @Autowired
@@ -51,7 +54,9 @@ public class ReportServiceImpl implements ReportService {
 
         for (ReportDto dto : reportDtos) {
             if (dto.getBoardId() != null) {
-                dto.setBoardName(projectRepository.findById(dto.getBoardId()).getName());
+                JiraBoard board = jiraBoardRepository.findById(dto.getBoardId());
+                dto.setBoardName(board.getName());
+                dto.setJiraBoardId(board.getBoardId());
             }
         }
 
@@ -83,7 +88,9 @@ public class ReportServiceImpl implements ReportService {
 
         ReportDto reportDto = reportMapper.toDto(addedReport);
         if (reportDto.getBoardId() != null) {
-            reportDto.setBoardName(projectRepository.findById(reportDto.getBoardId()).getName());
+            JiraBoard board = jiraBoardRepository.findById(reportDto.getBoardId());
+            reportDto.setBoardName(board.getName());
+            reportDto.setJiraBoardId(board.getBoardId());
         }
 
         return reportDto;
@@ -93,7 +100,9 @@ public class ReportServiceImpl implements ReportService {
     public ReportDto retrieveReportByID(long id) throws NoSuchEntityException {
         ReportDto rDto =  reportMapper.toDto(reportRepository.findById(id));
         if (rDto.getBoardId() != null) {
-            rDto.setBoardName(projectRepository.findById(rDto.getBoardId()).getName());
+            JiraBoard board = jiraBoardRepository.findById(rDto.getBoardId());
+            rDto.setBoardName(board.getName());
+            rDto.setJiraBoardId(board.getBoardId());
         }
 
         return rDto;
@@ -105,7 +114,9 @@ public class ReportServiceImpl implements ReportService {
 
         for (ReportDto dto : reportDtos) {
             if (dto.getBoardId() != null) {
-                dto.setBoardName(projectRepository.findById(dto.getBoardId()).getName());
+                JiraBoard board = jiraBoardRepository.findById(dto.getBoardId());
+                dto.setBoardName(board.getName());
+                dto.setJiraBoardId(board.getBoardId());
             }
         }
 
