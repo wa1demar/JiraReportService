@@ -5,6 +5,7 @@ jiraPluginApp.controller('ReportElementCtrl',
         function($scope, $routeParams, ReportsFactory, ReportFactory, ReportWithSprintsAndTeamsFactory, $timeout, $location) {
             var self = this;
             $scope.loaderShow = true;
+            $scope.hasSprintTeam = true;
 //----------------------------------------------------------------------------------------------------------------------
 //update ProgressBar
             $scope.updateProgressBar = function (item) {
@@ -330,9 +331,15 @@ jiraPluginApp.controller('ReportElementCtrl',
             self.getReportWithSprintsAndTeamsData();
 
             $scope.showSprintDetails = function (item) {
+                $scope.hasSprintTeam = true;
+                if (item.sprintTeam.length === 0) {
+                    $scope.hasSprintTeam = false;
+                }
+
                 if ($scope.showSprintId == item.id) {
                     $scope.showSprintId = null;
                     $scope.showSprintName = undefined;
+                    $scope.hasSprintTeam = true;
                 } else {
                     $scope.showSprintId = item.id;
                     $scope.showSprintName = item.name;

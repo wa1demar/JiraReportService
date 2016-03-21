@@ -4,12 +4,12 @@
             <td class="report-element-table-chart">
                 <div class="report-element-chart">
                     <center><h3 id="chart-title">{{showSprintName !== '' && showSprintName !== undefined ? showSprintName : 'Project to date'}}</h3></center>
-                    <div ng-show="reportData.sprints.length > 0" id="chart-box">
+                    <div ng-show="reportData.sprints.length > 0 && hasSprintTeam" id="chart-box">
                         <canvas id="line" class="chart chart-line" chart-data="data" chart-options="options"
                                 chart-labels="labels" chart-legend="true" chart-series="series" chart-colours="colours">
                         </canvas>
                     </div>
-                    <center ng-show="reportData.sprints.length == 0">Sprints not found</center>
+                    <center ng-show="reportData.sprints.length == 0 || !hasSprintTeam">Sprints not found</center>
                 </div>
             </td>
             <td class="report-element-table-sprint">
@@ -269,7 +269,7 @@
         <center><h3 style="margin-top: 10px;">Project Progress Bar</h3></center>
     </div>
 
-    <table ng-show="reportData.sprints.length > 0" class="aui table table-sprint" style="width: 800px; margin: 20px auto;">
+    <table ng-show="reportData.sprints.length > 0 && hasSprintTeam" class="aui table table-sprint" style="width: 800px; margin: 20px auto;">
         <thead>
             <tr>
                 <td></td>
@@ -300,7 +300,7 @@
             </tr>
         </tbody>
     </table>
-    <table ng-show="reportData.sprints.length > 0" class="aui table table-sprint" style="width: 800px; margin: 20px auto;">
+    <table ng-show="reportData.sprints.length > 0 && hasSprintTeam" class="aui table table-sprint" style="width: 800px; margin: 20px auto;">
         <thead>
         </thead>
         <tbody>
@@ -325,5 +325,5 @@
             </tr>
         </tbody>
     </table>
-    <center ng-show="reportData.sprints.length == 0">Sprints not found</center>
+    <center ng-show="reportData.sprints.length == 0 || !hasSprintTeam">Sprints not found</center>
 </div>
