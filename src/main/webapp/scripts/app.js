@@ -67,6 +67,9 @@ jiraPluginApp.run(function($rootScope, $window, $location, AuthenticationFactory
     AuthenticationFactory.check();
 
     $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute) {
+        //Check session on server
+        AuthenticationFactory.checkSession();
+
         if ((nextRoute.access && nextRoute.access.requiredLogin) && !AuthenticationFactory.isLogged) {
             $location.path("/login");
         } else {
