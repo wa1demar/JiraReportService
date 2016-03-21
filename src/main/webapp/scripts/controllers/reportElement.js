@@ -9,11 +9,11 @@ jiraPluginApp.controller('ReportElementCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //update ProgressBar
             $scope.updateProgressBar = function (item) {
-                console.log($scope.showSprintId);
-                var actualPoints,
-                    actualHours,
-                    targetPoints,
-                    targetHours;
+                //console.log($scope.showSprintId);
+                var actualPoints = 0,
+                    actualHours = 0,
+                    targetPoints = 0,
+                    targetHours = 0;
 
                 if ($scope.showSprintId === null || $scope.showSprintId === undefined) {
                     console.log("update ProgressBar for report");
@@ -23,10 +23,17 @@ jiraPluginApp.controller('ReportElementCtrl',
                     targetHours  = $scope.reportData.report.targetHours;
                 } else {
                     console.log("update ProgressBar for sprint");
-                    actualPoints = item.actualPoints;
-                    actualHours  = item.actualHours;
-                    targetPoints = item.targetPoints;
-                    targetHours  = item.targetHours;
+                    //count sum target and actual values
+                    for (var index = 0; index < $scope.reportData.sprints.length; index++) {
+                        var sprintGlobal = $scope.reportData.sprints[index];
+                        actualPoints    = actualPoints + sprintGlobal.actualPoints;
+                        actualHours     = actualHours + sprintGlobal.actualHours;
+                        targetPoints    = targetPoints + sprintGlobal.targetPoints;
+                        targetHours     = targetHours + sprintGlobal.targetHours;
+                        if (sprintGlobal.id === item.id) {
+                            break;
+                        }
+                    }
                 }
 
                 actualHours = Math.round(actualHours*100)/100;
