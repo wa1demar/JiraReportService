@@ -3,7 +3,7 @@
         <tr>
             <td class="report-element-table-chart">
                 <div class="report-element-chart">
-                    <center><h3 id="chart-title">Project to date</h3></center>
+                    <center><h3 id="chart-title">{{showSprintName !== '' && showSprintName !== undefined ? showSprintName : 'Project to date'}}</h3></center>
                     <div ng-show="reportData.sprints.length > 0" id="chart-box">
                         <canvas id="line" class="chart chart-line" chart-data="data" chart-options="options"
                                 chart-labels="labels" chart-legend="true" chart-series="series" chart-colours="colours">
