@@ -1,15 +1,10 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
-import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint.FullSprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint.NewSprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDtos;
-import com.swansoftwaresolutions.jirareport.core.service.ReportService;
 import com.swansoftwaresolutions.jirareport.core.service.SprintService;
-import com.swansoftwaresolutions.jirareport.domain.entity.Report;
-import com.swansoftwaresolutions.jirareport.domain.repository.ReportRepository;
-import com.swansoftwaresolutions.jirareport.domain.repository.SprintDeveloperRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
