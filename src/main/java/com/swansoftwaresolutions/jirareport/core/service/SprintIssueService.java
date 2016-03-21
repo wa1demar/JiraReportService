@@ -15,6 +15,8 @@ public interface SprintIssueService {
 
     SprintIssueListDto findBySprintIdAndAsignee(Long sprintId, String assignee);
 
+    SprintIssueListDto findBySprintId(Long sprintId);
+
     SprintIssueDto add(SprintIssueDto sprintIssueDto);
 
     SprintIssueDto update(SprintIssueDto sprintIssueDto);

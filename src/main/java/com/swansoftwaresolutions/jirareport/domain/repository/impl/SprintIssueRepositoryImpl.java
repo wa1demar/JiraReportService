@@ -31,7 +31,7 @@ public class SprintIssueRepositoryImpl implements SprintIssueRepository {
     @Override
     public List<SprintIssue> findBySprintId(Long sprintId){
         return (List<SprintIssue>) sessionFactory.getCurrentSession()
-                .createCriteria(SprintIssue.class).add(Restrictions.eq("reportId", sprintId)).list();
+                .createCriteria(SprintIssue.class).add(Restrictions.eq("sprintId", sprintId)).list();
     }
 
     @Override
@@ -57,7 +57,7 @@ public class SprintIssueRepositoryImpl implements SprintIssueRepository {
 
     @Override
     public SprintIssue add(SprintIssue sprintIssue) {
-        sessionFactory.getCurrentSession().save(sprintIssue);
+        sessionFactory.getCurrentSession().persist(sprintIssue);
         return sprintIssue;
     }
 

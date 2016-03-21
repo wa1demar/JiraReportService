@@ -181,5 +181,30 @@ public class SprintServiceImpl implements SprintService {
                 .build();
     }
 
+    @Override
+    public List<FullSprintDto> findByReportId(Long reportId) throws NoSuchEntityException {
+        List<FullSprintDto> fullSprintDto = new ArrayList<>();
+        SprintDtos sprints = sprintMapper.toDto(sprintRepository.findByReportId(reportId));
 
+        for (SprintDto sprintDto:sprints.getSprints()) {
+            List<SprintDeveloperDto> developers = new ArrayList<>();
+            developers = developerMapper.toDtos(developerRepository.findBySprintId(sprintDto.getId()));
+
+            FullSprintDto fullSpr = new FullSprintDto();
+            fullSpr.setId(sprintDto.getId());
+            fullSpr.setStartDate(sprintDto.getStartDate());
+            fullSpr.setEndDate(sprintDto.getEndDate());
+            fullSpr.setName(sprintDto.getName());
+            fullSpr.setState(sprintDto.getState());
+            fullSpr.setType(sprintDto.getType());
+            fullSpr.setReportId(sprintDto.getReportId());
+            fullSpr.setNotCountTarget(sprintDto.isNotCountTarget());
+            fullSpr.setShowUat(sprintDto.isShowUat());
+            fullSpr.setDevelopers(developers);
+
+            fullSprintDto.add(fullSpr);
+        }
+
+        return fullSprintDto;
+    }
 }

@@ -38,6 +38,15 @@ public class SprintIssueServiceImpl implements SprintIssueService {
     }
 
     @Override
+    public SprintIssueListDto findBySprintId(Long sprintId) {
+        List<SprintIssueDto> list = sprintIssueMapper.toDtos(sprintIssueRepository.findBySprintId(sprintId));
+        SprintIssueListDto sprintIssueListDto = new SprintIssueListDto();
+        sprintIssueListDto.setSprintIssueDtos(list);
+
+        return sprintIssueListDto;
+    }
+
+    @Override
     public SprintIssueDto add(SprintIssueDto sprintIssueDto) {
         return sprintIssueMapper.toDto(sprintIssueRepository.add(sprintIssueMapper.fromDto(sprintIssueDto)));
     }

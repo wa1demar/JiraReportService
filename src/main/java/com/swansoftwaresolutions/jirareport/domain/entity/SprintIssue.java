@@ -26,7 +26,7 @@ public class SprintIssue implements Serializable {
     private String key;
 
     @Column(name = "point")
-    private String point;
+    private double point;
 
     @Column(name = "type_name")
     private String typeName;
@@ -75,11 +75,11 @@ public class SprintIssue implements Serializable {
         this.key = key;
     }
 
-    public String getPoint() {
+    public double getPoint() {
         return point;
     }
 
-    public void setPoint(String point) {
+    public void setPoint(double point) {
         this.point = point;
     }
 

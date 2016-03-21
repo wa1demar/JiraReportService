@@ -1,6 +1,5 @@
 package com.swansoftwaresolutions.jirareport.domain.repository;
 
-import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.SprintDeveloper;
 
 import java.util.List;

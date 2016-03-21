@@ -5,8 +5,8 @@ package com.swansoftwaresolutions.jirareport.core.dto.ProjectDasboard;
  */
 public class SprintTeamDto {
     private String devName;
-    private String engineerLevel;
-    private float participationLevel;
+    private Long engineerLevel;
+    private Double participationLevel;
     private int daysInSprint;
     private float targetPoints;
     private float actualPoints;
@@ -30,19 +30,28 @@ public class SprintTeamDto {
         this.devName = devName;
     }
 
-    public String getEngineerLevel() {
+//    public String getEngineerLevel() {
+//        return engineerLevel;
+//    }
+//
+//    public void setEngineerLevel(String engineerLevel) {
+//        this.engineerLevel = engineerLevel;
+//    }
+
+
+    public Long getEngineerLevel() {
         return engineerLevel;
     }
 
-    public void setEngineerLevel(String engineerLevel) {
+    public void setEngineerLevel(Long engineerLevel) {
         this.engineerLevel = engineerLevel;
     }
 
-    public float getParticipationLevel() {
+    public Double getParticipationLevel() {
         return participationLevel;
     }
 
-    public void setParticipationLevel(float participationLevel) {
+    public void setParticipationLevel(Double participationLevel) {
         this.participationLevel = participationLevel;
     }
 
