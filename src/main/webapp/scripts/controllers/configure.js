@@ -229,27 +229,27 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 //TODO need more tests
 //----------------------------------------------------------------------------------------------------------------------
 //Autofill
-                    if (result.developers.length > 0) {
-                        sprintTeamDataForAutoFill = {
-                            sprintName:  data.name,
-                            sprintTeams: result.developers
-                        };
-
-                        $scope.showAutoFillData = {
-                            showAutoFillLabel: false
-                        };
-                    } else {
-                        $scope.sprintTeams = sprintTeamDataForAutoFill.sprintTeams;
-
-                        for (var index = 0; index < $scope.sprintTeams.length; index++) {
-                            delete $scope.sprintTeams[index].id;
-                        }
-
-                        $scope.showAutoFillData = {
-                            sprintName:  sprintTeamDataForAutoFill.sprintName,
-                            showAutoFillLabel: true
-                        };
-                    }
+//                    if (result.developers.length > 0) {
+//                        sprintTeamDataForAutoFill = {
+//                            sprintName:  data.name,
+//                            sprintTeams: result.developers
+//                        };
+//
+//                        $scope.showAutoFillData = {
+//                            showAutoFillLabel: false
+//                        };
+//                    } else {
+//                        $scope.sprintTeams = sprintTeamDataForAutoFill.sprintTeams;
+//
+//                        for (var index = 0; index < $scope.sprintTeams.length; index++) {
+//                            delete $scope.sprintTeams[index].id;
+//                        }
+//
+//                        $scope.showAutoFillData = {
+//                            sprintName:  sprintTeamDataForAutoFill.sprintName,
+//                            showAutoFillLabel: true
+//                        };
+//                    }
 //----------------------------------------------------------------------------------------------------------------------
 
                     $scope.calcParams();
@@ -577,8 +577,8 @@ jiraPluginApp.controller('DlgDeleteSprintCtrl', ['$scope', '$uibModalInstance', 
     }
 ]);
 
-jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModal', '$uibModalInstance', 'dlgData', 'SprintIssuesFactory', 'SprintIssueFactory',
-    function ($scope, $uibModal, $uibModalInstance, dlgData, SprintIssuesFactory, SprintIssueFactory) {
+jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModal', '$uibModalInstance', 'dlgData', 'SprintIssuesFactory', 'SprintIssueFactory', 'Notification',
+    function ($scope, $uibModal, $uibModalInstance, dlgData, SprintIssuesFactory, SprintIssueFactory, Notification) {
         var self = this;
         $scope.dlgData = dlgData;
 
@@ -658,11 +658,17 @@ jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModal', '$
                     delete data.type;
                     SprintIssueFactory.update({issueId: idIssue}, data, function(result){
                         self.getIssues();
+                        Notification.success("Issue edit success");
+                    }, function (error) {
+                        Notification.error("Sertver error");
                     });
                 } else {
                     delete data.type;
                     SprintIssuesFactory.add({sprintId: $scope.dlgData.sprint.id, assignee: $scope.dlgData.developer.developerLogin}, data, function(result){
                         self.getIssues();
+                        Notification.success("Issue add success");
+                    }, function (error) {
+                        Notification.error("Sertver error");
                     });
                 }
             }, function () {});
@@ -685,6 +691,9 @@ jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModal', '$
             modalInstance.result.then(function (data) {
                 SprintIssueFactory.delete({issueId: data.id}, function(result){
                     self.getIssues();
+                    Notification.success("Issue delete success");
+                }, function (error) {
+                    Notification.error("Sertver error");
                 });
             }, function () {});
         };
