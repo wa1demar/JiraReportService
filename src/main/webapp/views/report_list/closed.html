@@ -24,11 +24,11 @@
         </div>
       </td>
       <td>
-        <a ng-href="https://swansoftwaresolutions.atlassian.net/secure/RapidBoard.jspa?rapidView={{data.boardKey}}" ng-show="data.borardId !== 0">{{data.boardName}}</a>
+        <a ng-href="{{CONFIG.JIRA_PATH}}/secure/RapidBoard.jspa?rapidView={{data.jiraBoardId}}" ng-show="data.borardId !== 0">{{data.boardName}}</a>
         <strong ng-show="data.typeId === 2"><i>Manual</i></strong>
       </td>
       <td>
-        <a ng-repeat="adminData in data.admins" ng-href="https://swansoftwaresolutions.atlassian.net/secure/ViewProfile.jspa?name={{adminData.login}}">{{adminData.fullName}}{{$last ? '' : ', '}}</a>
+        <a ng-repeat="adminData in data.admins" ng-href="{{CONFIG.JIRA_PATH}}/secure/ViewProfile.jspa?name={{adminData.login}}">{{adminData.fullName}}{{$last ? '' : ', '}}</a>
       </td>
       <td>
         {{data.closedDate | date:'MM/dd/yyyy'}}
