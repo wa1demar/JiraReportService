@@ -141,7 +141,7 @@ public class SprintServiceImpl implements SprintService {
         Sprint sprint = sprintMapper.fromDto(sprintDto);
 
         List<SprintDeveloper> developers = new ArrayList<>();
-        for (SprintDeveloperDto dto : sprintDto.getDevelopers()) {
+        for (SprintDeveloperDto dto : sprintDto.getSprintTeams()) {
             SprintDeveloper developer = developerMapper.fromDto(dto);
             try {
                 developer.setJiraUser(jiraUserRepository.findByLogin(dto.getDeveloperName()));

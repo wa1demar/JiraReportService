@@ -32,6 +32,30 @@ public class SprintDeveloper implements Serializable {
     @Column(name = "days_in_sprint")
     private int daysInSprint;
 
+    @Column(name = "defect_hours")
+    private Long defectHours;
+
+    @Column(name = "defect_max")
+    private int defectMax;
+
+    @Column(name = "defect_min")
+    private int defectMin;
+
+    @Column(name = "target_hours")
+    private Long targetHours;
+
+    @Column(name = "target_points")
+    private float targetPoints;
+
+    @Column(name = "uat_defect_hours")
+    private Long uatDefectHours;
+
+    @Column(name = "uat_defect_max")
+    private int uatDefectMax;
+
+    @Column(name = "uat_defect_min")
+    private int uatDefectMin;
+
     public Long getId() {
         return id;
     }
@@ -78,6 +102,70 @@ public class SprintDeveloper implements Serializable {
 
     public void setSprint(Sprint sprint) {
         this.sprint = sprint;
+    }
+
+    public Long getDefectHours() {
+        return defectHours;
+    }
+
+    public void setDefectHours(Long defectHours) {
+        this.defectHours = defectHours;
+    }
+
+    public int getDefectMax() {
+        return defectMax;
+    }
+
+    public void setDefectMax(int defectMax) {
+        this.defectMax = defectMax;
+    }
+
+    public int getDefectMin() {
+        return defectMin;
+    }
+
+    public void setDefectMin(int defectMin) {
+        this.defectMin = defectMin;
+    }
+
+    public Long getTargetHours() {
+        return targetHours;
+    }
+
+    public void setTargetHours(Long targetHours) {
+        this.targetHours = targetHours;
+    }
+
+    public float getTargetPoints() {
+        return targetPoints;
+    }
+
+    public void setTargetPoints(float targetPoints) {
+        this.targetPoints = targetPoints;
+    }
+
+    public Long getUatDefectHours() {
+        return uatDefectHours;
+    }
+
+    public void setUatDefectHours(Long uatDefectHours) {
+        this.uatDefectHours = uatDefectHours;
+    }
+
+    public int getUatDefectMax() {
+        return uatDefectMax;
+    }
+
+    public void setUatDefectMax(int uatDefectMax) {
+        this.uatDefectMax = uatDefectMax;
+    }
+
+    public int getUatDefectMin() {
+        return uatDefectMin;
+    }
+
+    public void setUatDefectMin(int uatDefectMin) {
+        this.uatDefectMin = uatDefectMin;
     }
 
     @Override

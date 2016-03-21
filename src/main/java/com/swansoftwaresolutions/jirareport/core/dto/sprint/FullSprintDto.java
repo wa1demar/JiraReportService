@@ -21,6 +21,7 @@ public class FullSprintDto {
     private Date startDate;
     private Long reportId;
     List<SprintDeveloperDto> developers;
+    List<SprintDeveloperDto> sprintTeams;
 
     public long getId() {
         return id;
@@ -100,6 +101,14 @@ public class FullSprintDto {
 
     public void setDevelopers(List<SprintDeveloperDto> developers) {
         this.developers = developers;
+    }
+
+    public List<SprintDeveloperDto> getSprintTeams() {
+        return sprintTeams;
+    }
+
+    public void setSprintTeams(List<SprintDeveloperDto> sprintTeams) {
+        this.sprintTeams = sprintTeams;
     }
 
     @Override
