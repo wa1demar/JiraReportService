@@ -1,5 +1,8 @@
 package com.swansoftwaresolutions.jirareport.core.dto.ProjectDasboard;
 
+import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDeveloperDto;
+import com.swansoftwaresolutions.jirareport.domain.entity.SprintDeveloper;
+
 import java.util.Date;
 import java.util.List;
 
@@ -36,7 +39,7 @@ public class SprintProjectReportDto {
 
     private Chart chart;
 
-    private List<SprintTeamDto> sprintTeam;
+    private List<SprintDeveloperDto> sprintTeam;
 
     public Long getId() {
         return id;
@@ -254,11 +257,11 @@ public class SprintProjectReportDto {
         this.chart = chart;
     }
 
-    public List<SprintTeamDto> getSprintTeam() {
+    public List<SprintDeveloperDto> getSprintTeam() {
         return sprintTeam;
     }
 
-    public void setSprintTeam(List<SprintTeamDto> sprintTeam) {
+    public void setSprintTeam(List<SprintDeveloperDto> sprintTeam) {
         this.sprintTeam = sprintTeam;
     }
 }

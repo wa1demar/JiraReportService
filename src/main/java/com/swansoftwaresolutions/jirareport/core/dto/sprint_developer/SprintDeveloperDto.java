@@ -19,6 +19,7 @@ public class SprintDeveloperDto {
     private Double uatDefectHours;
     private Double uatDefectMax;
     private Double uatDefectMin;
+    private int points;
 
     public Long getId() {
         return id;
@@ -131,4 +132,13 @@ public class SprintDeveloperDto {
     public void setDeveloperName(String developerName) {
         this.developerName = developerName;
     }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
 }
