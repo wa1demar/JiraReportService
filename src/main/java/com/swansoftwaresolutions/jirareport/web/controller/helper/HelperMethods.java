@@ -1,5 +1,7 @@
 package com.swansoftwaresolutions.jirareport.web.controller.helper;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -11,13 +13,27 @@ import java.util.TimeZone;
 
 public class HelperMethods {
 
-
     public boolean isWeekend(Date date1) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date1);
 
         return calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY;
     }
+
+    public boolean isCurrentDay(String text) {
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+
+        try {
+            Date date = format.parse(text);
+            return date.before(new Date());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+
 
     public  boolean isSameDate(Date date, Date anotherDate) {
         if(date==null && anotherDate==null){
