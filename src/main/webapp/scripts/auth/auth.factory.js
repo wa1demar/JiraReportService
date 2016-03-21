@@ -1,6 +1,6 @@
 'use strict';
 
-jiraPluginApp.factory('AuthenticationFactory', ['$window', '$http', 'CONFIG', '$q', function($window, $http, CONFIG, $q) {
+jiraPluginApp.factory('AuthenticationFactory', ['$window', '$http', 'CONFIG', '$q', '$location', function($window, $http, CONFIG, $q, $location) {
     var auth = {
         isLogged: false,
         check: function() {
@@ -37,6 +37,8 @@ jiraPluginApp.factory('AuthenticationFactory', ['$window', '$http', 'CONFIG', '$
                     delete $window.localStorage.token;
                     delete $window.localStorage.user;
                     delete $window.localStorage.userRole;
+
+                    $location.path("/login");
                 }
                 def.reject();
             });
