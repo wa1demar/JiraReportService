@@ -36,6 +36,7 @@ public class SprintProjectReportDto {
     private Long actualQatDefectHours;
     private float actualUatDefectPoints;
     private Long actualUatDefectHours;
+    private int defectActual;
 
     private Chart chart;
 
@@ -263,5 +264,13 @@ public class SprintProjectReportDto {
 
     public void setSprintTeam(List<SprintDeveloperDto> sprintTeam) {
         this.sprintTeam = sprintTeam;
+    }
+
+    public int getDefectActual() {
+        return defectActual;
+    }
+
+    public void setDefectActual(int defectActual) {
+        this.defectActual = defectActual;
     }
 }

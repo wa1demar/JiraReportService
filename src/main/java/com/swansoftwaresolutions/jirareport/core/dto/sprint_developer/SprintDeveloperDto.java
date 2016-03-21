@@ -11,18 +11,22 @@ public class SprintDeveloperDto {
     private Long engineerLevel;
     private Double participationLevel;
     private int daysInSprint;
-    private Double defectHours;
+    private Long defectHours;
     private Double defectMax;
     private Double defectMin;
     private Long targetHours;
     private int targetPoints;
-    private Double uatDefectHours;
+    private Long uatDefectHours;
     private Double uatDefectMax;
     private Double uatDefectMin;
     private int actualPoints;
     private int defectActual;
     private Long actualHours;
     private Long defectActualHours;
+    private Long defectTargetHours;
+    private Long uatDefectTargetHours;
+    private Long uatDefectActual;
+    private Long uatDefectActualHours;
 
 
     public Long getId() {
@@ -65,11 +69,11 @@ public class SprintDeveloperDto {
         this.daysInSprint = daysInSprint;
     }
 
-    public Double getDefectHours() {
+    public Long getDefectHours() {
         return defectHours;
     }
 
-    public void setDefectHours(Double defectHours) {
+    public void setDefectHours(Long defectHours) {
         this.defectHours = defectHours;
     }
 
@@ -105,11 +109,11 @@ public class SprintDeveloperDto {
         this.targetPoints = targetPoints;
     }
 
-    public Double getUatDefectHours() {
+    public Long getUatDefectHours() {
         return uatDefectHours;
     }
 
-    public void setUatDefectHours(Double uatDefectHours) {
+    public void setUatDefectHours(Long uatDefectHours) {
         this.uatDefectHours = uatDefectHours;
     }
 
@@ -167,5 +171,37 @@ public class SprintDeveloperDto {
 
     public void setDefectActualHours(Long defectActualHours) {
         this.defectActualHours = defectActualHours;
+    }
+
+    public Long getUatDefectActual() {
+        return uatDefectActual;
+    }
+
+    public void setUatDefectActual(Long uatDefectActual) {
+        this.uatDefectActual = uatDefectActual;
+    }
+
+    public Long getUatDefectActualHours() {
+        return uatDefectActualHours;
+    }
+
+    public void setUatDefectActualHours(Long uatDefectActualHours) {
+        this.uatDefectActualHours = uatDefectActualHours;
+    }
+
+    public Long getDefectTargetHours() {
+        return defectTargetHours;
+    }
+
+    public void setDefectTargetHours(Long defectTargetHours) {
+        this.defectTargetHours = defectTargetHours;
+    }
+
+    public Long getUatDefectTargetHours() {
+        return uatDefectTargetHours;
+    }
+
+    public void setUatDefectTargetHours(Long uatDefectTargetHours) {
+        this.uatDefectTargetHours = uatDefectTargetHours;
     }
 }
