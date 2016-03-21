@@ -61,7 +61,11 @@ public class JiraSprintRepositoryImpl implements JiraSprintRepository {
             sessionFactory.getCurrentSession().save(jiraSprint);
         } else {
             jiraSprint.setId(sprint.getId());
-            sessionFactory.getCurrentSession().update(jiraSprint);
+            try {
+            sessionFactory.getCurrentSession().merge(jiraSprint);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
         return jiraSprint;
     }
