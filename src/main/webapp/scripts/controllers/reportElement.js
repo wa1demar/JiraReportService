@@ -17,15 +17,12 @@ jiraPluginApp.controller('ReportElementCtrl',
 
                 if ($scope.showSprintId === null || $scope.showSprintId === undefined) {
                     console.log("update ProgressBar for report");
-                    console.log($scope.reportData.report);
                     actualPoints = $scope.reportData.report.actualPoints;
                     actualHours  = $scope.reportData.report.actualHours;
                     targetPoints = $scope.reportData.report.targetPoints;
                     targetHours  = $scope.reportData.report.targetHours;
                 } else {
                     console.log("update ProgressBar for sprint");
-                    console.log(item);
-
                     actualPoints = item.actualPoints;
                     actualHours  = item.actualHours;
                     targetPoints = item.targetPoints;
