@@ -349,8 +349,7 @@ public class ReportServiceImpl implements ReportService {
                     sprintProj.setActualUatDefectPoints(0);
                 }
 
-                sprintProj.setVelocity(checkVelosity(sprintDevList));
-                sprintProj.setChart(getChatData(issuesByDayList, sprintProj.getTargetPoints(), sprintProj.getActualPoints(), sprintProj.getVelocity()));
+                sprintProj.setChart(getChatData(issuesByDayList, sprintProj.getTargetPoints(), sprintProj.getActualPoints(), checkVelosity(sprintDevList)));
 
                 sprints.add(sprintProj);
             }
