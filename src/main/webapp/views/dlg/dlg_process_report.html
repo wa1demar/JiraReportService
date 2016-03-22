@@ -7,7 +7,7 @@
         <label for="title">Dashboard name:</label>
         <input type="text" class="form-control" id="title" name="title" ng-model="model.title" required>
         <div class="help-block" ng-messages="processReportForm.title.$error" ng-if="processReportForm.title.$touched || processReportForm.$submitted">
-          <p ng-message="required">Your name is required.</p>
+          <p ng-message="required">Your name is required</p>
         </div>
       </div>
       <div class="form-group">
@@ -24,14 +24,17 @@
           <option ng-repeat="board in dlgData.boards" value="{{board.id}}">{{board.name}}</option>
         </select>
         <div class="help-block" ng-messages="processReportForm.boardId.$error" ng-if="processReportForm.boardId.$touched || processReportForm.$submitted">
-          <p ng-message="required">Project is required.</p>
+          <p ng-message="required">Project is required</p>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" ng-class="{ 'has-error': processReportForm.$submitted || processReportForm.admins.$touched && processReportForm.admins.$invalid }">
         <label for="admins">admins:</label>
-        <select ui-select2 multiple ng-model="model.admins" data-placeholder="Select administrators" id="admins" name="admins" style="width: 100%;">
+        <select ui-select2 multiple ng-model="model.admins" data-placeholder="Select administrators" id="admins" name="admins" style="width: 100%;" required>
           <option ng-repeat="admin in dlgData.users" value="{{admin.login}}">{{admin.fullName}}</option>
         </select>
+          <div class="help-block" ng-messages="processReportForm.admins.$error" ng-if="processReportForm.admins.$touched || processReportForm.$submitted">
+              <p ng-message="required">Admins is required</p>
+          </div>
       </div>
   </div>
   <div class="modal-footer">
