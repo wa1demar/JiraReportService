@@ -38,6 +38,9 @@ public class ProjectReportDto {
 
     private Chart chart;
 
+    private boolean showUat;
+    private long closedSprintCount;
+
     public Long getId() {
         return id;
     }
@@ -244,5 +247,21 @@ public class ProjectReportDto {
 
     public void setChart(Chart chart) {
         this.chart = chart;
+    }
+
+    public boolean isShowUat() {
+        return showUat;
+    }
+
+    public void setShowUat(boolean showUat) {
+        this.showUat = showUat;
+    }
+
+    public long getClosedSprintCount() {
+        return closedSprintCount;
+    }
+
+    public void setClosedSprintCount(long closedSprintCount) {
+        this.closedSprintCount = closedSprintCount;
     }
 }

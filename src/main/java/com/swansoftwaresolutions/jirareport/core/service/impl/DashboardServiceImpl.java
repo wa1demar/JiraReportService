@@ -44,6 +44,8 @@ public class DashboardServiceImpl implements DashboardService {
             ReportDto reportDto = reportService.retrieveReportByID(total.getReport().getId());
 
             ProjectReportDto projectReportDto = new ProjectReportDto();
+            projectReportDto.setClosedSprintCount(reportService.getClosedSprintCount(total.getReport().getId()));
+            projectReportDto.setShowUat(reportService.showUat(total.getReport().getId()));
             projectReportDto.setId(reportDto.getId());
             projectReportDto.setId(reportDto.getId());
             projectReportDto.setTitle(reportDto.getTitle());

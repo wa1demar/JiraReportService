@@ -254,6 +254,16 @@ public class ReportServiceImpl implements ReportService {
         return projectDashboardDto;
     }
 
+    @Override
+    public long getClosedSprintCount(Long reportId) {
+        return reportRepository.closedSprintCount(reportId);
+    }
+
+    @Override
+    public boolean showUat(Long reportId) {
+        return reportRepository.showUat(reportId);
+    }
+
     private List<SprintProjectReportDto> buildManualSprints(Long reportId) {
 
         HelperMethods help = new HelperMethods();

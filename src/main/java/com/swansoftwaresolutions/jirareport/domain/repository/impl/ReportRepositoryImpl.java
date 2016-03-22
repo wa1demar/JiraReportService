@@ -213,4 +213,18 @@ public class ReportRepositoryImpl implements ReportRepository{
         return query.list();
     }
 
+    @Override
+    public long closedSprintCount(Long reportId) {
+        Query query = sessionFactory.getCurrentSession().createQuery("SELECT count(s) FROM Sprint s WHERE s.state = 'closed' AND s.report.id = :reportId");
+        query.setParameter("reportId", reportId);
+        return (long) query.uniqueResult();
+    }
+
+    @Override
+    public boolean showUat(Long reportId) {
+        Query query = sessionFactory.getCurrentSession().createQuery("SELECT count(s) FROM Sprint s WHERE s.showUAT = false AND s.report.id = :reportId");
+        query.setParameter("reportId", reportId);
+        return (long) query.uniqueResult() == 0;
+    }
+
 }
