@@ -72,7 +72,7 @@ jiraPluginApp.controller('ReportElementCtrl',
                 }
 
                 $scope.labels = $scope.chartData.label;
-                $scope.series = ['Actual', 'Terget'];
+                $scope.series = ['Actual', 'Target'];
                 $scope.colours = [actualChartColor, '#000000'];
                 $scope.options = {
                     datasetFill : false
