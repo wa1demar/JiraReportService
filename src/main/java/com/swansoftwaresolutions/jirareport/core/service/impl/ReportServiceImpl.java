@@ -454,7 +454,7 @@ public class ReportServiceImpl implements ReportService {
                     .uTargetHours(prRep.getTargetUatDefectHours())
                     .uActualHours(prRep.getActualUatDefectHours())
                     .chartActual(Arrays.stream(prRep.getChart().getActual()).boxed().toArray(Integer[]::new))
-                    .chartTarget(Arrays.stream(prRep.getChart().getTarget()).boxed().toArray(Integer[]::new))
+                    .chartTarget(Arrays.stream(prRep.getChart().getTarget()).boxed().toArray(Double[]::new))
                     .chartLabels(prRep.getChart().getLabel())
                     .report(reportMapper.fromDto(reportDto))
                     .vActualHours(prRep.getActualHours())

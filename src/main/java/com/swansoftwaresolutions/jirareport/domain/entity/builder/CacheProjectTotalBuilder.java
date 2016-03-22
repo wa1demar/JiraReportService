@@ -96,7 +96,7 @@ public class CacheProjectTotalBuilder {
         return this;
     }
 
-    public CacheProjectTotalBuilder chartTarget(Integer[] data) {
+    public CacheProjectTotalBuilder chartTarget(Double[] data) {
         this.projectTotal.setChartTarget(String.join(",", Arrays.toString(data)));
         return this;
     }

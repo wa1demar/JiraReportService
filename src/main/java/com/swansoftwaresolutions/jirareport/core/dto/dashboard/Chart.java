@@ -11,7 +11,7 @@ public class Chart {
     public Chart() {
     }
 
-    public Chart(String[] label, int[] target, int[] actual) {
+    public Chart(String[] label, double[] target, int[] actual) {
         this.label = label;
         this.target = target;
         this.actual = actual;
