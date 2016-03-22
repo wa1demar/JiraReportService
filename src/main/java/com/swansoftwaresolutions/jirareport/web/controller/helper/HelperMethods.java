@@ -73,4 +73,12 @@ public class HelperMethods {
         }
         return 0;
     }
+
+    public float isNullFloat(float target) {
+        Float object = new Float(target);
+        if (object !=null){
+            return target;
+        }
+        return 0;
+    }
 }

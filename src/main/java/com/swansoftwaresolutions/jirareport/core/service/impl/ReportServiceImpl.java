@@ -239,12 +239,14 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public ProjectDashboardDto findProjectDashboard(Long id) {
         ProjectDashboardDto projectDashboardDto = new ProjectDashboardDto();
+
         projectDashboardDto.setReport(buildProjectReport(id));
         if (projectDashboardDto.getReport().getBoardId() == null) {
             projectDashboardDto.setSprints(buildManualSprints(projectDashboardDto.getReport().getId()));
         } else {
             projectDashboardDto.setSprints(buildManualSprints(projectDashboardDto.getReport().getId()));
         }
+        projectDashboardDto.setReport(buildProjectReport(id, projectDashboardDto.getSprints()));
         return projectDashboardDto;
     }
 
@@ -347,7 +349,8 @@ public class ReportServiceImpl implements ReportService {
                     sprintProj.setActualUatDefectPoints(0);
                 }
 
-                sprintProj.setChart(getChatData(issuesByDayList, sprintProj.getTargetPoints(), sprintProj.getActualPoints(), checkVelosity(sprintDevList)));
+                sprintProj.setVelocity(checkVelosity(sprintDevList));
+                sprintProj.setChart(getChatData(issuesByDayList, sprintProj.getTargetPoints(), sprintProj.getActualPoints(), sprintProj.getVelocity()));
 
                 sprints.add(sprintProj);
             }
@@ -366,50 +369,154 @@ public class ReportServiceImpl implements ReportService {
         return velocity;
     }
 
-    private ProjectReportDto buildProjectReport(Long id) {
-        ProjectReportDto projectReportDto = new ProjectReportDto();
+    private ProjectReportDto buildProjectReport(Long id, List<SprintProjectReportDto> sprints) {
+        ProjectReportDto prRep = new ProjectReportDto();
+
+        HelperMethods helpM = new HelperMethods();
+
         try {
             ReportDto reportDto = retrieveReportByID(id);
-            projectReportDto.setId(reportDto.getId());
-            projectReportDto.setTitle(reportDto.getTitle());
-            projectReportDto.setCreator(reportDto.getCreator());
-            projectReportDto.setBoardId(reportDto.getBoardId());
-            projectReportDto.setBoardName(reportDto.getBoardName());
-            projectReportDto.setCreatedDate(reportDto.getCreatedDate());
-            projectReportDto.setUpdatedDate(reportDto.getUpdatedDate());
-            projectReportDto.setClosedDate(reportDto.getClosedDate());
-            projectReportDto.setTypeId(reportDto.getTypeId());
-            projectReportDto.setClosed(reportDto.isClosed());
-            projectReportDto.setAdmins(reportDto.getAdmins());
+            prRep.setId(reportDto.getId());
+            prRep.setTitle(reportDto.getTitle());
+            prRep.setCreator(reportDto.getCreator());
+            prRep.setBoardId(reportDto.getBoardId());
+            prRep.setBoardName(reportDto.getBoardName());
+            prRep.setCreatedDate(reportDto.getCreatedDate());
+            prRep.setUpdatedDate(reportDto.getUpdatedDate());
+            prRep.setClosedDate(reportDto.getClosedDate());
+            prRep.setTypeId(reportDto.getTypeId());
+            prRep.setClosed(reportDto.isClosed());
+            prRep.setAdmins(reportDto.getAdmins());
 
-            projectReportDto.setTargetPoints(0);
-            projectReportDto.setTargetHours(0L);
-            projectReportDto.setTargetQatDefectHours(0L);
-            projectReportDto.setTargetQatDefectMin(0);
-            projectReportDto.setTargetQatDefectMax(0);
-            projectReportDto.setTargetUatDefectHours(0L);
-            projectReportDto.setTargetUatDefectMin(0);
-            projectReportDto.setTargetUatDefectMax(0);
+            if (sprints != null) {
+                for (SprintProjectReportDto sprint : sprints) {
+                    if (!sprint.isNotCountTarget()) {
+                        prRep.setTargetPoints(helpM.isNullFloat(prRep.getTargetPoints()) + helpM.isNullFloat(sprint.getTargetPoints()));
+                        prRep.setTargetHours(helpM.isNull(prRep.getTargetHours()) + helpM.isNull(sprint.getTargetHours()));
+                        prRep.setTargetQatDefectHours(helpM.isNull(prRep.getTargetQatDefectHours()) + helpM.isNull(sprint.getTargetQatDefectHours()));
+                        prRep.setTargetQatDefectMin(prRep.getTargetUatDefectMin() + sprint.getTargetQatDefectMin());
+                        prRep.setTargetQatDefectMax(prRep.getTargetUatDefectMax() + sprint.getTargetQatDefectMax());
+                        prRep.setTargetUatDefectHours(helpM.isNull(prRep.getTargetUatDefectHours()) + helpM.isNull(sprint.getTargetUatDefectHours()));
+                        prRep.setTargetUatDefectMin(prRep.getTargetUatDefectMin() + sprint.getTargetUatDefectMin());
+                        prRep.setTargetUatDefectMax(prRep.getTargetUatDefectMax() + sprint.getTargetUatDefectMax());
 
-            projectReportDto.setActualHours(0L);
-            projectReportDto.setActualPoints(0);
-            projectReportDto.setActualQatDefectHours(0L);
-            projectReportDto.setActualQatDefectPoints(0);
-            projectReportDto.setActualUatDefectHours(0L);
-            projectReportDto.setActualUatDefectPoints(0);
+                        prRep.setActualHours(helpM.isNull(prRep.getActualHours()) + helpM.isNull(sprint.getActualHours()));
+                        prRep.setActualPoints(helpM.isNullFloat(prRep.getActualPoints()) + helpM.isNullFloat(sprint.getActualPoints()));
+                        prRep.setActualQatDefectHours(helpM.isNull(prRep.getActualQatDefectHours()) + helpM.isNull(sprint.getActualQatDefectHours()));
+                        prRep.setActualQatDefectPoints(helpM.isNullFloat(prRep.getActualQatDefectPoints()) + helpM.isNullFloat(sprint.getActualQatDefectPoints()));
+                        prRep.setActualUatDefectHours(helpM.isNull(prRep.getActualUatDefectHours()) + helpM.isNull(sprint.getActualUatDefectHours()));
+                        prRep.setActualUatDefectPoints(helpM.isNullFloat(prRep.getActualUatDefectPoints()) + helpM.isNullFloat(sprint.getActualUatDefectPoints()));
+                    }
+                }
+            } else {
+                prRep.setTargetPoints(0);
+                prRep.setTargetHours(0L);
+                prRep.setTargetQatDefectHours(0L);
+                prRep.setTargetQatDefectMin(0);
+                prRep.setTargetQatDefectMax(0);
+                prRep.setTargetUatDefectHours(0L);
+                prRep.setTargetUatDefectMin(0);
+                prRep.setTargetUatDefectMax(0);
+
+                prRep.setActualHours(0L);
+                prRep.setActualPoints(0);
+                prRep.setActualQatDefectHours(0L);
+                prRep.setActualQatDefectPoints(0);
+                prRep.setActualUatDefectHours(0L);
+                prRep.setActualUatDefectPoints(0);
+            }
+
+            prRep.setChart(genersteReportChart(sprints, prRep.getTargetPoints(), prRep.getActualPoints()));
+
+        } catch (NoSuchEntityException e) {
+            e.printStackTrace();
+        }
+
+        return prRep;
+    }
+
+    private Chart genersteReportChart(List<SprintProjectReportDto> sprints, float targetPoints, float actualPoints) {
+        Chart chart = new Chart();
+
+        HelperMethods helperMethods = new HelperMethods();
+
+        String date = "0,";
+
+        int key = 1;
+        for (SprintProjectReportDto sprint : sprints) {
+            if (!sprint.isNotCountTarget()) {
+                date += key + ",";
+                key++;
+            }
+        }
+
+        String[] dateArray = date.split(",");
+        chart.setLabel(dateArray);
+        int[] actual = new int[dateArray.length];
+        int[] target = new int[dateArray.length];
+
+        actual[0] = (int) actualPoints;
+        target[0] = (int) targetPoints;
+
+        for (int i = 1; i < dateArray.length; i++) {
+            for (SprintProjectReportDto sprint : sprints) {
+                if (!sprint.isNotCountTarget()) {
+                    actual[i] = actual[i - 1] - (int) sprint.getActualPoints();
+                    target[i] = target[i - 1] - (int) sprint.getTargetPoints();
+                }
+            }
+        }
+
+        chart.setActual(actual);
+        chart.setTarget(target);
+
+        return chart;
+    }
+
+    private ProjectReportDto buildProjectReport(Long id) {
+        ProjectReportDto prRep = new ProjectReportDto();
+        try {
+            ReportDto reportDto = retrieveReportByID(id);
+            prRep.setId(reportDto.getId());
+            prRep.setTitle(reportDto.getTitle());
+            prRep.setCreator(reportDto.getCreator());
+            prRep.setBoardId(reportDto.getBoardId());
+            prRep.setBoardName(reportDto.getBoardName());
+            prRep.setCreatedDate(reportDto.getCreatedDate());
+            prRep.setUpdatedDate(reportDto.getUpdatedDate());
+            prRep.setClosedDate(reportDto.getClosedDate());
+            prRep.setTypeId(reportDto.getTypeId());
+            prRep.setClosed(reportDto.isClosed());
+            prRep.setAdmins(reportDto.getAdmins());
+
+            prRep.setTargetPoints(0);
+            prRep.setTargetHours(0L);
+            prRep.setTargetQatDefectHours(0L);
+            prRep.setTargetQatDefectMin(0);
+            prRep.setTargetQatDefectMax(0);
+            prRep.setTargetUatDefectHours(0L);
+            prRep.setTargetUatDefectMin(0);
+            prRep.setTargetUatDefectMax(0);
+
+            prRep.setActualHours(0L);
+            prRep.setActualPoints(0);
+            prRep.setActualQatDefectHours(0L);
+            prRep.setActualQatDefectPoints(0);
+            prRep.setActualUatDefectHours(0L);
+            prRep.setActualUatDefectPoints(0);
 
             Chart chart = new Chart();
             chart.setLabel(new String[]{"0", "1", "2"});
             chart.setActual(new int[]{3, 2, 1});
             chart.setTarget(new int[]{3, 3, 0});
 
-            projectReportDto.setChart(chart);
+            prRep.setChart(chart);
 
         } catch (NoSuchEntityException e) {
             e.printStackTrace();
         }
 
-        return projectReportDto;
+        return prRep;
     }
 
     private Chart getChatData(List<IssuesByDayDto> issuesByDayList, float targetPoint, float actualPoint, int velocity) {
@@ -429,7 +536,7 @@ public class ReportServiceImpl implements ReportService {
 
         actual[0] = (int) actualPoint;
         target[0] = (int) targetPoint;
-        List<Integer> ii =new ArrayList<>();
+        List<Integer> ii = new ArrayList<>();
         ii.add(actual[0]);
 
         for (int i = 1; i < dateArray.length; i++) {
@@ -449,7 +556,7 @@ public class ReportServiceImpl implements ReportService {
         }
 
         int[] array = new int[ii.size()];
-        for(int i = 0; i < ii.size(); i++) array[i] = ii.get(i);
+        for (int i = 0; i < ii.size(); i++) array[i] = ii.get(i);
 
         chart.setActual(array);
         chart.setTarget(target);
