@@ -5,7 +5,7 @@ package com.swansoftwaresolutions.jirareport.core.dto.ProjectDasboard;
  */
 public class Chart {
     private String[] label;
-    private int[] target;
+    private double[] target;
     private int[] actual;
 
     public String[] getLabel() {
@@ -16,11 +16,11 @@ public class Chart {
         this.label = label;
     }
 
-    public int[] getTarget() {
+    public double[] getTarget() {
         return target;
     }
 
-    public void setTarget(int[] target) {
+    public void setTarget(double[] target) {
         this.target = target;
     }
 
