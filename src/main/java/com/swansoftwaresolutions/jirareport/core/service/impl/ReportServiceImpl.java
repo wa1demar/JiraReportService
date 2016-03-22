@@ -461,7 +461,7 @@ public class ReportServiceImpl implements ReportService {
         String[] dateArray = date.split(",");
         chart.setLabel(dateArray);
         int[] actual = new int[dateArray.length];
-        int[] target = new int[dateArray.length];
+        double[] target = new double[dateArray.length];
 
         actual[0] = (int) targetPoints;
         target[0] = (int) targetPoints;
@@ -470,7 +470,7 @@ public class ReportServiceImpl implements ReportService {
             for (SprintProjectReportDto sprint : sprints) {
                 if (!sprint.isNotCountTarget()) {
                     actual[i] = actual[i - 1] - (int) sprint.getActualPoints();
-                    target[i] = target[i - 1] - (int) sprint.getTargetPoints();
+                    target[i] = (targetPoints-targetPoints/(dateArray.length-1)*i);
                 }
             }
         }
@@ -516,7 +516,7 @@ public class ReportServiceImpl implements ReportService {
             Chart chart = new Chart();
             chart.setLabel(new String[]{"0", "1", "2"});
             chart.setActual(new int[]{3, 2, 1});
-            chart.setTarget(new int[]{3, 3, 0});
+            chart.setTarget(new double[]{3, 3, 0});
 
             prRep.setChart(chart);
 
@@ -540,27 +540,30 @@ public class ReportServiceImpl implements ReportService {
         String[] dateArray = date.split(",");
         chart.setLabel(dateArray);
         int[] actual = new int[dateArray.length];
-        int[] target = new int[dateArray.length];
+        double[] target = new double[dateArray.length];
 
         actual[0] = (int) targetPoint;
         target[0] = (int) targetPoint;
+
         List<Integer> ii = new ArrayList<>();
         ii.add(actual[0]);
 
-        for (int i = 1; i < dateArray.length; i++) {
 
+        for (int i = 1; i < dateArray.length; i++) {
             if (helperMethods.isCurrentDay(dateArray[i])) {
                 for (IssuesByDayDto issuesDto : issuesByDayList) {
                     if (issuesDto.getDate().equals(dateArray[i])) {
                         for (SprintIssueDto sprintIssueDto : issuesDto.getIssues()) {
                             actual[i] = actual[i - 1] - sprintIssueDto.getPoint();
-                            ii.add(actual[i]);
+                            if (sprintIssueDto.getPoint()!= 0) {
+                                ii.add(actual[i - 1] - sprintIssueDto.getPoint());
+                            }
                         }
                     }
                 }
             }
 
-            target[i] = target[i - 1] - velocity;
+            target[i] = (targetPoint-targetPoint/(dateArray.length-1)*i);
         }
 
         int[] array = new int[ii.size()];
