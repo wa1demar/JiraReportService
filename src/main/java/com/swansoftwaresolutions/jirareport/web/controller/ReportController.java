@@ -1,6 +1,6 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
-import com.swansoftwaresolutions.jirareport.core.dto.ProjectDasboard.*;
+import com.swansoftwaresolutions.jirareport.core.dto.dashboard.*;
 import com.swansoftwaresolutions.jirareport.core.dto.report.NewReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDto;

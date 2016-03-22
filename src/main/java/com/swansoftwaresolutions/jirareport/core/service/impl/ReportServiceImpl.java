@@ -1,6 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
-import com.swansoftwaresolutions.jirareport.core.dto.ProjectDasboard.*;
+import com.swansoftwaresolutions.jirareport.core.dto.dashboard.*;
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssue.IssuesByDayDto;
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssue.SprintIssueListDto;
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssueDto;
@@ -13,6 +13,7 @@ import com.swansoftwaresolutions.jirareport.core.mapper.ReportMapper;
 import com.swansoftwaresolutions.jirareport.core.service.SprintIssueService;
 import com.swansoftwaresolutions.jirareport.core.service.SprintService;
 import com.swansoftwaresolutions.jirareport.domain.entity.*;
+import com.swansoftwaresolutions.jirareport.domain.entity.builder.CacheProjectTotalBuilder;
 import com.swansoftwaresolutions.jirareport.domain.entity.builder.ReportBuilder;
 import com.swansoftwaresolutions.jirareport.domain.repository.*;
 import com.swansoftwaresolutions.jirareport.core.service.ReportService;
@@ -45,6 +46,9 @@ public class ReportServiceImpl implements ReportService {
 
     @Autowired
     SprintDeveloperRepository sprintDeveloperRepository;
+
+    @Autowired
+    CacheProjectTotalRepository projectTotalRepository;
 
     @Autowired
     JiraUserRepository jiraUserRepository;
@@ -237,16 +241,16 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public ProjectDashboardDto findProjectDashboard(Long id) {
+    public ProjectDashboardDto findProjectDashboard(Long reportId) {
         ProjectDashboardDto projectDashboardDto = new ProjectDashboardDto();
 
-        projectDashboardDto.setReport(buildProjectReport(id));
+        projectDashboardDto.setReport(buildProjectReport(reportId));
         if (projectDashboardDto.getReport().getBoardId() == null) {
             projectDashboardDto.setSprints(buildManualSprints(projectDashboardDto.getReport().getId()));
         } else {
             projectDashboardDto.setSprints(buildManualSprints(projectDashboardDto.getReport().getId()));
         }
-        projectDashboardDto.setReport(buildProjectReport(id, projectDashboardDto.getSprints()));
+        projectDashboardDto.setReport(buildProjectReport(reportId, projectDashboardDto.getSprints()));
         return projectDashboardDto;
     }
 
@@ -435,6 +439,27 @@ public class ReportServiceImpl implements ReportService {
             }
 
             prRep.setChart(genersteReportChart(sprints, prRep.getTargetPoints()));
+
+            projectTotalRepository.saveOrUpdate(new CacheProjectTotalBuilder()
+                    .vTargetPoints(prRep.getTargetPoints())
+                    .vActualPoints(prRep.getActualPoints())
+                    .qtargetMin(prRep.getTargetQatDefectMin())
+                    .qtargetMax(prRep.getTargetQatDefectMax())
+                    .qActualPoints(prRep.getActualQatDefectPoints())
+                    .qTargetHours(prRep.getTargetQatDefectHours())
+                    .qActualHours(prRep.getActualQatDefectHours())
+                    .utargetMin(prRep.getTargetUatDefectMin())
+                    .utargetMax(prRep.getTargetUatDefectMax())
+                    .uActualPoints(prRep.getActualUatDefectPoints())
+                    .uTargetHours(prRep.getTargetUatDefectHours())
+                    .uActualHours(prRep.getActualUatDefectHours())
+                    .chartActual(Arrays.stream(prRep.getChart().getActual()).boxed().toArray(Integer[]::new))
+                    .chartTarget(Arrays.stream(prRep.getChart().getTarget()).boxed().toArray(Double[]::new))
+                    .chartLabels(prRep.getChart().getLabel())
+                    .report(reportMapper.fromDto(reportDto))
+                    .vActualHours(prRep.getActualHours())
+                    .vTargetHours(prRep.getTargetHours())
+                    .build());
 
         } catch (NoSuchEntityException e) {
             e.printStackTrace();

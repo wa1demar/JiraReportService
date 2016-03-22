@@ -1,7 +1,6 @@
-package com.swansoftwaresolutions.jirareport.core.dto.ProjectDasboard;
+package com.swansoftwaresolutions.jirareport.core.dto.dashboard;
 
 import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDeveloperDto;
-import com.swansoftwaresolutions.jirareport.domain.entity.SprintDeveloper;
 
 import java.util.Date;
 import java.util.List;

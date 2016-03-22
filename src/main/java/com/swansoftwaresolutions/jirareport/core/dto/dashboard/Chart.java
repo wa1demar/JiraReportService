@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.core.dto.ProjectDasboard;
+package com.swansoftwaresolutions.jirareport.core.dto.dashboard;
 
 /**
  * @author Vitaliy Holovko
@@ -7,6 +7,15 @@ public class Chart {
     private String[] label;
     private double[] target;
     private int[] actual;
+
+    public Chart() {
+    }
+
+    public Chart(String[] label, double[] target, int[] actual) {
+        this.label = label;
+        this.target = target;
+        this.actual = actual;
+    }
 
     public String[] getLabel() {
         return label;

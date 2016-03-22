@@ -1,0 +1,20 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="037" author="Vladimir Martynyuk">
+
+        <addColumn tableName="cache_projects_total">
+            <column name="velosity_target_hours" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+
+        <addColumn tableName="cache_projects_total">
+            <column name="velosity_actual_hours" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+
+
+    </changeSet>
+</databaseChangeLog>

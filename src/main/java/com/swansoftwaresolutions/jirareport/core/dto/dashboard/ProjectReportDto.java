@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.core.dto.ProjectDasboard;
+package com.swansoftwaresolutions.jirareport.core.dto.dashboard;
 
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 
