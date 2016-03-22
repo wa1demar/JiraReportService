@@ -16,13 +16,13 @@ jiraPluginApp.controller('ReportElementCtrl',
                     targetHours = 0;
 
                 if ($scope.showSprintId === null || $scope.showSprintId === undefined) {
-                    console.log("update ProgressBar for report");
+                    //console.log("update ProgressBar for report");
                     actualPoints = $scope.reportData.report.actualPoints;
                     actualHours  = $scope.reportData.report.actualHours;
                     targetPoints = $scope.reportData.report.targetPoints;
                     targetHours  = $scope.reportData.report.targetHours;
                 } else {
-                    console.log("update ProgressBar for sprint");
+                    //console.log("update ProgressBar for sprint");
                     //count sum target and actual values
                     for (var index = 0; index < $scope.reportData.sprints.length; index++) {
                         var sprintGlobal = $scope.reportData.sprints[index];
@@ -55,12 +55,11 @@ jiraPluginApp.controller('ReportElementCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //update chart
             $scope.updateChart = function (item) {
-                console.log($scope.showSprintId);
                 if ($scope.showSprintId === null || $scope.showSprintId === undefined) {
-                    console.log("update Chart for report");
+                    //console.log("update Chart for report");
                     $scope.chartData = $scope.reportData.report.chart;
                 } else {
-                    console.log("update Chart for sprint");
+                    //console.log("update Chart for sprint");
                     $scope.chartData = item.chart;
                 }
 
