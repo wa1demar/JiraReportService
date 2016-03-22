@@ -398,7 +398,7 @@ public class ReportServiceImpl implements ReportService {
 
             if (sprints != null) {
                 for (SprintProjectReportDto sprint : sprints) {
-                    if (!sprint.isNotCountTarget()) {
+                    if (!sprint.isNotCountTarget() && (sprint.getState().equals("Closed") || sprint.getState().equals("closed"))) {
                         prRep.setTargetPoints(helpM.isNullFloat(prRep.getTargetPoints()) + helpM.isNullFloat(sprint.getTargetPoints()));
                         prRep.setTargetHours(helpM.isNull(prRep.getTargetHours()) + helpM.isNull(sprint.getTargetHours()));
                         prRep.setTargetQatDefectHours(helpM.isNull(prRep.getTargetQatDefectHours()) + helpM.isNull(sprint.getTargetQatDefectHours()));
@@ -434,7 +434,7 @@ public class ReportServiceImpl implements ReportService {
                 prRep.setActualUatDefectPoints(0);
             }
 
-            prRep.setChart(genersteReportChart(sprints, prRep.getTargetPoints(), prRep.getActualPoints()));
+            prRep.setChart(genersteReportChart(sprints, prRep.getTargetPoints()));
 
         } catch (NoSuchEntityException e) {
             e.printStackTrace();
@@ -443,39 +443,39 @@ public class ReportServiceImpl implements ReportService {
         return prRep;
     }
 
-    private Chart genersteReportChart(List<SprintProjectReportDto> sprints, float targetPoints, float actualPoints) {
+    private Chart genersteReportChart(List<SprintProjectReportDto> sprints, float targetPoints) {
         Chart chart = new Chart();
-
-        HelperMethods helperMethods = new HelperMethods();
 
         String date = "0,";
 
-        int key = 1;
-        for (SprintProjectReportDto sprint : sprints) {
-            if (!sprint.isNotCountTarget()) {
-                date += key + ",";
-                key++;
-            }
-        }
+        int[] actual = new int[sprints.size()+1];
+        double[] target = new double[sprints.size()+1];
 
-        String[] dateArray = date.split(",");
-        chart.setLabel(dateArray);
-        int[] actual = new int[dateArray.length];
-        double[] target = new double[dateArray.length];
+        List<Integer> list = new ArrayList<>();
+        list.add((int) targetPoints);
 
         actual[0] = (int) targetPoints;
         target[0] = (int) targetPoints;
 
-        for (int i = 1; i < dateArray.length; i++) {
+        int i = 1;
+        int j = 1;
             for (SprintProjectReportDto sprint : sprints) {
-                if (!sprint.isNotCountTarget()) {
-                    actual[i] = actual[i - 1] - (int) sprint.getActualPoints();
-                    target[i] = (targetPoints-targetPoints/(dateArray.length-1)*i);
+                if (!sprint.isNotCountTarget() && (sprint.getState().equals("Closed") || sprint.getState().equals("closed"))) {
+                    actual[j] = actual[j - 1] - (int) sprint.getActualPoints();
+                    list.add(actual[j - 1] - (int) sprint.getActualPoints());
+                    j++;
                 }
+                target[i] = (targetPoints - targetPoints / (sprints.size()) * i);
+                date = date+i+",";
+                i++;
             }
-        }
+        String[] dateArray = date.split(",");
 
-        chart.setActual(actual);
+        chart.setLabel(dateArray);
+        int[] array = new int[list.size()];
+        for (int k = 0; k < list.size(); k++) array[k] = list.get(k);
+
+        chart.setActual(array);
         chart.setTarget(target);
 
         return chart;
