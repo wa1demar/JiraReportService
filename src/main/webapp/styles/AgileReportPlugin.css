@@ -34,6 +34,10 @@ hr {
     color: #FFFFFF;
 }
 
+.cursor-pointer{
+    cursor: pointer;
+}
+
 #ghx-header {
   margin: 20px;
 }
