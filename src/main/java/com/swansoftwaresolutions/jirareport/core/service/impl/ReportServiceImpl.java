@@ -288,14 +288,16 @@ public class ReportServiceImpl implements ReportService {
 
                         for (SprintIssueDto issue : issuesSet) {
                             if (developerDto.getDeveloperLogin().equals(issue.getAssignee())) {
-                                if (issue.getTypeName().equals("Story")) {
-                                    developerDto.setActualPoints(developerDto.getActualPoints() + issue.getPoint());
-                                } else if (issue.getTypeName().equals("QAT Defect")) {
-                                    developerDto.setDefectActual(developerDto.getDefectActual()+1);
-                                    developerDto.setDefectActualHours(helperMethods.isNull(developerDto.getDefectActualHours()) + (long)issue.getHours());
-                                    developerDto.setTargetHours(helperMethods.isNull(developerDto.getTargetHours())+ (long)issue.getHours());
-                                } else if (issue.getTypeName().equals("UAT Defect")) {
-                                    developerDto.setUatDefectHours(developerDto.getDefectHours() + issue.getHours());
+                                if (issue.getStatusName().equals("Done")) {
+                                    if (issue.getTypeName().equals("Story")) {
+                                        developerDto.setActualPoints(developerDto.getActualPoints() + issue.getPoint());
+                                    } else if (issue.getTypeName().equals("QAT Defect")) {
+                                        developerDto.setDefectActual(developerDto.getDefectActual() + 1);
+                                        developerDto.setDefectActualHours(helperMethods.isNull(developerDto.getDefectActualHours()) + (long) issue.getHours());
+                                        developerDto.setTargetHours(helperMethods.isNull(developerDto.getTargetHours()) + (long) issue.getHours());
+                                    } else if (issue.getTypeName().equals("UAT Defect")) {
+                                        developerDto.setUatDefectHours(developerDto.getDefectHours() + issue.getHours());
+                                    }
                                 }
                             }
                         }
