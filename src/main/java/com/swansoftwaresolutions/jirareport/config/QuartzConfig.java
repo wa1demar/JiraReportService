@@ -38,9 +38,9 @@ public class QuartzConfig {
         quartzScheduler.setJobFactory(jobFactory);
 
         Trigger[] triggers = {
-                loadProjectsTrigger().getObject(),
-                loadJiraUsersTrigger().getObject(),
-//                loadJiraBoardsTrigger().getObject(),
+//                loadProjectsTrigger().getObject(),
+//                loadJiraUsersTrigger().getObject(),
+                loadJiraBoardsTrigger().getObject(),
                 loadIssuesTrigger().getObject()
         };
 

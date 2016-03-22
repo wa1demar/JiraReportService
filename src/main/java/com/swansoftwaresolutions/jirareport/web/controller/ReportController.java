@@ -1,28 +1,19 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
 import com.swansoftwaresolutions.jirareport.core.dto.ProjectDasboard.*;
-import com.swansoftwaresolutions.jirareport.core.dto.SprintIssue.IssuesByDayDto;
-import com.swansoftwaresolutions.jirareport.core.dto.SprintIssue.SprintIssueListDto;
-import com.swansoftwaresolutions.jirareport.core.dto.SprintIssueDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.NewReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDto;
-import com.swansoftwaresolutions.jirareport.core.dto.sprint.FullSprintDto;
-import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDeveloperDto;
 import com.swansoftwaresolutions.jirareport.core.service.ReportService;
 import com.swansoftwaresolutions.jirareport.core.service.SprintIssueService;
 import com.swansoftwaresolutions.jirareport.core.service.SprintService;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
-import com.swansoftwaresolutions.jirareport.web.controller.helper.HelperMethods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 /**
  * @author Vitaliy Holovko
@@ -37,8 +28,6 @@ public class ReportController {
     private SprintService sprintService;
 
     private SprintIssueService sprintIssueService;
-
-    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 
     @Autowired
     public ReportController(ReportService reportService, SprintService sprintService, SprintIssueService sprintIssueService) {
