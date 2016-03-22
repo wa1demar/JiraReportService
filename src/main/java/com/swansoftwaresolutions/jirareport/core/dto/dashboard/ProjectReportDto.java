@@ -1,27 +1,26 @@
-package com.swansoftwaresolutions.jirareport.core.dto.ProjectDasboard;
+package com.swansoftwaresolutions.jirareport.core.dto.dashboard;
 
-import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDeveloperDto;
-import com.swansoftwaresolutions.jirareport.domain.entity.SprintDeveloper;
+import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
  * @author Vitaliy Holovko
  */
-public class SprintProjectReportDto {
-    private Long id;
-    private Long reportId;
-    private Long agileSprintId;
-    private boolean notCountTarget;
-    private String name;
-    private String state;
-    private int type;
-    private Date startDate;
-    private Date endDate;
-    private Date completeDate;
-    private boolean showUat;
+public class ProjectReportDto {
+    private  Long id;
+    private String title;
+    private String creator;
+    private Long boardId;
+    private String boardName;
+    private Date createdDate;
+    private Date updatedDate;
+    private Date closedDate;
+    private int typeId;
     private boolean closed;
+    private List<JiraUserDto> admins= new ArrayList<>();
     private float targetPoints;
     private Long targetHours;
     private int targetQatDefectMin;
@@ -36,11 +35,11 @@ public class SprintProjectReportDto {
     private Long actualQatDefectHours;
     private float actualUatDefectPoints;
     private Long actualUatDefectHours;
-    private int defectActual;
 
     private Chart chart;
 
-    private List<SprintDeveloperDto> sprintTeam;
+    private boolean showUat;
+    private long closedSprintCount;
 
     public Long getId() {
         return id;
@@ -50,84 +49,68 @@ public class SprintProjectReportDto {
         this.id = id;
     }
 
-    public Long getReportId() {
-        return reportId;
+    public String getTitle() {
+        return title;
     }
 
-    public void setReportId(Long reportId) {
-        this.reportId = reportId;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public Long getAgileSprintId() {
-        return agileSprintId;
+    public String getCreator() {
+        return creator;
     }
 
-    public void setAgileSprintId(Long agileSprintId) {
-        this.agileSprintId = agileSprintId;
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
-    public boolean isNotCountTarget() {
-        return notCountTarget;
+    public Long getBoardId() {
+        return boardId;
     }
 
-    public void setNotCountTarget(boolean notCountTarget) {
-        this.notCountTarget = notCountTarget;
+    public void setBoardId(Long boardId) {
+        this.boardId = boardId;
     }
 
-    public String getName() {
-        return name;
+    public String getBoardName() {
+        return boardName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setBoardName(String boardName) {
+        this.boardName = boardName;
     }
 
-    public String getState() {
-        return state;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
-    public int getType() {
-        return type;
+    public Date getUpdatedDate() {
+        return updatedDate;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public Date getClosedDate() {
+        return closedDate;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setClosedDate(Date closedDate) {
+        this.closedDate = closedDate;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public int getTypeId() {
+        return typeId;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public Date getCompleteDate() {
-        return completeDate;
-    }
-
-    public void setCompleteDate(Date completeDate) {
-        this.completeDate = completeDate;
-    }
-
-    public boolean isShowUat() {
-        return showUat;
-    }
-
-    public void setShowUat(boolean showUat) {
-        this.showUat = showUat;
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
     }
 
     public boolean isClosed() {
@@ -136,6 +119,14 @@ public class SprintProjectReportDto {
 
     public void setClosed(boolean closed) {
         this.closed = closed;
+    }
+
+    public List<JiraUserDto> getAdmins() {
+        return admins;
+    }
+
+    public void setAdmins(List<JiraUserDto> admins) {
+        this.admins = admins;
     }
 
     public float getTargetPoints() {
@@ -258,19 +249,19 @@ public class SprintProjectReportDto {
         this.chart = chart;
     }
 
-    public List<SprintDeveloperDto> getSprintTeam() {
-        return sprintTeam;
+    public boolean isShowUat() {
+        return showUat;
     }
 
-    public void setSprintTeam(List<SprintDeveloperDto> sprintTeam) {
-        this.sprintTeam = sprintTeam;
+    public void setShowUat(boolean showUat) {
+        this.showUat = showUat;
     }
 
-    public int getDefectActual() {
-        return defectActual;
+    public long getClosedSprintCount() {
+        return closedSprintCount;
     }
 
-    public void setDefectActual(int defectActual) {
-        this.defectActual = defectActual;
+    public void setClosedSprintCount(long closedSprintCount) {
+        this.closedSprintCount = closedSprintCount;
     }
 }

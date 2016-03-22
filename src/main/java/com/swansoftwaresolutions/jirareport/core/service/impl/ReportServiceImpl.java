@@ -1,6 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
-import com.swansoftwaresolutions.jirareport.core.dto.ProjectDasboard.*;
+import com.swansoftwaresolutions.jirareport.core.dto.dashboard.*;
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssue.IssuesByDayDto;
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssue.SprintIssueListDto;
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssueDto;
@@ -13,6 +13,7 @@ import com.swansoftwaresolutions.jirareport.core.mapper.ReportMapper;
 import com.swansoftwaresolutions.jirareport.core.service.SprintIssueService;
 import com.swansoftwaresolutions.jirareport.core.service.SprintService;
 import com.swansoftwaresolutions.jirareport.domain.entity.*;
+import com.swansoftwaresolutions.jirareport.domain.entity.builder.CacheProjectTotalBuilder;
 import com.swansoftwaresolutions.jirareport.domain.entity.builder.ReportBuilder;
 import com.swansoftwaresolutions.jirareport.domain.repository.*;
 import com.swansoftwaresolutions.jirareport.core.service.ReportService;
@@ -45,6 +46,9 @@ public class ReportServiceImpl implements ReportService {
 
     @Autowired
     SprintDeveloperRepository sprintDeveloperRepository;
+
+    @Autowired
+    CacheProjectTotalRepository projectTotalRepository;
 
     @Autowired
     JiraUserRepository jiraUserRepository;
@@ -237,21 +241,32 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public ProjectDashboardDto findProjectDashboard(Long id) {
+    public ProjectDashboardDto findProjectDashboard(Long reportId) {
         ProjectDashboardDto projectDashboardDto = new ProjectDashboardDto();
 
-        projectDashboardDto.setReport(buildProjectReport(id));
+        projectDashboardDto.setReport(buildProjectReport(reportId));
         if (projectDashboardDto.getReport().getBoardId() == null) {
             projectDashboardDto.setSprints(buildManualSprints(projectDashboardDto.getReport().getId()));
         } else {
             projectDashboardDto.setSprints(buildManualSprints(projectDashboardDto.getReport().getId()));
         }
-        projectDashboardDto.setReport(buildProjectReport(id, projectDashboardDto.getSprints()));
+        projectDashboardDto.setReport(buildProjectReport(reportId, projectDashboardDto.getSprints()));
         return projectDashboardDto;
     }
 
+    @Override
+    public long getClosedSprintCount(Long reportId) {
+        return reportRepository.closedSprintCount(reportId);
+    }
+
+    @Override
+    public boolean showUat(Long reportId) {
+        return reportRepository.showUat(reportId);
+    }
+
     private List<SprintProjectReportDto> buildManualSprints(Long reportId) {
-        HelperMethods helperMethods = new HelperMethods();
+
+        HelperMethods help = new HelperMethods();
 
         List<SprintProjectReportDto> sprints = new ArrayList<>();
 
@@ -263,23 +278,23 @@ public class ReportServiceImpl implements ReportService {
 
                 List<IssuesByDayDto> issuesByDayList = getIssueByDay(sprintDto);
 
-                SprintProjectReportDto sprintProj = new SprintProjectReportDto();
-                sprintProj.setId(sprintDto.getId());
-                sprintProj.setName(sprintDto.getName());
-                sprintProj.setNotCountTarget(sprintDto.isNotCountTarget());
-                sprintProj.setShowUat(sprintDto.isShowUat());
-                sprintProj.setState(sprintDto.getState());
-                sprintProj.setType(sprintDto.getType());
-                sprintProj.setStartDate(sprintDto.getStartDate());
-                sprintProj.setEndDate(sprintDto.getEndDate());
-                sprintProj.setCompleteDate(sprintDto.getEndDate());
+                SprintProjectReportDto sprint = new SprintProjectReportDto();
+                sprint.setId(sprintDto.getId());
+                sprint.setName(sprintDto.getName());
+                sprint.setNotCountTarget(sprintDto.isNotCountTarget());
+                sprint.setShowUat(sprintDto.isShowUat());
+                sprint.setState(sprintDto.getState());
+                sprint.setType(sprintDto.getType());
+                sprint.setStartDate(sprintDto.getStartDate());
+                sprint.setEndDate(sprintDto.getEndDate());
+                sprint.setCompleteDate(sprintDto.getEndDate());
 
                 List<SprintDeveloperDto> sprintDevList = sprintDto.getDevelopers();
 //                sprintProj.setSprintTeam(sprintDevList);
 
                 if (sprintDevList != null) {
                     List<SprintDeveloperDto> sprintDevelopers = new ArrayList<>();
-                    for (SprintDeveloperDto developerDto : sprintDevList) {
+                    for (SprintDeveloperDto dev : sprintDevList) {
                         Set<SprintIssueDto> issuesSet = new HashSet<>();
                         for (IssuesByDayDto issuesByDayDto : issuesByDayList) {
                             for (SprintIssueDto issue : issuesByDayDto.getIssues()) {
@@ -288,71 +303,78 @@ public class ReportServiceImpl implements ReportService {
                         }
 
                         for (SprintIssueDto issue : issuesSet) {
-                            if (developerDto.getDeveloperLogin().equals(issue.getAssignee())) {
-                                if (issue.getTypeName().equals("Story")) {
-                                    developerDto.setActualPoints(developerDto.getActualPoints() + issue.getPoint());
-                                } else if (issue.getTypeName().equals("QAT Defect")) {
-                                    developerDto.setDefectActual(developerDto.getDefectActual() + 1);
-                                    developerDto.setDefectActualHours(helperMethods.isNull(developerDto.getDefectActualHours()) + (long) issue.getHours());
-                                    developerDto.setTargetHours(helperMethods.isNull(developerDto.getTargetHours()) + (long) issue.getHours());
-                                } else if (issue.getTypeName().equals("UAT Defect")) {
-                                    developerDto.setUatDefectHours(helperMethods.isNull(developerDto.getDefectHours()) + (long) issue.getHours());
-                                    developerDto.setUatDefectActualHours(helperMethods.isNull(developerDto.getUatDefectActualHours()) + (long) issue.getHours());
-                                    developerDto.setUatDefectActual(helperMethods.isNull(developerDto.getUatDefectActual()) + 1);
+                            if (dev.getDeveloperLogin().equals(issue.getAssignee())) {
+                                if (issue.getStatusName().equals("Done")) {
+                                    if (issue.getTypeName().equals("Story")) {
+                                        dev.setActualPoints(dev.getActualPoints() + issue.getPoint());
+                                        dev.setActualHours(help.isNull(dev.getActualHours())+(long) issue.getHours());
+                                    } else if (issue.getTypeName().equals("QAT Defect")) {
+                                        dev.setDefectActual(dev.getDefectActual() + 1);
+                                        dev.setDefectActualHours(help.isNull(dev.getDefectActualHours()) + (long) issue.getHours());
+                                        dev.setActualHours(help.isNull(dev.getActualHours()) + (long) issue.getHours());
+                                    } else if (issue.getTypeName().equals("UAT Defect")) {
+                                        dev.setUatDefectHours(help.isNull(dev.getDefectHours()) + (long) issue.getHours());
+                                        dev.setUatDefectActualHours(help.isNull(dev.getUatDefectActualHours()) + (long) issue.getHours());
+                                        dev.setUatDefectActual(help.isNull(dev.getUatDefectActual()) + 1);
+                                        dev.setActualHours(help.isNull(dev.getActualHours())+(long) issue.getHours());
+                                    }
                                 }
                             }
                         }
 
-                        developerDto.setDefectTargetHours(helperMethods.isNull(developerDto.getDefectHours().longValue()));
-                        developerDto.setDefectActualHours(helperMethods.isNull(developerDto.getDefectActualHours()));
+                        dev.setTargetHours(Math.round(dev.getParticipationLevel() * dev.getDaysInSprint()) * 8);
 
-                        developerDto.setUatDefectTargetHours(helperMethods.isNull(developerDto.getUatDefectHours().longValue()));
-                        developerDto.setUatDefectActualHours(helperMethods.isNull(developerDto.getUatDefectActualHours()));
-                        developerDto.setUatDefectActual(helperMethods.isNull(developerDto.getUatDefectActual()));
+                        dev.setDefectTargetHours(help.isNull(dev.getDefectHours().longValue()));
+                        dev.setDefectActualHours(help.isNull(dev.getDefectActualHours()));
 
-                        sprintDevelopers.add(developerDto);
+                        dev.setUatDefectTargetHours(help.isNull(dev.getUatDefectHours().longValue()));
+                        dev.setUatDefectActualHours(help.isNull(dev.getUatDefectActualHours()));
+                        dev.setUatDefectActual(help.isNull(dev.getUatDefectActual()));
+
+                        sprintDevelopers.add(dev);
                     }
 
-                    sprintProj.setSprintTeam(sprintDevelopers);
+                    sprint.setSprintTeam(sprintDevelopers);
                     for (SprintDeveloperDto dev : sprintDevelopers) {
-                        sprintProj.setTargetPoints(sprintProj.getTargetPoints() + dev.getTargetPoints());
-                        sprintProj.setActualQatDefectPoints(sprintProj.getActualQatDefectPoints() + dev.getDefectActual());
-                        sprintProj.setTargetQatDefectHours(helperMethods.isNull(sprintProj.getTargetQatDefectHours()) + dev.getDefectTargetHours());
-                        sprintProj.setActualQatDefectHours(helperMethods.isNull(sprintProj.getActualQatDefectHours()) + dev.getDefectActualHours());
-                        sprintProj.setTargetQatDefectMin(sprintProj.getTargetQatDefectMin() + helperMethods.isNullDoubleToInt(dev.getDefectMin()));
-                        sprintProj.setTargetQatDefectMax(sprintProj.getTargetQatDefectMax() + helperMethods.isNullDoubleToInt(dev.getDefectMax()));
-                        if (sprintProj.isShowUat()) {
-                            sprintProj.setActualUatDefectPoints(sprintProj.getActualUatDefectPoints() + helperMethods.isNull(dev.getUatDefectActual()));
-                            sprintProj.setTargetUatDefectHours(helperMethods.isNull(sprintProj.getTargetUatDefectHours()) + helperMethods.isNull(dev.getUatDefectHours()));
-                            sprintProj.setActualUatDefectHours(helperMethods.isNull(sprintProj.getActualUatDefectHours()) + helperMethods.isNull(dev.getUatDefectActualHours()));
-                            sprintProj.setTargetUatDefectMin(sprintProj.getTargetUatDefectMin() + helperMethods.isNullDoubleToInt(dev.getUatDefectMin()));
-                            sprintProj.setTargetUatDefectMax(sprintProj.getTargetUatDefectMax() + helperMethods.isNullDoubleToInt(dev.getUatDefectMax()));
+                        sprint.setTargetPoints(sprint.getTargetPoints() + dev.getTargetPoints());
+                        sprint.setActualQatDefectPoints(sprint.getActualQatDefectPoints() + dev.getDefectActual());
+                        sprint.setTargetQatDefectHours(help.isNull(sprint.getTargetQatDefectHours()) + dev.getDefectTargetHours());
+                        sprint.setActualQatDefectHours(help.isNull(sprint.getActualQatDefectHours()) + dev.getDefectActualHours());
+                        sprint.setTargetQatDefectMin(sprint.getTargetQatDefectMin() + help.isNullDoubleToInt(dev.getDefectMin()));
+                        sprint.setTargetQatDefectMax(sprint.getTargetQatDefectMax() + help.isNullDoubleToInt(dev.getDefectMax()));
+                        if (sprint.isShowUat()) {
+                            sprint.setActualUatDefectPoints(sprint.getActualUatDefectPoints() + help.isNull(dev.getUatDefectActual()));
+                            sprint.setTargetUatDefectHours(help.isNull(sprint.getTargetUatDefectHours()) + help.isNull(dev.getUatDefectHours()));
+                            sprint.setActualUatDefectHours(help.isNull(sprint.getActualUatDefectHours()) + help.isNull(dev.getUatDefectActualHours()));
+                            sprint.setTargetUatDefectMin(sprint.getTargetUatDefectMin() + help.isNullDoubleToInt(dev.getUatDefectMin()));
+                            sprint.setTargetUatDefectMax(sprint.getTargetUatDefectMax() + help.isNullDoubleToInt(dev.getUatDefectMax()));
                         }
 
-                        sprintProj.setActualPoints(sprintProj.getActualPoints() + dev.getActualPoints());
+                        sprint.setActualPoints(sprint.getActualPoints() + dev.getActualPoints());
+                        sprint.setActualHours(help.isNull(sprint.getActualHours()) + help.isNull(dev.getActualHours()));
+                        sprint.setTargetHours(help.isNull(sprint.getTargetHours())+help.isNull(dev.getTargetHours()));
                     }
                 } else {
-                    sprintProj.setTargetPoints(0);
-                    sprintProj.setTargetHours(0L);
-                    sprintProj.setTargetQatDefectHours(0L);
-                    sprintProj.setTargetQatDefectMin(0);
-                    sprintProj.setTargetQatDefectMax(0);
-                    sprintProj.setTargetUatDefectHours(0L);
-                    sprintProj.setTargetUatDefectMin(0);
-                    sprintProj.setTargetUatDefectMax(0);
+                    sprint.setTargetPoints(0);
+                    sprint.setTargetHours(0L);
+                    sprint.setTargetQatDefectHours(0L);
+                    sprint.setTargetQatDefectMin(0);
+                    sprint.setTargetQatDefectMax(0);
+                    sprint.setTargetUatDefectHours(0L);
+                    sprint.setTargetUatDefectMin(0);
+                    sprint.setTargetUatDefectMax(0);
 
-                    sprintProj.setActualHours(0L);
-                    sprintProj.setActualPoints(0);
-                    sprintProj.setActualQatDefectHours(0L);
-                    sprintProj.setActualQatDefectPoints(0);
-                    sprintProj.setActualUatDefectHours(0L);
-                    sprintProj.setActualUatDefectPoints(0);
+                    sprint.setActualHours(0L);
+                    sprint.setActualPoints(0);
+                    sprint.setActualQatDefectHours(0L);
+                    sprint.setActualQatDefectPoints(0);
+                    sprint.setActualUatDefectHours(0L);
+                    sprint.setActualUatDefectPoints(0);
                 }
 
-                sprintProj.setVelocity(checkVelosity(sprintDevList));
-                sprintProj.setChart(getChatData(issuesByDayList, sprintProj.getTargetPoints(), sprintProj.getActualPoints(), sprintProj.getVelocity()));
+                sprint.setChart(getChatData(issuesByDayList, sprint.getTargetPoints(), sprint.getActualPoints(), checkVelosity(sprintDevList)));
 
-                sprints.add(sprintProj);
+                sprints.add(sprint);
             }
         } catch (NoSuchEntityException e) {
             e.printStackTrace();
@@ -390,12 +412,12 @@ public class ReportServiceImpl implements ReportService {
 
             if (sprints != null) {
                 for (SprintProjectReportDto sprint : sprints) {
-                    if (!sprint.isNotCountTarget()) {
+                    if (!sprint.isNotCountTarget() && (sprint.getState().equals("Closed") || sprint.getState().equals("closed"))) {
                         prRep.setTargetPoints(helpM.isNullFloat(prRep.getTargetPoints()) + helpM.isNullFloat(sprint.getTargetPoints()));
                         prRep.setTargetHours(helpM.isNull(prRep.getTargetHours()) + helpM.isNull(sprint.getTargetHours()));
                         prRep.setTargetQatDefectHours(helpM.isNull(prRep.getTargetQatDefectHours()) + helpM.isNull(sprint.getTargetQatDefectHours()));
-                        prRep.setTargetQatDefectMin(prRep.getTargetUatDefectMin() + sprint.getTargetQatDefectMin());
-                        prRep.setTargetQatDefectMax(prRep.getTargetUatDefectMax() + sprint.getTargetQatDefectMax());
+                        prRep.setTargetQatDefectMin(prRep.getTargetQatDefectMin() + sprint.getTargetQatDefectMin());
+                        prRep.setTargetQatDefectMax(prRep.getTargetQatDefectMax() + sprint.getTargetQatDefectMax());
                         prRep.setTargetUatDefectHours(helpM.isNull(prRep.getTargetUatDefectHours()) + helpM.isNull(sprint.getTargetUatDefectHours()));
                         prRep.setTargetUatDefectMin(prRep.getTargetUatDefectMin() + sprint.getTargetUatDefectMin());
                         prRep.setTargetUatDefectMax(prRep.getTargetUatDefectMax() + sprint.getTargetUatDefectMax());
@@ -426,7 +448,28 @@ public class ReportServiceImpl implements ReportService {
                 prRep.setActualUatDefectPoints(0);
             }
 
-            prRep.setChart(genersteReportChart(sprints, prRep.getTargetPoints(), prRep.getActualPoints()));
+            prRep.setChart(genersteReportChart(sprints, prRep.getTargetPoints()));
+
+            projectTotalRepository.saveOrUpdate(new CacheProjectTotalBuilder()
+                    .vTargetPoints(prRep.getTargetPoints())
+                    .vActualPoints(prRep.getActualPoints())
+                    .qtargetMin(prRep.getTargetQatDefectMin())
+                    .qtargetMax(prRep.getTargetQatDefectMax())
+                    .qActualPoints(prRep.getActualQatDefectPoints())
+                    .qTargetHours(prRep.getTargetQatDefectHours())
+                    .qActualHours(prRep.getActualQatDefectHours())
+                    .utargetMin(prRep.getTargetUatDefectMin())
+                    .utargetMax(prRep.getTargetUatDefectMax())
+                    .uActualPoints(prRep.getActualUatDefectPoints())
+                    .uTargetHours(prRep.getTargetUatDefectHours())
+                    .uActualHours(prRep.getActualUatDefectHours())
+                    .chartActual(Arrays.stream(prRep.getChart().getActual()).boxed().toArray(Integer[]::new))
+                    .chartTarget(Arrays.stream(prRep.getChart().getTarget()).boxed().toArray(Double[]::new))
+                    .chartLabels(prRep.getChart().getLabel())
+                    .report(reportMapper.fromDto(reportDto))
+                    .vActualHours(prRep.getActualHours())
+                    .vTargetHours(prRep.getTargetHours())
+                    .build());
 
         } catch (NoSuchEntityException e) {
             e.printStackTrace();
@@ -435,39 +478,39 @@ public class ReportServiceImpl implements ReportService {
         return prRep;
     }
 
-    private Chart genersteReportChart(List<SprintProjectReportDto> sprints, float targetPoints, float actualPoints) {
+    private Chart genersteReportChart(List<SprintProjectReportDto> sprints, float targetPoints) {
         Chart chart = new Chart();
-
-        HelperMethods helperMethods = new HelperMethods();
 
         String date = "0,";
 
-        int key = 1;
-        for (SprintProjectReportDto sprint : sprints) {
-            if (!sprint.isNotCountTarget()) {
-                date += key + ",";
-                key++;
-            }
-        }
+        int[] actual = new int[sprints.size()+1];
+        double[] target = new double[sprints.size()+1];
 
-        String[] dateArray = date.split(",");
-        chart.setLabel(dateArray);
-        int[] actual = new int[dateArray.length];
-        int[] target = new int[dateArray.length];
+        List<Integer> list = new ArrayList<>();
+        list.add((int) targetPoints);
 
-        actual[0] = (int) actualPoints;
+        actual[0] = (int) targetPoints;
         target[0] = (int) targetPoints;
 
-        for (int i = 1; i < dateArray.length; i++) {
+        int i = 1;
+        int j = 1;
             for (SprintProjectReportDto sprint : sprints) {
-                if (!sprint.isNotCountTarget()) {
-                    actual[i] = actual[i - 1] - (int) sprint.getActualPoints();
-                    target[i] = target[i - 1] - (int) sprint.getTargetPoints();
+                if (!sprint.isNotCountTarget() && (sprint.getState().equals("Closed") || sprint.getState().equals("closed"))) {
+                    actual[j] = actual[j - 1] - (int) sprint.getActualPoints();
+                    list.add(actual[j - 1] - (int) sprint.getActualPoints());
+                    j++;
                 }
+                target[i] = (targetPoints - targetPoints / (sprints.size()) * i);
+                date = date+i+",";
+                i++;
             }
-        }
+        String[] dateArray = date.split(",");
 
-        chart.setActual(actual);
+        chart.setLabel(dateArray);
+        int[] array = new int[list.size()];
+        for (int k = 0; k < list.size(); k++) array[k] = list.get(k);
+
+        chart.setActual(array);
         chart.setTarget(target);
 
         return chart;
@@ -508,7 +551,7 @@ public class ReportServiceImpl implements ReportService {
             Chart chart = new Chart();
             chart.setLabel(new String[]{"0", "1", "2"});
             chart.setActual(new int[]{3, 2, 1});
-            chart.setTarget(new int[]{3, 3, 0});
+            chart.setTarget(new double[]{3, 3, 0});
 
             prRep.setChart(chart);
 
@@ -532,27 +575,30 @@ public class ReportServiceImpl implements ReportService {
         String[] dateArray = date.split(",");
         chart.setLabel(dateArray);
         int[] actual = new int[dateArray.length];
-        int[] target = new int[dateArray.length];
+        double[] target = new double[dateArray.length];
 
-        actual[0] = (int) actualPoint;
+        actual[0] = (int) targetPoint;
         target[0] = (int) targetPoint;
+
         List<Integer> ii = new ArrayList<>();
         ii.add(actual[0]);
 
-        for (int i = 1; i < dateArray.length; i++) {
 
+        for (int i = 1; i < dateArray.length; i++) {
             if (helperMethods.isCurrentDay(dateArray[i])) {
                 for (IssuesByDayDto issuesDto : issuesByDayList) {
                     if (issuesDto.getDate().equals(dateArray[i])) {
                         for (SprintIssueDto sprintIssueDto : issuesDto.getIssues()) {
                             actual[i] = actual[i - 1] - sprintIssueDto.getPoint();
-                            ii.add(actual[i]);
+                            if (sprintIssueDto.getPoint()!= 0) {
+                                ii.add(actual[i - 1] - sprintIssueDto.getPoint());
+                            }
                         }
                     }
                 }
             }
 
-            target[i] = target[i - 1] - velocity;
+            target[i] = (targetPoint-targetPoint/(dateArray.length-1)*i);
         }
 
         int[] array = new int[ii.size()];
