@@ -5,6 +5,7 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibMo
 
         var self = this;
         $scope.loaderShow = true;
+        $scope.orderByClosedDate = 'closedDate';
 
         this.getReportsData = function () {
             ReportsFactory.query({type: "ongoing"}, function(result){
@@ -37,6 +38,10 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibMo
 
         $scope.isActiveTab = function(tabUrl) {
             return tabUrl === $scope.currentTab;
+        };
+
+        $scope.closedDateOrderBy = function () {
+            $scope.orderByClosedDate = $scope.orderByClosedDate ===  'closedDate' ? '-closedDate' : 'closedDate';
         };
 
 //----------------------------------------------------------------------------------------------------------------------
