@@ -26,7 +26,7 @@ public class CacheProjectTotalBuilder {
         return this;
     }
 
-    public CacheProjectTotalBuilder vTargetHours(long points) {
+    public CacheProjectTotalBuilder vTargetHours(Long points) {
         this.projectTotal.setvTargetHours(points);
         return this;
     }
@@ -36,7 +36,7 @@ public class CacheProjectTotalBuilder {
         return this;
     }
 
-    public CacheProjectTotalBuilder vActualHours(long points) {
+    public CacheProjectTotalBuilder vActualHours(Long points) {
         this.projectTotal.setvActualHours(points);
         return this;
     }
@@ -56,12 +56,12 @@ public class CacheProjectTotalBuilder {
         return this;
     }
 
-    public CacheProjectTotalBuilder qTargetHours(long hours) {
+    public CacheProjectTotalBuilder qTargetHours(Long hours) {
         this.projectTotal.setqTargetHours(hours);
         return this;
     }
 
-    public CacheProjectTotalBuilder qActualHours(long hours) {
+    public CacheProjectTotalBuilder qActualHours(Long hours) {
         this.projectTotal.setqActualHours(hours);
         return this;
     }
@@ -81,12 +81,12 @@ public class CacheProjectTotalBuilder {
         return this;
     }
 
-    public CacheProjectTotalBuilder uTargetHours(long hours) {
+    public CacheProjectTotalBuilder uTargetHours(Long hours) {
         this.projectTotal.setuTargetHours(hours);
         return this;
     }
 
-    public CacheProjectTotalBuilder uActualHours(long hours) {
+    public CacheProjectTotalBuilder uActualHours(Long hours) {
         this.projectTotal.setuActualHours(hours);
         return this;
     }
