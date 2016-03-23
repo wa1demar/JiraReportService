@@ -7,6 +7,15 @@ jiraPluginApp.controller('SystemUserCtrl',
             $scope.loaderShow = true;
 
 //----------------------------------------------------------------------------------------------------------------------
+//Order reports
+            $scope.predicate = 'id';
+            $scope.reverse = false;
+            $scope.order = function(predicate) {
+                $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+                $scope.predicate = predicate;
+            };
+
+//----------------------------------------------------------------------------------------------------------------------
 //get data
             this.getSystemUsers = function () {
                 $scope.dataUsers = [];
@@ -21,19 +30,22 @@ jiraPluginApp.controller('SystemUserCtrl',
                         id:         1,
                         username:   "test1",
                         fullName:   "fullName test",
-                        email:      "fullName@gmail.com"
+                        email:      "fullName@gmail.com",
+                        status:     "inactive"
                     },
                     {
                         id:         2,
                         username:   "test2",
                         fullName:   "fullName test",
-                        email:      "fullName@gmail.com"
+                        email:      "fullName@gmail.com",
+                        status:     "inactive"
                     },
                     {
                         id:         3,
                         username:   "test3",
                         fullName:   "fullName test",
-                        email:      "fullName@gmail.com"
+                        email:      "fullName@gmail.com",
+                        status:     "active"
                     }
                 ];
 
@@ -61,7 +73,12 @@ jiraPluginApp.controller('SystemUserCtrl',
                 });
                 modalInstance.result.then(function (data) {
                     if (data.type === "edit") {
-                        SystemUsersFactory.update({id: data.id}, data, function(result){
+                        var id = data.id;
+
+                        delete data.id;
+                        delete data.type;
+
+                        SystemUsersFactory.update({id: id}, data, function(result){
                             self.getSystemUsers();
                             Notification.success("User edit success");
                         }, function (error) {
