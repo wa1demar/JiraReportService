@@ -64,7 +64,7 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', '$location', 'AuthenticationFact
                 }
             });
             modalInstance.result.then(function (data) {
-                //TODO add new report
+                //add new report
                 data['creator'] = AuthenticationFactory.user;
                 ReportsFactory.create({}, data, function(data){
                     $location.url("/report/" + data.id + "/configure");

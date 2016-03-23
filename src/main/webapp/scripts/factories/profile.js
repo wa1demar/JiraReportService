@@ -1,7 +1,7 @@
 'use strict';
 
-jiraPluginApp.factory('UsersFactory', ['$resource', 'CONFIG', function ($resource, CONFIG) {
-    return $resource(CONFIG.API_PATH + '/users/:id', {id: "@id"}, {
+jiraPluginApp.factory('ProfileFactory', ['$resource', 'CONFIG', function ($resource, CONFIG) {
+    return $resource(CONFIG.API_PATH + '/profile', {}, {
         query:  { method: 'GET' },
         get:    { method: 'GET', isArray: false },
         update: { method: 'PUT'},
