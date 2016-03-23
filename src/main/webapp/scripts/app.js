@@ -61,6 +61,12 @@ jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
             access: {
                 requiredLogin: true
             }
+        }).when('/system_user', {
+            templateUrl: 'views/system_user/main.html',
+            controller: 'SystemUserCtrl',
+            access: {
+                requiredLogin: true
+            }
         }).otherwise({
             redirectTo: '/login'
         });
