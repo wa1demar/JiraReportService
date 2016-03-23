@@ -1,21 +1,15 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssue.IssuesByDayDto;
-import com.swansoftwaresolutions.jirareport.core.dto.SprintIssue.SprintIssueListDto;
-import com.swansoftwaresolutions.jirareport.core.dto.SprintIssue.SprintIssuesDto;
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssueDto;
-import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDto;
 import com.swansoftwaresolutions.jirareport.core.service.SprintIssueService;
 import com.swansoftwaresolutions.jirareport.core.service.SprintService;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
-import com.swansoftwaresolutions.jirareport.web.controller.helper.HelperMethods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
