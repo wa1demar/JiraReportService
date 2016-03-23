@@ -31,21 +31,21 @@ jiraPluginApp.controller('SystemUserCtrl',
                         username:   "test1",
                         fullName:   "fullName test",
                         email:      "fullName@gmail.com",
-                        status:     "inactive"
+                        status:     "PAUSE"
                     },
                     {
                         id:         2,
                         username:   "test2",
                         fullName:   "fullName test",
                         email:      "fullName@gmail.com",
-                        status:     "inactive"
+                        status:     "PAUSE"
                     },
                     {
                         id:         3,
                         username:   "test3",
                         fullName:   "fullName test",
                         email:      "fullName@gmail.com",
-                        status:     "active"
+                        status:     "ACTIVE"
                     }
                 ];
 
@@ -97,6 +97,36 @@ jiraPluginApp.controller('SystemUserCtrl',
             };
 
 //----------------------------------------------------------------------------------------------------------------------
+//Dlg invite user
+            $scope.inviteUser = function (item) {
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: 'views/system_user/dlg/dlg_invite_system_user.html',
+                    controller: 'DlgInviteSystemUserCtrl',
+                    size: 'md',
+                    resolve: {
+                        dlgData: function () {
+                            return {
+                                item: {
+                                    inviteType: 1
+                                }
+                            };
+                        }
+                    }
+                });
+                modalInstance.result.then(function (data) {
+                    SystemUsersFactory.add({id: "invite"}, {
+                        inviteParam: data.inviteType === 1 ? data.username : data.email
+                    }, function(result){
+                        self.getSystemUsers();
+                        Notification.success("Invite send success");
+                    }, function (error) {
+                        Notification.error("Server error");
+                    });
+                }, function () {});
+            };
+
+//----------------------------------------------------------------------------------------------------------------------
 //Dlg delete user
             $scope.deleteSystemUser = function (item) {
                 var modalInstance = $uibModal.open({
@@ -137,6 +167,24 @@ jiraPluginApp.controller('DlgProcessSystemUserCtrl', ['$scope', '$uibModalInstan
 
         $scope.ok = function () {
             if($scope.systemUserForm.$valid) {
+                $uibModalInstance.close($scope.item);
+            }
+        };
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    }
+]);
+
+jiraPluginApp.controller('DlgInviteSystemUserCtrl', ['$scope', '$uibModalInstance', 'dlgData', 'UsersFactory',
+    function ($scope, $uibModalInstance, dlgData, UsersFactory) {
+        $scope.item = dlgData.item;
+        UsersFactory.query(function(data) {
+            $scope.jiraUsers = data.users;
+        });
+        $scope.ok = function () {
+            if($scope.inviteSystemUserForm.$valid) {
                 $uibModalInstance.close($scope.item);
             }
         };

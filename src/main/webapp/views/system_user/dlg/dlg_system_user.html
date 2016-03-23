@@ -4,7 +4,7 @@
 <form name="systemUserForm" ng-submit="submit()" novalidate>
     <div class="modal-body">
         <div class="form-group" ng-class="{ 'has-error': systemUserForm.$submitted || systemUserForm.username.$touched && systemUserForm.username.$invalid }">
-            <label for="username">Dashboard name:</label>
+            <label for="username">Username:</label>
             <input type="text" class="form-control" id="username" name="username" ng-model="item.username" required>
             <div class="help-block" ng-messages="systemUserForm.username.$error" ng-if="systemUserForm.username.$touched || systemUserForm.$submitted">
                 <p ng-message="required">Username is required</p>
@@ -27,7 +27,7 @@
         <div class="form-group">
             <label for="status">Status:</label>
             <select id="status" class="form-control" ng-model="item.status">
-                <option ng-repeat="statusName in ['active', 'inactive']" value="{{statusName}}">{{statusName}}</option>
+                <option ng-repeat="statusName in ['ACTIVE', 'PAUSE']" value="{{statusName}}">{{statusName}}</option>
             </select>
         </div>
     </div>

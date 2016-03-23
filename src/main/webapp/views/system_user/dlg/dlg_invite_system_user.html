@@ -1,0 +1,45 @@
+<div class="modal-header">
+    <h3 class="modal-title capitalize">Invite user</h3>
+</div>
+<form name="inviteSystemUserForm" ng-submit="submit()" novalidate>
+    <div class="modal-body">
+
+        <div>
+            <label>
+                <input type="radio" ng-model="item.inviteType" name="inviteType" checked="checked" value="1" convert-to-number/> from existing user
+            </label>
+        </div>
+        <div>
+            <label>
+                <input type="radio" ng-model="item.inviteType" name="inviteType" value="2" convert-to-number/> from email
+            </label>
+        </div>
+
+        <hr/>
+
+        <div ng-if="item.inviteType === 1" class="form-group" ng-class="{ 'has-error': inviteSystemUserForm.$submitted || inviteSystemUserForm.username.$touched && inviteSystemUserForm.username.$invalid }">
+            <label for="username">Select user:</label>
+            <!--<input type="text" class="form-control" id="username" name="username" ng-model="item.inviteParam" required>-->
+
+            <select ui-select2 ng-model="item.username" data-placeholder="Select jira users" id="username" name="username" style="width: 250px;">
+                <option ng-repeat="value in jiraUsers" value="{{value.login}}">{{value.fullName}}</option>
+            </select>
+
+            <div class="help-block" ng-messages="inviteSystemUserForm.username.$error" ng-if="inviteSystemUserForm.username.$touched || inviteSystemUserForm.$submitted">
+                <p ng-message="required">Username is required</p>
+            </div>
+        </div>
+        <div ng-if="item.inviteType === 2" class="form-group" ng-class="{ 'has-error': inviteSystemUserForm.$submitted || inviteSystemUserForm.email.$touched && inviteSystemUserForm.email.$invalid }">
+            <label for="username">Email:</label>
+            <input type="email" class="form-control" id="email" name="email" ng-model="item.email" required>
+            <div class="help-block" ng-messages="inviteSystemUserForm.email.$error" ng-if="inviteSystemUserForm.email.$touched || inviteSystemUserForm.$submitted">
+                <p ng-message="required">Email is required</p>
+                <p ng-message="email">Email must be a valid</p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="submit" ng-click="ok()">Save</button>
+        <button class="btn btn-default" type="button" ng-click="cancel()">Done</button>
+    </div>
+</form>
