@@ -20,34 +20,10 @@ jiraPluginApp.controller('SystemUserCtrl',
             this.getSystemUsers = function () {
                 $scope.dataUsers = [];
                 SystemUsersFactory.query({}, function (data) {
-                    $scope.dataUsers = data;
+                    $scope.dataUsers = data.users;
                 }, function (error) {
                    Notification.error("Server error");
                 });
-
-                $scope.dataUsers = [
-                    {
-                        id:         1,
-                        username:   "test1",
-                        fullName:   "fullName test",
-                        email:      "fullName@gmail.com",
-                        status:     "PAUSE"
-                    },
-                    {
-                        id:         2,
-                        username:   "test2",
-                        fullName:   "fullName test",
-                        email:      "fullName@gmail.com",
-                        status:     "PAUSE"
-                    },
-                    {
-                        id:         3,
-                        username:   "test3",
-                        fullName:   "fullName test",
-                        email:      "fullName@gmail.com",
-                        status:     "ACTIVE"
-                    }
-                ];
 
                 $scope.loaderShow = false;
             };
