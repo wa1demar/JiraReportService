@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
-import com.swansoftwaresolutions.jirareport.core.dto.UserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.user.PasswordDto;
+import com.swansoftwaresolutions.jirareport.core.dto.user.UserDto;
 import com.swansoftwaresolutions.jirareport.core.service.UserService;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.web.exception.InvalidRequestException;
@@ -45,6 +46,19 @@ public class UserController {
         }
 
         UserDto updatedUserDto = userService.update(userDto);
+
+        return new ResponseEntity<>(updatedUserDto, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/profile/change_password", method = RequestMethod.PUT)
+    private ResponseEntity<UserDto> updatePassword(@Valid @RequestBody PasswordDto passwordDto, BindingResult bindingResult) throws NoSuchEntityException {
+
+        if (bindingResult.hasErrors()) {
+
+            throw new InvalidRequestException("Invalid request", bindingResult);
+        }
+
+        UserDto updatedUserDto = userService.changePassword(passwordDto);
 
         return new ResponseEntity<>(updatedUserDto, HttpStatus.OK);
     }

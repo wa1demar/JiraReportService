@@ -1,4 +1,6 @@
-package com.swansoftwaresolutions.jirareport.core.dto;
+package com.swansoftwaresolutions.jirareport.core.dto.user;
+
+import com.swansoftwaresolutions.jirareport.core.dto.user.UserDto;
 
 import java.io.Serializable;
 
