@@ -17,13 +17,6 @@
                                     <!--Main info-->
                                     <uib-tab index="0" heading="Main info" class="uib-tab-content">
                                         <form name="profileForm" ng-submit="submit()" novalidate>
-                                            <div class="form-group" ng-class="{ 'has-error': profileForm.$submitted && profileForm.username.$invalid }">
-                                                <label fors="username">Username</label>
-                                                <input type="text" class="form-control" id="username" name="username" placeholder="Username" ng-model="profile.username" required>
-                                                <div class="help-block" ng-messages="profileForm.username.$error" ng-if="profileForm.$submitted && profileForm.username.$invalid">
-                                                    <p ng-message="required">Username is required</p>
-                                                </div>
-                                            </div>
                                             <div class="form-group" ng-class="{ 'has-error': profileForm.$submitted && profileForm.fullName.$invalid }">
                                                 <label fors="username">Full name</label>
                                                 <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Full name" ng-model="profile.fullName" required>
