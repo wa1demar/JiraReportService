@@ -1,24 +1,24 @@
 package com.swansoftwaresolutions.jirareport.core.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
  * @author Vladimir Martynyuk
  */
 public class UserDto implements Serializable {
-    private Long id;
+
+    @NotNull(message = "Username cannot be empty")
     private String username;
+
     private String fullName;
+
+    @NotNull(message = "Email cannot be empty")
     private String email;
+
     private String password;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getUsername() {
         return username;
@@ -36,6 +36,7 @@ public class UserDto implements Serializable {
         this.email = email;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -51,4 +52,5 @@ public class UserDto implements Serializable {
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
+
 }

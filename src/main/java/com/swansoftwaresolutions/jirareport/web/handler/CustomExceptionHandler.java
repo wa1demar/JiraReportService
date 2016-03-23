@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.web.handler;
 
+import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.web.exception.InvalidRequestException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -42,6 +43,17 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         return handleExceptionInternal(e, error, headers, HttpStatus.UNPROCESSABLE_ENTITY, request);
+    }
+
+    @ExceptionHandler({NoSuchEntityException.class})
+    protected ResponseEntity<Object> handleNoSuchEntity(RuntimeException e, WebRequest request) {
+        InvalidRequestException ire = (InvalidRequestException) e;
+        ErrorResource error = new ErrorResource("InvalidRequest", ire.getMessage());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        return handleExceptionInternal(e, error, headers, HttpStatus.NOT_FOUND, request);
     }
 
 
