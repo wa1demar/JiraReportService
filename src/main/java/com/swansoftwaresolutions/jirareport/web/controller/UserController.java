@@ -1,7 +1,9 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
+import com.swansoftwaresolutions.jirareport.core.dto.user.InviteUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.user.PasswordDto;
 import com.swansoftwaresolutions.jirareport.core.dto.user.UserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.user.UsersDto;
 import com.swansoftwaresolutions.jirareport.core.service.UserService;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.web.exception.InvalidRequestException;
@@ -11,11 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 /**
@@ -61,5 +61,22 @@ public class UserController {
         UserDto updatedUserDto = userService.changePassword(passwordDto);
 
         return new ResponseEntity<>(updatedUserDto, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/system_users", method = RequestMethod.GET)
+    private ResponseEntity<UsersDto> allUsers() {
+
+        UsersDto users = userService.retrieveAllUsers();
+
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/system_users/invite", method = RequestMethod.POST)
+    private ResponseEntity<UserDto> inviteUser(@Valid @RequestBody InviteUserDto inviteUserDto) throws NoSuchEntityException, MessagingException {
+
+        UserDto userDto = userService.invite(inviteUserDto);
+
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
+
     }
 }
