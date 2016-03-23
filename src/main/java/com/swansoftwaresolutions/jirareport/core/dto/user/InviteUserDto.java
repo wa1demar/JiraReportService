@@ -5,23 +5,14 @@ package com.swansoftwaresolutions.jirareport.core.dto.user;
  */
 public class InviteUserDto {
 
-    private String username;
-    private String email;
+//    @Unique(value = User.class, property = "login")
+    private String inviteParam;
 
-    public String getUsername() {
-        return username;
+    public String getInviteParam() {
+        return inviteParam;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setInviteParam(String inviteParam) {
+        this.inviteParam = inviteParam;
     }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
 }

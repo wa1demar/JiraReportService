@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.config;
 
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,9 @@ public class MailConfig {
 
     @Value("${email.host}")
     private String host;
+
+    @Value("${email.port}")
+    private int port;
 
     @Value("${mail.username}")
     private String username;
@@ -51,6 +55,7 @@ public class MailConfig {
     public JavaMailSender javaMailService() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setHost(host);
+        javaMailSender.setPort(port);
         javaMailSender.setJavaMailProperties(getMailProperties());
         javaMailSender.setUsername(username);
         javaMailSender.setPassword(password);
@@ -78,7 +83,15 @@ public class MailConfig {
     public VelocityEngine velocityEngine() throws IOException {
         VelocityEngineFactoryBean factoryBean = new VelocityEngineFactoryBean();
         factoryBean.setResourceLoaderPath("classpath:velocity");
+//        factoryBean.setVelocityProperties(getVelocityProperties());
 
         return factoryBean.createVelocityEngine();
     }
+
+//    private Properties getVelocityProperties() {
+//        Properties properties = new Properties();
+//        properties.setProperty("resource.loader", "class");
+//        properties.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+//        return properties;
+//    }
 }

@@ -8,6 +8,6 @@ import java.util.Map;
  */
 public interface ApplicationMailer {
 
-    void sendMail(String to, String subject, Map properties, String velosity) throws MessagingException;
+    void sendMail(String to, String subject, Map properties, String velocity) throws MessagingException;
     void sendPreConfiguredMail(String message);
 }

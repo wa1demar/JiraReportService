@@ -89,8 +89,8 @@ public class UserServiceImpl implements UserService {
     public UserDto invite(InviteUserDto inviteUserDto) throws NoSuchEntityException, MessagingException {
         User user = null;
         String password = RandomStringUtils.random(5, true, true);
-        if (!inviteUserDto.getUsername().equals("")) {
-            JiraUser jiraUser = jiraUserRepository.findByLogin(inviteUserDto.getUsername());
+        if (inviteUserDto.getInviteParam().indexOf("@") == -1) {
+            JiraUser jiraUser = jiraUserRepository.findByLogin(inviteUserDto.getInviteParam());
             user =  userRepository.add(new UserBuilder()
                     .username(jiraUser.getLogin())
                     .fullName(jiraUser.getFullName())
@@ -100,8 +100,8 @@ public class UserServiceImpl implements UserService {
                     .build());
         } else {
             user =  userRepository.add(new UserBuilder()
-                    .username(inviteUserDto.getEmail())
-                    .email(inviteUserDto.getEmail())
+                    .username(inviteUserDto.getInviteParam())
+                    .email(inviteUserDto.getInviteParam())
                     .password(encoder.encode(password))
                     .status(UserStatus.ACTIVE)
                     .build());
@@ -110,12 +110,12 @@ public class UserServiceImpl implements UserService {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Map model = new HashMap();
+        user.setPassword(password);
         model.put("newUser", user);
         model.put("currentUserName", currentUser.getFullName().equals("") ? "" : currentUser.getFullName());
         applicationMailer.sendMail(user.getEmail(), "You have new invite to Jira Service", model, "invite");
 
         return userMapper.toDto(user);
     }
-
 
 }

@@ -1,9 +1,0 @@
-<html>
-<body>
-<h3>Hi ${newUser.fullName}, welcome to the Chipping Sodbury On-the-Hill message boards!</h3>
-
-<div>
-    Your email address is ${newUser.email}. Sender: ${currentUserName}
-</div>
-</body>
-</html>
