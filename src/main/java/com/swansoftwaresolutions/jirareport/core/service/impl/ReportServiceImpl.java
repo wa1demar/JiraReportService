@@ -19,7 +19,7 @@ import com.swansoftwaresolutions.jirareport.domain.repository.*;
 import com.swansoftwaresolutions.jirareport.core.service.ReportService;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
-import com.swansoftwaresolutions.jirareport.web.controller.helper.HelperMethods;
+import com.swansoftwaresolutions.jirareport.core.helper.HelperMethods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

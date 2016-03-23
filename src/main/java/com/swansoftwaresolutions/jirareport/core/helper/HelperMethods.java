@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.web.controller.helper;
+package com.swansoftwaresolutions.jirareport.core.helper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
