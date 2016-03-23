@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.web.handler;
 
+import com.swansoftwaresolutions.jirareport.core.service.exception.WrongPasswordException;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.web.exception.InvalidRequestException;
 import org.springframework.http.HttpHeaders;
@@ -49,6 +50,28 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleNoSuchEntity(RuntimeException e, WebRequest request) {
         InvalidRequestException ire = (InvalidRequestException) e;
         ErrorResource error = new ErrorResource("InvalidRequest", ire.getMessage());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        return handleExceptionInternal(e, error, headers, HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler({WrongPasswordException.class})
+    protected ResponseEntity<Object> handleWrongPassword(RuntimeException e, WebRequest request) {
+        WrongPasswordException ire = (WrongPasswordException) e;
+        ErrorResource error = new ErrorResource("InvalidRequest", ire.getMessage());
+
+        List<FieldErrorResource> fieldErrorResources = new ArrayList<>();
+
+        FieldErrorResource fieldErrorResource = new FieldErrorResource();
+        fieldErrorResource.setResource("passwordDto");
+        fieldErrorResource.setField("oldPassword");
+        fieldErrorResource.setCode("PasswordsEqualConstraint");
+        fieldErrorResource.setMessage(ire.getMessage());
+        fieldErrorResources.add(fieldErrorResource);
+
+        error.setFieldErrors(fieldErrorResources);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
