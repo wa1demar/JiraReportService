@@ -40,6 +40,13 @@
                                             <div class="help-block" ng-if="changePasswordError.status">
                                                 <div class="alert alert-danger text-center" role="alert"><strong>Error:</strong> {{changePasswordError.message}}</div>
                                             </div>
+                                            <!--<div class="form-group" ng-class="{ 'has-error': changePasswordForm.$submitted && changePasswordForm.oldPassword.$invalid }">-->
+                                                <!--<label fors="oldPassword">Old password</label>-->
+                                                <!--<input type="text" class="form-control" id="oldPassword" name="oldPassword" placeholder="Old password" ng-model="profile.oldPassword" required>-->
+                                                <!--<div class="help-block" ng-messages="changePasswordForm.oldPassword.$error" ng-if="changePasswordForm.$submitted && changePasswordForm.oldPassword.$invalid">-->
+                                                    <!--<p ng-message="required">Old password is required</p>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
                                             <div class="form-group" ng-class="{ 'has-error': changePasswordForm.$submitted && changePasswordForm.newPassword.$invalid }">
                                                 <label fors="username">New password</label>
                                                 <input type="text" class="form-control" id="newPassword" name="newPassword" placeholder="New password" ng-model="profile.newPassword" required>

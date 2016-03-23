@@ -47,6 +47,7 @@ jiraPluginApp.controller('ProfileCtrl',
                     };
                 } else {
                     ProfileFactory.update({action: "change_password"}, {
+                        //oldPassword:        $scope.profile.oldPassword,
                         newPassword:        $scope.profile.newPassword,
                         newPasswordAgain:   $scope.profile.newPasswordAgain
                     }, function (result) {
