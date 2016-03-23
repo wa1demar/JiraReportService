@@ -1,7 +1,7 @@
 'use strict';
 
-jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibModal', 'ReportsFactory', 'ReportFactory', 'CopyReportFactory', 'Notification',
-    function($scope, AuthenticationFactory, $uibModal, ReportsFactory, ReportFactory, CopyReportFactory, Notification) {
+jiraPluginApp.controller('HomeCtrl', ['$scope', '$location', 'AuthenticationFactory', '$uibModal', 'ReportsFactory', 'ReportFactory', 'CopyReportFactory', 'Notification',
+    function($scope, $location, AuthenticationFactory, $uibModal, ReportsFactory, ReportFactory, CopyReportFactory, Notification) {
 
         var self = this;
         $scope.loaderShow = true;
@@ -64,12 +64,11 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibMo
                 }
             });
             modalInstance.result.then(function (data) {
-                //TODO add new report
+                //add new report
                 data['creator'] = AuthenticationFactory.user;
-                ReportsFactory.create({}, data, function(){
-                    self.getReportsData();
-                    Notification.success("Add new report success");
-                }, function () {
+                ReportsFactory.create({}, data, function(data){
+                    $location.url("/report/" + data.id + "/configure");
+                }, function (error) {
                     Notification.error("Server error");
                 });
             }, function () {});
