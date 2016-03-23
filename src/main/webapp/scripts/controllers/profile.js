@@ -25,6 +25,7 @@ jiraPluginApp.controller('ProfileCtrl',
 //save profile
             $scope.saveProfile = function () {
                 ProfileFactory.update({}, $scope.profile, function (data) {
+                    self.getProfile();
                     Notification.success("Profile save success");
                 }, function (error) {
                    Notification.error("Server error");
