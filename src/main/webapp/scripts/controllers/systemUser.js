@@ -31,21 +31,21 @@ jiraPluginApp.controller('SystemUserCtrl',
                         username:   "test1",
                         fullName:   "fullName test",
                         email:      "fullName@gmail.com",
-                        status:     "inactive"
+                        status:     "PAUSE"
                     },
                     {
                         id:         2,
                         username:   "test2",
                         fullName:   "fullName test",
                         email:      "fullName@gmail.com",
-                        status:     "inactive"
+                        status:     "PAUSE"
                     },
                     {
                         id:         3,
                         username:   "test3",
                         fullName:   "fullName test",
                         email:      "fullName@gmail.com",
-                        status:     "active"
+                        status:     "ACTIVE"
                     }
                 ];
 
