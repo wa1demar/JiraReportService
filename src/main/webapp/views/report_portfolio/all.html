@@ -9,7 +9,7 @@
                 </div>
 
                 <div class="report-element-chart">
-                    <div id="chart-box-$data.id">
+                    <div ng-show="data.sprintsCount > 0" id="chart-box-$data.id">
                         <div class="content" style="max-width: 350px; margin: 0 auto;">
                             <canvas ng-show="!loaderShow" id="line-{{data.id}}" class="chart chart-line"
                                     chart-data="data.chart.data"
@@ -21,6 +21,8 @@
                             </canvas>
                         </div>
                     </div>
+
+                    <center ng-show="data.sprintsCount === 0">Sprints not found</center>
                 </div>
             </td>
             <td class="report-element-table-sprint">
@@ -112,27 +114,35 @@
                         </tbody>
                     </table>
 
-                    <p>Points</p>
-                    <div class="progress-bar-box tr-for-progress-bar">
-                        <div class="progress-bar-box">
-                            <div id="points-progress-bar" class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: {{data.progressBarData.percentPoints}}%;">
-                                <div class="progress-bar-content">&nbsp;</div>
+                    <div class="progress-bar-portfolio">
+                        <div ng-show="data.sprintsCount > 0">
+                            <p>Points</p>
+                            <div class="progress-bar-box tr-for-progress-bar">
+                                <div class="progress-bar-box">
+                                    <div id="points-progress-bar" class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: {{data.progressBarData.percentPoints}}%;">
+                                        <div class="progress-bar-content">&nbsp;</div>
+                                    </div>
+                                    <div id="points-progress-bar-percent">{{data.progressBarData.actualPoints}}/{{data.progressBarData.percentPoints}}%</div>
+                                </div>
+                                <div id="points-progress-bar-total">{{data.progressBarData.targetPoints}}</div>
                             </div>
-                            <div id="points-progress-bar-percent">{{data.progressBarData.actualPoints}}/{{data.progressBarData.percentPoints}}%</div>
+
+                            <p>Hours</p>
+                            <div class="progress-bar-box tr-for-progress-bar">
+                                <div class="progress-bar-box">
+                                    <div id="hours-progress-bar" class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: {{data.progressBarData.percentHours}}%;">
+                                        <div class="progress-bar-content">&nbsp;</div>
+                                    </div>
+                                    <div id="hours-progress-bar-percent">{{data.progressBarData.actualHours}}/{{data.progressBarData.percentHours}}%</div>
+                                </div>
+                                <div id="hours-progress-bar-total">{{data.progressBarData.targetHours}}</div>
+                            </div>
                         </div>
-                        <div id="points-progress-bar-total">{{data.progressBarData.targetPoints}}</div>
+                        <div ng-show="data.sprintsCount === 0">
+                            <center>Sprints not found</center>
+                        </div>
                     </div>
 
-                    <p>Hours</p>
-                    <div class="progress-bar-box tr-for-progress-bar">
-                        <div class="progress-bar-box">
-                            <div id="hours-progress-bar" class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: {{data.progressBarData.percentHours}}%;">
-                                <div class="progress-bar-content">&nbsp;</div>
-                            </div>
-                            <div id="hours-progress-bar-percent">{{data.progressBarData.actualHours}}/{{data.progressBarData.percentHours}}%</div>
-                        </div>
-                        <div id="hours-progress-bar-total">{{data.progressBarData.targetHours}}</div>
-                    </div>
                 </div>
             </td>
         </tr>
