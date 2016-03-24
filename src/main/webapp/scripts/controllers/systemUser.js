@@ -104,6 +104,32 @@ jiraPluginApp.controller('SystemUserCtrl',
             };
 
 //----------------------------------------------------------------------------------------------------------------------
+//Dlg reset password user
+            $scope.resetPasswordSystemUser = function (item) {
+                console.log(item);
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: 'views/system_user/dlg/dlg_reset_password_system_user.html',
+                    controller: 'DlgResetPasswordSystemUserCtrl',
+                    size: 'md',
+                    resolve: {
+                        dlgData: function () {
+                            return item;
+                        }
+                    }
+                });
+                modalInstance.result.then(function (data) {
+                    console.log(data);
+                    SystemUsersFactory.resetPassword({id: data.id, action: "reset_password"}, function(result){
+                        self.getSystemUsers();
+                        Notification.success("Reset password success");
+                    }, function (error) {
+                        Notification.error("Server error");
+                    });
+                }, function () {});
+            };
+
+//----------------------------------------------------------------------------------------------------------------------
 //Dlg delete user
             $scope.deleteSystemUser = function (item) {
                 var modalInstance = $uibModal.open({
@@ -174,6 +200,20 @@ jiraPluginApp.controller('DlgInviteSystemUserCtrl', ['$scope', '$uibModalInstanc
             if($scope.inviteSystemUserForm.$valid) {
                 $uibModalInstance.close($scope.item);
             }
+        };
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    }
+]);
+
+jiraPluginApp.controller('DlgResetPasswordSystemUserCtrl', ['$scope', '$uibModalInstance', 'dlgData', 'UsersFactory',
+    function ($scope, $uibModalInstance, dlgData, UsersFactory) {
+        $scope.item = dlgData;
+        console.log($scope.item);
+        $scope.ok = function () {
+            $uibModalInstance.close($scope.item);
         };
 
         $scope.cancel = function () {
