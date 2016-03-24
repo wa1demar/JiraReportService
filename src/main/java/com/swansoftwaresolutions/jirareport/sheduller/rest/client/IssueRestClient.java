@@ -3,13 +3,11 @@ package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraPointDto;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSprintDto;
-import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.JiraSprintDto;
+import com.swansoftwaresolutions.jirareport.core.helper.HelperMethods;
 import com.swansoftwaresolutions.jirareport.core.service.*;
-import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.*;
 import com.swansoftwaresolutions.jirareport.sheduller.job.RestClient;
-import com.swansoftwaresolutions.jirareport.web.controller.helper.HelperMethods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -161,8 +159,10 @@ public class IssueRestClient extends RestClientBase implements RestClient {
     }
 
     private JiraIssueDto convertIssueDtoToJiraIssueDto(IssueDto issueDto, long boardId) {
-        JiraIssueDto jiraIssueDto = new JiraIssueDto();
         HelperMethods helperMethods = new HelperMethods();
+
+        JiraIssueDto jiraIssueDto = new JiraIssueDto();
+
         jiraIssueDto.setKey(issueDto.key);
         jiraIssueDto.setProjectId(issueDto.fields.project.getId());
         jiraIssueDto.setProjectKey(issueDto.fields.project.getKey());
