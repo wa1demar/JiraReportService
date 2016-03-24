@@ -52,4 +52,9 @@ public class PointServiceImpl implements PointService {
     public JiraPointDto findById(Long pointId) throws NoSuchEntityException {
         return jiraPointMapper.toDto(pointRepository.findById(pointId));
     }
+
+    @Override
+    public List<JiraPointDto> findByBoardId(Long boardId) throws NoSuchEntityException {
+        return jiraPointMapper.toDtos(pointRepository.findByBoardId(boardId));
+    }
 }

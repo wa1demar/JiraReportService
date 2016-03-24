@@ -22,4 +22,6 @@ public interface PointService {
 
     JiraPointDto findById(Long pointId) throws NoSuchEntityException;
 
+    List<JiraPointDto> findByBoardId(Long reportId) throws NoSuchEntityException;
+
 }
