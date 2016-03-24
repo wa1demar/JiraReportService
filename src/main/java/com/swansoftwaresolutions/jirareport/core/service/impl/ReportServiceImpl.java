@@ -217,6 +217,7 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public ReportDto delete(long id) throws NoSuchEntityException {
         sprintRepository.deleteByReportId(id);
+        projectTotalRepository.deleteByReportId(id);
         return reportMapper.toDto(reportRepository.delete(id));
     }
 

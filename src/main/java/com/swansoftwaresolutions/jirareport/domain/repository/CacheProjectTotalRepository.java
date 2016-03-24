@@ -17,4 +17,5 @@ public interface CacheProjectTotalRepository {
     List<CacheProjectTotal> findAll();
     CacheProjectTotal findByReportId(Long reportId);
 
+    void deleteByReportId(long reportId);
 }

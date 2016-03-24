@@ -72,6 +72,13 @@ public class CacheProjectTotalRepositoryImpl implements CacheProjectTotalReposit
     }
 
     @Override
+    public void deleteByReportId(long reportId) {
+        Query query = sessionFactory.getCurrentSession().createQuery("DELETE FROM CacheProjectTotal d WHERE d.report.id = :reportId");
+        query.setParameter("reportId", reportId);
+        query.executeUpdate();
+    }
+
+    @Override
     public List<CacheProjectTotal> findAll() {
         Query query = sessionFactory.getCurrentSession().createQuery("FROM CacheProjectTotal d");
 
