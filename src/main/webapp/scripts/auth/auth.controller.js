@@ -12,8 +12,6 @@ jiraPluginApp.controller('LoginCtrl', ['$scope', '$window', '$location', 'UserAu
         };
 
         $scope.login = function() {
-            console.log($scope.user);
-
             if($scope.loginForm.$valid) {
                 var username = $scope.user.username,
                     password = $scope.user.password;
@@ -25,11 +23,12 @@ jiraPluginApp.controller('LoginCtrl', ['$scope', '$window', '$location', 'UserAu
                         } else {
                             AuthenticationFactory.isLogged = true;
                             AuthenticationFactory.user = data.user.username;
-                            AuthenticationFactory.userRole = data.user.role;
+                            AuthenticationFactory.roles = data.user.roles;
+
 
                             $window.localStorage.token = data.token;
                             $window.localStorage.user = data.user.username; // to fetch the user details on refresh
-                            $window.localStorage.userRole = data.user.role; // to fetch the user details on refresh
+                            $window.localStorage.roles = JSON.stringify(data.user.roles); // to fetch the user details on refresh
 
                             $location.path("/");
                         }
