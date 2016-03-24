@@ -8,7 +8,7 @@ import com.swansoftwaresolutions.jirareport.sheduller.dto.fields.*;
 public class FildsDto {
     public ProjectDto project;
     public IssueTypeDto issuetype;
-    public Long timespent;
+    public long timespent;
     public ResolutionDto resolution;
     public String created;
     public String updated;
