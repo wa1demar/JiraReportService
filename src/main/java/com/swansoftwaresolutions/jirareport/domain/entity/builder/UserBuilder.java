@@ -1,7 +1,10 @@
 package com.swansoftwaresolutions.jirareport.domain.entity.builder;
 
+import com.swansoftwaresolutions.jirareport.domain.entity.Role;
 import com.swansoftwaresolutions.jirareport.domain.entity.User;
 import com.swansoftwaresolutions.jirareport.domain.enums.UserStatus;
+
+import java.util.Set;
 
 /**
  * @author Vladimir Martynyuk
@@ -36,6 +39,11 @@ public class UserBuilder {
 
     public UserBuilder status(UserStatus status) {
         user.setStatus(status);
+        return this;
+    }
+
+    public UserBuilder roles(Set<Role> roles) {
+        user.setRoles(roles);
         return this;
     }
 

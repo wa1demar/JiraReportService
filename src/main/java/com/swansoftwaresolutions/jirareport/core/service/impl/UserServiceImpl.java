@@ -6,8 +6,10 @@ import com.swansoftwaresolutions.jirareport.core.service.ApplicationMailer;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.User;
 import com.swansoftwaresolutions.jirareport.domain.entity.builder.UserBuilder;
+import com.swansoftwaresolutions.jirareport.domain.enums.UserRole;
 import com.swansoftwaresolutions.jirareport.domain.enums.UserStatus;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.RoleRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.UserRepository;
 import com.swansoftwaresolutions.jirareport.core.service.UserService;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -15,6 +17,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -42,6 +45,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     ApplicationMailer applicationMailer;
 
+    @Autowired
+    RoleRepository roleRepository;
+
     @Override
     public UserDto retrieveByUsername(String username) {
         return userMapper.toDto(userRepository.findByUsername(username));
@@ -50,7 +56,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserLoginDto retrieveLoggerUser(String username) {
 
-        UserLoginDto userLoginDto = userMapper.loginToDto(userRepository.findByUsername(username));
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        UserLoginDto userLoginDto = userMapper.loginToDto(user);
         userLoginDto.setToken("xfdsfdgdfgfhfghfg ");
         return userLoginDto;
     }
@@ -104,6 +112,7 @@ public class UserServiceImpl implements UserService {
                     .email(jiraUser.getEmail())
                     .password(encoder.encode(password))
                     .status(UserStatus.ACTIVE)
+                    .roles(roleRepository.findByName(UserRole.ROLE_MANAGER))
                     .build());
         } else {
             user =  userRepository.add(new UserBuilder()
@@ -111,6 +120,7 @@ public class UserServiceImpl implements UserService {
                     .email(inviteUserDto.getInviteParam())
                     .password(encoder.encode(password))
                     .status(UserStatus.ACTIVE)
+                    .roles(roleRepository.findByName(UserRole.ROLE_MANAGER))
                     .build());
         }
 

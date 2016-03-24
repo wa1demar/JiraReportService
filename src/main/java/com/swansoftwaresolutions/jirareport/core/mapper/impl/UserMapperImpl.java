@@ -32,7 +32,9 @@ public class UserMapperImpl implements UserMapper {
     public UserLoginDto loginToDto(User user) {
         user.setPassword("");
         UserLoginDto userLoginDto = new UserLoginDto();
-        userLoginDto.setUser(toDto(user));
+        UserDto userDto = toDto(user);
+        userLoginDto.setUser(userDto);
+
         return userLoginDto;
     }
 

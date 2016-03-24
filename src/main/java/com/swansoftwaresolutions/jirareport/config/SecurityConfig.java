@@ -1,11 +1,13 @@
 package com.swansoftwaresolutions.jirareport.config;
 
 import com.swansoftwaresolutions.jirareport.config.security.*;
+import com.swansoftwaresolutions.jirareport.domain.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -19,6 +21,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled=true, securedEnabled = true)
 @ComponentScan(basePackages = {"com.swansoftwaresolutions.jirareport.config.security"})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -35,6 +38,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private LogoutSuccess logoutSuccess;
 
     @Autowired
+    private AccessDenied accessDenied;
+
+    @Autowired
     private EntryPointUnauthorizedHandler unauthorizedHandler;
 
     @Override
@@ -42,7 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers("/rest/auth/**").permitAll()
-                    .antMatchers("/rest/**").authenticated()
+                .antMatchers("/rest/v1/system_users").hasRole("ADMIN")
+                .antMatchers("/rest/**").hasRole("MANAGER")
 //                    .antMatchers("/**").anonymous()
                     .and()
 
@@ -62,6 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .exceptionHandling()
                     .authenticationEntryPoint(unauthorizedHandler)
+                .accessDeniedHandler(accessDenied)
                     .and()
                 .csrf().disable();
     }

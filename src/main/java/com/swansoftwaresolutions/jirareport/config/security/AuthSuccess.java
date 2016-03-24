@@ -3,8 +3,10 @@ package com.swansoftwaresolutions.jirareport.config.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swansoftwaresolutions.jirareport.core.dto.user.UserLoginDto;
 import com.swansoftwaresolutions.jirareport.core.service.UserService;
+import com.swansoftwaresolutions.jirareport.domain.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
