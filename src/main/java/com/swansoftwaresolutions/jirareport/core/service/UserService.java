@@ -24,4 +24,6 @@ public interface UserService {
     UserDto invite(InviteUserDto inviteUserDto) throws NoSuchEntityException, MessagingException;
 
     UserDto delete(Long userDto) throws NoSuchEntityException;
+
+    UserDto resetPassword(Long userId) throws NoSuchEntityException, MessagingException;
 }

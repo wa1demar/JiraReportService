@@ -1,0 +1,16 @@
+<html>
+<body>
+<h3>Hi, ${user.fullName}! </h3>
+
+<div>
+    <p>Your Swan Jira Service password was reset</p>
+    <br/>
+    <p>New password is ${user.password}</p>
+
+    <br/>
+    <p>You can login and change your password at <a href="http://192.168.1.134:8080/#/login">this link</a>.</p>
+    <br/>
+
+</div>
+</body>
+</html>

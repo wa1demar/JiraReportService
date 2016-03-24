@@ -120,7 +120,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(password);
         model.put("newUser", user);
         model.put("currentUserName", currentUser.getFullName().equals("") ? "" : currentUser.getFullName());
-        applicationMailer.sendMail(user.getEmail(), "You have new invite to Jira Service", model, "invite");
+        applicationMailer.sendMail(user.getEmail(), "Swan Jira Service", model, "invite");
 
         return userMapper.toDto(user);
     }
@@ -128,6 +128,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto delete(Long userId) throws NoSuchEntityException {
         return userMapper.toDto(userRepository.delete(userId));
+    }
+
+    @Override
+    public UserDto resetPassword(Long userId) throws NoSuchEntityException, MessagingException {
+        String password = RandomStringUtils.random(5, true, true);
+
+        User user = userRepository.findById(userId);
+        user.setPassword(encoder.encode(password));
+
+        User updatedUser = userRepository.update(user);
+
+        if (updatedUser != null) {
+            updatedUser.setPassword(password);
+            Map model = new HashMap();
+            user.setPassword(password);
+            model.put("user", updatedUser);
+            applicationMailer.sendMail(user.getEmail(), "Swan Jira Service", model, "reset");
+        }
+
+        return userMapper.toDto(updatedUser);
     }
 
 }
