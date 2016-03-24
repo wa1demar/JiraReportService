@@ -66,4 +66,9 @@ public class JiraSprintServiceImpl implements JiraSprintsService {
     public void delete(Long sprintId) throws NoSuchEntityException {
         jiraSprintRepository.delete(sprintId);
     }
+
+    @Override
+    public JiraSprintDto findById(long id) {
+        return  jiraSprintMapper.toDto(jiraSprintRepository.findById(id));
+    }
 }
