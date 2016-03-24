@@ -1,7 +1,12 @@
 <div class="modal-header">
     <h3 class="modal-title capitalize">Invite user</h3>
 </div>
-<form name="inviteSystemUserForm" ng-submit="submit()" novalidate>
+
+<div ng-show="dlgLoaderShow" class="modal-body">
+    <div class="text-center"><span class="aui-icon aui-icon-wait">Loading...</span></div>
+</div>
+
+<form ng-show="!dlgLoaderShow" name="inviteSystemUserForm" ng-submit="submit()" novalidate>
     <div class="modal-body">
 
         <div>

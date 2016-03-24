@@ -77,6 +77,7 @@ jiraPluginApp.controller('SystemUserCtrl',
             $scope.inviteUser = function (item) {
                 var modalInstance = $uibModal.open({
                     animation: true,
+                    backdrop: 'static',
                     templateUrl: 'views/system_user/dlg/dlg_invite_system_user.html',
                     controller: 'DlgInviteSystemUserCtrl',
                     size: 'md',
@@ -92,14 +93,7 @@ jiraPluginApp.controller('SystemUserCtrl',
                     }
                 });
                 modalInstance.result.then(function (data) {
-                    SystemUsersFactory.add({id: "invite"}, {
-                        inviteParam: data.inviteType === 1 ? data.username : data.email
-                    }, function(result){
-                        self.getSystemUsers();
-                        Notification.success("Invite send success");
-                    }, function (error) {
-                        Notification.error("Server error");
-                    });
+                    self.getSystemUsers();
                 }, function () {});
             };
 
@@ -109,6 +103,7 @@ jiraPluginApp.controller('SystemUserCtrl',
                 console.log(item);
                 var modalInstance = $uibModal.open({
                     animation: true,
+                    backdrop: 'static',
                     templateUrl: 'views/system_user/dlg/dlg_reset_password_system_user.html',
                     controller: 'DlgResetPasswordSystemUserCtrl',
                     size: 'md',
@@ -119,13 +114,7 @@ jiraPluginApp.controller('SystemUserCtrl',
                     }
                 });
                 modalInstance.result.then(function (data) {
-                    console.log(data);
-                    SystemUsersFactory.resetPassword({id: data.id, action: "reset_password"}, function(result){
-                        self.getSystemUsers();
-                        Notification.success("Reset password success");
-                    }, function (error) {
-                        Notification.error("Server error");
-                    });
+                    self.getSystemUsers();
                 }, function () {});
             };
 
@@ -180,8 +169,8 @@ jiraPluginApp.controller('DlgProcessSystemUserCtrl', ['$scope', '$uibModalInstan
     }
 ]);
 
-jiraPluginApp.controller('DlgInviteSystemUserCtrl', ['$scope', '$uibModalInstance', 'dlgData', 'UsersFactory',
-    function ($scope, $uibModalInstance, dlgData, UsersFactory) {
+jiraPluginApp.controller('DlgInviteSystemUserCtrl', ['$scope', '$uibModalInstance', 'dlgData', 'UsersFactory', 'SystemUsersFactory', 'Notification',
+    function ($scope, $uibModalInstance, dlgData, UsersFactory, SystemUsersFactory, Notification) {
         $scope.item = dlgData.item;
         var dataUsers = dlgData.item.dataUsers;
 
@@ -198,7 +187,18 @@ jiraPluginApp.controller('DlgInviteSystemUserCtrl', ['$scope', '$uibModalInstanc
         });
         $scope.ok = function () {
             if($scope.inviteSystemUserForm.$valid) {
-                $uibModalInstance.close($scope.item);
+                $scope.dlgLoaderShow = true;
+                SystemUsersFactory.add({id: "invite"}, {
+                    inviteParam: $scope.item.inviteType === 1 ? $scope.item.username : $scope.item.email
+                }, function(result){
+                    Notification.success("Invite send success");
+                    $scope.dlgLoaderShow = false;
+                    $uibModalInstance.close($scope.item);
+                }, function (error) {
+                    Notification.error("Server error");
+                    $scope.dlgLoaderShow = false;
+                    $uibModalInstance.close($scope.item);
+                });
             }
         };
 
@@ -208,12 +208,21 @@ jiraPluginApp.controller('DlgInviteSystemUserCtrl', ['$scope', '$uibModalInstanc
     }
 ]);
 
-jiraPluginApp.controller('DlgResetPasswordSystemUserCtrl', ['$scope', '$uibModalInstance', 'dlgData', 'UsersFactory',
-    function ($scope, $uibModalInstance, dlgData, UsersFactory) {
+jiraPluginApp.controller('DlgResetPasswordSystemUserCtrl', ['$scope', '$uibModalInstance', 'dlgData', 'UsersFactory', 'SystemUsersFactory', 'Notification',
+    function ($scope, $uibModalInstance, dlgData, UsersFactory, SystemUsersFactory, Notification) {
         $scope.item = dlgData;
         console.log($scope.item);
         $scope.ok = function () {
-            $uibModalInstance.close($scope.item);
+            $scope.dlgLoaderShow = true;
+            SystemUsersFactory.resetPassword({id: $scope.item.id, action: "reset_password"}, function(result){
+                Notification.success("Reset password success");
+                $scope.dlgLoaderShow = false;
+                $uibModalInstance.close($scope.item);
+            }, function (error) {
+                Notification.error("Server error");
+                $scope.dlgLoaderShow = false;
+                $uibModalInstance.close($scope.item);
+            });
         };
 
         $scope.cancel = function () {
