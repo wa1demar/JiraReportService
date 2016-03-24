@@ -171,11 +171,15 @@ public class ReportServiceImpl implements ReportService {
 
         for (Sprint target : targetSprints) {
             Sprint sprint = new Sprint();
+            sprint.setName(target.getName());
             sprint.setJiraSprint(target.getJiraSprint());
             sprint.setReport(addedReport);
             sprint.setNotCountTarget(target.isNotCountTarget());
             sprint.setShowUAT(target.isShowUAT());
             sprint.setType(target.getType());
+            sprint.setStartDate(target.getStartDate());
+            sprint.setEndDate(target.getEndDate());
+            sprint.setState(target.getState());
 
             List<SprintDeveloper> developers = sprintDeveloperRepository.findBySprintId(target.getId());
 
@@ -217,6 +221,7 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public ReportDto delete(long id) throws NoSuchEntityException {
         sprintRepository.deleteByReportId(id);
+        projectTotalRepository.deleteByReportId(id);
         return reportMapper.toDto(reportRepository.delete(id));
     }
 
@@ -257,6 +262,11 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public long getClosedSprintCount(Long reportId) {
         return reportRepository.closedSprintCount(reportId);
+    }
+
+    @Override
+    public long getSprintCount(Long reportId) {
+        return reportRepository.sprintCount(reportId);
     }
 
     @Override

@@ -227,4 +227,11 @@ public class ReportRepositoryImpl implements ReportRepository{
         return (long) query.uniqueResult() == 0;
     }
 
+    @Override
+    public long sprintCount(Long reportId) {
+        Query query = sessionFactory.getCurrentSession().createQuery("SELECT count(s) FROM Sprint s WHERE s.report.id = :reportId");
+        query.setParameter("reportId", reportId);
+        return (long) query.uniqueResult();
+    }
+
 }
