@@ -36,6 +36,8 @@ public class ProjectReportDto {
     private float actualUatDefectPoints;
     private Long actualUatDefectHours;
 
+    private long sprintsCount;
+
     private Chart chart;
 
     private boolean showUat;
@@ -263,5 +265,13 @@ public class ProjectReportDto {
 
     public void setClosedSprintCount(long closedSprintCount) {
         this.closedSprintCount = closedSprintCount;
+    }
+
+    public long getSprintsCount() {
+        return sprintsCount;
+    }
+
+    public void setSprintsCount(long sprintsCount) {
+        this.sprintsCount = sprintsCount;
     }
 }

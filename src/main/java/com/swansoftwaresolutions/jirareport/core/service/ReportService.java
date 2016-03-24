@@ -36,5 +36,7 @@ public interface ReportService {
 
     long getClosedSprintCount(Long reportId);
 
+    long getSprintCount(Long reportId);
+
     boolean showUat(Long reportId);
 }

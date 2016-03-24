@@ -73,6 +73,7 @@ public class DashboardServiceImpl implements DashboardService {
             projectReportDto.setActualUatDefectPoints(total.getuActualPoints());
             projectReportDto.setTargetUatDefectHours(total.getuTargetHours());
             projectReportDto.setActualUatDefectHours(total.getuActualHours());
+            projectReportDto.setSprintsCount(reportService.getSprintCount(total.getReport().getId()));
             projectReportDto.setChart(new Chart(
                     total.getChartLabels().split(","),
                     Arrays.stream(total.getChartTarget().substring(1, total.getChartTarget().length()-1).split(",")).map(String::trim).mapToDouble(Double::parseDouble).toArray(),

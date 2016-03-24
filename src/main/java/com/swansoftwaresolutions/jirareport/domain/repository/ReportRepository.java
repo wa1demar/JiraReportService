@@ -53,4 +53,6 @@ public interface ReportRepository {
     long closedSprintCount(Long reportId);
 
     boolean showUat(Long reportId);
+
+    long sprintCount(Long reportId);
 }

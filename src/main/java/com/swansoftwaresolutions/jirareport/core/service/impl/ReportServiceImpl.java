@@ -261,6 +261,11 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    public long getSprintCount(Long reportId) {
+        return reportRepository.sprintCount(reportId);
+    }
+
+    @Override
     public boolean showUat(Long reportId) {
         return reportRepository.showUat(reportId);
     }
