@@ -1,0 +1,38 @@
+<div class="modal-header">
+    <h3 class="modal-title capitalize">{{item.id ? 'Edit' : 'Add'}} user</h3>
+</div>
+<form name="systemUserForm" ng-submit="submit()" novalidate>
+    <div class="modal-body">
+        <div class="form-group" ng-class="{ 'has-error': systemUserForm.$submitted || systemUserForm.username.$touched && systemUserForm.username.$invalid }">
+            <label for="username">Username:</label>
+            <input type="text" class="form-control" id="username" name="username" ng-model="item.username" required>
+            <div class="help-block" ng-messages="systemUserForm.username.$error" ng-if="systemUserForm.username.$touched || systemUserForm.$submitted">
+                <p ng-message="required">Username is required</p>
+            </div>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': systemUserForm.$submitted || systemUserForm.fullName.$touched && systemUserForm.fullName.$invalid }">
+            <label for="fullName">Full name:</label>
+            <input type="text" class="form-control" id="fullName" name="fullName" ng-model="item.fullName" required>
+            <div class="help-block" ng-messages="systemUserForm.fullName.$error" ng-if="systemUserForm.fullName.$touched || systemUserForm.$submitted">
+                <p ng-message="required">Full name is required</p>
+            </div>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': systemUserForm.$submitted || systemUserForm.email.$touched && systemUserForm.email.$invalid }">
+            <label for="email">Email:</label>
+            <input type="text" class="form-control" id="email" name="email" ng-model="item.email" required>
+            <div class="help-block" ng-messages="systemUserForm.email.$error" ng-if="systemUserForm.email.$touched || systemUserForm.$submitted">
+                <p ng-message="required">Email is required</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="status">Status:</label>
+            <select id="status" class="form-control" ng-model="item.status">
+                <option ng-repeat="statusName in ['ACTIVE', 'PAUSE']" value="{{statusName}}">{{statusName}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="submit" ng-click="ok()">Save</button>
+        <button class="btn btn-default" type="button" ng-click="cancel()">Done</button>
+    </div>
+</form>

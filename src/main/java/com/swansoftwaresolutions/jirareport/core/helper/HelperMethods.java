@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.web.controller.helper;
+package com.swansoftwaresolutions.jirareport.core.helper;
 
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssue.IssuesByDayDto;
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssueDto;

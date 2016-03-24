@@ -37,7 +37,7 @@ jiraPluginApp.controller('LoginCtrl', ['$scope', '$window', '$location', 'UserAu
                     }).error(function(status) {
                         $scope.loginError = {
                             status: true,
-                            message: 'Oops something went wrong!'
+                            message: 'Wrong username or password!'
                         };
                     });
                 } else {

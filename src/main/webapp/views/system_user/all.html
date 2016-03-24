@@ -1,0 +1,55 @@
+<table ng-show="dataUsers.length > 0" class="aui table">
+    <thead>
+        <tr>
+            <th style="width: 80px;">
+                <span ng-click="order('id')" class="cursor-pointer">ID</span>
+                <span ng-show="predicate === 'id'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+            </th>
+            <th style="width: 250px;">
+                <span ng-click="order('username')" class="cursor-pointer">Username</span>
+                <span ng-show="predicate === 'username'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+            </th>
+            <th>
+                <span ng-click="order('fullname')" class="cursor-pointer">Full name</span>
+                <span ng-show="predicate === 'fullname'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+            </th>
+            <th style="width: 250px;">
+                <span ng-click="order('email')" class="cursor-pointer">Email</span>
+                <span ng-show="predicate === 'email'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+            </th>
+            <th style="width: 100px;">
+                <span ng-click="order('status')" class="cursor-pointer">Status</span>
+                <span ng-show="predicate === 'status'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+            </th>
+            <th style="width: 100px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="data in filtered = (dataUsers | filter:query | orderBy:predicate:reverse)">
+            <td>{{data.id}}</td>
+            <td>{{data.username}}</td>
+            <td>{{data.fullName}}</td>
+            <td>{{data.email}}</td>
+            <td>
+                {{statusStyle = data.status === "ACTIVE" ? "aui-lozenge-success" : "aui-lozenge-error"; ""}}
+                <span class="aui-lozenge aui-lozenge-subtle {{statusStyle}}">{{data.status}}</span>
+            </td>
+            <td>
+                <div id="ghx-manage-boards-operation-popup-1-{{data.id}}" class="aui-dropdown2 aui-style-default">
+                    <ul class="aui-list-truncate">
+                        <li><a href="" ng-click="processSystemUser(data)">Edit</a></li>
+                        <li><a href="" ng-click="resetPasswordSystemUser(data)">Reset password</a></li>
+                        <li><a href="" ng-click="deleteSystemUser(data)">Delete</a></li>
+                    </ul>
+                </div>
+                <button aria-haspopup="true" id="ghx-manage-boards-operation-trigger-1" aria-owns="ghx-manage-boards-operation-popup-1-{{data.id}}" class="aui-dropdown2-trigger aui-style-default aui-button aui-button-subtle">
+                    <span class="ghx-iconfont aui-icon aui-icon-small aui-iconfont-more ghx-clickable"></span>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="col-md-12 text-center" ng-if="dataUsers.length === 0">
+    <strong>Not found!</strong>
+</div>

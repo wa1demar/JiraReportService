@@ -31,9 +31,15 @@ jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
             access: {
                 requiredLogin: false
             }
-        }).when('/', {
+        }).when('/dashboards', {
             templateUrl: 'views/home.html',
             controller: 'HomeCtrl',
+            access: {
+                requiredLogin: true
+            }
+        }).when('/', {
+            templateUrl: 'views/report_portfolio/main.html',
+            controller: 'PortfolioCtrl',
             access: {
                 requiredLogin: true
             }
@@ -49,9 +55,15 @@ jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
             access: {
                 requiredLogin: true
             }
-        }).when('/portfolio', {
-            templateUrl: 'views/report_portfolio/main.html',
-            controller: 'PortfolioCtrl',
+        }).when('/profile', {
+            templateUrl: 'views/user/profile.html',
+            controller: 'ProfileCtrl',
+            access: {
+                requiredLogin: true
+            }
+        }).when('/system_user', {
+            templateUrl: 'views/system_user/main.html',
+            controller: 'SystemUserCtrl',
             access: {
                 requiredLogin: true
             }

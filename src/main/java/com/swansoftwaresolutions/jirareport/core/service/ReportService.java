@@ -33,4 +33,10 @@ public interface ReportService {
     ReportListDto retrieveAllOngoingReportsList();
 
     ProjectDashboardDto findProjectDashboard(Long id);
+
+    long getClosedSprintCount(Long reportId);
+
+    long getSprintCount(Long reportId);
+
+    boolean showUat(Long reportId);
 }

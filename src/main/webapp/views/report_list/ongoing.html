@@ -6,14 +6,20 @@
     <table class="aui table">
         <thead>
         <tr>
-            <th>Dashboard name</th>
-            <th>Project</th>
-            <th>Administrators</th>
-            <th></th>
+            <th style="width: 350px;">
+                <span ng-click="order('title')" class="cursor-pointer">Dashboard name</span>
+                <span ng-show="predicate === 'title'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+            </th>
+            <th>
+                <span ng-click="order('typeId')" class="cursor-pointer">Project</span>
+                <span ng-show="predicate === 'typeId'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+            </th>
+            <th style="width: 350px;">Administrators</th>
+            <th style="width: 100px;"></th>
         </tr>
         </thead>
         <tbody>
-        <tr class="element-row" ng-repeat="data in filtered = (dataOngoing | filter:query)">
+        <tr class="element-row" ng-repeat="data in filtered = (dataOngoing | filter:query | orderBy:predicate:reverse)">
             <td>
                 <div class="name-box">
                     <a ng-href="#/report/{{data.id}}">

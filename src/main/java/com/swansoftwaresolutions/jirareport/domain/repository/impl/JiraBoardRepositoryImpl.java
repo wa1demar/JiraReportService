@@ -3,7 +3,6 @@ package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraBoardRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -36,7 +35,6 @@ public class JiraBoardRepositoryImpl implements JiraBoardRepository {
         return jiraBoard;
     }
 
-    @Override
     public JiraBoard findById(Long jiraBoardId) {
         return (JiraBoard) sessionFactory.getCurrentSession()
                 .createCriteria(JiraBoard.class).add(Restrictions.eq("id", jiraBoardId)).uniqueResult();

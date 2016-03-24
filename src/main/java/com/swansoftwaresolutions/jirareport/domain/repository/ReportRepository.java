@@ -49,4 +49,10 @@ public interface ReportRepository {
     List<Report> findAllClosed();
 
     List<Report> findAllOpened();
+
+    long closedSprintCount(Long reportId);
+
+    boolean showUat(Long reportId);
+
+    long sprintCount(Long reportId);
 }

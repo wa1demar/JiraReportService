@@ -19,8 +19,8 @@ public interface UserRepository {
 
     void delete(final User project) throws NoSuchEntityException;
 
-    void delete(final Long projectId) throws NoSuchEntityException;
+    User delete(final Long projectId) throws NoSuchEntityException;
 
-    User update(User project) throws NoSuchEntityException;
+    User update(User user) throws NoSuchEntityException;
 
 }

@@ -669,7 +669,7 @@ jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModal', '$
                         self.getIssues();
                         Notification.success("Issue edit success");
                     }, function (error) {
-                        Notification.error("Sertver error");
+                        Notification.error("Server error");
                     });
                 } else {
                     delete data.type;
@@ -677,7 +677,7 @@ jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModal', '$
                         self.getIssues();
                         Notification.success("Issue add success");
                     }, function (error) {
-                        Notification.error("Sertver error");
+                        Notification.error("Server error");
                     });
                 }
             }, function () {});
@@ -702,7 +702,7 @@ jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModal', '$
                     self.getIssues();
                     Notification.success("Issue delete success");
                 }, function (error) {
-                    Notification.error("Sertver error");
+                    Notification.error("Server error");
                 });
             }, function () {});
         };

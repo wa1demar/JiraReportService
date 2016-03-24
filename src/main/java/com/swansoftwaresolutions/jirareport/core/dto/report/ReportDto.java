@@ -121,32 +121,32 @@ public class ReportDto implements Serializable {
         this.admins = admins;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ReportDto reportDto = (ReportDto) o;
-
-        if (typeId != reportDto.typeId) return false;
-        if (closed != reportDto.closed) return false;
-        if (!id.equals(reportDto.id)) return false;
-        if (!title.equals(reportDto.title)) return false;
-        if (!creator.equals(reportDto.creator)) return false;
-        return boardId.equals(reportDto.boardId);
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + title.hashCode();
-        result = 31 * result + creator.hashCode();
-        result = 31 * result + boardId.hashCode();
-        result = 31 * result + typeId;
-        result = 31 * result + (closed ? 1 : 0);
-        return result;
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//
+//        ReportDto reportDto = (ReportDto) o;
+//
+//        if (typeId != reportDto.typeId) return false;
+//        if (closed != reportDto.closed) return false;
+//        if (!id.equals(reportDto.id)) return false;
+//        if (!title.equals(reportDto.title)) return false;
+//        if (!creator.equals(reportDto.creator)) return false;
+//        return boardId.equals(reportDto.boardId);
+//
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        int result = id.hashCode();
+//        result = 31 * result + title.hashCode();
+//        result = 31 * result + creator.hashCode();
+//        result = 31 * result + boardId.hashCode();
+//        result = 31 * result + typeId;
+//        result = 31 * result + (closed ? 1 : 0);
+//        return result;
+//    }
 
     public Long getJiraBoardId() {
         return jiraBoardId;

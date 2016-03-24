@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 /**
  * @author Vladimir Martynyuk
@@ -25,5 +27,6 @@ public class BusinessContext {
     ModelMapper modelMapper() {
         return new ModelMapper();
     }
+
 
 }

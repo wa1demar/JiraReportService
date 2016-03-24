@@ -1,11 +1,10 @@
 'use strict';
 
-jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibModal', 'ReportsFactory', 'ReportFactory', 'CopyReportFactory', 'Notification',
-    function($scope, AuthenticationFactory, $uibModal, ReportsFactory, ReportFactory, CopyReportFactory, Notification) {
+jiraPluginApp.controller('HomeCtrl', ['$scope', '$location', 'AuthenticationFactory', '$uibModal', 'ReportsFactory', 'ReportFactory', 'CopyReportFactory', 'Notification',
+    function($scope, $location, AuthenticationFactory, $uibModal, ReportsFactory, ReportFactory, CopyReportFactory, Notification) {
 
         var self = this;
         $scope.loaderShow = true;
-        $scope.orderByClosedDate = 'closedDate';
 
         this.getReportsData = function () {
             ReportsFactory.query({type: "ongoing"}, function(result){
@@ -40,8 +39,13 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibMo
             return tabUrl === $scope.currentTab;
         };
 
-        $scope.closedDateOrderBy = function () {
-            $scope.orderByClosedDate = $scope.orderByClosedDate ===  'closedDate' ? '-closedDate' : 'closedDate';
+//----------------------------------------------------------------------------------------------------------------------
+//Order reports
+        $scope.predicate = 'closedDate';
+        $scope.reverse = true;
+        $scope.order = function(predicate) {
+            $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+            $scope.predicate = predicate;
         };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -60,12 +64,11 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', 'AuthenticationFactory', '$uibMo
                 }
             });
             modalInstance.result.then(function (data) {
-                //TODO add new report
+                //add new report
                 data['creator'] = AuthenticationFactory.user;
-                ReportsFactory.create({}, data, function(){
-                    self.getReportsData();
-                    Notification.success("Add new report success");
-                }, function () {
+                ReportsFactory.create({}, data, function(data){
+                    $location.url("/report/" + data.id + "/configure");
+                }, function (error) {
                     Notification.error("Server error");
                 });
             }, function () {});

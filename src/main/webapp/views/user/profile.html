@@ -1,0 +1,76 @@
+<header id="ghx-header" class="aui-page-header">
+    <div class="aui-page-header-main">
+        <h2>Profile: "{{profile.username}}"</h2>
+    </div>
+</header>
+<div class="ghx-content-main">
+    <div class="aui-page-panel" style="margin-top: 0;">
+        <div class="aui-page-panel-inner report-element">
+            <section class="aui-page-panel-content" id="ghx-content-main">
+                <div class="ghx-page-panel-content-item">
+                    <div id="report-element-box">
+                        <div ng-show="loaderShow" class="text-center"><span class="aui-icon aui-icon-wait">Loading...</span></div>
+                        <div ng-show="!loaderShow">
+                            <div class="container profile-block">
+
+                                <uib-tabset active="activeJustified" justified="true">
+                                    <!--Main info-->
+                                    <uib-tab index="0" heading="Main info" class="uib-tab-content">
+                                        <form name="profileForm" ng-submit="submit()" novalidate>
+                                            <div class="form-group" ng-class="{ 'has-error': profileForm.$submitted && profileForm.fullName.$invalid }">
+                                                <label fors="username">Full name</label>
+                                                <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Full name" ng-model="profile.fullName" required>
+                                                <div class="help-block" ng-messages="profileForm.fullName.$error" ng-if="profileForm.$submitted && profileForm.fullName.$invalid">
+                                                    <p ng-message="required">Full name is required</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" ng-class="{ 'has-error': profileForm.$submitted && profileForm.email.$invalid }">
+                                                <label fors="username">Email</label>
+                                                <input type="email" class="form-control" id="email" name="email" placeholder="Email" ng-model="profile.email" required>
+                                                <div class="help-block" ng-messages="profileForm.email.$error" ng-if="profileForm.$submitted && profileForm.email.$invalid">
+                                                    <p ng-message="required">Email is invalid</p>
+                                                </div>
+                                            </div>
+                                            <button type="submit" ng-click="saveProfile()" class="btn btn-primary">Save</button>
+                                        </form>
+                                    </uib-tab>
+                                    <!--Change password-->
+                                    <uib-tab index="1" heading="Change password">
+                                        <form name="changePasswordForm" ng-submit="submit()" novalidate>
+                                            <div class="help-block" ng-if="changePasswordError.status">
+                                                <div class="alert alert-danger text-center" role="alert"><strong>Error:</strong> {{changePasswordError.message}}</div>
+                                            </div>
+                                            <!--<div class="form-group" ng-class="{ 'has-error': changePasswordForm.$submitted && changePasswordForm.oldPassword.$invalid }">-->
+                                                <!--<label fors="oldPassword">Old password</label>-->
+                                                <!--<input type=password class="form-control" id="oldPassword" name="oldPassword" placeholder="Old password" ng-model="profile.oldPassword" required>-->
+                                                <!--<div class="help-block" ng-messages="changePasswordForm.oldPassword.$error" ng-if="changePasswordForm.$submitted && changePasswordForm.oldPassword.$invalid">-->
+                                                    <!--<p ng-message="required">Old password is required</p>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                            <div class="form-group" ng-class="{ 'has-error': changePasswordForm.$submitted && changePasswordForm.newPassword.$invalid }">
+                                                <label fors="username">New password</label>
+                                                <input type=password class="form-control" id="newPassword" name="newPassword" placeholder="New password" ng-model="profile.newPassword" required>
+                                                <div class="help-block" ng-messages="changePasswordForm.newPassword.$error" ng-if="changePasswordForm.$submitted && changePasswordForm.newPassword.$invalid">
+                                                    <p ng-message="required">New password is required</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" ng-class="{ 'has-error': changePasswordForm.$submitted && changePasswordForm.newPasswordAgain.$invalid }">
+                                                <label fors="username">New password again</label>
+                                                <input type=password class="form-control" id="newPasswordAgain" name="newPasswordAgain" placeholder="New password again" ng-model="profile.newPasswordAgain" required>
+                                                <div class="help-block" ng-messages="changePasswordForm.newPasswordAgain.$error" ng-if="changePasswordForm.$submitted && changePasswordForm.newPasswordAgain.$invalid">
+                                                    <p ng-message="required">New password is required</p>
+                                                </div>
+                                            </div>
+                                            <button type="submit" ng-click="changePassword()" class="btn btn-primary">Save</button>
+                                        </form>
+                                    </uib-tab>
+                                </uib-tabset>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

@@ -44,6 +44,8 @@ public class DashboardServiceImpl implements DashboardService {
             ReportDto reportDto = reportService.retrieveReportByID(total.getReport().getId());
 
             ProjectReportDto projectReportDto = new ProjectReportDto();
+            projectReportDto.setClosedSprintCount(reportService.getClosedSprintCount(total.getReport().getId()));
+            projectReportDto.setShowUat(reportService.showUat(total.getReport().getId()));
             projectReportDto.setId(reportDto.getId());
             projectReportDto.setId(reportDto.getId());
             projectReportDto.setTitle(reportDto.getTitle());
@@ -71,6 +73,7 @@ public class DashboardServiceImpl implements DashboardService {
             projectReportDto.setActualUatDefectPoints(total.getuActualPoints());
             projectReportDto.setTargetUatDefectHours(total.getuTargetHours());
             projectReportDto.setActualUatDefectHours(total.getuActualHours());
+            projectReportDto.setSprintsCount(reportService.getSprintCount(total.getReport().getId()));
             projectReportDto.setChart(new Chart(
                     total.getChartLabels().split(","),
                     Arrays.stream(total.getChartTarget().substring(1, total.getChartTarget().length()-1).split(",")).map(String::trim).mapToDouble(Double::parseDouble).toArray(),

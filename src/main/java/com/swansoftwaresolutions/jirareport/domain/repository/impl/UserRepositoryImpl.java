@@ -1,8 +1,10 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
 import com.swansoftwaresolutions.jirareport.domain.entity.User;
+import com.swansoftwaresolutions.jirareport.domain.enums.UserStatus;
 import com.swansoftwaresolutions.jirareport.domain.repository.UserRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +33,15 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User add(User user) {
-        sessionFactory.getCurrentSession().persist(user);
+        sessionFactory.getCurrentSession().save(user);
         return user;
     }
 
     @Override
     public List<User> findAll() {
-        return (List<User>) sessionFactory.getCurrentSession().createCriteria(User.class)
-                .list();
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM User u WHERE u.status != 'DELETED' ORDER BY  u.id DESC");
+
+        return query.list();
     }
 
     @Override
@@ -60,13 +63,16 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void delete(Long userId) throws NoSuchEntityException {
+    public User delete(Long userId) throws NoSuchEntityException {
         User user = findById(userId);
         if (user != null) {
-            sessionFactory.getCurrentSession().delete(user);
+            user.setStatus(UserStatus.DELETED);
+            sessionFactory.getCurrentSession().update(user);
         } else {
             throw new NoSuchEntityException("Entity Not Found");
         }
+        return user;
+
     }
 
     @Override
@@ -74,6 +80,9 @@ public class UserRepositoryImpl implements UserRepository {
         if (findById(user.getId()) == null) {
             throw new NoSuchEntityException("Entity not found");
         }
-        return (User) sessionFactory.getCurrentSession().merge(user);
+
+        sessionFactory.getCurrentSession().merge(user);
+
+        return user;
     }
 }

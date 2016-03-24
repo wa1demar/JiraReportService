@@ -11,40 +11,43 @@
                 <label for="title">Dashboard name:</label>
                 <input id="title" type="text" class="text" name="title" ng-model="report.title" required/>
                 <div class="help-block" ng-messages="generalConfigure.title.$error" ng-if="generalConfigure.$submitted && generalConfigure.title.$invalid">
-                    <p ng-message="required">Title is required.</p>
+                    <p ng-message="required">Title is required</p>
                 </div>
             </div>
             <div class="field-group">
                 <label>Board type:</label>
-        <span style="padding: 5px 0 0 0; font-weight: bold; float: left;">
-            <span ng-show="report.typeId !== 2">Automatic</span>
-            <span ng-show="report.typeId === 2">Manual</span>
-        </span>
+                <span style="padding: 5px 0 0 0; font-weight: bold; float: left;">
+                    <span ng-show="report.typeId !== 2">Automatic</span>
+                    <span ng-show="report.typeId === 2">Manual</span>
+                </span>
             </div>
             <div class="field-group" ng-show="report.typeId === 1">
                 <label>Project:</label>
-            <span style="padding: 5px 0 0 0; font-weight: bold; float: left;">
-                {{report.boardName}}
-            </span>
+                <span style="padding: 5px 0 0 0; font-weight: bold; float: left;">
+                    {{report.boardName}}
+                </span>
             </div>
-            <div class="field-group">
+            <div class="field-group" ng-class="{ 'has-error': generalConfigure.$submitted && generalConfigure.admins.$invalid }">
                 <label>Administrators: </label>
-                <select ui-select2 multiple ng-model="report.admins" data-placeholder="Select administrators" id="admins" name="admins" style="width: 250px;">
+                <select ui-select2 multiple ng-model="report.admins" data-placeholder="Select administrators" id="admins" name="admins" style="width: 250px;" required>
                     <option ng-repeat="admin in users" value="{{admin.login}}">{{admin.fullName}}</option>
                 </select>
+                <div class="help-block" ng-messages="generalConfigure.admins.$error" ng-if="generalConfigure.$submitted && generalConfigure.admins.$invalid">
+                    <p ng-message="required">Administrators is required</p>
+                </div>
             </div>
             <div class="field-group">
                 <label for="is-closed">Closed</label>
-            <span style="padding: 5px 0 0 0; font-weight: bold; float: left;">
-            <input name="is-closed" id="is-closed" type="checkbox" ng-model="report.closed"/>
-        </span>
+                <span style="padding: 5px 0 0 0; font-weight: bold; float: left;">
+                    <input name="is-closed" id="is-closed" type="checkbox" ng-model="report.closed"/>
+                </span>
             </div>
             <div class="field-group">
                 <p class="input-group" style="width: 250px;">
                     <input ng-disabled="!report.closed" type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="report.closedDate" is-open="popupCalender.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" placeholder="MM/DD/YYY"/>
-                <span class="input-group-btn">
-                    <button ng-disabled="!report.closed" type="button" class="btn btn-default" ng-click="openCalender()"><i class="glyphicon glyphicon-calendar"></i></button>
-                </span>
+                    <span class="input-group-btn">
+                        <button ng-disabled="!report.closed" type="button" class="btn btn-default" ng-click="openCalender()"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
                 </p>
             </div>
 

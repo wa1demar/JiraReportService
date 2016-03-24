@@ -19,7 +19,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @ComponentScan(basePackages = {
         "com.swansoftwaresolutions.jirareport.web.controller",
         "com.swansoftwaresolutions.jirareport.web.controller",
-        "com.swansoftwaresolutions.jirareport.web.handler"
+        "com.swansoftwaresolutions.jirareport.web.handler",
+        "com.swansoftwaresolutions.jirareport.web.validation"
 })
 public class WebConfig extends WebMvcConfigurerAdapter {
 

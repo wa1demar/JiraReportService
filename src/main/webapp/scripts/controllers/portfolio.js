@@ -63,6 +63,8 @@ jiraPluginApp.controller("PortfolioCtrl", ['$scope', 'PortfoliosFactory', '$time
                 $scope.reportsData = result.dashboards;
 
                 for (var index = 0; index < $scope.reportsData.length; index++) {
+                    $scope.reportsData[index] = $scope.reportsData[index].report;
+
                     //Progress bar
                     $scope.reportsData[index]['progressBarData'] = self.updateProgressBar($scope.reportsData[index]);
                     //Chart
