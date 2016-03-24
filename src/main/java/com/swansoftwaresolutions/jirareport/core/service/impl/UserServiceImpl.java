@@ -15,6 +15,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -50,7 +51,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserLoginDto retrieveLoggerUser(String username) {
 
-        UserLoginDto userLoginDto = userMapper.loginToDto(userRepository.findByUsername(username));
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        UserLoginDto userLoginDto = userMapper.loginToDto(user);
         userLoginDto.setToken("xfdsfdgdfgfhfghfg ");
         return userLoginDto;
     }

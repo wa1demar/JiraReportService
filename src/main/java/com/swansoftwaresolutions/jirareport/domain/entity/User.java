@@ -2,13 +2,18 @@ package com.swansoftwaresolutions.jirareport.domain.entity;
 
 import com.swansoftwaresolutions.jirareport.core.dto.user.UserDto;
 import com.swansoftwaresolutions.jirareport.domain.enums.UserStatus;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Vladimir Martynyuk
@@ -37,6 +42,12 @@ public class User implements UserDetails, Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private UserStatus status;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<Role>();
 
     public Long getId() {
         return id;
@@ -76,15 +87,12 @@ public class User implements UserDetails, Serializable {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        GrantedAuthority authority = new GrantedAuthority() {
-            @Override
-            public String getAuthority() {
-                return "USER";
-            }
-        };
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
 
-        ArrayList<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        authorities.add(authority);
+        for (Role role : this.getRoles()) {
+            authorities.add(new SimpleGrantedAuthority(role.getName().toString()));
+        }
+
         return authorities;
     }
 
@@ -118,5 +126,13 @@ public class User implements UserDetails, Serializable {
 
     public void setStatus(UserStatus status) {
         this.status = status;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

@@ -1,11 +1,15 @@
 package com.swansoftwaresolutions.jirareport.core.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.swansoftwaresolutions.jirareport.domain.entity.Role;
+import com.swansoftwaresolutions.jirareport.domain.enums.UserRole;
 import com.swansoftwaresolutions.jirareport.domain.enums.UserStatus;
 import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Vladimir Martynyuk
@@ -27,6 +31,8 @@ public class UserDto implements Serializable {
     private UserStatus status;
 
     private String password;
+
+    private Set<Role> roles;
 
     public String getUsername() {
         return username;
@@ -75,5 +81,13 @@ public class UserDto implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

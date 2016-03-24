@@ -5,13 +5,17 @@ import com.swansoftwaresolutions.jirareport.core.dto.user.PasswordDto;
 import com.swansoftwaresolutions.jirareport.core.dto.user.UserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.user.UsersDto;
 import com.swansoftwaresolutions.jirareport.core.service.UserService;
+import com.swansoftwaresolutions.jirareport.domain.enums.UserRole;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.web.exception.InvalidRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
