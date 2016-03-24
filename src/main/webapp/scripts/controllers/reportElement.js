@@ -85,7 +85,7 @@ jiraPluginApp.controller('ReportElementCtrl',
                         $scope.chartData.actual,
                         $scope.chartData.target
                     ];
-                }, 0);
+                }, 100);
             };
 
             this.getReportsData = function () {
