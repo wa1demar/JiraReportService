@@ -46,7 +46,7 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
 
     @Override
     public void loadData() {
-        loadDataForJiraBoards();
+//        loadDataForJiraBoards();
         loadDataForJiraSprints();
     }
 
@@ -72,11 +72,11 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
             ImportedJiraSprintDto importedJiraSprintDto = new ImportedJiraSprintDto();
             importedJiraSprintDto.setName(agileSprintDto.name);
             importedJiraSprintDto.setState(agileSprintDto.state);
-            importedJiraSprintDto.setCompleteDate(agileSprintDto.completedDate);
-            importedJiraSprintDto.setEndDate(agileSprintDto.endDate);
+            importedJiraSprintDto.setCompleteDate(agileSprintDto.completedDate!=null ? agileSprintDto.completedDate : null);
             importedJiraSprintDto.setEndDate(agileSprintDto.endDate);
             importedJiraSprintDto.setStartDate(agileSprintDto.startDate);
             importedJiraSprintDto.setOriginBoardId(boardId);
+            importedJiraSprintDto.setSprintId(agileSprintDto.id);
 
             list.add(importedJiraSprintDto);
         }
