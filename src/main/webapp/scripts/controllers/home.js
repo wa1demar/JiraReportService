@@ -92,7 +92,7 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', '$location', 'AuthenticationFact
                     self.getReportsData();
                     Notification.success("Delete report success");
                 }, function () {
-                    Notification.success("Server error");
+                    Notification.error("Server error");
                 });
             }, function () {});
         };
