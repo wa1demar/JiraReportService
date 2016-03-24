@@ -6,8 +6,10 @@ import com.swansoftwaresolutions.jirareport.core.service.ApplicationMailer;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.User;
 import com.swansoftwaresolutions.jirareport.domain.entity.builder.UserBuilder;
+import com.swansoftwaresolutions.jirareport.domain.enums.UserRole;
 import com.swansoftwaresolutions.jirareport.domain.enums.UserStatus;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.RoleRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.UserRepository;
 import com.swansoftwaresolutions.jirareport.core.service.UserService;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -42,6 +44,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     ApplicationMailer applicationMailer;
+
+    @Autowired
+    RoleRepository roleRepository;
 
     @Override
     public UserDto retrieveByUsername(String username) {
@@ -107,6 +112,7 @@ public class UserServiceImpl implements UserService {
                     .email(jiraUser.getEmail())
                     .password(encoder.encode(password))
                     .status(UserStatus.ACTIVE)
+                    .roles(roleRepository.findByName(UserRole.ROLE_MANAGER))
                     .build());
         } else {
             user =  userRepository.add(new UserBuilder()
@@ -114,6 +120,7 @@ public class UserServiceImpl implements UserService {
                     .email(inviteUserDto.getInviteParam())
                     .password(encoder.encode(password))
                     .status(UserStatus.ACTIVE)
+                    .roles(roleRepository.findByName(UserRole.ROLE_MANAGER))
                     .build());
         }
 
