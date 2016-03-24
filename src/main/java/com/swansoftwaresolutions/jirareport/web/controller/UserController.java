@@ -45,7 +45,7 @@ public class UserController {
             throw new InvalidRequestException("Invalid request", bindingResult);
         }
 
-        UserDto updatedUserDto = userService.update(userDto);
+        UserDto updatedUserDto = userService.updateProfile(userDto);
 
         return new ResponseEntity<>(updatedUserDto, HttpStatus.OK);
     }
@@ -78,5 +78,20 @@ public class UserController {
 
         return new ResponseEntity<>(userDto, HttpStatus.OK);
 
+    }
+
+    @RequestMapping(value = "/system_users/{user_id}", method = RequestMethod.PUT)
+    private ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDto, @PathVariable("user_id") Long userId) throws NoSuchEntityException {
+        userDto.setId(userId);
+        UserDto updatedUserDto = userService.update(userDto);
+
+        return new ResponseEntity<>(updatedUserDto, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/system_users/{user_id}", method = RequestMethod.DELETE)
+    private ResponseEntity<UserDto> deleteUser(@PathVariable("user_id") Long userId) throws NoSuchEntityException {
+        UserDto userDto = userService.delete(userId);
+
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 }

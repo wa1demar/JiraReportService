@@ -13,6 +13,8 @@ public interface UserService {
 
     UserLoginDto retrieveLoggerUser(String username);
 
+    UserDto updateProfile(UserDto userDto) throws NoSuchEntityException;
+
     UserDto update(UserDto userDto) throws NoSuchEntityException;
 
     UserDto changePassword(PasswordDto passwordDto) throws NoSuchEntityException;
@@ -20,4 +22,6 @@ public interface UserService {
     UsersDto retrieveAllUsers();
 
     UserDto invite(InviteUserDto inviteUserDto) throws NoSuchEntityException, MessagingException;
+
+    UserDto delete(Long userDto) throws NoSuchEntityException;
 }

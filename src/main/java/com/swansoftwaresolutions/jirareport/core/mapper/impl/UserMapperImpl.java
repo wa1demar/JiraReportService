@@ -45,5 +45,10 @@ public class UserMapperImpl implements UserMapper {
         return result;
     }
 
+    @Override
+    public User fromDto(UserDto userDto) {
+        return modelMapper.map(userDto, User.class);
+    }
+
 
 }
