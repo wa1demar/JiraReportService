@@ -95,7 +95,7 @@ public class UserController {
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/system_users/{user_id}/reset_password", method = RequestMethod.POST)
+    @RequestMapping(value = "/system_users/{user_id}/reset_password", method = RequestMethod.GET)
     private ResponseEntity<UserDto> resetPassword(@PathVariable("user_id") Long userId) throws NoSuchEntityException, MessagingException {
         UserDto userDto = userService.resetPassword(userId);
 
