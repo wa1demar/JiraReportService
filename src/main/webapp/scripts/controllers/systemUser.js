@@ -84,7 +84,8 @@ jiraPluginApp.controller('SystemUserCtrl',
                         dlgData: function () {
                             return {
                                 item: {
-                                    inviteType: 1
+                                    inviteType: 1,
+                                    dataUsers: $scope.dataUsers
                                 }
                             };
                         }
@@ -156,8 +157,18 @@ jiraPluginApp.controller('DlgProcessSystemUserCtrl', ['$scope', '$uibModalInstan
 jiraPluginApp.controller('DlgInviteSystemUserCtrl', ['$scope', '$uibModalInstance', 'dlgData', 'UsersFactory',
     function ($scope, $uibModalInstance, dlgData, UsersFactory) {
         $scope.item = dlgData.item;
+        var dataUsers = dlgData.item.dataUsers;
+
         UsersFactory.query(function(data) {
             $scope.jiraUsers = data.users;
+            for (var index = 0; index < $scope.jiraUsers.length; index++) {
+                for (var indexTeam = 0; indexTeam < dataUsers.length; indexTeam++) {
+                    if ($scope.jiraUsers[index].login === dataUsers[indexTeam].username) {
+                        $scope.jiraUsers.splice(index, 1);
+                    }
+                }
+            }
+
         });
         $scope.ok = function () {
             if($scope.inviteSystemUserForm.$valid) {
