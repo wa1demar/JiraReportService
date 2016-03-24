@@ -2,6 +2,7 @@ package com.swansoftwaresolutions.jirareport.core.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.swansoftwaresolutions.jirareport.domain.enums.UserStatus;
+import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -19,8 +20,10 @@ public class UserDto implements Serializable {
     private String fullName;
 
     @NotNull(message = "Email cannot be empty")
+    @Email
     private String email;
 
+    @NotNull(message = "Status cannot be empty")
     private UserStatus status;
 
     private String password;

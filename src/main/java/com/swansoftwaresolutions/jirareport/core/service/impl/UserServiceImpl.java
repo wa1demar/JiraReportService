@@ -7,12 +7,10 @@ import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.User;
 import com.swansoftwaresolutions.jirareport.domain.entity.builder.UserBuilder;
 import com.swansoftwaresolutions.jirareport.domain.enums.UserStatus;
-import com.swansoftwaresolutions.jirareport.domain.repository.JiraBoardRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.UserRepository;
 import com.swansoftwaresolutions.jirareport.core.service.UserService;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -58,13 +56,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto update(UserDto userDto) throws NoSuchEntityException {
+    public UserDto updateProfile(UserDto userDto) throws NoSuchEntityException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         user.setEmail(userDto.getEmail());
         user.setFullName(userDto.getFullName());
 
         User updatedUser = userRepository.update(user);
+
+        return userMapper.toDto(updatedUser);
+    }
+
+    @Override
+    public UserDto update(UserDto userDto) throws NoSuchEntityException {
+        User existedUser = userRepository.findById(userDto.getId());
+        userDto.setPassword(existedUser.getPassword());
+        User updatedUser = userRepository.update(userMapper.fromDto(userDto));
 
         return userMapper.toDto(updatedUser);
     }
@@ -116,6 +123,11 @@ public class UserServiceImpl implements UserService {
         applicationMailer.sendMail(user.getEmail(), "You have new invite to Jira Service", model, "invite");
 
         return userMapper.toDto(user);
+    }
+
+    @Override
+    public UserDto delete(Long userId) throws NoSuchEntityException {
+        return userMapper.toDto(userRepository.delete(userId));
     }
 
 }

@@ -70,7 +70,7 @@ public class ReportRepositoryImplTest extends AbstractDbTest {
 //        config.setNonWorkingDays("Sunday");
 //        config.setAutoSyncTime(dataFormatnew.format(new Date()));
 //
-//        Config updatedConfig = configRepository.update(config);
+//        Config updatedConfig = configRepository.updateProfile(config);
 //        assertNotNull(updatedConfig.getId());
 //        assertEquals("Story Point1", updatedConfig.getStoryPointsName());
 //        assertEquals("Bug1", updatedConfig.getBugName());
@@ -86,7 +86,7 @@ public class ReportRepositoryImplTest extends AbstractDbTest {
 //        config.setNonWorkingDays("Sunday");
 //        config.setAutoSyncTime(dataFormatnew.format(new Date()));
 //
-//        configRepository.update(config);
+//        configRepository.updateProfile(config);
 //    }
 //
 //    @Test(expected = NoSuchEntityException.class)
@@ -97,7 +97,7 @@ public class ReportRepositoryImplTest extends AbstractDbTest {
 //        config.setBugName("Bug1");
 //        config.setNonWorkingDays("Sunday");
 //
-//        configRepository.update(config);
+//        configRepository.updateProfile(config);
 //    }
 //
 //    @Test
