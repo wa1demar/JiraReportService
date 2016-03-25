@@ -1,0 +1,83 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="045" author="Vitaliy Holovko">
+        <createTable tableName="users">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="key" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="project_jira_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="project_jira_key" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="issue_type_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="issue_type_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="issue_type_subtask" type="boolean" />
+            <column name="time_spent" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="resolution_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="resolution_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="updated" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="assigned_name" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="assigned_key" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="assigned_full_name" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="assigned_name" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="creator_name" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="creator_name_key" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="creator_full_name" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="status_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="status_name" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="due_date" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="points" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="board_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sprint_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <comment>Create table users</comment>
+
+    </changeSet>
+</databaseChangeLog>
