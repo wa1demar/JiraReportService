@@ -46,7 +46,7 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
 
     @Override
     public void loadData() {
-//        loadDataForJiraBoards();
+        loadDataForJiraBoards();
         loadDataForJiraSprints();
     }
 
