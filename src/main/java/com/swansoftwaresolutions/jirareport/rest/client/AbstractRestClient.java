@@ -1,12 +1,15 @@
-package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
+package com.swansoftwaresolutions.jirareport.rest.client;
 
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 
 /**
  * @author Vutaliy Holovko
  */
-public abstract class RestClientBase {
+public abstract class AbstractRestClient {
+
+    protected HttpEntity<String> request = new HttpEntity<>(getHeaders());
 
     public HttpHeaders getHeaders() {
         String plainCreds = "vholovko:12345";
