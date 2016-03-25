@@ -186,11 +186,15 @@ public class ReportServiceImpl implements ReportService {
 
         for (Sprint target : targetSprints) {
             Sprint sprint = new Sprint();
+            sprint.setName(target.getName());
             sprint.setJiraSprint(target.getJiraSprint());
             sprint.setReport(addedReport);
             sprint.setNotCountTarget(target.isNotCountTarget());
             sprint.setShowUAT(target.isShowUAT());
             sprint.setType(target.getType());
+            sprint.setStartDate(target.getStartDate());
+            sprint.setEndDate(target.getEndDate());
+            sprint.setState(target.getState());
 
             List<SprintDeveloper> developers = sprintDeveloperRepository.findBySprintId(target.getId());
 

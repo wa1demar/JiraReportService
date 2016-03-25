@@ -36,7 +36,7 @@ jiraPluginApp.factory('AuthenticationFactory', ['$window', '$http', 'CONFIG', '$
 
                     delete $window.localStorage.token;
                     delete $window.localStorage.user;
-                    delete $window.localStorage.userRole;
+                    delete $window.localStorage.roles;
 
                     $location.path("/login");
                 }
@@ -84,11 +84,11 @@ jiraPluginApp.factory('UserAuthFactory', ['$window', '$location', '$http', 'Auth
 
                 AuthenticationFactory.isLogged = false;
                 delete AuthenticationFactory.user;
-                delete AuthenticationFactory.userRole;
+                delete AuthenticationFactory.roles;
 
                 delete $window.localStorage.token;
                 delete $window.localStorage.user;
-                delete $window.localStorage.userRole;
+                delete $window.localStorage.roles;
 
                 $location.path("/login");
             }

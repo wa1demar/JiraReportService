@@ -73,7 +73,6 @@ jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
 });
 
 jiraPluginApp.run(function($rootScope, $window, $location, AuthenticationFactory, CONFIG) {
-
     $rootScope.CONFIG = CONFIG;
 
     // when the page refreshes, check if the user is already logged in
@@ -90,15 +89,15 @@ jiraPluginApp.run(function($rootScope, $window, $location, AuthenticationFactory
             if (!AuthenticationFactory.user) {
                 AuthenticationFactory.user = $window.localStorage.user;
             }
-            if (!AuthenticationFactory.userRole) {
-                AuthenticationFactory.userRole = $window.localStorage.userRole;
+            if (!AuthenticationFactory.roles && $window.localStorage.roles) {
+                AuthenticationFactory.roles = JSON.parse($window.localStorage.roles);
             }
         }
     });
 
     $rootScope.$on('$routeChangeSuccess', function(event, nextRoute, currentRoute) {
         $rootScope.showMenu = AuthenticationFactory.isLogged;
-        $rootScope.role = AuthenticationFactory.userRole;
+        $rootScope.roles = AuthenticationFactory.roles;
         // if the user is already logged in, take him to the home page
         if (AuthenticationFactory.isLogged === true && $location.path() === '/login') {
             $location.path('/');
