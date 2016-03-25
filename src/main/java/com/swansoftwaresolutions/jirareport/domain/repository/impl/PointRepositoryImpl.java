@@ -103,8 +103,14 @@ public class PointRepositoryImpl implements PointRepository {
     }
 
     @Override
-    public List<JiraPoint> findByBoardId(Long boardId) throws NoSuchEntityException {
+    public List<JiraPoint> findByBoardId(long boardId) throws NoSuchEntityException {
         return (List<JiraPoint>) sessionFactory.getCurrentSession()
                 .createCriteria(JiraPoint.class).add(Restrictions.eq("boardId", boardId)).list();
+    }
+
+    @Override
+    public List<JiraPoint> findBySprintId(long sprintId) throws NoSuchEntityException {
+        return (List<JiraPoint>) sessionFactory.getCurrentSession()
+                .createCriteria(JiraPoint.class).add(Restrictions.eq("sprintId", sprintId)).list();
     }
 }

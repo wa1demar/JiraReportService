@@ -26,5 +26,7 @@ public interface PointRepository {
 
     JiraPoint findByLoginAndSprintId(String login, Long sprint) throws NoSuchEntityException;
 
-    List<JiraPoint> findByBoardId(Long boardId) throws NoSuchEntityException;
+    List<JiraPoint> findByBoardId(long boardId) throws NoSuchEntityException;
+
+    List<JiraPoint> findBySprintId(long sprintId) throws NoSuchEntityException;
 }
