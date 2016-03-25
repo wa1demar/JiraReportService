@@ -25,7 +25,7 @@ public class TaskRepositoryImpl implements TaskRepository {
     @Override
     @SuppressWarnings("unchecked")
     public List<Task> findAll() {
-        Query query = sessionFactory.getCurrentSession().createQuery("FROM Task s");
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM Task s ORDER BY s.order ASC");
         return query.list();
     }
 

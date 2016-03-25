@@ -12,7 +12,8 @@ public class ImportedJiraSprintDto {
     private Date startDate;
     private Date endDate;
     private Date completeDate;
-    private Long originBoardId;
+    private long originBoardId;
+    private long sprintId;
 
     public int getId() {
         return id;
@@ -62,13 +63,22 @@ public class ImportedJiraSprintDto {
         this.completeDate = completeDate;
     }
 
-    public Long getOriginBoardId() {
+    public long getOriginBoardId() {
         return originBoardId;
     }
 
-    public void setOriginBoardId(Long originBoardId) {
+    public void setOriginBoardId(long originBoardId) {
         this.originBoardId = originBoardId;
     }
+
+    public long getSprintId() {
+        return sprintId;
+    }
+
+    public void setSprintId(long sprintId) {
+        this.sprintId = sprintId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -77,20 +87,20 @@ public class ImportedJiraSprintDto {
 
         ImportedJiraSprintDto that = (ImportedJiraSprintDto) o;
 
+        if (originBoardId != that.originBoardId) return false;
         if (!name.equals(that.name)) return false;
-        if (!originBoardId.equals(that.originBoardId)) return false;
         if (!startDate.equals(that.startDate)) return false;
-        if (state != null ? !state.equals(that.state) : that.state != null) return false;
+        if (!state.equals(that.state)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
+        int result = state.hashCode();
+        result = 31 * result + name.hashCode();
         result = 31 * result + startDate.hashCode();
-        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
-        result = 31 * result + originBoardId.hashCode();
+        result = 31 * result + (int) (originBoardId ^ (originBoardId >>> 32));
         return result;
     }
 }

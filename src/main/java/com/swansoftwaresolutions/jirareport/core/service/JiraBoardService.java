@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.service;
 
+import com.swansoftwaresolutions.jirareport.core.dto.JiraBoardDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraBoardInfoDto;
@@ -21,5 +22,7 @@ public interface JiraBoardService {
     List<JiraBoardInfoDto> findAllBoardForInfo() throws NoSuchEntityException;
 
     JiraBoardsDto retrieveAllBoards()throws NoSuchEntityException;
+
+    JiraBoardDto findById(long id) throws NoSuchEntityException;
 
 }

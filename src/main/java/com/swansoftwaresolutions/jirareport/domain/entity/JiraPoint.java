@@ -18,7 +18,7 @@ public class JiraPoint {
     private String userLogin;
 
     @Column(name = "sprint_id")
-    private Long sprintId;
+    private long sprintId;
 
     @Column(name = "report_id")
     private int reportId;
@@ -30,19 +30,22 @@ public class JiraPoint {
     private int issueCount;
 
     @Column(name = "issue_hourse")
-    private Long issueHourse;
+    private long issueHourse;
 
     @Column(name = "uat_count")
     private int bugUATCount;
 
     @Column(name = "uat_hours")
-    private Long bugUATHours;
+    private long bugUATHours;
 
     @Column(name = "qat_count")
     private int bugQATCount;
 
     @Column(name = "qat_hours")
-    private Long bugQATHourse;
+    private long bugQATHourse;
+
+    @Column(name = "board_id")
+    private long boardId;
 
     public Long getId() {
         return id;
@@ -60,11 +63,11 @@ public class JiraPoint {
         this.userLogin = userLogin;
     }
 
-    public Long getSprintId() {
+    public long getSprintId() {
         return sprintId;
     }
 
-    public void setSprintId(Long sprintId) {
+    public void setSprintId(long sprintId) {
         this.sprintId = sprintId;
     }
 
@@ -92,11 +95,11 @@ public class JiraPoint {
         this.issueCount = issueCount;
     }
 
-    public Long getIssueHourse() {
+    public long getIssueHourse() {
         return issueHourse;
     }
 
-    public void setIssueHourse(Long issueHourse) {
+    public void setIssueHourse(long issueHourse) {
         this.issueHourse = issueHourse;
     }
 
@@ -108,11 +111,11 @@ public class JiraPoint {
         this.bugUATCount = bugUATCount;
     }
 
-    public Long getBugUATHours() {
+    public long getBugUATHours() {
         return bugUATHours;
     }
 
-    public void setBugUATHours(Long bugUATHours) {
+    public void setBugUATHours(long bugUATHours) {
         this.bugUATHours = bugUATHours;
     }
 
@@ -124,11 +127,19 @@ public class JiraPoint {
         this.bugQATCount = bugQATCount;
     }
 
-    public Long getBugQATHourse() {
+    public long getBugQATHourse() {
         return bugQATHourse;
     }
 
-    public void setBugQATHourse(Long bugQATHourse) {
+    public void setBugQATHourse(long bugQATHourse) {
         this.bugQATHourse = bugQATHourse;
+    }
+
+    public long getBoardId() {
+        return boardId;
+    }
+
+    public void setBoardId(long boardId) {
+        this.boardId = boardId;
     }
 }

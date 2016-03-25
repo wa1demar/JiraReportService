@@ -11,7 +11,7 @@ public class JiraIssueDto {
     private int issueTypeId;
     private String issueTypeName;
     private boolean issueTypeSubTask;
-    private Long timeSpent;
+    private long timeSpent;
     private int resolutionId;
     private String resolutionName;
     private String created;
@@ -26,6 +26,7 @@ public class JiraIssueDto {
     private String statusName;
     private String dueDate;
     private float points;
+    private long boardId;
 
     public int getId() {
         return id;
@@ -83,11 +84,11 @@ public class JiraIssueDto {
         this.issueTypeSubTask = issueTypeSubTask;
     }
 
-    public Long getTimeSpent() {
+    public long getTimeSpent() {
         return timeSpent;
     }
 
-    public void setTimeSpent(Long timeSpent) {
+    public void setTimeSpent(long timeSpent) {
         this.timeSpent = timeSpent;
     }
 
@@ -201,5 +202,13 @@ public class JiraIssueDto {
 
     public void setPoints(float points) {
         this.points = points;
+    }
+
+    public long getBoardId() {
+        return boardId;
+    }
+
+    public void setBoardId(long boardId) {
+        this.boardId = boardId;
     }
 }

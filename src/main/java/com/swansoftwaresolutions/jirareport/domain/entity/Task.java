@@ -27,6 +27,9 @@ public class Task {
     @Column(name = "last_update")
     private Date lastUpdate;
 
+    @Column(name = "order")
+    private int order;
+
     public String getName() {
         return name;
     }
@@ -57,5 +60,13 @@ public class Task {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
 }

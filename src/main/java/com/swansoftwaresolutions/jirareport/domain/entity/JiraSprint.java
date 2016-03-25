@@ -35,6 +35,9 @@ public class JiraSprint implements Serializable {
     @Column(name = "complete_date")
     private Date completeDate;
 
+    @Column(name = "sprint_id")
+    private Long sprintId;
+
     public Long getId() {
         return id;
     }
@@ -90,6 +93,14 @@ public class JiraSprint implements Serializable {
 
     public void setBoardId(Long boardId) {
         this.boardId = boardId;
+    }
+
+    public Long getSprintId() {
+        return sprintId;
+    }
+
+    public void setSprintId(Long sprintId) {
+        this.sprintId = sprintId;
     }
 
     @Override
