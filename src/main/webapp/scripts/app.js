@@ -68,6 +68,12 @@ jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
             access: {
                 requiredLogin: true
             }
+        }).when('/task', {
+            templateUrl: 'views/task/main.html',
+            controller: 'TaskCtrl',
+            access: {
+                requiredLogin: true
+            }
         }).otherwise({
             redirectTo: '/login'
         });

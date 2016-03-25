@@ -1,0 +1,44 @@
+<table ng-show="data.length > 0" class="aui table">
+    <thead>
+        <tr>
+            <th style="width: 250px;">
+                <span ng-click="order('name')" class="cursor-pointer">Name</span>
+                <span ng-show="predicate === 'name'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+            </th>
+            <th>
+                <span ng-click="order('label')" class="cursor-pointer">Label</span>
+                <span ng-show="predicate === 'label'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+            </th>
+            <th style="width: 100px;">
+                <span ng-click="order('status')" class="cursor-pointer">Status</span>
+                <span ng-show="predicate === 'status'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+            </th>
+            <th style="width: 250px;">
+                <span ng-click="order('lastUpdate')" class="cursor-pointer">Last update</span>
+                <span ng-show="predicate === 'lastUpdate'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+            </th>
+            <th style="width: 100px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="value in filtered = (data | filter:query | orderBy:predicate:reverse)">
+            <td>{{value.name}}</td>
+            <td>{{value.label}}</td>
+            <td>
+                {{statusStyle = value.status === "DONE" ? "aui-lozenge-success" : value.status === "IN_PROGRESS" ? "aui-lozenge-current" : "aui-lozenge-complete"; ""}}
+                <span class="aui-lozenge aui-lozenge-subtle {{statusStyle}}">{{value.status}}</span>
+            </td>
+            <td>
+               <span nf-if="value.status === 'DONE'">{{value.lastUpdate | date:'MM/dd/yyyy HH:mm'}}</span>
+               <span nf-if="value.status !== 'DONE'"> - </span>
+            </td>
+            <td>
+                <span ng-if="value.status !== 'IN_PROGRESS'" class="aui-icon aui-icon-small aui-iconfont-arrows-right task-start" ng-click="startTask(value)" title="Start task">Start task</span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="col-md-12 text-center" ng-if="data.length === 0">
+    <strong>Not found!</strong>
+</div>
