@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
+import com.swansoftwaresolutions.jirareport.core.dto.groups.JiraGroupsDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSprintDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraSprintMapper;
 import com.swansoftwaresolutions.jirareport.core.service.JiraBoardService;
@@ -7,8 +8,9 @@ import com.swansoftwaresolutions.jirareport.core.service.JiraSprintsService;
 import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
+import com.swansoftwaresolutions.jirareport.rest.client.AbstractRestClient;
+import com.swansoftwaresolutions.jirareport.rest.client.RestClient;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.*;
-import com.swansoftwaresolutions.jirareport.sheduller.job.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -23,10 +25,10 @@ import java.util.logging.Logger;
  * @author Vitaliy Holovko
  */
 
-@Component("jiraBoardsRestClient")
-public class JiraBoardsRestClient extends RestClientBase implements RestClient {
+@Component
+public class BoardClient extends AbstractRestClient implements RestClient {
 
-    static Logger log = Logger.getLogger(JiraBoardsRestClient.class.getName());
+    static Logger log = Logger.getLogger(RestClient.class.getName());
 
     final String URL_SPRINT = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board/{boardId}/sprint";
 
@@ -46,8 +48,13 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
 
     @Override
     public void loadData() {
-        loadDataForJiraBoards();
+//        loadDataForJiraBoards();
         loadDataForJiraSprints();
+    }
+
+    @Override
+    public JiraGroupsDto loadAllGroups() {
+        return null;
     }
 
     private void loadDataForJiraSprints() {
@@ -72,11 +79,11 @@ public class JiraBoardsRestClient extends RestClientBase implements RestClient {
             ImportedJiraSprintDto importedJiraSprintDto = new ImportedJiraSprintDto();
             importedJiraSprintDto.setName(agileSprintDto.name);
             importedJiraSprintDto.setState(agileSprintDto.state);
-            importedJiraSprintDto.setCompleteDate(agileSprintDto.completedDate);
-            importedJiraSprintDto.setEndDate(agileSprintDto.endDate);
+            importedJiraSprintDto.setCompleteDate(agileSprintDto.completedDate!=null ? agileSprintDto.completedDate : null);
             importedJiraSprintDto.setEndDate(agileSprintDto.endDate);
             importedJiraSprintDto.setStartDate(agileSprintDto.startDate);
             importedJiraSprintDto.setOriginBoardId(boardId);
+            importedJiraSprintDto.setSprintId(agileSprintDto.id);
 
             list.add(importedJiraSprintDto);
         }

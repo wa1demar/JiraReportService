@@ -1,10 +1,14 @@
 package com.swansoftwaresolutions.jirareport.core.helper;
 
+import com.swansoftwaresolutions.jirareport.core.dto.SprintIssue.IssuesByDayDto;
+import com.swansoftwaresolutions.jirareport.core.dto.SprintIssueDto;
+import com.swansoftwaresolutions.jirareport.core.dto.dashboard.Chart;
+import com.swansoftwaresolutions.jirareport.core.dto.dashboard.SprintProjectReportDto;
+import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDeveloperDto;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * @author Vitaliy Holovko
@@ -80,5 +84,99 @@ public class HelperMethods {
             return target;
         }
         return 0;
+    }
+
+    private int checkVelosity(List<SprintDeveloperDto> sprintDevList) {
+        int velocity = 0;
+        for (SprintDeveloperDto dev : sprintDevList) {
+            velocity = +dev.getEngineerLevel().intValue();
+        }
+        return velocity;
+    }
+
+    public Chart genersteReportChart(List<SprintProjectReportDto> sprints, float targetPoints) {
+        Chart chart = new Chart();
+
+        String date = "0,";
+
+        int[] actual = new int[sprints.size()+1];
+        double[] target = new double[sprints.size()+1];
+
+        List<Integer> list = new ArrayList<>();
+        list.add((int) targetPoints);
+
+        actual[0] = (int) targetPoints;
+        target[0] = (int) targetPoints;
+
+        int i = 1;
+        int j = 1;
+        for (SprintProjectReportDto sprint : sprints) {
+            if (!sprint.isNotCountTarget() && (sprint.getState().equals("Closed") || sprint.getState().equals("closed"))) {
+                actual[j] = actual[j - 1] - (int) sprint.getActualPoints();
+                list.add(actual[j - 1] - (int) sprint.getActualPoints());
+                j++;
+            }
+            target[i] = (targetPoints - targetPoints / (sprints.size()) * i);
+            date = date+i+",";
+            i++;
+        }
+        String[] dateArray = date.split(",");
+
+        chart.setLabel(dateArray);
+        int[] array = new int[list.size()];
+        for (int k = 0; k < list.size(); k++) array[k] = list.get(k);
+
+        chart.setActual(array);
+        chart.setTarget(target);
+
+        return chart;
+    }
+
+    public Chart getChatData(List<IssuesByDayDto> issuesByDayList, float targetPoint) {
+        Chart chart = new Chart();
+
+        HelperMethods helperMethods = new HelperMethods();
+
+        String date = "0,";
+        for (IssuesByDayDto issuesByDayDto : issuesByDayList) {
+            date += issuesByDayDto.getDate() + ",";
+        }
+
+        String[] dateArray = date.split(",");
+        chart.setLabel(dateArray);
+        int[] actual = new int[dateArray.length];
+        double[] target = new double[dateArray.length];
+
+        actual[0] = (int) targetPoint;
+        target[0] = (int) targetPoint;
+
+        List<Integer> ii = new ArrayList<>();
+        ii.add(actual[0]);
+
+
+        for (int i = 1; i < dateArray.length; i++) {
+            if (helperMethods.isCurrentDay(dateArray[i])) {
+                for (IssuesByDayDto issuesDto : issuesByDayList) {
+                    if (issuesDto.getDate().equals(dateArray[i])) {
+                        for (SprintIssueDto sprintIssueDto : issuesDto.getIssues()) {
+                            actual[i] = actual[i - 1] - sprintIssueDto.getPoint();
+                            if (sprintIssueDto.getPoint()!= 0) {
+                                ii.add(actual[i - 1] - sprintIssueDto.getPoint());
+                            }
+                        }
+                    }
+                }
+            }
+
+            target[i] = (targetPoint-targetPoint/(dateArray.length-1)*i);
+        }
+
+        int[] array = new int[ii.size()];
+        for (int i = 0; i < ii.size(); i++) array[i] = ii.get(i);
+
+        chart.setActual(array);
+        chart.setTarget(target);
+
+        return chart;
     }
 }

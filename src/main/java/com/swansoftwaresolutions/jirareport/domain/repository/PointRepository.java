@@ -25,4 +25,8 @@ public interface PointRepository {
     JiraPoint delete(Long pointId) throws NoSuchEntityException;
 
     JiraPoint findByLoginAndSprintId(String login, Long sprint) throws NoSuchEntityException;
+
+    List<JiraPoint> findByBoardId(long boardId) throws NoSuchEntityException;
+
+    List<JiraPoint> findBySprintId(long sprintId) throws NoSuchEntityException;
 }

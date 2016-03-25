@@ -27,4 +27,6 @@ public interface JiraSprintsService {
 
     JiraSprintsDto retrieveByBoardId(long board_id);
 
+    JiraSprintDto findById(long id);
+
 }

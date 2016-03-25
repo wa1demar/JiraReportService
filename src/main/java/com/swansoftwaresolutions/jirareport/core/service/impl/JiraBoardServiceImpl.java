@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
+import com.swansoftwaresolutions.jirareport.core.dto.JiraBoardDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraBoardMapper;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraBoardRepository;
@@ -50,5 +51,10 @@ public class JiraBoardServiceImpl implements JiraBoardService {
         List<JiraBoard> boards = jiraBoardRepository.findAll();
         JiraBoardsDto boardsDto = new JiraBoardsDto(jiraBoardMapper.toDtos(boards));
         return boardsDto;
+    }
+
+    @Override
+    public JiraBoardDto findById(long id) throws NoSuchEntityException {
+        return jiraBoardMapper.toDto(jiraBoardRepository.findById(id));
     }
 }

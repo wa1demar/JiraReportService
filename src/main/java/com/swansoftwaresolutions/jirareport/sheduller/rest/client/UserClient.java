@@ -1,10 +1,12 @@
 package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
+import com.swansoftwaresolutions.jirareport.core.dto.groups.JiraGroupsDto;
 import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserAutoDto;
+import com.swansoftwaresolutions.jirareport.rest.client.AbstractRestClient;
+import com.swansoftwaresolutions.jirareport.rest.client.RestClient;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.JiraUserSchedulerDto;
-import com.swansoftwaresolutions.jirareport.sheduller.job.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -20,10 +22,10 @@ import java.util.logging.Logger;
  * @author Vitaliy Holovko
  */
 
-@Component("jiraUserRestClient")
-public class JiraUsersRestClient extends RestClientBase implements RestClient {
+@Component
+public class UserClient extends AbstractRestClient implements RestClient {
 
-    static Logger log = Logger.getLogger(JiraUsersRestClient.class.getName());
+    static Logger log = Logger.getLogger(UserClient.class.getName());
 
     @Autowired
     JiraUserService jiraUserService;
@@ -67,4 +69,10 @@ public class JiraUsersRestClient extends RestClientBase implements RestClient {
             log.warning("Can't to add JiraUsers");
         }
     }
+
+    @Override
+    public JiraGroupsDto loadAllGroups() {
+        return null;
+    }
+
 }

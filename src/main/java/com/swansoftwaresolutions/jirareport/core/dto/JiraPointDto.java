@@ -6,15 +6,16 @@ package com.swansoftwaresolutions.jirareport.core.dto;
 public class JiraPointDto {
     private int id;
     private String userLogin;
-    private Long sprintId;
+    private long sprintId;
     private int reportId;
     private float points;
     private int issueCount;
-    private Long issueHourse;
+    private long issueHourse;
     private int bugUATCount;
-    private Long bugUATHours;
+    private long bugUATHours;
     private int bugQATCount;
-    private Long bugQATHourse;
+    private long bugQATHourse;
+    private long boardId;
 
     public int getId() {
         return id;
@@ -32,11 +33,11 @@ public class JiraPointDto {
         this.userLogin = userLogin;
     }
 
-    public Long getSprintId() {
+    public long getSprintId() {
         return sprintId;
     }
 
-    public void setSprintId(Long sprintId) {
+    public void setSprintId(long sprintId) {
         this.sprintId = sprintId;
     }
 
@@ -64,11 +65,11 @@ public class JiraPointDto {
         this.issueCount = issueCount;
     }
 
-    public Long getIssueHourse() {
+    public long getIssueHourse() {
         return issueHourse;
     }
 
-    public void setIssueHourse(Long issueHourse) {
+    public void setIssueHourse(long issueHourse) {
         this.issueHourse = issueHourse;
     }
 
@@ -80,11 +81,11 @@ public class JiraPointDto {
         this.bugUATCount = bugUATCount;
     }
 
-    public Long getBugUATHours() {
+    public long getBugUATHours() {
         return bugUATHours;
     }
 
-    public void setBugUATHours(Long bugUATHours) {
+    public void setBugUATHours(long bugUATHours) {
         this.bugUATHours = bugUATHours;
     }
 
@@ -96,11 +97,19 @@ public class JiraPointDto {
         this.bugQATCount = bugQATCount;
     }
 
-    public Long getBugQATHourse() {
+    public long getBugQATHourse() {
         return bugQATHourse;
     }
 
-    public void setBugQATHourse(Long bugQATHourse) {
+    public void setBugQATHourse(long bugQATHourse) {
         this.bugQATHourse = bugQATHourse;
+    }
+
+    public long getBoardId() {
+        return boardId;
+    }
+
+    public void setBoardId(long boardId) {
+        this.boardId = boardId;
     }
 }

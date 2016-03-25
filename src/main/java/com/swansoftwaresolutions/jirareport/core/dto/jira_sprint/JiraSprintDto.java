@@ -13,6 +13,8 @@ public class JiraSprintDto {
     private Date startDate;
     private Date endDate;
     private Date completeDate;
+    private long sprintId;
+    
 
     public Long getId() {
         return id;
@@ -62,4 +64,11 @@ public class JiraSprintDto {
         this.completeDate = completeDate;
     }
 
+    public long getSprintId() {
+        return sprintId;
+    }
+
+    public void setSprintId(long sprintId) {
+        this.sprintId = sprintId;
+    }
 }

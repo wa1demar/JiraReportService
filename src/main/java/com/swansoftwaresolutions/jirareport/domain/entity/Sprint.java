@@ -48,7 +48,7 @@ public class Sprint {
     @JoinColumn(name = "report_id", nullable = false)
     private Report report = new Report();
 
-    @OneToMany(cascade={CascadeType.ALL}, mappedBy="sprint", orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade={CascadeType.ALL}, mappedBy="sprint", fetch = FetchType.EAGER)
     private List<SprintDeveloper> developers = new ArrayList<>();
 
     public Long getId() {

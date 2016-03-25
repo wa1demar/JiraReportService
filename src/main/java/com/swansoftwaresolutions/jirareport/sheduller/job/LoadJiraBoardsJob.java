@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.sheduller.job;
 
+import com.swansoftwaresolutions.jirareport.rest.client.RestClient;
 import org.joda.time.LocalTime;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -15,7 +16,7 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 public class LoadJiraBoardsJob implements Job {
 
     @Autowired
-    RestClient jiraBoardsRestClient;
+    RestClient jiraBoardsRestDao;
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
@@ -24,6 +25,6 @@ public class LoadJiraBoardsJob implements Job {
         System.out.println("JIRA BOARDS JOB - " + localTime.toString());
 
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-        jiraBoardsRestClient.loadData();
+        jiraBoardsRestDao.loadData();
     }
 }
