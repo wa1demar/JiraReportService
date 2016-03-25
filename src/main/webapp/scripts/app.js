@@ -13,7 +13,8 @@ var jiraPluginApp = angular.module('jiraPluginApp', [
     'ngMessages',
     'chart.js',
     'ui-notification',
-    'nl2br'
+    'nl2br',
+    'angularUtils.directives.dirPagination'
 ]);
 
 jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {

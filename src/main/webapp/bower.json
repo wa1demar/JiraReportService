@@ -31,9 +31,9 @@
     "angular-chart.js": "^0.9.0",
     "underscore": "^1.8.3",
     "angular-ui-notification": "^0.1.0",
-    "angular-nl2br": "^1.0.3"
+    "angular-nl2br": "^1.0.3",
+    "angularUtils-pagination": "angular-utils-pagination#^0.11.0"
   },
-
   "resolutions": {
     "angular": "1.4.x"
   }
