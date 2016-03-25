@@ -13,7 +13,8 @@ var jiraPluginApp = angular.module('jiraPluginApp', [
     'ngMessages',
     'chart.js',
     'ui-notification',
-    'nl2br'
+    'nl2br',
+    'angularUtils.directives.dirPagination'
 ]);
 
 jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
@@ -64,6 +65,12 @@ jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
         }).when('/system_user', {
             templateUrl: 'views/system_user/main.html',
             controller: 'SystemUserCtrl',
+            access: {
+                requiredLogin: true
+            }
+        }).when('/task', {
+            templateUrl: 'views/task/main.html',
+            controller: 'TaskCtrl',
             access: {
                 requiredLogin: true
             }

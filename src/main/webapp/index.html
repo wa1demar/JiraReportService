@@ -39,6 +39,7 @@
                     <li ng-class="{active:isActive('/')}"><a ng-href="#/">Portfolio</a></li>
                     <li ng-class="{active:isActive('/dashboards')}"><a href="#/dashboards">Dashboard</a></li>
                     <li ng-class="{active:isActive('/system_user')}" ng-if="roles | hasRole:'ROLE_ADMIN'"><a href="#/system_user">System users</a></li>
+                    <li ng-class="{active:isActive('/task')}" ng-if="roles | hasRole:'ROLE_ADMIN'"><a href="#/task">System tasks</a></li>
                     <li ng-if="roles | hasRole:'ROLE_ADMIN'"><a href="javascript:" ng-click="processConfig()">Settings</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right" ng-show="showMenu">
@@ -79,6 +80,7 @@
     <script src="scripts/vendors/underscore/underscore-min.js"></script>
     <script src="scripts/vendors/angular-ui-notification/dist/angular-ui-notification.min.js"></script>
     <script src="scripts/vendors/angular-nl2br/angular-nl2br.min.js"></script>
+    <script src="scripts/vendors/angularUtils-pagination/dirPagination.js"></script>
 
     <script src="scripts/app.js"></script>
     <script src="scripts/config.js"></script>
@@ -96,6 +98,7 @@
     <script src="scripts/factories/portfolio.js"></script>
     <script src="scripts/factories/systemUser.js"></script>
     <script src="scripts/factories/profile.js"></script>
+    <script src="scripts/factories/task.js"></script>
 
     <script src="scripts/filters/filters.js"></script>
     <script src="scripts/directives/directives.js"></script>
@@ -110,6 +113,7 @@
     <script src="scripts/controllers/configure.js"></script>
     <script src="scripts/controllers/systemUser.js"></script>
     <script src="scripts/controllers/profile.js"></script>
+    <script src="scripts/controllers/task.js"></script>
 
     <script src="scripts/auth/auth.factory.js"></script>
     <script src="scripts/auth/auth.controller.js"></script>

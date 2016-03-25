@@ -1,0 +1,27 @@
+<header id="ghx-header" class="aui-page-header">
+    <title>System users</title>
+    <div class="aui-page-header-inner">
+        <div class="aui-page-header-main">
+            <h2>Tasks</h2>
+        </div>
+    </div>
+</header>
+<div id="ghx-content-main" class="ghx-content-main">
+    <div class="aui-page-panel" id="manage-boards-page">
+        <div class="aui-page-panel-inner">
+            <!-- .aui-page-panel-nav -->
+            <section class="aui-page-panel-content">
+                <div class="ghx-boards-list">
+                    <form class="aui" style="margin: 20px 0;">
+                        <input ng-model="query" id="search-by-name" type="text" placeholder="Find a task" class="text" style="width: 250px;"/>
+                    </form>
+                    <div id="report-box">
+                        <div ng-show="loaderShow" class="text-center"><span class="aui-icon aui-icon-wait">Loading...</span></div>
+                        <div ng-show="!loaderShow" ng-include="'views/task/all.html'"></div>
+                    </div>
+                </div>
+            </section>
+            <!-- .aui-page-panel-content -->
+        </div>
+    </div>
+</div>

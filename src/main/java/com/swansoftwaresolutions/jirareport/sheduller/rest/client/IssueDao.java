@@ -2,12 +2,15 @@ package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
 import com.swansoftwaresolutions.jirareport.core.dto.JiraPointDto;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.groups.JiraGroupsDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSprintDto;
 import com.swansoftwaresolutions.jirareport.core.helper.HelperMethods;
 import com.swansoftwaresolutions.jirareport.core.service.*;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
+import com.swansoftwaresolutions.jirareport.rest.client.AbstractRestClient;
+import com.swansoftwaresolutions.jirareport.rest.client.RestClient;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.*;
-import com.swansoftwaresolutions.jirareport.sheduller.job.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -22,10 +25,10 @@ import java.util.logging.Logger;
  * @author Vitaliy Holovko
  */
 
-@Component("issueRestClient")
-public class IssueRestClient extends RestClientBase implements RestClient {
+@Component
+public class IssueDao extends AbstractRestClient implements RestClient {
 
-    static Logger log = Logger.getLogger(IssueRestClient.class.getName());
+    static Logger log = Logger.getLogger(IssueDao.class.getName());
 
     final String URL_SPRINT = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board/{boardId}/sprint";
     final String URL_ISSUES_BY_SPRINT = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/sprint/{sprintId}/issue?maxResults=500";
@@ -56,6 +59,11 @@ public class IssueRestClient extends RestClientBase implements RestClient {
         } catch (NoSuchEntityException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public JiraGroupsDto loadAllGroups() {
+        return null;
     }
 
     private void getAllIsuues(List<ImportedJiraSprintDto> agileSprints) throws NoSuchEntityException {

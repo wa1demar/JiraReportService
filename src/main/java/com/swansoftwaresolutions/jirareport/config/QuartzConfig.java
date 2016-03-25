@@ -1,10 +1,8 @@
 package com.swansoftwaresolutions.jirareport.config;
 
-import com.swansoftwaresolutions.jirareport.sheduller.rest.client.JiraBoardsRestClient;
-import com.swansoftwaresolutions.jirareport.sheduller.rest.client.IssueRestClient;
-import com.swansoftwaresolutions.jirareport.sheduller.rest.client.JiraUsersRestClient;
+import com.swansoftwaresolutions.jirareport.rest.client.RestClient;
+import com.swansoftwaresolutions.jirareport.sheduller.rest.client.*;
 import com.swansoftwaresolutions.jirareport.sheduller.job.*;
-import com.swansoftwaresolutions.jirareport.sheduller.rest.client.ProjectsRestClient;
 import org.quartz.Trigger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -116,21 +114,16 @@ public class QuartzConfig {
 
     @Bean
     RestClient projectRestClient() {
-        return new ProjectsRestClient();
+        return new ProjectDao();
     }
 
     @Bean
     RestClient jiraUserRestClient() {
-        return new JiraUsersRestClient();
-    }
-
-    @Bean
-    RestClient jiraBoardRestClient() {
-        return new JiraBoardsRestClient();
+        return new UserClient();
     }
 
     @Bean
     RestClient issueRestClient() {
-        return new IssueRestClient();
+        return new IssueDao();
     }
 }

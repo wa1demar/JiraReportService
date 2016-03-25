@@ -1,9 +1,11 @@
 package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
+import com.swansoftwaresolutions.jirareport.core.dto.groups.JiraGroupsDto;
 import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
 import com.swansoftwaresolutions.jirareport.domain.entity.Project;
+import com.swansoftwaresolutions.jirareport.rest.client.AbstractRestClient;
+import com.swansoftwaresolutions.jirareport.rest.client.RestClient;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.ProjectDto;
-import com.swansoftwaresolutions.jirareport.sheduller.job.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -19,10 +21,10 @@ import java.util.logging.Logger;
  * @author Vitaliy Holovko
  */
 
-@Component("projectsRestClient")
-public class ProjectsRestClient extends RestClientBase implements RestClient {
+@Component
+public class ProjectDao extends AbstractRestClient implements RestClient {
 
-    static Logger log = Logger.getLogger(ProjectsRestClient.class.getName());
+    static Logger log = Logger.getLogger(ProjectDao.class.getName());
 
     @Autowired
     ProjectService projectService;
@@ -37,6 +39,12 @@ public class ProjectsRestClient extends RestClientBase implements RestClient {
 
         insertDataToDataBase(projectDtos);
     }
+
+    @Override
+    public JiraGroupsDto loadAllGroups() {
+        return null;
+    }
+
 
     private void insertDataToDataBase(ProjectDto[] projectDtos) {
         List<Project> projects = fromDtos(projectDtos);
