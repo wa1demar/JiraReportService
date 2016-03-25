@@ -15,7 +15,7 @@ public class SprintDeveloper implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "jira_user_login")
     private JiraUser jiraUser;
 
