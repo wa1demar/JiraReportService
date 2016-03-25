@@ -1,32 +1,87 @@
-package com.swansoftwaresolutions.jirareport.sheduller.dto;
+package com.swansoftwaresolutions.jirareport.domain.entity;
+
+import javax.persistence.*;
 
 /**
  * @author Vitaliy Holovko
  */
-public class JiraIssueDto {
+
+@Entity
+@Table(name = "jira_issues")
+public class JiraIssue {
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
+
+    @Column(name = "key")
     private String key;
+
+    @Column(name = "project_jira_id")
     private int projectId;
+
+    @Column(name = "project_jira_key")
     private String projectKey;
+
+    @Column(name = "issue_type_id")
     private int issueTypeId;
+
+    @Column(name = "issue_type_name")
     private String issueTypeName;
+
+    @Column(name = "issue_type_subtask")
     private boolean issueTypeSubTask;
+
+    @Column(name = "time_spent")
     private long timeSpent;
+
+    @Column(name = "resolution_id")
     private int resolutionId;
+
+    @Column(name = "resolution_name")
     private String resolutionName;
+
+    @Column(name = "created")
     private String created;
+
+    @Column(name = "updated")
     private String updated;
+
+    @Column(name = "assigned_name")
     private String assignedName;
+
+    @Column(name = "assigned_key")
     private String assignedKey;
+
+    @Column(name = "assigned_full_name")
     private String assignedFullName;
+
+    @Column(name = "creator_name")
     private String creatorName;
+
+    @Column(name = "creator_name_key")
     private String creatorKey;
+
+    @Column(name = "creator_full_name")
     private String creatorFullName;
+
+    @Column(name = "status_id")
     private int statusId;
+
+    @Column(name = "status_name")
     private String statusName;
+
+    @Column(name = "due_date")
     private String dueDate;
+
+    @Column(name = "points")
     private float points;
+
+    @Column(name = "board_id")
     private long boardId;
+
+    @Column(name = "sprint_id")
     private long sprintId;
 
     public int getId() {
