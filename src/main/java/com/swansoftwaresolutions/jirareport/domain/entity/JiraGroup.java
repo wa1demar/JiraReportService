@@ -18,8 +18,8 @@ public class JiraGroup {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "jira_users_groups", joinColumns = {
-            @JoinColumn(name = "user_login") },
-            inverseJoinColumns = { @JoinColumn(name = "group_name") })
+            @JoinColumn(name = "group_name") },
+            inverseJoinColumns = { @JoinColumn(name = "user_login") })
     private List<JiraUser> users = new ArrayList<>();
 
 

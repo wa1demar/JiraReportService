@@ -157,15 +157,15 @@ public class IssueDao extends AbstractRestClient implements RestClient {
     private Map<String, List<JiraIssueDto>> grupByUser(List<JiraIssueDto> jiraIssueList) {
         Map<String, List<JiraIssueDto>> mapPoints = new HashMap<>();
         for (JiraIssueDto jiraIssue : jiraIssueList) {
-            if (mapPoints.containsKey(jiraIssue.getAssignetName())) {
-                List<JiraIssueDto> list = mapPoints.get(jiraIssue.getAssignetName());
+            if (mapPoints.containsKey(jiraIssue.getAssignedName())) {
+                List<JiraIssueDto> list = mapPoints.get(jiraIssue.getAssignedName());
                 list.add(jiraIssue);
-                mapPoints.put(jiraIssue.getAssignetName(), list);
+                mapPoints.put(jiraIssue.getAssignedName(), list);
             } else {
                 List<JiraIssueDto> list = new ArrayList<>();
                 list.add(jiraIssue);
 
-                mapPoints.put(jiraIssue.getAssignetName(), list);
+                mapPoints.put(jiraIssue.getAssignedName(), list);
             }
         }
 
@@ -190,9 +190,9 @@ public class IssueDao extends AbstractRestClient implements RestClient {
         }
         jiraIssueDto.setCreated(issueDto.fields.created);
         jiraIssueDto.setUpdated(issueDto.fields.updated);
-        jiraIssueDto.setAssignetKey(issueDto.fields.assignee.key);
-        jiraIssueDto.setAssignetName(issueDto.fields.assignee.name);
-        jiraIssueDto.setAssignetFullName(issueDto.fields.assignee.displayName);
+        jiraIssueDto.setAssignedKey(issueDto.fields.assignee.key);
+        jiraIssueDto.setAssignedName(issueDto.fields.assignee.name);
+        jiraIssueDto.setAssignedFullName(issueDto.fields.assignee.displayName);
         jiraIssueDto.setCreatorKey(issueDto.fields.creator.key);
         jiraIssueDto.setCreatorName(issueDto.fields.creator.name);
         jiraIssueDto.setCreatorFullName(issueDto.fields.creator.displayName);

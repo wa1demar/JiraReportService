@@ -86,11 +86,15 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
                 existed.setFullName(user.getFullName());
 
                 Set<JiraGroup> groups = new HashSet<>(existed.getGroups());
+                List<JiraUser> existedusers = group.getUsers();
+                existedusers.add(existed);
+                group.setUsers(existedusers);
                 groups.add(group);
 
                 existed.setGroups(new ArrayList<>(groups));
 
                 sessionFactory.getCurrentSession().update(existed);
+                sessionFactory.getCurrentSession().flush();
 
             }
         }

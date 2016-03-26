@@ -80,21 +80,21 @@ public class QuartzConfig {
         return jobDetailFactory;
     }
 
-    @Bean
-    CronTriggerFactoryBean loadJiraUsersTrigger() {
-        CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
-        cronTriggerFactoryBean.setJobDetail(loadJiraUsersJobDetail().getObject());
-        cronTriggerFactoryBean.setCronExpression("12 0/2 * * * ?");
-        return cronTriggerFactoryBean;
-    }
+//    @Bean
+//    CronTriggerFactoryBean loadJiraUsersTrigger() {
+//        CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
+//        cronTriggerFactoryBean.setJobDetail(loadJiraUsersJobDetail().getObject());
+//        cronTriggerFactoryBean.setCronExpression("12 0/2 * * * ?");
+//        return cronTriggerFactoryBean;
+//    }
 
-    @Bean
-    JobDetailFactoryBean loadJiraUsersJobDetail() {
-        JobDetailFactoryBean jobDetailFactory = new JobDetailFactoryBean();
-        jobDetailFactory.setJobClass(LoadUsersJob.class);
-        jobDetailFactory.setDurability(true);
-        return jobDetailFactory;
-    }
+//    @Bean
+//    JobDetailFactoryBean loadJiraUsersJobDetail() {
+//        JobDetailFactoryBean jobDetailFactory = new JobDetailFactoryBean();
+//        jobDetailFactory.setJobClass(LoadUsersJob.class);
+//        jobDetailFactory.setDurability(true);
+//        return jobDetailFactory;
+//    }
 
     @Bean
     CronTriggerFactoryBean loadJiraBoardsTrigger() {
@@ -115,11 +115,6 @@ public class QuartzConfig {
     @Bean
     RestClient projectRestClient() {
         return new ProjectDao();
-    }
-
-    @Bean
-    RestClient jiraUserRestClient() {
-        return new UserClient();
     }
 
     @Bean

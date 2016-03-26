@@ -1,8 +1,12 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.hibernate.annotations.CascadeType.*;
 
 /**
  * @author Vladimir Martynyuk
@@ -28,6 +32,7 @@ public class JiraUser {
     private List<Report> reports = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users")
+    @Cascade({SAVE_UPDATE})
     private List<JiraGroup> groups = new ArrayList<>();
 
 

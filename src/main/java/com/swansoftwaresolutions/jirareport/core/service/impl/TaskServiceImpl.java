@@ -19,6 +19,13 @@ import java.util.List;
 @Service
 public class TaskServiceImpl implements TaskService {
 
+    private static final String GROUPS_TASK = "groups";
+    private static final String USERS_TASK = "users";
+    private static final String PROJECTS_TASK = "projects";
+    private static final String BOARDS_TASK = "boards";
+    private static final String SPRINTS_TASK = "sprints";
+    private static final String ISSUES_TASK = "issues";
+
     @Autowired
     TaskRepository taskRepository;
 
@@ -43,21 +50,70 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDto start(String name) {
 
-        taskRepository.setStarted(name);
         switch (name) {
-            case "groups":
-
-                groupImporterService.importGroupsFromJira();
+            case USERS_TASK:
+                startImportUsers();
                 break;
 
-            case "users":
-
-                userImporterService.importUsersFromJira();
+            case GROUPS_TASK:
+                startImportGroups();
+                startImportUsers() ;
                 break;
+
+            case ISSUES_TASK:
+                startImportIssues();
+                break;
+
+            case SPRINTS_TASK:
+                startImportSprints();
+                startImportIssues();
+                break;
+
+            case BOARDS_TASK:
+                startImportBoards();
+                startImportSprints();
+                startImportIssues();
+                break;
+
+            case PROJECTS_TASK:
+                startImportProjects();
+                startImportBoards();
+                startImportSprints();
+                startImportIssues();
+                break;
+
         }
 
-        Task task = taskRepository.setStopped(name);
+        Task task = taskRepository.findByName(name);
 
         return taskMapper.toDto(task);
+    }
+
+    private void startImportGroups() {
+        taskRepository.setStarted(GROUPS_TASK);
+        groupImporterService.importGroupsFromJira();
+        taskRepository.setStopped(GROUPS_TASK);
+    }
+
+    private void startImportUsers() {
+        taskRepository.setStarted(USERS_TASK);
+        userImporterService.importUsersFromJira();
+        taskRepository.setStopped(USERS_TASK);
+    }
+
+    private void startImportProjects() {
+        // TODO: should be implemented
+    }
+
+    private void startImportBoards() {
+        // TODO: should be implemented
+    }
+
+    private void startImportSprints() {
+        // TODO: should be implemented
+    }
+
+    private void startImportIssues() {
+        // TODO: should be implemented
     }
 }
