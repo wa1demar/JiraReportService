@@ -1,15 +1,11 @@
 <table ng-show="data.length > 0" class="aui table">
     <thead>
         <tr>
-            <th style="width: 250px;">
-                <span ng-click="order('name')" class="cursor-pointer">Name</span>
-                <span ng-show="predicate === 'name'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
-            </th>
             <th>
                 <span ng-click="order('label')" class="cursor-pointer">Label</span>
                 <span ng-show="predicate === 'label'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
             </th>
-            <th style="width: 100px;">
+            <th style="width: 200px;">
                 <span ng-click="order('status')" class="cursor-pointer">Status</span>
                 <span ng-show="predicate === 'status'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
             </th>
@@ -22,7 +18,6 @@
     </thead>
     <tbody>
         <tr ng-repeat="value in filtered = (data | filter:query | orderBy:predicate:reverse)">
-            <td>{{value.name}}</td>
             <td>{{value.label}}</td>
             <td>
                 {{statusStyle = value.status === "DONE" ? "aui-lozenge-success" : value.status === "IN_PROGRESS" ? "aui-lozenge-current" : "aui-lozenge-complete"; ""}}

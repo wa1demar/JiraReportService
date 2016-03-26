@@ -49,7 +49,7 @@ public class BoardClient extends AbstractRestClient implements RestClient {
 
     @Override
     public void loadData() {
-//        loadDataForJiraBoards();
+        loadDataForJiraBoards();
         loadDataForJiraSprints();
     }
 
