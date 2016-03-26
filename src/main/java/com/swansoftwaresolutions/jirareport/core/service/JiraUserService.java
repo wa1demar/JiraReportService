@@ -5,6 +5,7 @@ import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEn
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUsersDto;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserAutoDto;
+import org.springframework.util.MultiValueMap;
 
 import java.util.List;
 
@@ -24,4 +25,6 @@ public interface JiraUserService {
     List<JiraUserDto> findAll();
 
     JiraUser findByLogin(String login) throws NoSuchEntityException;
+
+    JiraUsersDto retrieveFilteredUsers();
 }

@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository;
 
+import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraGroup;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -25,4 +26,6 @@ public interface JiraUserRepository {
     List<JiraUser> findByLogins(String[] admins);
 
     void saveAll(List<JiraUser> jiraUsers, JiraGroup group);
+
+    List<JiraUser> findByGroups(String[] groups);
 }

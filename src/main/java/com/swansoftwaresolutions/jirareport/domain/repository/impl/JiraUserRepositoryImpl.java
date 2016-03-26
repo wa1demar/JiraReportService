@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
+import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraGroup;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
@@ -14,10 +15,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Vladimir Martynyuk
@@ -98,5 +96,13 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
 
             }
         }
+    }
+
+    @Override
+    public List<JiraUser> findByGroups(String[] groups) {
+        Query query = sessionFactory.getCurrentSession().createQuery("SELECT u FROM JiraUser u INNER JOIN u.groups g WHERE g.name IN :groups");
+        query.setParameterList("groups", Arrays.asList(groups));
+
+        return query.list();
     }
 }
