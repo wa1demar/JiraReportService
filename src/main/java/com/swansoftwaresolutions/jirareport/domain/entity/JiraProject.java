@@ -7,7 +7,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "jira_projects")
-public class Project {
+public class JiraProject {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -60,10 +60,10 @@ public class Project {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Project project = (Project) o;
+        JiraProject jiraProject = (JiraProject) o;
 
-        if (!jiraId.equals(project.jiraId)) return false;
-        return key.equals(project.key);
+        if (!jiraId.equals(jiraProject.jiraId)) return false;
+        return key.equals(jiraProject.key);
 
     }
 

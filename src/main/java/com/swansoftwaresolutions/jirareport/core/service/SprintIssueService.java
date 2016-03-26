@@ -1,7 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.service;
 
-import com.swansoftwaresolutions.jirareport.core.dto.SprintIssue.IssuesByDayDto;
-import com.swansoftwaresolutions.jirareport.core.dto.SprintIssue.SprintIssueListDto;
+import com.swansoftwaresolutions.jirareport.core.dto.sprint_issue.IssuesByDayDto;
+import com.swansoftwaresolutions.jirareport.core.dto.sprint_issue.SprintIssueListDto;
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssueDto;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 

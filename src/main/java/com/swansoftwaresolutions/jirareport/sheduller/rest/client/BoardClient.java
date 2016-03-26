@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
 import com.swansoftwaresolutions.jirareport.core.dto.groups.JiraGroupsDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_project.ImportedProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUsersDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraSprintMapper;
@@ -61,6 +62,11 @@ public class BoardClient extends AbstractRestClient implements RestClient {
     @Override
     public ImportedJiraUsersDto loadAllUsersByGroupName(String name) {
         return null;
+    }
+
+    @Override
+    public ImportedProjectDto[] loadAllProjects() {
+        return new ImportedProjectDto[0];
     }
 
     private void loadDataForJiraSprints() {
@@ -141,7 +147,7 @@ public class BoardClient extends AbstractRestClient implements RestClient {
             jiraBoardDto.setProjectKey(jiraBoardDtos.issues[0].fields.project.getKey());
             jiraBoardDto.setProjectId(projectService.findByKey(jiraBoardDto.getProjectKey()).getJiraId());
         } else {
-            log.warning("Empty Project Key for " + jiraBoardDto.getName());
+            log.warning("Empty JiraProject Key for " + jiraBoardDto.getName());
         }
 
         return jiraBoardDto;

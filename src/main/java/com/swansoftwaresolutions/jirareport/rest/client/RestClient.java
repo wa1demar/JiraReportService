@@ -2,6 +2,7 @@ package com.swansoftwaresolutions.jirareport.rest.client;
 
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUsersDto;
 import com.swansoftwaresolutions.jirareport.core.dto.groups.JiraGroupsDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_project.ImportedProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUsersDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
@@ -17,4 +18,6 @@ public interface RestClient {
     JiraGroupsDto loadAllGroups();
 
     ImportedJiraUsersDto loadAllUsersByGroupName(String name);
+
+    ImportedProjectDto[] loadAllProjects();
 }

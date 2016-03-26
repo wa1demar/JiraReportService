@@ -7,6 +7,7 @@ import com.swansoftwaresolutions.jirareport.core.service.TaskService;
 import com.swansoftwaresolutions.jirareport.domain.entity.Task;
 import com.swansoftwaresolutions.jirareport.domain.repository.TaskRepository;
 import com.swansoftwaresolutions.jirareport.rest.service.GroupImporterService;
+import com.swansoftwaresolutions.jirareport.rest.service.ProjectImporterService;
 import com.swansoftwaresolutions.jirareport.rest.service.UserImporterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Autowired
     UserImporterService userImporterService;
+
+    @Autowired
+    ProjectImporterService projectImporterService;
 
     @Override
     public TasksDto getAll() {
@@ -102,7 +106,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     private void startImportProjects() {
-        // TODO: should be implemented
+        taskRepository.setStarted(PROJECTS_TASK);
+        projectImporterService.importProjectsFromJira();
+        taskRepository.setStopped(PROJECTS_TASK);
     }
 
     private void startImportBoards() {

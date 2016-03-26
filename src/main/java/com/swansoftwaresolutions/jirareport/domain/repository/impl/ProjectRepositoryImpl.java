@@ -1,9 +1,10 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
-import com.swansoftwaresolutions.jirareport.domain.entity.Project;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraProject;
 import com.swansoftwaresolutions.jirareport.domain.repository.ProjectRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,42 +26,59 @@ public class ProjectRepositoryImpl implements ProjectRepository {
     private SessionFactory sessionFactory;
 
     @Override
-    public Project add(Project project) {
-        sessionFactory.getCurrentSession().persist(project);
-        return project;
+    public JiraProject add(JiraProject jiraProject) {
+        sessionFactory.getCurrentSession().save(jiraProject);
+        return jiraProject;
     }
 
     @Override
-    public Project update(Project project) throws NoSuchEntityException {
-        if (findById(project.getId()) == null) {
+    public JiraProject update(JiraProject jiraProject) throws NoSuchEntityException {
+        if (findById(jiraProject.getId()) == null) {
             throw new NoSuchEntityException("Entity not found");
         }
-        return (Project) sessionFactory.getCurrentSession().merge(project);
+        return (JiraProject) sessionFactory.getCurrentSession().merge(jiraProject);
     }
 
     @Override
-    public List<Project> findAll() {
-        return sessionFactory.getCurrentSession().createCriteria(Project.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+    public void save(List<JiraProject> projects) {
+        for (JiraProject project : projects) {
+            Query query = sessionFactory.getCurrentSession().createQuery("FROM JiraProject p WHERE p.jiraId = :jiraId");
+            query.setParameter("jiraId", project.getJiraId());
+            JiraProject existedProject = (JiraProject) query.uniqueResult();
+
+            if (existedProject != null) {
+                    existedProject.setKey(project.getKey());
+                    existedProject.setName(project.getName());
+                    sessionFactory.getCurrentSession().update(existedProject);
+            } else {
+                add(project);
+            }
+        }
     }
 
     @Override
-    public Project findById(Long projectId) {
-        return (Project) sessionFactory.getCurrentSession()
-                .createCriteria(Project.class).add(Restrictions.eq("id", projectId)).uniqueResult();
+    public List<JiraProject> findAll() {
+        return sessionFactory.getCurrentSession().createCriteria(JiraProject.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
     }
 
     @Override
-    public Project findByKey(String key) throws NoSuchEntityException{
-        return (Project) sessionFactory.getCurrentSession()
-                .createCriteria(Project.class).add(Restrictions.eq("key", key)).uniqueResult();
+    public JiraProject findById(Long projectId) {
+        return (JiraProject) sessionFactory.getCurrentSession()
+                .createCriteria(JiraProject.class).add(Restrictions.eq("id", projectId)).uniqueResult();
     }
 
     @Override
-    public void delete(Project project) throws NoSuchEntityException {
-        Project deleteProject = findById(project.getId());
+    public JiraProject findByKey(String key) throws NoSuchEntityException{
+        return (JiraProject) sessionFactory.getCurrentSession()
+                .createCriteria(JiraProject.class).add(Restrictions.eq("key", key)).uniqueResult();
+    }
 
-        if (deleteProject != null) {
-            sessionFactory.getCurrentSession().delete(project);
+    @Override
+    public void delete(JiraProject jiraProject) throws NoSuchEntityException {
+        JiraProject deleteJiraProject = findById(jiraProject.getId());
+
+        if (deleteJiraProject != null) {
+            sessionFactory.getCurrentSession().delete(jiraProject);
         } else {
             throw new NoSuchEntityException("Entity Not Found");
         }
@@ -68,9 +86,9 @@ public class ProjectRepositoryImpl implements ProjectRepository {
 
     @Override
     public void delete(Long projectId) throws NoSuchEntityException {
-        Project project = findById(projectId);
-        if (project != null) {
-            sessionFactory.getCurrentSession().delete(project);
+        JiraProject jiraProject = findById(projectId);
+        if (jiraProject != null) {
+            sessionFactory.getCurrentSession().delete(jiraProject);
         } else {
             throw new NoSuchEntityException("Entity Not Found");
         }

@@ -1,6 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository;
 
-import com.swansoftwaresolutions.jirareport.domain.entity.Project;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraProject;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 
 import java.util.List;
@@ -10,17 +10,19 @@ import java.util.List;
  */
 public interface ProjectRepository {
 
-    Project add(Project project);
+    JiraProject add(JiraProject jiraProject);
 
-    List<Project> findAll();
+    List<JiraProject> findAll();
 
-    Project findById(Long projectId);
+    JiraProject findById(Long projectId);
 
-    Project findByKey(String key) throws NoSuchEntityException;
+    JiraProject findByKey(String key) throws NoSuchEntityException;
 
-    void delete(final Project project) throws NoSuchEntityException;
+    void delete(final JiraProject jiraProject) throws NoSuchEntityException;
 
     void delete(final Long projectId) throws NoSuchEntityException;
 
-    Project update(Project project) throws NoSuchEntityException;
+    JiraProject update(JiraProject jiraProject) throws NoSuchEntityException;
+
+    void save(List<JiraProject> projects);
 }
