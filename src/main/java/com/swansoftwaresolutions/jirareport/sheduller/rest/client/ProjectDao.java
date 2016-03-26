@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
 import com.swansoftwaresolutions.jirareport.core.dto.groups.JiraGroupsDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUsersDto;
 import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
 import com.swansoftwaresolutions.jirareport.domain.entity.Project;
 import com.swansoftwaresolutions.jirareport.rest.client.AbstractRestClient;
@@ -21,7 +22,7 @@ import java.util.logging.Logger;
  * @author Vitaliy Holovko
  */
 
-@Component
+@Component("projectClient")
 public class ProjectDao extends AbstractRestClient implements RestClient {
 
     static Logger log = Logger.getLogger(ProjectDao.class.getName());
@@ -42,6 +43,11 @@ public class ProjectDao extends AbstractRestClient implements RestClient {
 
     @Override
     public JiraGroupsDto loadAllGroups() {
+        return null;
+    }
+
+    @Override
+    public ImportedJiraUsersDto loadAllUsersByGroupName(String name) {
         return null;
     }
 

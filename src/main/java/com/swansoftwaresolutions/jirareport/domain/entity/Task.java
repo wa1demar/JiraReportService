@@ -27,7 +27,7 @@ public class Task {
     @Column(name = "last_update")
     private Date lastUpdate;
 
-    @Column(name = "order")
+    @Column(name = "position")
     private int order;
 
     public String getName() {

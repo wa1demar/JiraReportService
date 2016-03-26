@@ -1,7 +1,9 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.mappings.ImportedJiraUsersMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserAutoDto;
 import org.modelmapper.ModelMapper;
@@ -18,8 +20,13 @@ import java.util.List;
 @Component
 public class JiraUserMapperImpl implements JiraUserMapper {
 
-    @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    public JiraUserMapperImpl(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+        modelMapper.addMappings(new ImportedJiraUsersMapper());
+    }
 
     @Override
     public JiraUserDto toDto(JiraUser jiraUserEntity) {
@@ -68,4 +75,13 @@ public class JiraUserMapperImpl implements JiraUserMapper {
         }.getType();
         return modelMapper.map(jiraUserAutoDtoList, targetistType);
     }
+
+    @Override
+    public List<JiraUser> fromDtos(List<ImportedJiraUserDto> usersList) {
+        Type targetistType = new TypeToken<List<JiraUser>>() {
+        }.getType();
+        return modelMapper.map(usersList, targetistType);
+    }
+
+
 }

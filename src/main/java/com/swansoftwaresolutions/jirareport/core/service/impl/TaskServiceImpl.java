@@ -7,6 +7,7 @@ import com.swansoftwaresolutions.jirareport.core.service.TaskService;
 import com.swansoftwaresolutions.jirareport.domain.entity.Task;
 import com.swansoftwaresolutions.jirareport.domain.repository.TaskRepository;
 import com.swansoftwaresolutions.jirareport.rest.service.GroupImporterService;
+import com.swansoftwaresolutions.jirareport.rest.service.UserImporterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,9 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     GroupImporterService groupImporterService;
 
+    @Autowired
+    UserImporterService userImporterService;
+
     @Override
     public TasksDto getAll() {
         List<Task> tasks = taskRepository.findAll();
@@ -39,14 +43,20 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDto start(String name) {
 
-        Task task = null;
+        taskRepository.setStarted(name);
         switch (name) {
-            case "groups": {
-                taskRepository.setStarted(name);
+            case "groups":
+
                 groupImporterService.importGroupsFromJira();
-                task = taskRepository.setStoped(name);
-            }
+                break;
+
+            case "users":
+
+                userImporterService.importUsersFromJira();
+                break;
         }
+
+        Task task = taskRepository.setStopped(name);
 
         return taskMapper.toDto(task);
     }

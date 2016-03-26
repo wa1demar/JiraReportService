@@ -14,5 +14,5 @@ public interface TaskRepository {
 
     void setStarted(String name);
 
-    Task setStoped(String name);
+    Task setStopped(String name);
 }

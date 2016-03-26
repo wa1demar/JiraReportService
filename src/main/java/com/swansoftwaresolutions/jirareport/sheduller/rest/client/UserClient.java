@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
 import com.swansoftwaresolutions.jirareport.core.dto.groups.JiraGroupsDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUsersDto;
 import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserAutoDto;
@@ -22,7 +23,7 @@ import java.util.logging.Logger;
  * @author Vitaliy Holovko
  */
 
-@Component
+@Component("userClient")
 public class UserClient extends AbstractRestClient implements RestClient {
 
     static Logger log = Logger.getLogger(UserClient.class.getName());
@@ -72,6 +73,11 @@ public class UserClient extends AbstractRestClient implements RestClient {
 
     @Override
     public JiraGroupsDto loadAllGroups() {
+        return null;
+    }
+
+    @Override
+    public ImportedJiraUsersDto loadAllUsersByGroupName(String name) {
         return null;
     }
 

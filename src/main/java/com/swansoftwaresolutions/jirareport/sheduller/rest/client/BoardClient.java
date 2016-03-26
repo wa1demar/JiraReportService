@@ -2,6 +2,7 @@ package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
 import com.swansoftwaresolutions.jirareport.core.dto.groups.JiraGroupsDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSprintDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUsersDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraSprintMapper;
 import com.swansoftwaresolutions.jirareport.core.service.JiraBoardService;
 import com.swansoftwaresolutions.jirareport.core.service.JiraSprintsService;
@@ -25,7 +26,7 @@ import java.util.logging.Logger;
  * @author Vitaliy Holovko
  */
 
-@Component
+@Component("boardClient")
 public class BoardClient extends AbstractRestClient implements RestClient {
 
     static Logger log = Logger.getLogger(RestClient.class.getName());
@@ -54,6 +55,11 @@ public class BoardClient extends AbstractRestClient implements RestClient {
 
     @Override
     public JiraGroupsDto loadAllGroups() {
+        return null;
+    }
+
+    @Override
+    public ImportedJiraUsersDto loadAllUsersByGroupName(String name) {
         return null;
     }
 

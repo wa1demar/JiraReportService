@@ -6,6 +6,7 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -16,6 +17,7 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 public class LoadJiraIssuesJob implements Job {
 
     @Autowired
+    @Qualifier("issueClient")
     RestClient jiraIssueRestDao;
 
     @Override
