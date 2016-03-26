@@ -24,8 +24,8 @@
                 <span class="aui-lozenge aui-lozenge-subtle {{statusStyle}}">{{value.status}}</span>
             </td>
             <td>
-               <span nf-if="value.status === 'DONE'">{{value.lastUpdate | date:'MM/dd/yyyy HH:mm'}}</span>
-               <span nf-if="value.status !== 'DONE'"> - </span>
+               <span ng-if="value.status === 'DONE'">{{value.lastUpdate | date:'MM/dd/yyyy HH:mm'}}</span>
+               <span ng-if="value.status !== 'DONE'"> - </span>
             </td>
             <td>
                 <span ng-if="value.status !== 'IN_PROGRESS'" class="aui-icon aui-icon-small aui-iconfont-arrows-right task-start" ng-click="startTask(value)" title="Start task">Start task</span>
