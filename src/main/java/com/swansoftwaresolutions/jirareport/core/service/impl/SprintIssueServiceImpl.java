@@ -5,6 +5,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.sprint_issue.SprintIssueLis
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssueDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.SprintIssueMapper;
+import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
 import com.swansoftwaresolutions.jirareport.core.service.SprintIssueService;
 import com.swansoftwaresolutions.jirareport.core.service.SprintService;
 import com.swansoftwaresolutions.jirareport.domain.repository.SprintIssueRepository;
@@ -15,10 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Vitliy Holovko
@@ -34,6 +32,9 @@ public class SprintIssueServiceImpl implements SprintIssueService {
 
     @Autowired
     SprintService sprintService;
+
+    @Autowired
+    ConfigService configService;
 
     @Override
     public List<SprintIssueDto> findAll() throws NoSuchEntityException {
@@ -94,12 +95,24 @@ public class SprintIssueServiceImpl implements SprintIssueService {
             Calendar endDate = Calendar.getInstance();
             endDate.setTime(sprint.getEndDate());
 
+            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+            String nonWorkingDaysString = configService.retrieveConfig().getNonWorkingDays();
+            List<Date>  nonWorkingDays = new ArrayList<>();
+            for (String dateString : Arrays.asList(nonWorkingDaysString.split(","))) {
+                try {
+                    nonWorkingDays.add(formatter.parse(dateString));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
             while(!startDate.after(endDate)){
                 Date currentDate = startDate.getTime();
 
                 List<SprintIssueDto> issues = new ArrayList<>();
 
-                if (helperMethods.isWeekend(currentDate)){
+                if (helperMethods.isWeekend(currentDate) || nonWorkingDays.contains(currentDate)){
                     startDate.add(Calendar.DATE, 1);
                     continue;
                 }
