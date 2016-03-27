@@ -206,6 +206,7 @@ public class SprintServiceImpl implements SprintService {
             fullSpr.setDevelopers(developers);
 
             if (sprint.getJiraSprint() != null) {
+                fullSpr.setJiraSprintId(sprint.getJiraSprint().getId());
                 fullSpr.setStartDate(sprint.getJiraSprint().getStartDate());
                 fullSpr.setEndDate(sprint.getJiraSprint().getEndDate());
                 fullSpr.setName(sprint.getJiraSprint().getName());

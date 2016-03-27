@@ -436,7 +436,7 @@ public class ReportServiceImpl implements ReportService {
             for (FullSprintDto sprintDto : sprintDtoList) {
 
                 List<JiraIssueDto> jiraIssueList = new ArrayList<>();
-                jiraIssueList = jiraIssueService.findBySprintId(sprintDto.getId());
+                jiraIssueList = jiraIssueService.findBySprintId(sprintDto.getJiraSprintId());
 
                 Set<JiraIssueDto> issuesSet = new HashSet<>();
 
@@ -510,7 +510,7 @@ public class ReportServiceImpl implements ReportService {
                         }
 
                         sprint.setActualPoints(sprint.getActualPoints() + dev.getActualPoints());
-                        sprint.setActualHours(help.isNull(sprint.getActualHours()) + help.isNull(dev.getActualHours()));
+                        sprint.setActualHours(help.isNull(sprint.getActualHours()) + Math.round(help.isNull(dev.getActualHours())/60));
                         sprint.setTargetHours(help.isNull(sprint.getTargetHours())+help.isNull(dev.getTargetHours()));
                     }
                 } else {
@@ -611,7 +611,7 @@ public class ReportServiceImpl implements ReportService {
                         prRep.setTargetUatDefectMin(prRep.getTargetUatDefectMin() + sprint.getTargetUatDefectMin());
                         prRep.setTargetUatDefectMax(prRep.getTargetUatDefectMax() + sprint.getTargetUatDefectMax());
 
-                        prRep.setActualHours(helpM.isNull(prRep.getActualHours()) + helpM.isNull(sprint.getActualHours()));
+                        prRep.setActualHours(helpM.isNull(prRep.getActualHours()) + Math.round(sprint.getActualHours() / 60));
                         prRep.setActualPoints(helpM.isNullFloat(prRep.getActualPoints()) + helpM.isNullFloat(sprint.getActualPoints()));
                         prRep.setActualQatDefectHours(helpM.isNull(prRep.getActualQatDefectHours()) + helpM.isNull(sprint.getActualQatDefectHours()));
                         prRep.setActualQatDefectPoints(helpM.isNullFloat(prRep.getActualQatDefectPoints()) + helpM.isNullFloat(sprint.getActualQatDefectPoints()));
