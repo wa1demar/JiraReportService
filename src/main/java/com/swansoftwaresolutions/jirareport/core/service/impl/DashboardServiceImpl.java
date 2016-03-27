@@ -5,6 +5,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.dashboard.ProjectDashboardD
 import com.swansoftwaresolutions.jirareport.core.dto.dashboard.ProjectDashboardsDto;
 import com.swansoftwaresolutions.jirareport.core.dto.dashboard.ProjectReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
+import com.swansoftwaresolutions.jirareport.core.mapper.ReportMapper;
 import com.swansoftwaresolutions.jirareport.core.service.DashboardService;
 import com.swansoftwaresolutions.jirareport.core.service.ReportService;
 import com.swansoftwaresolutions.jirareport.domain.entity.CacheProjectTotal;
@@ -31,6 +32,9 @@ public class DashboardServiceImpl implements DashboardService {
     @Autowired
     ReportService reportService;
 
+    @Autowired
+    ReportMapper reportMapper;
+
 
     @Override
     public ProjectDashboardsDto loadPortfolio() throws NoSuchEntityException {
@@ -41,11 +45,11 @@ public class DashboardServiceImpl implements DashboardService {
 
         List<ProjectDashboardDto> dashboardDtos = new ArrayList<>();
         for (CacheProjectTotal total : projectsTotal) {
-            ReportDto reportDto = reportService.retrieveReportByID(total.getReport().getId());
+            ReportDto reportDto = reportMapper.toDto(total.getReport());
 
             ProjectReportDto projectReportDto = new ProjectReportDto();
-            projectReportDto.setClosedSprintCount(reportService.getClosedSprintCount(total.getReport().getId()));
-            projectReportDto.setShowUat(reportService.showUat(total.getReport().getId()));
+            projectReportDto.setClosedSprintCount(total.getClosedSprintCount());
+            projectReportDto.setShowUat(total.isShowUat());
             projectReportDto.setId(reportDto.getId());
             projectReportDto.setId(reportDto.getId());
             projectReportDto.setTitle(reportDto.getTitle());
@@ -73,7 +77,7 @@ public class DashboardServiceImpl implements DashboardService {
             projectReportDto.setActualUatDefectPoints(total.getuActualPoints());
             projectReportDto.setTargetUatDefectHours(total.getuTargetHours());
             projectReportDto.setActualUatDefectHours(total.getuActualHours());
-            projectReportDto.setSprintsCount(reportService.getSprintCount(total.getReport().getId()));
+            projectReportDto.setSprintsCount(total.getSprintsCount());
             projectReportDto.setChart(new Chart(
                     total.getChartLabels().split(","),
                     Arrays.stream(total.getChartTarget().substring(1, total.getChartTarget().length()-1).split(",")).map(String::trim).mapToDouble(Double::parseDouble).toArray(),

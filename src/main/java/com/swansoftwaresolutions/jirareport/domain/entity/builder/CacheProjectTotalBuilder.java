@@ -111,6 +111,21 @@ public class CacheProjectTotalBuilder {
         return this;
     }
 
+    public CacheProjectTotalBuilder showUat(boolean showUat) {
+        this.projectTotal.setShowUat(showUat);
+        return this;
+    }
+
+    public CacheProjectTotalBuilder sprintsCount(long count) {
+        this.projectTotal.setSprintsCount(count);
+        return this;
+    }
+
+    public CacheProjectTotalBuilder closedSprintsCount(long count) {
+        this.projectTotal.setClosedSprintCount(count);
+        return this;
+    }
+
     public CacheProjectTotal build() {
         return projectTotal;
     }

@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -23,10 +24,10 @@ public class CacheProjectTotal {
     private float vActualPoints;
 
     @Column(name = "velosity_target_hours")
-    private Long vTargetHours;
+    private long vTargetHours;
 
     @Column(name = "velosity_actual_hours")
-    private Long vActualHours;
+    private long vActualHours;
 
     @Column(name = "qat_target_min")
     private int qtargetMin;
@@ -38,10 +39,10 @@ public class CacheProjectTotal {
     private float qActualPoints;
 
     @Column(name = "qat_target_hours")
-    private Long qTargetHours;
+    private long qTargetHours;
 
     @Column(name = "qat_actual_hours")
-    private Long qActualHours;
+    private long qActualHours;
 
     @Column(name = "uat_target_min")
     private int utargetMin;
@@ -53,10 +54,10 @@ public class CacheProjectTotal {
     private float uActualPoints;
 
     @Column(name = "uat_target_hours")
-    private Long uTargetHours;
+    private long uTargetHours;
 
     @Column(name = "uat_actual_hours")
-    private Long uActualHours;
+    private long uActualHours;
 
     @Column(name = "chart_actual")
     private String chartActual;
@@ -66,6 +67,15 @@ public class CacheProjectTotal {
 
     @Column(name = "chart_labels")
     private String chartLabels;
+
+    @Column(name = "closed_sprints_count")
+    private long closedSprintCount;
+
+    @Column(name = "show_uat")
+    private boolean showUat;
+
+    @Column(name = "sprints_count")
+    private long sprintsCount;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name="report_id")
@@ -119,19 +129,19 @@ public class CacheProjectTotal {
         this.qActualPoints = qActualPoints;
     }
 
-    public Long getqTargetHours() {
+    public long getqTargetHours() {
         return qTargetHours;
     }
 
-    public void setqTargetHours(Long qTargetHours) {
+    public void setqTargetHours(long qTargetHours) {
         this.qTargetHours = qTargetHours;
     }
 
-    public Long getqActualHours() {
+    public long getqActualHours() {
         return qActualHours;
     }
 
-    public void setqActualHours(Long qActualHours) {
+    public void setqActualHours(long qActualHours) {
         this.qActualHours = qActualHours;
     }
 
@@ -159,19 +169,19 @@ public class CacheProjectTotal {
         this.uActualPoints = uActualPoints;
     }
 
-    public Long getuTargetHours() {
+    public long getuTargetHours() {
         return uTargetHours;
     }
 
-    public void setuTargetHours(Long uTargetHours) {
+    public void setuTargetHours(long uTargetHours) {
         this.uTargetHours = uTargetHours;
     }
 
-    public Long getuActualHours() {
+    public long getuActualHours() {
         return uActualHours;
     }
 
-    public void setuActualHours(Long uActualHours) {
+    public void setuActualHours(long uActualHours) {
         this.uActualHours = uActualHours;
     }
 
@@ -207,19 +217,43 @@ public class CacheProjectTotal {
         this.report = report;
     }
 
-    public Long getvTargetHours() {
+    public long getvTargetHours() {
         return vTargetHours;
     }
 
-    public void setvTargetHours(Long vTargetHours) {
+    public void setvTargetHours(long vTargetHours) {
         this.vTargetHours = vTargetHours;
     }
 
-    public Long getvActualHours() {
+    public long getvActualHours() {
         return vActualHours;
     }
 
-    public void setvActualHours(Long vActualHours) {
+    public void setvActualHours(long vActualHours) {
         this.vActualHours = vActualHours;
+    }
+
+    public long getClosedSprintCount() {
+        return closedSprintCount;
+    }
+
+    public void setClosedSprintCount(long closedSprintCount) {
+        this.closedSprintCount = closedSprintCount;
+    }
+
+    public boolean isShowUat() {
+        return showUat;
+    }
+
+    public void setShowUat(boolean showUat) {
+        this.showUat = showUat;
+    }
+
+    public long getSprintsCount() {
+        return sprintsCount;
+    }
+
+    public void setSprintsCount(long sprintsCount) {
+        this.sprintsCount = sprintsCount;
     }
 }

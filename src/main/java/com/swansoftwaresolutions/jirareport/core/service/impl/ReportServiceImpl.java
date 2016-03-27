@@ -562,8 +562,14 @@ public class ReportServiceImpl implements ReportService {
             prRep.setClosed(reportDto.isClosed());
             prRep.setAdmins(reportDto.getAdmins());
 
+            boolean isShowUat = false;
+            long closedCount = 0;
+
             if (sprints != null) {
                 for (SprintProjectReportDto sprint : sprints) {
+                    if (sprint.isShowUat()) {
+                        isShowUat = true;
+                    }
                     if (!sprint.isNotCountTarget() && (sprint.getState().equals("Closed") || sprint.getState().equals("closed"))) {
                         prRep.setTargetPoints(helpM.isNullFloat(prRep.getTargetPoints()) + helpM.isNullFloat(sprint.getTargetPoints()));
                         prRep.setTargetHours(helpM.isNull(prRep.getTargetHours()) + helpM.isNull(sprint.getTargetHours()));
@@ -580,6 +586,7 @@ public class ReportServiceImpl implements ReportService {
                         prRep.setActualQatDefectPoints(helpM.isNullFloat(prRep.getActualQatDefectPoints()) + helpM.isNullFloat(sprint.getActualQatDefectPoints()));
                         prRep.setActualUatDefectHours(helpM.isNull(prRep.getActualUatDefectHours()) + helpM.isNull(sprint.getActualUatDefectHours()));
                         prRep.setActualUatDefectPoints(helpM.isNullFloat(prRep.getActualUatDefectPoints()) + helpM.isNullFloat(sprint.getActualUatDefectPoints()));
+                        closedCount++;
                     }
                 }
             } else {
@@ -602,26 +609,33 @@ public class ReportServiceImpl implements ReportService {
 
             prRep.setChart(helpM.genersteReportChart(sprints, prRep.getTargetPoints()));
 
-            projectTotalRepository.saveOrUpdate(new CacheProjectTotalBuilder()
-                    .vTargetPoints(prRep.getTargetPoints())
-                    .vActualPoints(prRep.getActualPoints())
-                    .qtargetMin(prRep.getTargetQatDefectMin())
-                    .qtargetMax(prRep.getTargetQatDefectMax())
-                    .qActualPoints(prRep.getActualQatDefectPoints())
-                    .qTargetHours(prRep.getTargetQatDefectHours())
-                    .qActualHours(prRep.getActualQatDefectHours())
-                    .utargetMin(prRep.getTargetUatDefectMin())
-                    .utargetMax(prRep.getTargetUatDefectMax())
-                    .uActualPoints(prRep.getActualUatDefectPoints())
-                    .uTargetHours(prRep.getTargetUatDefectHours())
-                    .uActualHours(prRep.getActualUatDefectHours())
-                    .chartActual(Arrays.stream(prRep.getChart().getActual()).boxed().toArray(Integer[]::new))
-                    .chartTarget(Arrays.stream(prRep.getChart().getTarget()).boxed().toArray(Double[]::new))
-                    .chartLabels(prRep.getChart().getLabel())
-                    .report(reportMapper.fromDto(reportDto))
-                    .vActualHours(prRep.getActualHours())
-                    .vTargetHours(prRep.getTargetHours())
-                    .build());
+            final boolean finalIsShowUat = isShowUat;
+            final long finalClosedCount = closedCount;
+            new Thread(() -> {
+                projectTotalRepository.saveOrUpdate(new CacheProjectTotalBuilder()
+                        .vTargetPoints(prRep.getTargetPoints())
+                        .vActualPoints(prRep.getActualPoints())
+                        .qtargetMin(prRep.getTargetQatDefectMin())
+                        .qtargetMax(prRep.getTargetQatDefectMax())
+                        .qActualPoints(prRep.getActualQatDefectPoints())
+                        .qTargetHours(prRep.getTargetQatDefectHours())
+                        .qActualHours(prRep.getActualQatDefectHours())
+                        .utargetMin(prRep.getTargetUatDefectMin())
+                        .utargetMax(prRep.getTargetUatDefectMax())
+                        .uActualPoints(prRep.getActualUatDefectPoints())
+                        .uTargetHours(prRep.getTargetUatDefectHours())
+                        .uActualHours(prRep.getActualUatDefectHours())
+                        .chartActual(Arrays.stream(prRep.getChart().getActual()).boxed().toArray(Integer[]::new))
+                        .chartTarget(Arrays.stream(prRep.getChart().getTarget()).boxed().toArray(Double[]::new))
+                        .chartLabels(prRep.getChart().getLabel())
+                        .report(reportMapper.fromDto(reportDto))
+                        .vActualHours(prRep.getActualHours())
+                        .vTargetHours(prRep.getTargetHours())
+                        .showUat(finalIsShowUat)
+                        .sprintsCount(sprints != null ? sprints.size() : 0)
+                        .closedSprintsCount(finalClosedCount)
+                        .build());
+            }).start();
 
         } catch (NoSuchEntityException e) {
             e.printStackTrace();
