@@ -26,7 +26,7 @@ public class TaskController {
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/tasks/{name}", method = RequestMethod.POST)
+    @RequestMapping(value = "/tasks/{name}/start", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<TaskDto> startTask(@PathVariable("name") String name) {
         TaskDto task = taskService.start(name);

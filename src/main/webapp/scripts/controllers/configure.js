@@ -117,7 +117,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 
 //----------------------------------------------------------------------------------------------------------------------
 //get developer
-        UsersFactory.query(function(result) {
+        UsersFactory.query({id: "filtered"}, function(result) {
             $scope.devUsers = result.users;
         });
 
@@ -271,7 +271,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //get developer
 //TODO need refactoring
-            var users = UsersFactory.query(function() {
+            var users = UsersFactory.query({id: "filtered"}, function() {
                 $scope.devUsersForAdd = users.users;
                 for (var index = 0; index < $scope.devUsersForAdd.length; index++) {
                     for (var indexTeam = 0; indexTeam < $scope.sprintTeams.length; indexTeam++) {
@@ -336,7 +336,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 
 //----------------------------------------------------------------------------------------------------------------------
 //get developer
-            var users = UsersFactory.query(function(){
+            var users = UsersFactory.query({id: "filtered"}, function(){
                 for (var index = 0; index < users.users.length; index++) {
                     for (var indexTeam = 0; indexTeam < $scope.sprintTeams.length; indexTeam++) {
                         if (users.users[index].login === $scope.sprintTeams[indexTeam].developerLogin) {
@@ -354,7 +354,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 
 //----------------------------------------------------------------------------------------------------------------------
 //get developer
-            var users = UsersFactory.query(function(){
+            var users = UsersFactory.query({id: "filtered"}, function(){
                 for (var index = 0; index < users.users.length; index++) {
                     for (var indexTeam = 0; indexTeam < $scope.sprintTeams.length; indexTeam++) {
                         if (users.users[index].login === $scope.sprintTeams[indexTeam].developerLogin) {

@@ -44,7 +44,7 @@ public class TaskRepositoryImpl implements TaskRepository {
     }
 
     @Override
-    public Task setStoped(String name) {
+    public Task setStopped(String name) {
         Task task = findByName(name);
         task.setStatus(TaskStatus.DONE);
         task.setLastUpdate(new Date());

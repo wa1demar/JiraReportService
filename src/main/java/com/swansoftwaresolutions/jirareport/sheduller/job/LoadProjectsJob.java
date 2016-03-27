@@ -4,6 +4,7 @@ import com.swansoftwaresolutions.jirareport.rest.client.RestClient;
 import org.joda.time.LocalTime;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -14,6 +15,7 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 public class LoadProjectsJob implements Job {
 
     @Autowired
+    @Qualifier("projectClient")
     RestClient projectsRestDao;
 
     @Override

@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.core.dto.SprintIssue;
+package com.swansoftwaresolutions.jirareport.core.dto.sprint_issue;
 
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssueDto;
 

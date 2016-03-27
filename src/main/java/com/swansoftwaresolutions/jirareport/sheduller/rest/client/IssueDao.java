@@ -3,7 +3,9 @@ package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraPointDto;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.groups.JiraGroupsDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_project.ImportedProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSprintDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUsersDto;
 import com.swansoftwaresolutions.jirareport.core.helper.HelperMethods;
 import com.swansoftwaresolutions.jirareport.core.service.*;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
@@ -25,7 +27,7 @@ import java.util.logging.Logger;
  * @author Vitaliy Holovko
  */
 
-@Component
+@Component("issueClient")
 public class IssueDao extends AbstractRestClient implements RestClient {
 
     static Logger log = Logger.getLogger(IssueDao.class.getName());
@@ -64,6 +66,16 @@ public class IssueDao extends AbstractRestClient implements RestClient {
     @Override
     public JiraGroupsDto loadAllGroups() {
         return null;
+    }
+
+    @Override
+    public ImportedJiraUsersDto loadAllUsersByGroupName(String name) {
+        return null;
+    }
+
+    @Override
+    public ImportedProjectDto[] loadAllProjects() {
+        return new ImportedProjectDto[0];
     }
 
     private void getAllIsuues(List<ImportedJiraSprintDto> agileSprints) throws NoSuchEntityException {

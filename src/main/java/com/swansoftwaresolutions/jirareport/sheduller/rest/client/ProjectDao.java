@@ -1,8 +1,10 @@
 package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
 import com.swansoftwaresolutions.jirareport.core.dto.groups.JiraGroupsDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_project.ImportedProjectDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUsersDto;
 import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
-import com.swansoftwaresolutions.jirareport.domain.entity.Project;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraProject;
 import com.swansoftwaresolutions.jirareport.rest.client.AbstractRestClient;
 import com.swansoftwaresolutions.jirareport.rest.client.RestClient;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.ProjectDto;
@@ -21,7 +23,7 @@ import java.util.logging.Logger;
  * @author Vitaliy Holovko
  */
 
-@Component
+@Component("projectClient")
 public class ProjectDao extends AbstractRestClient implements RestClient {
 
     static Logger log = Logger.getLogger(ProjectDao.class.getName());
@@ -31,7 +33,7 @@ public class ProjectDao extends AbstractRestClient implements RestClient {
 
     @Override
     public void loadData() {
-        final String uri = "https://swansoftwaresolutions.atlassian.net/rest/api/2/project.json";
+        final String uri = "https://swansoftwaresolutions.atlassian.net/rest/api/2/jiraProject.json";
 
         HttpEntity<String> request = new HttpEntity<>(getHeaders());
         RestTemplate restTemplate = new RestTemplate();
@@ -45,36 +47,46 @@ public class ProjectDao extends AbstractRestClient implements RestClient {
         return null;
     }
 
+    @Override
+    public ImportedJiraUsersDto loadAllUsersByGroupName(String name) {
+        return null;
+    }
+
+    @Override
+    public ImportedProjectDto[] loadAllProjects() {
+        return new ImportedProjectDto[0];
+    }
+
 
     private void insertDataToDataBase(ProjectDto[] projectDtos) {
-        List<Project> projects = fromDtos(projectDtos);
+        List<JiraProject> jiraProjects = fromDtos(projectDtos);
 
-        removeDublicateAndSave(projects);
+        removeDublicateAndSave(jiraProjects);
     }
 
-    private void removeDublicateAndSave(List<Project> projects) {
-        projects.removeAll(projectService.findAll());
+    private void removeDublicateAndSave(List<JiraProject> jiraProjects) {
+        jiraProjects.removeAll(projectService.findAll());
 
-        for (Project project : projects) {
-            projectService.save(project);
+        for (JiraProject jiraProject : jiraProjects) {
+            projectService.save(jiraProject);
         }
     }
 
-    private List<Project> fromDtos(ProjectDto[] projectDtos) {
-       List<Project> projects = new ArrayList<>();
+    private List<JiraProject> fromDtos(ProjectDto[] projectDtos) {
+       List<JiraProject> jiraProjects = new ArrayList<>();
         for (ProjectDto projectDto : projectDtos){
-            projects.add(fromDto(projectDto));
+            jiraProjects.add(fromDto(projectDto));
         }
-        return projects;
+        return jiraProjects;
     }
 
-    private Project fromDto(ProjectDto projectDto) {
-        Project project = new Project();
-        project.setName(projectDto.getName());
-        project.setKey(projectDto.getKey());
-        project.setJiraId((long) projectDto.getId());
+    private JiraProject fromDto(ProjectDto projectDto) {
+        JiraProject jiraProject = new JiraProject();
+        jiraProject.setName(projectDto.getName());
+        jiraProject.setKey(projectDto.getKey());
+        jiraProject.setJiraId((long) projectDto.getId());
 
-        return project;
+        return jiraProject;
     }
 
 }

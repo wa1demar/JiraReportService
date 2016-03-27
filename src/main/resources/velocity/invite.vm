@@ -9,7 +9,7 @@
     <p>Username: ${newUser.username}</p>
     <p>Password: ${newUser.password}</p>
        <br/>
-    <p>You can login and change your password at <a href="http://192.168.1.134:8080/#/login">this link</a>.</p>
+    <p>You can login and change your password at <a href="http://rmd.dyndns.info:5012/#/login">this link</a>.</p>
     <br/>
 
 </div>

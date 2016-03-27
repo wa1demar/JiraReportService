@@ -1,6 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.helper;
 
-import com.swansoftwaresolutions.jirareport.core.dto.SprintIssue.IssuesByDayDto;
+import com.swansoftwaresolutions.jirareport.core.dto.sprint_issue.IssuesByDayDto;
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssueDto;
 import com.swansoftwaresolutions.jirareport.core.dto.dashboard.Chart;
 import com.swansoftwaresolutions.jirareport.core.dto.dashboard.SprintProjectReportDto;

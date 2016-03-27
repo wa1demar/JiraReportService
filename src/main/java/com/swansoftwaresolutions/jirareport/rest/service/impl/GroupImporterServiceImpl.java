@@ -2,7 +2,6 @@ package com.swansoftwaresolutions.jirareport.rest.service.impl;
 
 import com.swansoftwaresolutions.jirareport.core.dto.groups.JiraGroupsDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraGroupMapper;
-import com.swansoftwaresolutions.jirareport.core.service.TaskService;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraGroup;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraGroupRepository;
 import com.swansoftwaresolutions.jirareport.rest.client.RestClient;

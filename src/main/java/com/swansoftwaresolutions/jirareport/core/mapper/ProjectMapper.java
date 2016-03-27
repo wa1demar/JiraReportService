@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.mapper;
 
-import com.swansoftwaresolutions.jirareport.domain.entity.Project;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_project.ImportedProjectDto;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraProject;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.ProjectDto;
 
 import java.util.List;
@@ -10,8 +11,10 @@ import java.util.List;
  */
 public interface ProjectMapper {
 
-    ProjectDto toDto(Project projectEntity);
-    List<ProjectDto> toDtos(List<Project> projectEntities);
-    Project fromDto(ProjectDto projectDto);
-    List<Project> fromDtos(ProjectDto projectDto);
+    ProjectDto toDto(JiraProject jiraProjectEntity);
+    List<ProjectDto> toDtos(List<JiraProject> jiraProjectEntities);
+    JiraProject fromDto(ProjectDto projectDto);
+    List<JiraProject> fromDtos(ProjectDto projectDto);
+
+    List<JiraProject> fromDtos(List<ImportedProjectDto> importedProjectsDtos);
 }

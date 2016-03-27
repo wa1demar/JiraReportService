@@ -37,4 +37,10 @@ public class JiraGroupRepositoryImpl implements JiraGroupRepository {
 
         return (JiraGroup) query.uniqueResult();
     }
+
+    @Override
+    public List<JiraGroup> findAll() {
+        Query query  = sessionFactory.getCurrentSession().createQuery("FROM JiraGroup g");
+        return query.list();
+    }
 }

@@ -12,4 +12,6 @@ public interface JiraGroupRepository {
     void save(List<JiraGroup> groups);
 
     JiraGroup findByName(String name);
+
+    List<JiraGroup> findAll();
 }

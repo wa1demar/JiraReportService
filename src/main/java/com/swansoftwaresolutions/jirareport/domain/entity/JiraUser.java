@@ -1,8 +1,12 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.hibernate.annotations.CascadeType.*;
 
 /**
  * @author Vladimir Martynyuk
@@ -26,6 +30,10 @@ public class JiraUser {
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "admins", cascade = CascadeType.ALL)
     private List<Report> reports = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users")
+    @Cascade({SAVE_UPDATE})
+    private List<JiraGroup> groups = new ArrayList<>();
 
 
     public String getEmail() {
@@ -68,23 +76,11 @@ public class JiraUser {
         this.reports = reports;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        JiraUser jiraUser = (JiraUser) o;
-
-        if (!fullName.equals(jiraUser.fullName)) return false;
-        if (!login.equals(jiraUser.login)) return false;
-
-        return true;
+    public List<JiraGroup> getGroups() {
+        return groups;
     }
 
-    @Override
-    public int hashCode() {
-        int result = login.hashCode();
-        result = 31 * result + fullName.hashCode();
-        return result;
+    public void setGroups(List<JiraGroup> groups) {
+        this.groups = groups;
     }
 }

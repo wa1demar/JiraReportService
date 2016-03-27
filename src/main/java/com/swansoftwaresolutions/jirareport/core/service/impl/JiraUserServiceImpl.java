@@ -1,5 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
+import com.swansoftwaresolutions.jirareport.core.dto.ConfigDto;
+import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
@@ -11,8 +13,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.JiraUserAutoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Vitaliy Holovko
@@ -26,6 +27,9 @@ public class JiraUserServiceImpl implements JiraUserService {
 
     @Autowired
     JiraUserMapper jiraUserMapper;
+
+    @Autowired
+    ConfigService configService;
 
     @Override
     public JiraUser save(JiraUser jiraUser) {
@@ -64,5 +68,23 @@ public class JiraUserServiceImpl implements JiraUserService {
     @Override
     public JiraUser findByLogin(String login) throws NoSuchEntityException{
         return jiraUserRepository.findByLogin(login);
+    }
+
+    @Override
+    public JiraUsersDto retrieveFilteredUsers() {
+
+        ConfigDto configDto = configService.retrieveConfig();
+
+        if (configDto.getJiraDevGroupName().equals("")) {
+            return retrieveAllUsers();
+        }
+
+        String[] groups = configDto.getJiraDevGroupName().split(",");
+        Set<JiraUser> byGroups = new HashSet<>(jiraUserRepository.findByGroups(groups));
+        List<JiraUserDto> userDtoList = jiraUserMapper.toDtos(new ArrayList<>(byGroups));
+
+        JiraUsersDto usersDto = new JiraUsersDto();
+        usersDto.setUsers(userDtoList);
+        return usersDto;
     }
 }

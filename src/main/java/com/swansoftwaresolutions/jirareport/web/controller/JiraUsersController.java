@@ -25,4 +25,10 @@ public class JiraUsersController {
     public ResponseEntity<JiraUsersDto> getAllUsers() {
         return new ResponseEntity<>(jiraUserService.retrieveAllUsers(), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/v1/users/filtered", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<JiraUsersDto> getFilteredUsers() {
+        return new ResponseEntity<>(jiraUserService.retrieveFilteredUsers(), HttpStatus.OK);
+    }
 }

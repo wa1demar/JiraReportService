@@ -4,7 +4,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.JiraBoardDto;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraBoardInfoDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraBoardMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
-import com.swansoftwaresolutions.jirareport.domain.entity.Project;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraProject;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class JiraBoardMapperImpl implements JiraBoardMapper {
 
     @Override
     public List<JiraBoard> fromDtos(List<JiraBoardDto> jiraBoardDtoList) {
-        Type targetistType = new TypeToken<List<Project>>() {
+        Type targetistType = new TypeToken<List<JiraProject>>() {
         }.getType();
         return modelMapper.map(jiraBoardDtoList, targetistType);
     }
@@ -66,7 +66,7 @@ public class JiraBoardMapperImpl implements JiraBoardMapper {
 
     @Override
     public List<JiraBoard> fromInfoDtos(List<JiraBoardInfoDto> jiraBoardInfoDtoList) {
-        Type targetistType = new TypeToken<List<Project>>() {
+        Type targetistType = new TypeToken<List<JiraProject>>() {
         }.getType();
         return modelMapper.map(jiraBoardInfoDtoList, targetistType);
     }

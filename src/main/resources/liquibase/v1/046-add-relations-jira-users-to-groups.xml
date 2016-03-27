@@ -1,0 +1,28 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="046" author="Vladimir Martynyuk">
+
+        <createTable tableName="jira_users_groups">
+            <column name="user_login" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="group_name" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="user_login"
+                                 baseTableName="jira_users_groups"
+                                 constraintName="fk_jira_users_groups"
+                                 referencedColumnNames="login"
+                                 referencedTableName="jira_users"/>
+
+        <addForeignKeyConstraint baseColumnNames="group_name"
+                                 baseTableName="jira_users_groups"
+                                 constraintName="fk_group_name"
+                                 referencedColumnNames="name"
+                                 referencedTableName="jira_groups"/>
+
+    </changeSet>
+</databaseChangeLog>
