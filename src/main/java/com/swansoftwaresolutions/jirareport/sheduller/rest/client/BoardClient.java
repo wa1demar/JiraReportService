@@ -145,7 +145,6 @@ public class BoardClient extends AbstractRestClient implements RestClient {
 
         if (jiraBoardDtos.issues.length > 0) {
             jiraBoardDto.setProjectKey(jiraBoardDtos.issues[0].fields.project.getKey());
-            jiraBoardDto.setProjectId(projectService.findByKey(jiraBoardDto.getProjectKey()).getJiraId());
         } else {
             log.warning("Empty JiraProject Key for " + jiraBoardDto.getName());
         }
@@ -174,7 +173,6 @@ public class BoardClient extends AbstractRestClient implements RestClient {
         jiraBoard.setType(jBoardDto.getType());
         jiraBoard.setBoardId((long) jBoardDto.getId());
         jiraBoard.setProjectKey(jBoardDto.getProjectKey());
-        jiraBoard.setProjectJiraId(jBoardDto.getProjectId());
 
         return jiraBoard;
     }

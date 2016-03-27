@@ -42,9 +42,12 @@ public class ProjectRepositoryImpl implements ProjectRepository {
     @Override
     public void save(List<JiraProject> projects) {
         for (JiraProject project : projects) {
-            Query query = sessionFactory.getCurrentSession().createQuery("FROM JiraProject p WHERE p.jiraId = :jiraId");
-            query.setParameter("jiraId", project.getJiraId());
-            JiraProject existedProject = (JiraProject) query.uniqueResult();
+            JiraProject existedProject = null;
+            try {
+                existedProject = findByKey(project.getKey());
+            } catch (NoSuchEntityException e) {
+                e.printStackTrace();
+            }
 
             if (existedProject != null) {
                     existedProject.setKey(project.getKey());

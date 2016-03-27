@@ -84,7 +84,6 @@ public class ProjectDao extends AbstractRestClient implements RestClient {
         JiraProject jiraProject = new JiraProject();
         jiraProject.setName(projectDto.getName());
         jiraProject.setKey(projectDto.getKey());
-        jiraProject.setJiraId((long) projectDto.getId());
 
         return jiraProject;
     }

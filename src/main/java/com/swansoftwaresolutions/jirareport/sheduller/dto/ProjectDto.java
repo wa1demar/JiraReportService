@@ -8,7 +8,6 @@ public class ProjectDto {
     private int id;
     private String key;
     private String name;
-    private Long jiraId;
 
     public int getId() {
         return id;
@@ -34,11 +33,4 @@ public class ProjectDto {
         this.name = name;
     }
 
-    public Long getJiraId() {
-        return jiraId;
-    }
-
-    public void setJiraId(Long jiraId) {
-        this.jiraId = jiraId;
-    }
 }
