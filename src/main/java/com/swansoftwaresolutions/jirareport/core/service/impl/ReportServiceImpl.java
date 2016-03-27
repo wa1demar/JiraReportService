@@ -277,7 +277,7 @@ public class ReportServiceImpl implements ReportService {
                 projectDashboardDto.setSprints(buildManualSprints(report.getId()));
                 projectDashboardDto.setReport(buildProjectReport(reportId, projectDashboardDto.getSprints()));
             } else {
-                projectDashboardDto.setSprints(buildAutomationSprints(report.getBoardId(), report.getId()));
+                projectDashboardDto.setSprints(buildAutomationSprints(report));
                 projectDashboardDto.setReport(buildAutomaticProjectReport(report, projectDashboardDto.getSprints()));
             }
 
@@ -433,18 +433,17 @@ public class ReportServiceImpl implements ReportService {
             sprintDtoList = sprintService.findByReportId(report.getId());
 
             JiraBoardDto board = jiraBoardService.findById(report.getBoardId());
-            JiraSprintsDto sprintSDto = jiraSprintsService.retrieveByBoardId(board.getId());
+//            JiraSprintsDto sprintSDto = jiraSprintsService.retrieveByBoardId(board.getId());
 
-            for (JiraSprintDto sprintDto : sprintSDto.getSprints()) {
-                FullSprintDto sprintFull = getSprintTeam(sprintDtoList, sprintDto.getName());
+            for (FullSprintDto sprintDto : sprintDtoList) {
 
                 List<JiraIssueDto> jiraIssueList = new ArrayList<>();
                 jiraIssueList = jiraIssueService.findBySprintId(sprintDto.getId());
 
                 SprintProjectReportDto sprint = new SprintProjectReportDto();
-                if (sprintFull != null) {
+                if (sprintDto != null) {
                     List<SprintDeveloperDto> sprintDevelopers = new ArrayList<>();
-                    for (SprintDeveloperDto dev : sprintFull.getDevelopers()) {
+                    for (SprintDeveloperDto dev : sprintDto.getDevelopers()) {
                         Set<JiraIssueDto> issuesSet = new HashSet<>();
 
                         for (JiraIssueDto issue : jiraIssueList) {
@@ -568,7 +567,6 @@ public class ReportServiceImpl implements ReportService {
 
         HelperMethods helpM = new HelperMethods();
 
-        try {
             ReportDto reportDto = reportMapper.toDto(report);
             prRep.setId(reportDto.getId());
             prRep.setTitle(reportDto.getTitle());
@@ -590,7 +588,6 @@ public class ReportServiceImpl implements ReportService {
 
             if (sprints != null) {
                 for (SprintProjectReportDto sprint : sprints) {
-                    if (sprint.get)
 
                     if (sprint.isShowUat()) {
                         isShowUat = true;
@@ -662,9 +659,6 @@ public class ReportServiceImpl implements ReportService {
                         .build());
             }).start();
 
-        } catch (NoSuchEntityException e) {
-            e.printStackTrace();
-        }
 
         return prRep;
     }
