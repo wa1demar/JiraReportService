@@ -20,6 +20,8 @@ public interface JiraIssueService {
 
     List<JiraIssueDto> findAll() throws NoSuchEntityException;
 
+    List<JiraIssueDto> findBySprintId(long spprintId) throws NoSuchEntityException;
+
     void delete(JiraIssueDto jiraIssueDto) throws NoSuchEntityException;
 
 

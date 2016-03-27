@@ -14,6 +14,8 @@ public interface JiraIssueRepository {
 
     List<JiraIssue> findAll() throws NoSuchEntityException;
 
+    List<JiraIssue> findBySprintId(long sprintId) throws NoSuchEntityException;
+
     JiraIssue findById(Long jiraIssueId) throws NoSuchEntityException;
 
     JiraIssue findByKey(String key) throws NoSuchEntityException;
