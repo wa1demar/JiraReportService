@@ -342,7 +342,7 @@ public class ReportServiceImpl implements ReportService {
                                 if (issue.getStatusName().equals("Done")) {
                                     if (issue.getTypeName().equals("Story")) {
                                         dev.setActualPoints(dev.getActualPoints() + issue.getPoint());
-                                        dev.setActualHours(help.isNull(dev.getActualHours())+(long) issue.getHours());
+                                        dev.setActualHours(help.isNull(dev.getActualHours()) + (long) issue.getHours());
                                     } else if (issue.getTypeName().equals("QAT Defect")) {
                                         dev.setDefectActual(dev.getDefectActual() + 1);
                                         dev.setDefectActualHours(help.isNull(dev.getDefectActualHours()) + (long) issue.getHours());
@@ -351,7 +351,7 @@ public class ReportServiceImpl implements ReportService {
                                         dev.setUatDefectHours(help.isNull(dev.getDefectHours()) + (long) issue.getHours());
                                         dev.setUatDefectActualHours(help.isNull(dev.getUatDefectActualHours()) + (long) issue.getHours());
                                         dev.setUatDefectActual(help.isNull(dev.getUatDefectActual()) + 1);
-                                        dev.setActualHours(help.isNull(dev.getActualHours())+(long) issue.getHours());
+                                        dev.setActualHours(help.isNull(dev.getActualHours()) + (long) issue.getHours());
                                     }
                                 }
                             }
@@ -387,7 +387,7 @@ public class ReportServiceImpl implements ReportService {
 
                         sprint.setActualPoints(sprint.getActualPoints() + dev.getActualPoints());
                         sprint.setActualHours(help.isNull(sprint.getActualHours()) + help.isNull(dev.getActualHours()));
-                        sprint.setTargetHours(help.isNull(sprint.getTargetHours())+help.isNull(dev.getTargetHours()));
+                        sprint.setTargetHours(help.isNull(sprint.getTargetHours()) + help.isNull(dev.getTargetHours()));
                     }
                 } else {
                     sprint.setTargetPoints(0);
@@ -457,11 +457,11 @@ public class ReportServiceImpl implements ReportService {
 
                                 issuesSet.add(issue);
 
-                                if (issue.getStatusName()!=null && (issue.getStatusName().equalsIgnoreCase("Done") || issue.getStatusName().equalsIgnoreCase("Close"))) {
+                                if (issue.getStatusName() != null && (issue.getStatusName().equalsIgnoreCase("Done") || issue.getStatusName().equalsIgnoreCase("Close"))) {
                                     if (issue.getIssueTypeName().equalsIgnoreCase("Story")) {
                                         dev.setActualPoints(dev.getActualPoints() + (int) issue.getPoints());
                                         dev.setActualHours(help.isNull(dev.getActualHours()) + Math.round(issue.getTimeSpent() / 60));
-                                    } else if (issue.getIssueTypeName().equalsIgnoreCase("Bug")){
+                                    } else if (issue.getIssueTypeName().equalsIgnoreCase("Bug")) {
                                         if (isQAT(dev, report)) {
                                             dev.setDefectActual(dev.getDefectActual() + 1);
                                             dev.setDefectActualHours(help.isNull(dev.getDefectActualHours()) + Math.round(issue.getTimeSpent() / 60));
@@ -539,8 +539,8 @@ public class ReportServiceImpl implements ReportService {
     }
 
     private boolean isQAT(SprintDeveloperDto dev, Report report) {
-        for(JiraUser jiraUser :report.getAdmins()){
-            if(jiraUser.getLogin().equals(dev.getDeveloperLogin()))
+        for (JiraUser jiraUser : report.getAdmins()) {
+            if (jiraUser.getLogin().equals(dev.getDeveloperLogin()))
                 return true;
         }
         return false;
@@ -597,7 +597,7 @@ public class ReportServiceImpl implements ReportService {
                 if (sprint.isShowUat()) {
                     isShowUat = true;
                 }
-                if (!sprint.isNotCountTarget() && sprint.getState()!=null && (sprint.getState().equals("Closed") || sprint.getState().equals("closed"))) {
+                if (!sprint.isNotCountTarget() && sprint.getState() != null && (sprint.getState().equals("Closed") || sprint.getState().equals("closed"))) {
                     prRep.setTargetPoints(helpM.isNullFloat(prRep.getTargetPoints()) + helpM.isNullFloat(sprint.getTargetPoints()));
                     prRep.setTargetHours(helpM.isNull(prRep.getTargetHours()) + helpM.isNull(sprint.getTargetHours()));
                     prRep.setTargetQatDefectHours(helpM.isNull(prRep.getTargetQatDefectHours()) + helpM.isNull(sprint.getTargetQatDefectHours()));
@@ -698,7 +698,7 @@ public class ReportServiceImpl implements ReportService {
                     if (sprint.isShowUat()) {
                         isShowUat = true;
                     }
-                    if (!sprint.isNotCountTarget() && sprint.getState()!=null && (sprint.getState().equals("Closed") || sprint.getState().equals("closed"))) {
+                    if (!sprint.isNotCountTarget() && sprint.getState() != null && (sprint.getState().equals("Closed") || sprint.getState().equals("closed"))) {
                         prRep.setTargetPoints(helpM.isNullFloat(prRep.getTargetPoints()) + helpM.isNullFloat(sprint.getTargetPoints()));
                         prRep.setTargetHours(helpM.isNull(prRep.getTargetHours()) + helpM.isNull(sprint.getTargetHours()));
                         prRep.setTargetQatDefectHours(helpM.isNull(prRep.getTargetQatDefectHours()) + helpM.isNull(sprint.getTargetQatDefectHours()));
@@ -789,7 +789,7 @@ public class ReportServiceImpl implements ReportService {
 
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         String nonWorkingDaysString = configService.retrieveConfig().getNonWorkingDays();
-        List<Date>  nonWorkingDays = new ArrayList<>();
+        List<Date> nonWorkingDays = new ArrayList<>();
         for (String dateString : Arrays.asList(nonWorkingDaysString.split(","))) {
             try {
                 nonWorkingDays.add(formatter.parse(dateString));
@@ -844,7 +844,7 @@ public class ReportServiceImpl implements ReportService {
         Calendar startDate = Calendar.getInstance();
         startDate.setTime(sprintDto.getStartDate());
 
-        if (sprintDto.getEndDate()==null){
+        if (sprintDto.getEndDate() == null) {
             sprintDto.setEndDate(new Date());
         }
         Calendar endDate = Calendar.getInstance();
@@ -852,11 +852,11 @@ public class ReportServiceImpl implements ReportService {
 
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         String nonWorkingDaysString = configService.retrieveConfig().getNonWorkingDays();
-        List<Date>  nonWorkingDays = new ArrayList<>();
+        List<Date> nonWorkingDays = new ArrayList<>();
 
         for (String dateString : Arrays.asList(nonWorkingDaysString.split(","))) {
             try {
-                if (nonWorkingDays.size()>0) {
+                if (nonWorkingDays.size() > 0) {
                     nonWorkingDays.add(formatter.parse(dateString));
                 }
             } catch (ParseException e) {
@@ -869,39 +869,37 @@ public class ReportServiceImpl implements ReportService {
 
         float target = targetPoints;
 
-        while(!startDate.after(endDate)){
+        while (!startDate.after(endDate)) {
             Date currentDate = startDate.getTime();
-            if (help.isWeekend(currentDate) || nonWorkingDays.contains(currentDate)) {
 
-                date = date + "," + formatter.format(currentDate);
+            date = date + "," + formatter.format(currentDate);
 
-                Iterator<JiraIssueDto> iterator = issues.iterator();
-                while (iterator.hasNext()) {
-                    JiraIssueDto element = iterator.next();
+            Iterator<JiraIssueDto> iterator = issues.iterator();
+            while (iterator.hasNext()) {
+                JiraIssueDto element = iterator.next();
 
-                    if (help.isWeekend(element.getUpdated()) || nonWorkingDays.contains(element.getUpdated())) {
-                        startDate.add(Calendar.DATE, 1);
-                        continue;
-                    }
-
-                    if (help.isCurrentDay(formatter.format(element.getUpdated()))) {
-                        target = target - element.getPoints();
-                        iterator.remove();
-                    }
+                if (help.isWeekend(element.getUpdated()) || nonWorkingDays.contains(element.getUpdated())) {
+                    startDate.add(Calendar.DATE, 1);
+                    continue;
                 }
 
-                ii.add((int) target);
+                if (help.isCurrentDay(formatter.format(element.getUpdated()))) {
+                    target = target - element.getPoints();
+                    iterator.remove();
+                }
             }
+
+            ii.add((int) target);
             startDate.add(Calendar.DATE, 1);
         }
 
-        if ((startDate.after(endDate)) && issues.size()!=0){
-            float tar = ii.get(ii.size()-1);
-            for (JiraIssueDto jiraIssueDto : issues){
-                tar= tar-jiraIssueDto.getPoints();
+        if ((startDate.after(endDate)) && issues.size() != 0) {
+            float tar = ii.get(ii.size() - 1);
+            for (JiraIssueDto jiraIssueDto : issues) {
+                tar = tar - jiraIssueDto.getPoints();
             }
 
-            ii.set(ii.size()-1, (int) tar);
+            ii.set(ii.size() - 1, (int) tar);
         }
 
 
@@ -918,7 +916,7 @@ public class ReportServiceImpl implements ReportService {
         targetArray[0] = targetPoints;
 
         for (int i = 1; i < dateArray.length; i++) {
-            targetArray[i] = (targetPoints-targetPoints/(dateArray.length-1)*i);
+            targetArray[i] = (targetPoints - targetPoints / (dateArray.length - 1) * i);
         }
 
         chart.setTarget(targetArray);
