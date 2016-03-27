@@ -112,10 +112,6 @@ public class QuartzConfig {
         return jobDetailFactory;
     }
 
-    @Bean
-    RestClient projectRestClient() {
-        return new ProjectDao();
-    }
 
     @Bean
     RestClient issueRestClient() {

@@ -441,6 +441,18 @@ public class ReportServiceImpl implements ReportService {
                 jiraIssueList = jiraIssueService.findBySprintId(sprintDto.getId());
 
                 SprintProjectReportDto sprint = new SprintProjectReportDto();
+                sprint.setId(sprintDto.getId());
+                sprint.setName(sprintDto.getName());
+                sprint.setState(sprintDto.getState());
+                sprint.setType(sprintDto.getType());
+                sprint.setStartDate(sprintDto.getStartDate());
+                sprint.setEndDate(sprintDto.getEndDate());
+                sprint.setReportId(sprintDto.getReportId());
+                sprint.setShowUat(sprintDto.isShowUat());
+                sprint.setNotCountTarget(sprintDto.isNotCountTarget());
+                sprint.setClosed(sprintDto.getState().equalsIgnoreCase("closed"));
+                sprint.setCompleteDate(sprintDto.getEndDate());
+
                 if (sprintDto != null) {
                     List<SprintDeveloperDto> sprintDevelopers = new ArrayList<>();
                     for (SprintDeveloperDto dev : sprintDto.getDevelopers()) {
