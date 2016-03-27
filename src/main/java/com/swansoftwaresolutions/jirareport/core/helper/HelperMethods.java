@@ -156,15 +156,21 @@ public class HelperMethods {
 
         for (int i = 1; i < dateArray.length; i++) {
             if (helperMethods.isCurrentDay(dateArray[i])) {
+                boolean key = false;
+                actual[i] =actual[i-1];
                 for (IssuesByDayDto issuesDto : issuesByDayList) {
                     if (issuesDto.getDate().equals(dateArray[i])) {
                         for (SprintIssueDto sprintIssueDto : issuesDto.getIssues()) {
-                            actual[i] = actual[i - 1] - sprintIssueDto.getPoint();
-                            if (sprintIssueDto.getPoint()!= 0) {
-                                ii.add(actual[i - 1] - sprintIssueDto.getPoint());
-                            }
+                            actual[i] = actual[i] - sprintIssueDto.getPoint();
+                            key = true;
                         }
                     }
+
+                    if (key) {
+                        ii.add(actual[i]);
+                        key = false;
+                    }
+
                 }
             }
 
