@@ -5,11 +5,13 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', '$location', 'AuthenticationFact
 
         var self = this;
         $scope.loaderShow = true;
+        //$scope.setLoading(true);
 
         this.getReportsData = function () {
             ReportsFactory.query({type: "ongoing"}, function(result){
                 $scope.dataOngoing = result.reports;
                 $scope.loaderShow = false;
+                //$scope.setLoading(false);
             });
 
             ReportsFactory.query({type: "closed"}, function(result){

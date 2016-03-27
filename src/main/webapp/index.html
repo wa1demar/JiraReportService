@@ -51,8 +51,11 @@
         </div>
     </nav>
 
-    <div>
+    <div ng-controller="MainCtrl">
         <div ng-view=""></div>
+
+        <div id="veil" ng-show="isLoading !== undefined && isLoading"></div>
+        <div id="feedLoading" ng-show="isLoading !== undefined && isLoading">Loading...</div>
     </div>
 
     <!--<div class="footer">-->
