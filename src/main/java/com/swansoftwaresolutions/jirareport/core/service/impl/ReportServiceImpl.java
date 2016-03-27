@@ -527,7 +527,7 @@ public class ReportServiceImpl implements ReportService {
                     sprint.setActualUatDefectPoints(0);
                 }
 
-                sprint.setChart(getChatData(issuesSet, sprintDto, (int) sprint.getTargetPoints()));
+                sprint.setChart(getChatData(issuesSet, sprintDto, sprint.getTargetPoints()));
                 sprints.add(sprint);
             }
 
@@ -607,7 +607,7 @@ public class ReportServiceImpl implements ReportService {
                     prRep.setTargetUatDefectMin(prRep.getTargetUatDefectMin() + sprint.getTargetUatDefectMin());
                     prRep.setTargetUatDefectMax(prRep.getTargetUatDefectMax() + sprint.getTargetUatDefectMax());
 
-                    prRep.setActualHours(helpM.isNull(prRep.getActualHours()) + Math.round(sprint.getActualHours() / 60));
+                    prRep.setActualHours(helpM.isNull(prRep.getActualHours()) + Math.round(helpM.isNull(sprint.getActualHours()) / 60));
                     prRep.setActualPoints(helpM.isNullFloat(prRep.getActualPoints()) + helpM.isNullFloat(sprint.getActualPoints()));
                     prRep.setActualQatDefectHours(helpM.isNull(prRep.getActualQatDefectHours()) + helpM.isNull(sprint.getActualQatDefectHours()));
                     prRep.setActualQatDefectPoints(helpM.isNullFloat(prRep.getActualQatDefectPoints()) + helpM.isNullFloat(sprint.getActualQatDefectPoints()));
@@ -833,7 +833,7 @@ public class ReportServiceImpl implements ReportService {
         return results;
     }
 
-    public Chart getChatData(Set<JiraIssueDto> issues, FullSprintDto sprintDto, long targetPoints) {
+    public Chart getChatData(Set<JiraIssueDto> issues, FullSprintDto sprintDto, float targetPoints) {
 
         HelperMethods help = new HelperMethods();
 
@@ -871,25 +871,27 @@ public class ReportServiceImpl implements ReportService {
 
         while(!startDate.after(endDate)){
             Date currentDate = startDate.getTime();
+            if (help.isWeekend(currentDate) || nonWorkingDays.contains(currentDate)) {
 
-            date =date+","+formatter.format(currentDate);
+                date = date + "," + formatter.format(currentDate);
 
-            Iterator<JiraIssueDto> iterator = issues.iterator();
-            while (iterator.hasNext()) {
-                JiraIssueDto element = iterator.next();
+                Iterator<JiraIssueDto> iterator = issues.iterator();
+                while (iterator.hasNext()) {
+                    JiraIssueDto element = iterator.next();
 
-                if (help.isWeekend(element.getUpdated()) || nonWorkingDays.contains(currentDate)) {
-                    startDate.add(Calendar.DATE, 1);
-                    continue;
+                    if (help.isWeekend(element.getUpdated()) || nonWorkingDays.contains(element.getUpdated())) {
+                        startDate.add(Calendar.DATE, 1);
+                        continue;
+                    }
+
+                    if (help.isCurrentDay(formatter.format(element.getUpdated()))) {
+                        target = target - element.getPoints();
+                        iterator.remove();
+                    }
                 }
 
-                if (help.isCurrentDay(formatter.format(element.getUpdated()))) {
-                    target = target - element.getPoints();
-                    iterator.remove();
-                }
+                ii.add((int) target);
             }
-
-            ii.add((int) target);
             startDate.add(Calendar.DATE, 1);
         }
 
