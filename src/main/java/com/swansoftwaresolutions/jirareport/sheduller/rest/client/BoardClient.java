@@ -144,8 +144,7 @@ public class BoardClient extends AbstractRestClient implements RestClient {
         IssuesForJiraBoard jiraBoardDtos = restTemplate.exchange(ISSUES_BOARD_URL.replace("{boardId}", String.valueOf(jiraBoardDto.getId())), HttpMethod.GET, request, IssuesForJiraBoard.class).getBody();
 
         if (jiraBoardDtos.issues.length > 0) {
-            jiraBoardDto.setProjectKey(jiraBoardDtos.issues[0].fields.project.getKey());
-            jiraBoardDto.setProjectId(projectService.findByKey(jiraBoardDto.getProjectKey()).getJiraId());
+            jiraBoardDto.setProjectKey(jiraBoardDtos.issues[0].fields.getProject().getKey());
         } else {
             log.warning("Empty JiraProject Key for " + jiraBoardDto.getName());
         }
@@ -174,7 +173,6 @@ public class BoardClient extends AbstractRestClient implements RestClient {
         jiraBoard.setType(jBoardDto.getType());
         jiraBoard.setBoardId((long) jBoardDto.getId());
         jiraBoard.setProjectKey(jBoardDto.getProjectKey());
-        jiraBoard.setProjectJiraId(jBoardDto.getProjectId());
 
         return jiraBoard;
     }

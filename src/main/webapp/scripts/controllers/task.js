@@ -1,19 +1,54 @@
 'use strict';
 
 jiraPluginApp.controller('TaskCtrl',
-    ['$scope', '$routeParams', '$uibModal', 'TaskFactory', 'Notification',
-        function($scope, $routeParams, $uibModal, TaskFactory, Notification) {
+    ['$scope', '$routeParams', '$uibModal', 'TaskFactory', 'Notification', '$interval',
+        function($scope, $routeParams, $uibModal, TaskFactory, Notification ,$interval) {
             var self = this;
             $scope.loaderShow = true;
+//----------------------------------------------------------------------------------------------------------------------
+//Initiate the Timer object.
+            $scope.timer = null;
+
+            //Timer start function.
+            $scope.startTimer = function () {
+                //Set the Timer start message.
+                console.log("Timer started");
+                $scope.timer = $interval(function () {
+                    var newData = [];
+                    TaskFactory.query({}, function (data) {
+                        newData = data.tasks;
+                        var inProgressData = _.findWhere(newData, {status: "IN_PROGRESS"});
+                        console.log(inProgressData);
+                        $scope.data = newData;
+
+                        if (inProgressData === undefined) {
+                            $scope.stopTimer();
+                        }
+                    }, function (error) {
+                        Notification.error("Server error");
+                    });
+
+                }, 2000);
+            };
+
+            //Timer stop function.
+            $scope.stopTimer = function () {
+                //Set the Timer stop message.
+                console.log("Timer stopped.");
+                //Cancel the Timer.
+                if (angular.isDefined($scope.timer)) {
+                    $interval.cancel($scope.timer);
+                }
+            };
 
 //----------------------------------------------------------------------------------------------------------------------
 //Order reports
-            $scope.predicate = 'name';
-            $scope.reverse = true;
-            $scope.order = function(predicate) {
-                $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
-                $scope.predicate = predicate;
-            };
+//            $scope.predicate = 'name';
+//            $scope.reverse = true;
+//            $scope.order = function(predicate) {
+//                $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+//                $scope.predicate = predicate;
+//            };
 
 //----------------------------------------------------------------------------------------------------------------------
 //get data
@@ -29,6 +64,7 @@ jiraPluginApp.controller('TaskCtrl',
             };
 
             self.getTask();
+            $scope.startTimer();
 
 //----------------------------------------------------------------------------------------------------------------------
 //Start task
@@ -46,11 +82,15 @@ jiraPluginApp.controller('TaskCtrl',
                 });
                 modalInstance.result.then(function (data) {
                     TaskFactory.start({name: data.name, action: "start"}, function(result){
-                        self.getTask();
-                        Notification.success("Start task success");
+
                     }, function (error) {
-                        Notification.error("Server error");
+                        //Notification.error("Server error");
                     });
+                    Notification.success("Start task success");
+                    item.status = "IN_PROGRESS";
+                    $scope.startTimer();
+
+                    //self.getTask();
                 }, function () {});
             };
 

@@ -8,7 +8,6 @@ public class JiraBoardDto {
     private String name;
     private String type;
     private String projectKey;
-    private long projectId;
 
     public int getId() {
         return id;
@@ -42,14 +41,6 @@ public class JiraBoardDto {
         this.projectKey = projectKey;
     }
 
-    public long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(long projectId) {
-        this.projectId = projectId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -57,7 +48,6 @@ public class JiraBoardDto {
 
         JiraBoardDto that = (JiraBoardDto) o;
 
-        if (projectId != that.projectId) return false;
         if (!name.equals(that.name)) return false;
         if (type != null ? !type.equals(that.type) : that.type != null) return false;
         return projectKey.equals(that.projectKey);
@@ -69,7 +59,6 @@ public class JiraBoardDto {
         int result = name.hashCode();
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + projectKey.hashCode();
-        result = 31 * result + (int) (projectId ^ (projectId >>> 32));
         return result;
     }
 }

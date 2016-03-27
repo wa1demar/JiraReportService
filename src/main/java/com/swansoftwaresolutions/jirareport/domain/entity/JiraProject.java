@@ -14,9 +14,6 @@ public class JiraProject {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "jira_id")
-    private Long jiraId;
-
     @Column(name = "key")
     private String key;
 
@@ -29,14 +26,6 @@ public class JiraProject {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public void setJiraId(Long jiraId) {
-        this.jiraId = jiraId;
-    }
-
-    public Long getJiraId() {
-        return jiraId;
     }
 
     public void setKey(String key) {
@@ -60,17 +49,16 @@ public class JiraProject {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        JiraProject jiraProject = (JiraProject) o;
+        JiraProject that = (JiraProject) o;
 
-        if (!jiraId.equals(jiraProject.jiraId)) return false;
-        return key.equals(jiraProject.key);
+        if (!key.equals(that.key)) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
 
+        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = jiraId.hashCode();
-        result = 31 * result + key.hashCode();
-        return result;
+        return key.hashCode();
     }
 }

@@ -737,3 +737,27 @@ table.aui .tr-for-progress-bar {
 .nav-block {
     width: 1024px;
 }
+
+/*====================================================================================================================*/
+/*LOADING*/
+/*====================================================================================================================*/
+#veil {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height:100%;
+    width:100%;
+    cursor: not-allowed;
+    filter: alpha(opacity=60);
+    opacity: 0.6;
+    background: #000000;
+}
+#feedLoading {
+    position: absolute;
+    top:200px;
+    width:100%;
+    text-align: center;
+    font-size: 4em;
+    color:white;
+    text-shadow: 2px 2px 2px #021124;
+}

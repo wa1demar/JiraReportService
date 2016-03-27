@@ -25,7 +25,6 @@ public class JiraProjectRepositoryImplTest extends AbstractDbTest {
     @Test
     public void testAddNewProject() throws Exception {
         JiraProject jiraProject = new JiraProject();
-        jiraProject.setJiraId(12204L);
         jiraProject.setKey("BAM");
         jiraProject.setName("BAMDashboard");
 
@@ -40,7 +39,6 @@ public class JiraProjectRepositoryImplTest extends AbstractDbTest {
     @Test
     public void testUpdateProject() throws Exception {
         JiraProject jiraProject = projectRepository.findById(1L);
-        jiraProject.setJiraId(12204L);
         jiraProject.setKey("BAM");
         jiraProject.setName("BAMDashboard");
 
@@ -54,7 +52,6 @@ public class JiraProjectRepositoryImplTest extends AbstractDbTest {
     @Test(expected = NoSuchEntityException.class)
     public void testUpdateWrongProject() throws Exception {
         JiraProject jiraProject = new JiraProject();
-        jiraProject.setJiraId(12204L);
         jiraProject.setKey("BAM");
         jiraProject.setName("BAMDashboard");
 
@@ -75,7 +72,6 @@ public class JiraProjectRepositoryImplTest extends AbstractDbTest {
         assertNotNull(jiraProject);
         assertEquals("CAS", jiraProject.getKey());
         assertEquals("CashHoppers", jiraProject.getName());
-        assertEquals(new Long(10904), jiraProject.getJiraId());
 
     }
 
@@ -116,7 +112,6 @@ public class JiraProjectRepositoryImplTest extends AbstractDbTest {
     @Test(expected = NoSuchEntityException.class)
     public void testDeleteWrongProject() throws Exception {
         JiraProject jiraProject = new JiraProject();
-        jiraProject.setJiraId(12204L);
         jiraProject.setKey("BAM");
         jiraProject.setName("BAMDashboard");
 

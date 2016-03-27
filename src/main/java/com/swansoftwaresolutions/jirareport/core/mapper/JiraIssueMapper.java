@@ -1,9 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.mapper;
 
 
-import com.swansoftwaresolutions.jirareport.core.dto.JiraBoardDto;
-import com.swansoftwaresolutions.jirareport.core.dto.JiraBoardInfoDto;
-import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraIssue;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.JiraIssueDto;
 
 import java.util.List;
@@ -13,13 +11,8 @@ import java.util.List;
  */
 public interface JiraIssueMapper {
 
-    JiraIssueDto toDto(JiraBoard jiraBoard);
-    List<JiraBoardDto> toDtos(List<JiraBoard> jiraBoardList);
-    JiraBoard fromDto(JiraBoardDto jiraBoardDto);
-    List<JiraBoard> fromDtos(List<JiraBoardDto> jiraBoardDtoList);
-
-    JiraBoardInfoDto toInfoDto(JiraBoard jiraBoard);
-    List<JiraBoardInfoDto> toInfoDtos(List<JiraBoard> jiraBoardList);
-    JiraBoard fromInfoDto(JiraBoardInfoDto jiraBoardInfoDto);
-    List<JiraBoard> fromInfoDtos(List<JiraBoardInfoDto> jiraBoardInfoDtoList);
+    JiraIssueDto toDto(JiraIssue jiraIssue);
+    List<JiraIssueDto> toDtos(List<JiraIssue> jiraIssueList);
+    JiraIssue fromDto(JiraIssueDto jiraIssueDto);
+    List<JiraIssue> fromDtos(List<JiraIssueDto> jiraIssueDtoList);
 }

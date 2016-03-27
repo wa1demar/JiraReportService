@@ -26,9 +26,6 @@ public class JiraBoard {
     @Column(name = "project_key")
     private String projectKey;
 
-    @Column(name = "project_jira_id")
-    private Long projectJiraId;
-
     public Long getId() {
         return id;
     }
@@ -67,14 +64,6 @@ public class JiraBoard {
 
     public void setProjectKey(String projectKey) {
         this.projectKey = projectKey;
-    }
-
-    public Long getProjectJiraId() {
-        return projectJiraId;
-    }
-
-    public void setProjectJiraId(Long projectJiraId) {
-        this.projectJiraId = projectJiraId;
     }
 
     @Override

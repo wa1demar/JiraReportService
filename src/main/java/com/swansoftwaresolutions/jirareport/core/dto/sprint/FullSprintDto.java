@@ -22,6 +22,7 @@ public class FullSprintDto {
     private Long reportId;
     List<SprintDeveloperDto> developers;
     List<SprintDeveloperDto> sprintTeams;
+    private long jiraSprintId;
 
     public long getId() {
         return id;
@@ -109,6 +110,14 @@ public class FullSprintDto {
 
     public void setSprintTeams(List<SprintDeveloperDto> sprintTeams) {
         this.sprintTeams = sprintTeams;
+    }
+
+    public long getJiraSprintId() {
+        return jiraSprintId;
+    }
+
+    public void setJiraSprintId(long jiraSprintId) {
+        this.jiraSprintId = jiraSprintId;
     }
 
     @Override

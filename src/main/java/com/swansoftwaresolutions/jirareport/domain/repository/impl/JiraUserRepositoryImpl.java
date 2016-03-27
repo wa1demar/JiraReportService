@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
+import com.sun.mail.util.QEncoderStream;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraGroup;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
@@ -61,7 +62,9 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
 
     @Override
     public List<JiraUser> findByLogins(String[] admins) {
-        return sessionFactory.getCurrentSession().createCriteria(JiraUser.class).add(Restrictions.in("login", admins)).list();
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM JiraUser u WHERE u.login in :admins");
+        query.setParameterList("admins", admins);
+        return query.list();
     }
 
     @Override
@@ -91,8 +94,7 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
 
                 existed.setGroups(new ArrayList<>(groups));
 
-                sessionFactory.getCurrentSession().update(existed);
-                sessionFactory.getCurrentSession().flush();
+                sessionFactory.getCurrentSession().merge(existed);
 
             }
         }
