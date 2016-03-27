@@ -1,6 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository;
 
-import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraIssue;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 
 import java.util.List;
@@ -10,15 +10,15 @@ import java.util.List;
  */
 public interface JiraIssueRepository {
 
-    JiraBoard add(JiraBoard jiraBoard);
+    JiraIssue add(JiraIssue jiraIssue);
 
-    List<JiraBoard> findAll();
+    List<JiraIssue> findAll() throws NoSuchEntityException;
 
-    JiraBoard findById(Long jiraBoardId);
+    JiraIssue findById(Long jiraIssueId);
 
-    void delete(final JiraBoard jiraBoard) throws NoSuchEntityException;
+    void delete(final JiraIssue jiraIssue) throws NoSuchEntityException;
 
-    void delete(final Long jiraBoard) throws NoSuchEntityException;
+    void delete(final Long JiraIssue) throws NoSuchEntityException;
 
-    JiraBoard update(JiraBoard jiraBoard) throws NoSuchEntityException;
+    JiraIssue update(JiraIssue jiraIssue) throws NoSuchEntityException;
 }
