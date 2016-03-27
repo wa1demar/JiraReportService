@@ -83,6 +83,9 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     JiraSprintsService jiraSprintsService;
 
+    @Autowired
+    ConfigService configService;
+
 
     @Override
     public ReportListDto retrieveAllReportsList() {
@@ -659,12 +662,23 @@ public class ReportServiceImpl implements ReportService {
         Calendar endDate = Calendar.getInstance();
         endDate.setTime(sprintDto.getEndDate());
 
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        String nonWorkingDaysString = configService.retrieveConfig().getNonWorkingDays();
+        List<Date>  nonWorkingDays = new ArrayList<>();
+        for (String dateString : Arrays.asList(nonWorkingDaysString.split(","))) {
+            try {
+                nonWorkingDays.add(formatter.parse(dateString));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
         while (!startDate.after(endDate)) {
             Date currentDate = startDate.getTime();
 
             List<SprintIssueDto> issues = new ArrayList<>();
 
-            if (helperMethods.isWeekend(currentDate)) {
+            if (helperMethods.isWeekend(currentDate) || nonWorkingDays.contains(currentDate)) {
                 startDate.add(Calendar.DATE, 1);
                 continue;
             }
