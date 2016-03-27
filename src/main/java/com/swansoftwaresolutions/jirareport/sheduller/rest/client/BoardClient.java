@@ -144,7 +144,7 @@ public class BoardClient extends AbstractRestClient implements RestClient {
         IssuesForJiraBoard jiraBoardDtos = restTemplate.exchange(ISSUES_BOARD_URL.replace("{boardId}", String.valueOf(jiraBoardDto.getId())), HttpMethod.GET, request, IssuesForJiraBoard.class).getBody();
 
         if (jiraBoardDtos.issues.length > 0) {
-            jiraBoardDto.setProjectKey(jiraBoardDtos.issues[0].fields.project.getKey());
+            jiraBoardDto.setProjectKey(jiraBoardDtos.issues[0].fields.getProject().getKey());
         } else {
             log.warning("Empty JiraProject Key for " + jiraBoardDto.getName());
         }

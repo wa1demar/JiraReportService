@@ -34,15 +34,34 @@ public class JiraIssueRepositoryImpl implements JiraIssueRepository {
 
     @Override
     public JiraIssue add(JiraIssue jiraIssue) {
-        sessionFactory.getCurrentSession().persist(jiraIssue);
+        JiraIssue jiraIssueExist = null;
+        try {
+            jiraIssueExist = findByKey(jiraIssue.getKey());
+        } catch (NoSuchEntityException e) {
+            e.printStackTrace();
+        }
+
+        if (jiraIssueExist == null) {
+            sessionFactory.getCurrentSession().save(jiraIssue);
+        } else {
+            jiraIssue.setId(jiraIssueExist.getId());
+            sessionFactory.getCurrentSession().merge(jiraIssue);
+        }
+
         return jiraIssue;
     }
 
     @Override
-    public JiraIssue findById(Long jiraIssueId) {
+    public JiraIssue findById(Long jiraIssueId) throws NoSuchEntityException{
         return (JiraIssue) sessionFactory.getCurrentSession()
                 .createCriteria(JiraIssue.class).add(Restrictions.eq("id", jiraIssueId)).uniqueResult();
+    }
 
+    @Override
+    public JiraIssue findByKey(String issueKey) throws NoSuchEntityException {
+        Query query = sessionFactory.getCurrentSession().createQuery("from JiraIssue issue where issue.key = :issueKey");
+        query.setParameter("issueKey", issueKey);
+        return (JiraIssue) query.uniqueResult();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * @author Vitaliy Holovko
@@ -43,10 +44,10 @@ public class JiraIssue {
     private String resolutionName;
 
     @Column(name = "created")
-    private String created;
+    private Date created;
 
     @Column(name = "updated")
-    private String updated;
+    private Date updated;
 
     @Column(name = "assigned_name")
     private String assignedName;
@@ -73,7 +74,7 @@ public class JiraIssue {
     private String statusName;
 
     @Column(name = "due_date")
-    private String dueDate;
+    private Date dueDate;
 
     @Column(name = "points")
     private float points;
@@ -164,20 +165,24 @@ public class JiraIssue {
         this.resolutionName = resolutionName;
     }
 
-    public String getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 
-    public String getUpdated() {
+    public Date getUpdated() {
         return updated;
     }
 
-    public void setUpdated(String updated) {
+    public void setUpdated(Date updated) {
         this.updated = updated;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
 
     public String getCreatorName() {
@@ -218,14 +223,6 @@ public class JiraIssue {
 
     public void setStatusName(String statusName) {
         this.statusName = statusName;
-    }
-
-    public String getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(String dueDate) {
-        this.dueDate = dueDate;
     }
 
     public float getPoints() {
@@ -274,5 +271,22 @@ public class JiraIssue {
 
     public void setSprintId(long sprintId) {
         this.sprintId = sprintId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        JiraIssue jiraIssue = (JiraIssue) o;
+
+        if (!key.equals(jiraIssue.key)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return key.hashCode();
     }
 }

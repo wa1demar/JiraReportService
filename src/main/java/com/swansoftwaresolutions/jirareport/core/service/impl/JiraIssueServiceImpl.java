@@ -2,11 +2,12 @@ package com.swansoftwaresolutions.jirareport.core.service.impl;
 
 import com.swansoftwaresolutions.jirareport.core.dto.JiraBoardInfoDto;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraBoardsDto;
-import com.swansoftwaresolutions.jirareport.core.mapper.JiraBoardMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.JiraIssueMapper;
 import com.swansoftwaresolutions.jirareport.core.service.JiraIssueService;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
-import com.swansoftwaresolutions.jirareport.domain.repository.JiraBoardRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.JiraIssueRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
+import com.swansoftwaresolutions.jirareport.sheduller.dto.JiraIssueDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,34 +21,31 @@ import java.util.List;
 public class JiraIssueServiceImpl implements JiraIssueService {
 
     @Autowired
-    JiraBoardRepository jiraBoardRepository;
+    JiraIssueRepository jiraIssueRepository;
 
     @Autowired
-    JiraBoardMapper jiraBoardMapper;
+    JiraIssueMapper jiraIssueMapper;
 
     @Override
-    public JiraBoard save(JiraBoard jiraBoard) {
-        return jiraBoardRepository.add(jiraBoard);
+    public JiraIssueDto save(JiraIssueDto jiraIssueDto) {
+        return jiraIssueMapper.toDto(jiraIssueRepository.add(jiraIssueMapper.fromDto(jiraIssueDto)));
     }
 
     @Override
-    public List<JiraBoard> findAll() throws NoSuchEntityException {
-        return jiraBoardRepository.findAll();
+    public JiraIssueDto update(JiraIssueDto jiraIssueDto) throws NoSuchEntityException{
+        return jiraIssueMapper.toDto(jiraIssueRepository.update(jiraIssueMapper.fromDto(jiraIssueDto)));
     }
 
     @Override
-    public void delete(JiraBoard jiraBoard) throws NoSuchEntityException {
-        jiraBoardRepository.delete(jiraBoard);
+    public List<JiraIssueDto> findAll() throws NoSuchEntityException {
+        return jiraIssueMapper.toDtos(jiraIssueRepository.findAll());
     }
 
     @Override
-    public List<JiraBoardInfoDto> findAllBoardForInfo() throws NoSuchEntityException{
-        return jiraBoardMapper.toInfoDtos(jiraBoardRepository.findAll());
+    public void delete(JiraIssueDto jiraIssue) throws NoSuchEntityException {
+        jiraIssueRepository.delete(jiraIssueMapper.fromDto(jiraIssue));
     }
 
-    @Override
-    public JiraBoardsDto retrieveAllBoards() throws NoSuchEntityException{
-        List<JiraBoard> boards = jiraBoardRepository.findAll();
-        return new JiraBoardsDto(jiraBoardMapper.toDtos(boards));
-    }
+
+
 }

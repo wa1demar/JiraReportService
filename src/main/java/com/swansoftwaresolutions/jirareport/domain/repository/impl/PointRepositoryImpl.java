@@ -38,7 +38,7 @@ public class PointRepositoryImpl implements PointRepository {
         }
 
         if (jiraPointExist == null) {
-            sessionFactory.getCurrentSession().persist(jiraPoint);
+            sessionFactory.getCurrentSession().save(jiraPoint);
         } else {
             sessionFactory.getCurrentSession().merge(jiraPoint);
         }

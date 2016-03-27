@@ -1,10 +1,12 @@
 package com.swansoftwaresolutions.jirareport.sheduller.dto;
 
+import java.util.Date;
+
 /**
  * @author Vitaliy Holovko
  */
 public class JiraIssueDto {
-    private long id;
+    private Long id;
     private String key;
     private int projectId;
     private String projectKey;
@@ -14,8 +16,8 @@ public class JiraIssueDto {
     private long timeSpent;
     private int resolutionId;
     private String resolutionName;
-    private String created;
-    private String updated;
+    private Date created;
+    private Date updated;
     private String assignedName;
     private String assignedKey;
     private String assignedFullName;
@@ -24,16 +26,16 @@ public class JiraIssueDto {
     private String creatorFullName;
     private int statusId;
     private String statusName;
-    private String dueDate;
+    private Date dueDate;
     private float points;
     private long boardId;
     private long sprintId;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -109,20 +111,24 @@ public class JiraIssueDto {
         this.resolutionName = resolutionName;
     }
 
-    public String getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 
-    public String getUpdated() {
+    public Date getUpdated() {
         return updated;
     }
 
-    public void setUpdated(String updated) {
+    public void setUpdated(Date updated) {
         this.updated = updated;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
 
     public String getCreatorName() {
@@ -163,14 +169,6 @@ public class JiraIssueDto {
 
     public void setStatusName(String statusName) {
         this.statusName = statusName;
-    }
-
-    public String getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(String dueDate) {
-        this.dueDate = dueDate;
     }
 
     public float getPoints() {

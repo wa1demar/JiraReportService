@@ -35,6 +35,7 @@ public class JiraBoardRepositoryImpl implements JiraBoardRepository {
         return jiraBoard;
     }
 
+    @Override
     public JiraBoard findById(Long jiraBoardId) {
         return (JiraBoard) sessionFactory.getCurrentSession()
                 .createCriteria(JiraBoard.class).add(Restrictions.eq("id", jiraBoardId)).uniqueResult();

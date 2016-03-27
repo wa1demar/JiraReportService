@@ -51,6 +51,9 @@ public class IssueDao extends AbstractRestClient implements RestClient {
     @Autowired
     JiraSprintsService sprintService;
 
+    @Autowired
+    JiraIssueService jiraIssueService;
+
     @Override
     public void loadData() {
         List<ImportedJiraSprintDto> sprints = new ArrayList<>();
@@ -87,7 +90,12 @@ public class IssueDao extends AbstractRestClient implements RestClient {
                 IssuesDto issues = restTemplate.exchange(URL_ISSUES_BY_SPRINT.replace("{sprintId}", String.valueOf(sprint.getSprintId())), HttpMethod.GET, request, IssuesDto.class).getBody();
                 List<JiraIssueDto> jiraIssueList = new ArrayList<>();
                 for (IssueDto issueDto : issues.issues) {
-                    jiraIssueList.add(convertIssueDtoToJiraIssueDto(issueDto, sprint.getOriginBoardId()));
+                    JiraIssueDto jiraIssueDto = convertIssueDtoToJiraIssueDto(issueDto, sprint.getOriginBoardId());
+                    jiraIssueDto.setBoardId(sprint.getOriginBoardId());
+                    jiraIssueDto.setSprintId(sprint.getId());
+                    jiraIssueDto = jiraIssueService.save(jiraIssueDto);
+
+                    jiraIssueList.add(jiraIssueDto);
                 }
 
 //            ReportDto report = new ReportDto();
@@ -184,28 +192,31 @@ public class IssueDao extends AbstractRestClient implements RestClient {
         JiraIssueDto jiraIssueDto = new JiraIssueDto();
 
         jiraIssueDto.setKey(issueDto.key);
-        jiraIssueDto.setProjectId(issueDto.fields.project.getId());
-        jiraIssueDto.setProjectKey(issueDto.fields.project.getKey());
-        jiraIssueDto.setIssueTypeId(issueDto.fields.issuetype.id);
-        jiraIssueDto.setIssueTypeName(issueDto.fields.issuetype.name);
-        jiraIssueDto.setIssueTypeSubTask(issueDto.fields.issuetype.subtask);
-        jiraIssueDto.setTimeSpent(helperMethods.isNull(issueDto.fields.timespent));
-        if (issueDto.fields.resolution != null) {
-            jiraIssueDto.setResolutionId(issueDto.fields.resolution.id);
-            jiraIssueDto.setResolutionName(issueDto.fields.resolution.name);
+        jiraIssueDto.setProjectId(issueDto.fields.getProject().getId());
+        jiraIssueDto.setProjectKey(issueDto.fields.getProject().getKey());
+        jiraIssueDto.setIssueTypeId(issueDto.fields.getIssuetype().id);
+        jiraIssueDto.setIssueTypeName(issueDto.fields.getIssuetype().name);
+        jiraIssueDto.setIssueTypeSubTask(issueDto.fields.getIssuetype().subtask);
+        jiraIssueDto.setTimeSpent(helperMethods.isNull(issueDto.fields.getTimespent()));
+        if (issueDto.fields.getResolution() != null) {
+            jiraIssueDto.setResolutionId(issueDto.fields.getResolution().id);
+            jiraIssueDto.setResolutionName(issueDto.fields.getResolution().name);
+        } else {
+            jiraIssueDto.setResolutionId(0);
+            jiraIssueDto.setResolutionName("");
         }
-        jiraIssueDto.setCreated(issueDto.fields.created);
-        jiraIssueDto.setUpdated(issueDto.fields.updated);
-        jiraIssueDto.setAssignedKey(issueDto.fields.assignee.key);
-        jiraIssueDto.setAssignedName(issueDto.fields.assignee.name);
-        jiraIssueDto.setAssignedFullName(issueDto.fields.assignee.displayName);
-        jiraIssueDto.setCreatorKey(issueDto.fields.creator.key);
-        jiraIssueDto.setCreatorName(issueDto.fields.creator.name);
-        jiraIssueDto.setCreatorFullName(issueDto.fields.creator.displayName);
-        jiraIssueDto.setStatusId(issueDto.fields.status.id);
-        jiraIssueDto.setStatusName(issueDto.fields.status.name);
-        jiraIssueDto.setDueDate(issueDto.fields.duedate);
-        jiraIssueDto.setPoints(issueDto.fields.customfield_10102);
+        jiraIssueDto.setCreated(issueDto.fields.getCreated());
+        jiraIssueDto.setUpdated(issueDto.fields.getUpdated());
+        jiraIssueDto.setAssignedKey(issueDto.fields.getAssignee().key);
+        jiraIssueDto.setAssignedName(issueDto.fields.getAssignee().name);
+        jiraIssueDto.setAssignedFullName(issueDto.fields.getAssignee().displayName);
+        jiraIssueDto.setCreatorKey(issueDto.fields.getCreator().key);
+        jiraIssueDto.setCreatorName(issueDto.fields.getCreator().name);
+        jiraIssueDto.setCreatorFullName(issueDto.fields.getCreator().displayName);
+        jiraIssueDto.setStatusId(issueDto.fields.getStatus().id);
+        jiraIssueDto.setStatusName(issueDto.fields.getStatus().name);
+        jiraIssueDto.setDueDate(issueDto.fields.getDuedate());
+        jiraIssueDto.setPoints(issueDto.fields.getCustomfield_10102());
         jiraIssueDto.setBoardId(boardId);
         return jiraIssueDto;
     }
