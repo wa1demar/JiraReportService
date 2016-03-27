@@ -607,7 +607,7 @@ public class ReportServiceImpl implements ReportService {
                     prRep.setTargetUatDefectMin(prRep.getTargetUatDefectMin() + sprint.getTargetUatDefectMin());
                     prRep.setTargetUatDefectMax(prRep.getTargetUatDefectMax() + sprint.getTargetUatDefectMax());
 
-                    prRep.setActualHours(helpM.isNull(prRep.getActualHours()) + Math.round(sprint.getActualHours() / 60));
+                    prRep.setActualHours(helpM.isNull(prRep.getActualHours()) + Math.round(helpM.isNull(sprint.getActualHours()) / 60));
                     prRep.setActualPoints(helpM.isNullFloat(prRep.getActualPoints()) + helpM.isNullFloat(sprint.getActualPoints()));
                     prRep.setActualQatDefectHours(helpM.isNull(prRep.getActualQatDefectHours()) + helpM.isNull(sprint.getActualQatDefectHours()));
                     prRep.setActualQatDefectPoints(helpM.isNullFloat(prRep.getActualQatDefectPoints()) + helpM.isNullFloat(sprint.getActualQatDefectPoints()));
