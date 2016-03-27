@@ -1,17 +1,12 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name jiraPluginApp.controller:MainCtrl
- * @description
- * # MainCtrl
- * Controller of the jiraPluginApp
- */
-angular.module('jiraPluginApp')
-  .controller('MainCtrl', function () {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-  });
+jiraPluginApp.controller('MainCtrl', ['$scope',
+    function($scope) {
+        $scope.isLoading = false;
+
+        $scope.setLoading = function(loading) {
+            $scope.isLoading = loading;
+        };
+
+    }
+]);
