@@ -1,17 +1,15 @@
+{{message}}
 <table ng-show="data.length > 0" class="aui table">
     <thead>
         <tr>
             <th>
-                <span ng-click="order('label')" class="cursor-pointer">Label</span>
-                <span ng-show="predicate === 'label'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+                <span>Label</span>
             </th>
             <th style="width: 200px;">
-                <span ng-click="order('status')" class="cursor-pointer">Status</span>
-                <span ng-show="predicate === 'status'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+                <span>Status</span>
             </th>
             <th style="width: 250px;">
-                <span ng-click="order('lastUpdate')" class="cursor-pointer">Last update</span>
-                <span ng-show="predicate === 'lastUpdate'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+                <span>Last update</span>
             </th>
             <th style="width: 100px;"></th>
         </tr>
@@ -28,7 +26,10 @@
                <span ng-if="value.status !== 'DONE'"> - </span>
             </td>
             <td>
-                <span ng-if="value.status !== 'IN_PROGRESS'" class="aui-icon aui-icon-small aui-iconfont-arrows-right task-start" ng-click="startTask(value)" title="Start task">Start task</span>
+                <!--<span ng-if="value.status !== 'IN_PROGRESS'" class="aui-icon aui-icon-small aui-iconfont-arrows-right task-start" ng-click="startTask(value)" title="Start task">Start task</span>-->
+
+                <span ng-if="value.status !== 'IN_PROGRESS'" ng-click="startTask(value)" id="task-start" class="aui-button">Start</span>
+
             </td>
         </tr>
     </tbody>
