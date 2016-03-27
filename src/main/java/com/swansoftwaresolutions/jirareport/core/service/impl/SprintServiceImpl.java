@@ -184,29 +184,39 @@ public class SprintServiceImpl implements SprintService {
     @Override
     public List<FullSprintDto> findByReportId(Long reportId) throws NoSuchEntityException {
         List<FullSprintDto> fullSprintDto = new ArrayList<>();
-        SprintDtos sprints = sprintMapper.toDto(sprintRepository.findByReportId(reportId));
+        List<Sprint> sprints = sprintRepository.findByReportId(reportId);
 
-        for (SprintDto sprintDto : sprints.getSprints()) {
+        for (Sprint sprint : sprints) {
             List<SprintDeveloperDto> developers = new ArrayList<>();
 
-            for (SprintDeveloper developer : developerRepository.findBySprintId(sprintDto.getId())) {
+            for (SprintDeveloper developer : developerRepository.findBySprintId(sprint.getId())) {
                 SprintDeveloperDto developerDto = developerMapper.toDto(developer);
                 developerDto.setDeveloperName(developer.getJiraUser().getFullName() != null ? developer.getJiraUser().getFullName() : "NoName");
                 developerDto.setDeveloperLogin(developer.getJiraUser().getLogin() != null ? developer.getJiraUser().getLogin() : "NoName");
                 developers.add(developerDto);
             }
 
+
             FullSprintDto fullSpr = new FullSprintDto();
-            fullSpr.setId(sprintDto.getId());
-            fullSpr.setStartDate(sprintDto.getStartDate());
-            fullSpr.setEndDate(sprintDto.getEndDate());
-            fullSpr.setName(sprintDto.getName());
-            fullSpr.setState(sprintDto.getState());
-            fullSpr.setType(sprintDto.getType());
-            fullSpr.setReportId(sprintDto.getReportId());
-            fullSpr.setNotCountTarget(sprintDto.isNotCountTarget());
-            fullSpr.setShowUat(sprintDto.isShowUat());
+            fullSpr.setId(sprint.getId());
+            fullSpr.setType(sprint.getType());
+            fullSpr.setReportId(sprint.getReport().getId());
+            fullSpr.setNotCountTarget(sprint.isNotCountTarget());
+            fullSpr.setShowUat(sprint.isShowUAT());
             fullSpr.setDevelopers(developers);
+
+            if (sprint.getJiraSprint() != null) {
+                fullSpr.setStartDate(sprint.getJiraSprint().getStartDate());
+                fullSpr.setEndDate(sprint.getJiraSprint().getEndDate());
+                fullSpr.setName(sprint.getJiraSprint().getName());
+                fullSpr.setState(sprint.getJiraSprint().getState());
+            } else {
+                fullSpr.setStartDate(sprint.getStartDate());
+                fullSpr.setEndDate(sprint.getEndDate());
+                fullSpr.setName(sprint.getName());
+                fullSpr.setState(sprint.getState());
+
+            }
 
             fullSprintDto.add(fullSpr);
         }

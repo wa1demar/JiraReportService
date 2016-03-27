@@ -42,6 +42,11 @@ public class JiraIssueServiceImpl implements JiraIssueService {
     }
 
     @Override
+    public List<JiraIssueDto> findBySprintId(long sprintId) throws NoSuchEntityException {
+        return jiraIssueMapper.toDtos(jiraIssueRepository.findBySprintId(sprintId));
+    }
+
+    @Override
     public void delete(JiraIssueDto jiraIssue) throws NoSuchEntityException {
         jiraIssueRepository.delete(jiraIssueMapper.fromDto(jiraIssue));
     }

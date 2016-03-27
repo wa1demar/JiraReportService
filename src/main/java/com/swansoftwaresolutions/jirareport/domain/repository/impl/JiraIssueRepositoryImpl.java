@@ -33,6 +33,13 @@ public class JiraIssueRepositoryImpl implements JiraIssueRepository {
     }
 
     @Override
+    public List<JiraIssue> findBySprintId(long sprintId) throws NoSuchEntityException {
+        Query query = sessionFactory.getCurrentSession().createQuery("from JiraIssue issue where issue.sprintId = :sprintId");
+        query.setParameter("sprintId", sprintId);
+        return (List<JiraIssue>) query.list();
+    }
+
+    @Override
     public JiraIssue add(JiraIssue jiraIssue) {
         JiraIssue jiraIssueExist = null;
         try {
