@@ -1,10 +1,12 @@
 package com.swansoftwaresolutions.jirareport.core.helper;
 
+import com.swansoftwaresolutions.jirareport.core.dto.sprint.FullSprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint_issue.IssuesByDayDto;
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssueDto;
 import com.swansoftwaresolutions.jirareport.core.dto.dashboard.Chart;
 import com.swansoftwaresolutions.jirareport.core.dto.dashboard.SprintProjectReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDeveloperDto;
+import com.swansoftwaresolutions.jirareport.sheduller.dto.JiraIssueDto;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -182,6 +184,60 @@ public class HelperMethods {
 
         chart.setActual(array);
         chart.setTarget(target);
+
+        return chart;
+    }
+
+    public Chart getChatData(Set<JiraIssueDto> issues, FullSprintDto sprintDto) {
+        Chart chart = new Chart();
+
+//        HelperMethods helperMethods = new HelperMethods();
+//
+//        String date = "0,";
+//        for (IssuesByDayDto issuesByDayDto : issuesByDayList) {
+//            date += issuesByDayDto.getDate() + ",";
+//        }
+//
+//        String[] dateArray = date.split(",");
+//        chart.setLabel(dateArray);
+//        int[] actual = new int[dateArray.length];
+//        double[] target = new double[dateArray.length];
+//
+//        actual[0] = (int) targetPoint;
+//        target[0] = (int) targetPoint;
+//
+//        List<Integer> ii = new ArrayList<>();
+//        ii.add(actual[0]);
+//
+//
+//        for (int i = 1; i < dateArray.length; i++) {
+//            if (helperMethods.isCurrentDay(dateArray[i])) {
+//                boolean key = false;
+//                actual[i] =actual[i-1];
+//                for (IssuesByDayDto issuesDto : issuesByDayList) {
+//                    if (issuesDto.getDate().equals(dateArray[i])) {
+//                        for (SprintIssueDto sprintIssueDto : issuesDto.getIssues()) {
+//                            actual[i] = actual[i] - sprintIssueDto.getPoint();
+//                            key = true;
+//                        }
+//                    }
+//
+//                    if (key) {
+//                        ii.add(actual[i]);
+//                        key = false;
+//                    }
+//
+//                }
+//            }
+//
+//            target[i] = (targetPoint-targetPoint/(dateArray.length-1)*i);
+//        }
+//
+//        int[] array = new int[ii.size()];
+//        for (int i = 0; i < ii.size(); i++) array[i] = ii.get(i);
+//
+//        chart.setActual(array);
+//        chart.setTarget(target);
 
         return chart;
     }

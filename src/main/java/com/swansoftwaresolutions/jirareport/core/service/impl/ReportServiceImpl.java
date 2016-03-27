@@ -429,29 +429,27 @@ public class ReportServiceImpl implements ReportService {
         List<SprintProjectReportDto> sprints = new ArrayList<>();
 
         List<FullSprintDto> sprintDtoList;
+
         try {
             sprintDtoList = sprintService.findByReportId(report.getId());
-
-            JiraBoardDto board = jiraBoardService.findById(report.getBoardId());
-//            JiraSprintsDto sprintSDto = jiraSprintsService.retrieveByBoardId(board.getId());
 
             for (FullSprintDto sprintDto : sprintDtoList) {
 
                 List<JiraIssueDto> jiraIssueList = new ArrayList<>();
                 jiraIssueList = jiraIssueService.findBySprintId(sprintDto.getId());
 
+                Set<JiraIssueDto> issuesSet = new HashSet<>();
+
                 SprintProjectReportDto sprint = new SprintProjectReportDto();
                 if (sprintDto != null) {
                     List<SprintDeveloperDto> sprintDevelopers = new ArrayList<>();
                     for (SprintDeveloperDto dev : sprintDto.getDevelopers()) {
-                        Set<JiraIssueDto> issuesSet = new HashSet<>();
-
                         for (JiraIssueDto issue : jiraIssueList) {
                             if (dev.getDeveloperLogin().equals(issue.getAssignedKey())) {
 
                                 issuesSet.add(issue);
 
-                                if (issue.getStatusName().equals("Done")) {
+//                                if (issue.getStatusName().equals("Done")) {
                                     if (issue.getIssueTypeName().equals("Story")) {
                                         dev.setActualPoints(dev.getActualPoints() + (int) issue.getPoints());
                                         dev.setActualHours(help.isNull(dev.getActualHours()) + Math.round(issue.getTimeSpent() / 60));
@@ -467,7 +465,7 @@ public class ReportServiceImpl implements ReportService {
                                             dev.setActualHours(help.isNull(dev.getActualHours()) + Math.round(issue.getTimeSpent() / 60));
                                         }
                                     }
-                                }
+//                                }
                             }
                         }
 
@@ -521,7 +519,7 @@ public class ReportServiceImpl implements ReportService {
                     sprint.setActualUatDefectPoints(0);
                 }
 
-//                sprint.setChart(help.getChatData(issuesByDayList, sprint.getTargetPoints()));
+                sprint.setChart(help.getChatData(issuesSet, sprintDto));
                 sprints.add(sprint);
             }
 
