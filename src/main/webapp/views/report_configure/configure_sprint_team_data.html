@@ -1,6 +1,7 @@
 <form class="aui">
     <div class="autofill-box">
         <span ng-show="showAutoFillData.showAutoFillLabel" class="aui-lozenge aui-lozenge-current">Autofill {{showAutoFillData.sprintName}}</span>
+        <span ng-show="reportModel.sprint.state === 'future'" class="aui-lozenge aui-lozenge-moved">Future sprint</span>
     </div>
     <div id="sprint-autofill-box">
         <div>
