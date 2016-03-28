@@ -432,8 +432,7 @@ public class ReportServiceImpl implements ReportService {
                     continue;
                 }
 
-                List<JiraIssueDto> jiraIssueList = new ArrayList<>();
-                jiraIssueList = jiraIssueService.findBySprintId(sprintDto.getJiraSprintId());
+                List<JiraIssueDto> jiraIssueList = jiraIssueService.findBySprintId(sprintDto.getJiraSprintId());
 
                 Set<JiraIssueDto> issuesSet = new HashSet<>();
 
@@ -607,7 +606,7 @@ public class ReportServiceImpl implements ReportService {
                     prRep.setTargetUatDefectMin(prRep.getTargetUatDefectMin() + sprint.getTargetUatDefectMin());
                     prRep.setTargetUatDefectMax(prRep.getTargetUatDefectMax() + sprint.getTargetUatDefectMax());
 
-                    prRep.setActualHours(helpM.isNull(prRep.getActualHours()) + Math.round(helpM.isNull(sprint.getActualHours()) / 60));
+                    prRep.setActualHours(helpM.isNull(prRep.getActualHours()) + helpM.isNull(sprint.getActualHours()));
                     prRep.setActualPoints(helpM.isNullFloat(prRep.getActualPoints()) + helpM.isNullFloat(sprint.getActualPoints()));
                     prRep.setActualQatDefectHours(helpM.isNull(prRep.getActualQatDefectHours()) + helpM.isNull(sprint.getActualQatDefectHours()));
                     prRep.setActualQatDefectPoints(helpM.isNullFloat(prRep.getActualQatDefectPoints()) + helpM.isNullFloat(sprint.getActualQatDefectPoints()));
@@ -867,8 +866,6 @@ public class ReportServiceImpl implements ReportService {
         List<Integer> ii = new ArrayList<>();
         ii.add((int) targetPoints);
 
-        float target = targetPoints;
-
         while (!startDate.after(endDate)) {
             Date currentDate = startDate.getTime();
 
@@ -889,7 +886,6 @@ public class ReportServiceImpl implements ReportService {
                     iterator.remove();
                 }
             }
-
 
             ii.add((int) tar);
             startDate.add(Calendar.DATE, 1);
