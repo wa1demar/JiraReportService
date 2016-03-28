@@ -1,7 +1,9 @@
 package com.swansoftwaresolutions.jirareport.core.dto.dashboard;
 
 import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDeveloperDto;
+import com.swansoftwaresolutions.jirareport.domain.entity.SprintDeveloper;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +38,7 @@ public class SprintProjectReportDto {
     private float actualUatDefectPoints;
     private Long actualUatDefectHours;
     private int defectActual;
+    private List<SprintDeveloper> developers = new ArrayList<>();
 
     private Chart chart;
 
@@ -271,5 +274,13 @@ public class SprintProjectReportDto {
 
     public void setDefectActual(int defectActual) {
         this.defectActual = defectActual;
+    }
+
+    public List<SprintDeveloper> getDevelopers() {
+        return developers;
+    }
+
+    public void setDevelopers(List<SprintDeveloper> developers) {
+        this.developers = developers;
     }
 }
