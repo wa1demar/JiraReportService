@@ -39,9 +39,6 @@ public class IssueDao extends AbstractRestClient implements RestClient {
     JiraUserService jiraUserService;
 
     @Autowired
-    PointService pointService;
-
-    @Autowired
     ReportService reportService;
 
     @Autowired
@@ -88,11 +85,10 @@ public class IssueDao extends AbstractRestClient implements RestClient {
                     JiraIssueDto jiraIssueDto = convertIssueDtoToJiraIssueDto(issueDto, sprint.getOriginBoardId());
                     jiraIssueDto.setBoardId(sprint.getOriginBoardId());
                     jiraIssueDto.setSprintId(sprint.getId());
-                    jiraIssueDto = jiraIssueService.save(jiraIssueDto);
+                    jiraIssueService.save(jiraIssueDto);
                 }
             }
         }
-
     }
 
     private JiraIssueDto convertIssueDtoToJiraIssueDto(IssueDto issueDto, long boardId) {

@@ -9,7 +9,6 @@ import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDtoBuilder;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint.FullSprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDeveloperDto;
-import com.swansoftwaresolutions.jirareport.core.mapper.JiraPointMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.ReportMapper;
 import com.swansoftwaresolutions.jirareport.core.service.*;
 import com.swansoftwaresolutions.jirareport.domain.entity.*;
@@ -67,12 +66,6 @@ public class ReportServiceImpl implements ReportService {
 
     @Autowired
     SprintIssueService sprintIssueService;
-
-    @Autowired
-    PointService pointService;
-
-    @Autowired
-    JiraPointMapper pointMapper;
 
     @Autowired
     JiraBoardService jiraBoardService;
@@ -901,16 +894,6 @@ public class ReportServiceImpl implements ReportService {
             ii.add((int) tar);
             startDate.add(Calendar.DATE, 1);
         }
-
-//        if ((startDate.after(endDate)) && issues.size() != 0) {
-//            float tar = ii.get(ii.size() - 1);
-//            for (JiraIssueDto jiraIssueDto : issues) {
-//                tar = tar - jiraIssueDto.getPoints();
-//            }
-//
-//            ii.set(ii.size() - 1, (int) tar);
-//        }
-
 
         String[] dateArray = date.split(",");
         chart.setLabel(dateArray);
