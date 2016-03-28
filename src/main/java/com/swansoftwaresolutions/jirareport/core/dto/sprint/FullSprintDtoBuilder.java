@@ -37,6 +37,11 @@ public class FullSprintDtoBuilder {
         return this;
     }
 
+    public FullSprintDtoBuilder showOutOfRange(boolean showOutOfRange) {
+        this.sprintDto.setShowOutOfRange(showOutOfRange);
+        return this;
+    }
+
     public FullSprintDtoBuilder state(String state) {
         this.sprintDto.setState(state);
         return this;

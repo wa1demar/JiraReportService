@@ -34,6 +34,9 @@ public class Sprint {
     @Column(name = "show_uat")
     private boolean showUAT;
 
+    @Column(name = "show_out_of_range")
+    private boolean showOutOfRange;
+
     @Column(name = "type")
     private int type;
 
@@ -140,4 +143,11 @@ public class Sprint {
         this.developers = developers;
     }
 
+    public boolean isShowOutOfRange() {
+        return showOutOfRange;
+    }
+
+    public void setShowOutOfRange(boolean showOutOfRange) {
+        this.showOutOfRange = showOutOfRange;
+    }
 }

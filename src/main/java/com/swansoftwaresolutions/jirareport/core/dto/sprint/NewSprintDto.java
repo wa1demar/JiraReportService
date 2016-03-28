@@ -11,6 +11,7 @@ public class NewSprintDto implements Serializable {
     private String name;
     private boolean notCountTarget;
     private boolean showUat;
+    private boolean showOutOfRange;
     private String state;
     private int type;
     private Date endDate;
@@ -79,5 +80,13 @@ public class NewSprintDto implements Serializable {
 
     public void setReportId(Long reportId) {
         this.reportId = reportId;
+    }
+
+    public boolean isShowOutOfRange() {
+        return showOutOfRange;
+    }
+
+    public void setShowOutOfRange(boolean showOutOfRange) {
+        this.showOutOfRange = showOutOfRange;
     }
 }
