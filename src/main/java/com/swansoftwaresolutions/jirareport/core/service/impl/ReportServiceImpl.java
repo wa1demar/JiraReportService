@@ -1,6 +1,5 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
-import com.swansoftwaresolutions.jirareport.core.dto.JiraPointDto;
 import com.swansoftwaresolutions.jirareport.core.dto.dashboard.*;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint_issue.IssuesByDayDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint_issue.SprintIssueListDto;
@@ -465,10 +464,9 @@ public class ReportServiceImpl implements ReportService {
                         for (JiraIssueDto issue : jiraIssueList) {
                             if (dev.getDeveloperLogin().equals(issue.getAssignedKey())) {
 
-                                issuesSet.add(issue);
-
                                 if (issue.getStatusName() != null && (isAgileDone(issue.getStatusName(), agileDoneNames))) {
                                     if (issue.getIssueTypeName().equalsIgnoreCase("Story")) {
+                                        issuesSet.add(issue);
                                         dev.setActualPoints(dev.getActualPoints() + (int) issue.getPoints());
                                         dev.setActualHours(help.isNull(dev.getActualHours()) + Math.round(issue.getTimeSpent() / 60));
                                     } else if (issue.getIssueTypeName().equalsIgnoreCase("Bug")) {
@@ -893,9 +891,8 @@ public class ReportServiceImpl implements ReportService {
             while (iterator.hasNext()) {
                 JiraIssueDto element = iterator.next();
 
-                if (help.isCurrentDay(formatter.format(element.getUpdated()))) {
+                if (help.isSameDate(currentDate, element.getUpdated())) {
                     tar = tar - element.getPoints();
-                    target = target - element.getPoints();
                     iterator.remove();
                 }
             }
