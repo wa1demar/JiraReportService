@@ -94,6 +94,10 @@ jiraPluginApp.controller('TaskCtrl',
                 }, function () {});
             };
 
+            $scope.$on("$destroy", function () {
+                $scope.stopTimer();
+            });
+
         }
 ]);
 
