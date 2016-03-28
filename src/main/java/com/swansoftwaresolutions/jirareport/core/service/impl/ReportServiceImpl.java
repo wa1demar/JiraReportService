@@ -430,6 +430,9 @@ public class ReportServiceImpl implements ReportService {
             sprintDtoList = sprintService.findByReportId(report.getId());
 
             for (FullSprintDto sprintDto : sprintDtoList) {
+                if (sprintDto.getState().equalsIgnoreCase("future")){
+                    continue;
+                }
 
                 List<JiraIssueDto> jiraIssueList = new ArrayList<>();
                 jiraIssueList = jiraIssueService.findBySprintId(sprintDto.getJiraSprintId());
@@ -546,27 +549,6 @@ public class ReportServiceImpl implements ReportService {
         return false;
     }
 
-    private JiraPointDto getCurrentPoints(List<JiraPointDto> jiraPoints, SprintDeveloperDto dev) {
-        for (JiraPointDto jiraPointDto : jiraPoints) {
-            if (jiraPointDto.getUserLogin().equals(dev.getDeveloperLogin())) {
-                return jiraPointDto;
-            }
-        }
-        return new JiraPointDto();
-    }
-
-    private FullSprintDto getSprintTeam(List<FullSprintDto> sprintDtoList, String name) {
-        SprintDeveloperDto sprintDevList = null;
-        for (FullSprintDto sprintDto : sprintDtoList) {
-            if (sprintDto.getName() != null && sprintDto.getName().equals(name)) {
-                return sprintDto;
-            }
-        }
-
-        return null;
-    }
-
-
     private ProjectReportDto buildAutomaticProjectReport(Report report, List<SprintProjectReportDto> sprints) {
         ProjectReportDto prRep = new ProjectReportDto();
 
@@ -593,11 +575,14 @@ public class ReportServiceImpl implements ReportService {
 
         if (sprints != null) {
             for (SprintProjectReportDto sprint : sprints) {
+                if (sprint.getState().equalsIgnoreCase("future")){
+                    continue;
+                }
 
                 if (sprint.isShowUat()) {
                     isShowUat = true;
                 }
-                if (!sprint.isNotCountTarget() && sprint.getState() != null && (sprint.getState().equals("Closed") || sprint.getState().equals("closed"))) {
+                if (!sprint.isNotCountTarget() && sprint.getState() != null && sprint.getState().equalsIgnoreCase("Closed")) {
                     prRep.setTargetPoints(helpM.isNullFloat(prRep.getTargetPoints()) + helpM.isNullFloat(sprint.getTargetPoints()));
                     prRep.setTargetHours(helpM.isNull(prRep.getTargetHours()) + helpM.isNull(sprint.getTargetHours()));
                     prRep.setTargetQatDefectHours(helpM.isNull(prRep.getTargetQatDefectHours()) + helpM.isNull(sprint.getTargetQatDefectHours()));
