@@ -599,7 +599,7 @@ public class ReportServiceImpl implements ReportService {
 
         if (sprints != null) {
             for (SprintProjectReportDto sprint : sprints) {
-                if (sprint.getState() == null || sprint.getState().equalsIgnoreCase("future") || sprint.getDevelopers() == null || sprint.getDevelopers().size() == 0) {
+                if (sprint.getState() == null || sprint.getState().equalsIgnoreCase("future") || sprint.getSprintTeam() == null || sprint.getSprintTeam().size() == 0) {
                     continue;
                 }
 
@@ -888,17 +888,20 @@ public class ReportServiceImpl implements ReportService {
 
             date = date + "," + formatter.format(currentDate);
 
+            float tar = ii.get(ii.size()-1);
             Iterator<JiraIssueDto> iterator = issues.iterator();
             while (iterator.hasNext()) {
                 JiraIssueDto element = iterator.next();
 
                 if (help.isCurrentDay(formatter.format(element.getUpdated()))) {
+                    tar = tar - element.getPoints();
                     target = target - element.getPoints();
                     iterator.remove();
                 }
             }
 
-            ii.add((int) target);
+
+            ii.add((int) tar);
             startDate.add(Calendar.DATE, 1);
         }
 
