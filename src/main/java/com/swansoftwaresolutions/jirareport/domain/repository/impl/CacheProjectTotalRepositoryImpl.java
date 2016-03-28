@@ -80,7 +80,7 @@ public class CacheProjectTotalRepositoryImpl implements CacheProjectTotalReposit
 
     @Override
     public List<CacheProjectTotal> findAll() {
-        Query query = sessionFactory.getCurrentSession().createQuery("FROM CacheProjectTotal d");
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM CacheProjectTotal d WHERE d.report.isClosed != true ORDER BY d.id DESC");
 
         return query.list();
     }

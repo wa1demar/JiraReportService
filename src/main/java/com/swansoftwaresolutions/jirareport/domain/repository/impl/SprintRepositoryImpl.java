@@ -35,7 +35,7 @@ public class SprintRepositoryImpl implements SprintRepository {
 
     @Override
     public List<Sprint> findByReportId(long reportId) {
-        Query query = sessionFactory.getCurrentSession().createQuery("FROM Sprint s WHERE s.report.id = :reportId ORDER BY s.id ASC");
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM Sprint s WHERE s.report.id = :reportId ORDER BY s.startDate ASC");
         query.setParameter("reportId", reportId);
 
         return query.list();

@@ -436,7 +436,7 @@ public class ReportServiceImpl implements ReportService {
             sprintDtoList = sprintService.findByReportId(report.getId());
 
             for (FullSprintDto sprintDto : sprintDtoList) {
-                if (sprintDto.getState().equalsIgnoreCase("future")){
+                if (sprintDto.getState() == null || sprintDto.getState().equalsIgnoreCase("future") || sprintDto.getDevelopers() == null || sprintDto.getDevelopers().size() == 0) {
                     continue;
                 }
 
@@ -457,6 +457,7 @@ public class ReportServiceImpl implements ReportService {
                 sprint.setNotCountTarget(sprintDto.isNotCountTarget());
                 sprint.setClosed(sprintDto.getState().equalsIgnoreCase("closed"));
                 sprint.setCompleteDate(sprintDto.getEndDate());
+                sprint.setSprintTeam(sprintDto.getSprintTeams());
 
                 if (sprintDto != null) {
                     List<SprintDeveloperDto> sprintDevelopers = new ArrayList<>();
@@ -544,6 +545,13 @@ public class ReportServiceImpl implements ReportService {
             e.printStackTrace();
         }
 
+        sprints.sort(new Comparator<SprintProjectReportDto>() {
+            @Override
+            public int compare(SprintProjectReportDto o1, SprintProjectReportDto o2) {
+                return o1.getStartDate().compareTo(o2.getStartDate());
+            }
+        });
+
         return sprints;
     }
 
@@ -591,7 +599,7 @@ public class ReportServiceImpl implements ReportService {
 
         if (sprints != null) {
             for (SprintProjectReportDto sprint : sprints) {
-                if (sprint.getState().equalsIgnoreCase("future")){
+                if (sprint.getState() == null || sprint.getState().equalsIgnoreCase("future") || sprint.getDevelopers() == null || sprint.getDevelopers().size() == 0) {
                     continue;
                 }
 
