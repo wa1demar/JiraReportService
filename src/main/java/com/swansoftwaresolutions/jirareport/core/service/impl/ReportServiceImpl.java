@@ -420,6 +420,12 @@ public class ReportServiceImpl implements ReportService {
 
     private List<SprintProjectReportDto> buildAutomationSprints(Report report) {
 
+        String agileDoneName = configService.retrieveConfig().getAgileDoneName();
+        List<String> agileDoneNames = new ArrayList<>();
+        for (String dateString : Arrays.asList(agileDoneName.split(","))) {
+            agileDoneNames.add(dateString);
+        }
+
         HelperMethods help = new HelperMethods();
 
         List<SprintProjectReportDto> sprints = new ArrayList<>();
@@ -460,7 +466,7 @@ public class ReportServiceImpl implements ReportService {
 
                                 issuesSet.add(issue);
 
-                                if (issue.getStatusName() != null && (issue.getStatusName().equalsIgnoreCase("Done") || issue.getStatusName().equalsIgnoreCase("Close"))) {
+                                if (issue.getStatusName() != null && (isAgileDone(issue.getStatusName(), agileDoneNames))) {
                                     if (issue.getIssueTypeName().equalsIgnoreCase("Story")) {
                                         dev.setActualPoints(dev.getActualPoints() + (int) issue.getPoints());
                                         dev.setActualHours(help.isNull(dev.getActualHours()) + Math.round(issue.getTimeSpent() / 60));
@@ -539,6 +545,16 @@ public class ReportServiceImpl implements ReportService {
         }
 
         return sprints;
+    }
+
+    private boolean isAgileDone(String statusName, List<String> agileDoneNames) {
+        for (String status :agileDoneNames){
+            if (status.equalsIgnoreCase(statusName)) {
+                return true;
+            }
+        }
+        return false;
+
     }
 
     private boolean isQAT(SprintDeveloperDto dev, Report report) {
@@ -857,16 +873,16 @@ public class ReportServiceImpl implements ReportService {
         while (!startDate.after(endDate)) {
             Date currentDate = startDate.getTime();
 
+            if (help.isWeekend(currentDate) || nonWorkingDays.contains(currentDate)) {
+                startDate.add(Calendar.DATE, 1);
+                continue;
+            }
+
             date = date + "," + formatter.format(currentDate);
 
             Iterator<JiraIssueDto> iterator = issues.iterator();
             while (iterator.hasNext()) {
                 JiraIssueDto element = iterator.next();
-
-                if (help.isWeekend(element.getUpdated()) || nonWorkingDays.contains(element.getUpdated())) {
-                    startDate.add(Calendar.DATE, 1);
-                    continue;
-                }
 
                 if (help.isCurrentDay(formatter.format(element.getUpdated()))) {
                     target = target - element.getPoints();
@@ -878,14 +894,14 @@ public class ReportServiceImpl implements ReportService {
             startDate.add(Calendar.DATE, 1);
         }
 
-        if ((startDate.after(endDate)) && issues.size() != 0) {
-            float tar = ii.get(ii.size() - 1);
-            for (JiraIssueDto jiraIssueDto : issues) {
-                tar = tar - jiraIssueDto.getPoints();
-            }
-
-            ii.set(ii.size() - 1, (int) tar);
-        }
+//        if ((startDate.after(endDate)) && issues.size() != 0) {
+//            float tar = ii.get(ii.size() - 1);
+//            for (JiraIssueDto jiraIssueDto : issues) {
+//                tar = tar - jiraIssueDto.getPoints();
+//            }
+//
+//            ii.set(ii.size() - 1, (int) tar);
+//        }
 
 
         String[] dateArray = date.split(",");
