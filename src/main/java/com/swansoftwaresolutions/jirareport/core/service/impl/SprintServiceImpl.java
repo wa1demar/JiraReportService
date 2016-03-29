@@ -73,6 +73,7 @@ public class SprintServiceImpl implements SprintService {
                             .showUAT(s.isShowUAT())
                             .notCountTarget(s.isNotCountTarget())
                             .jiraSprint(s.getJiraSprint())
+                            .showOutOfRange(s.isShowOutOfRange())
                             .build());
                 }
             }
