@@ -460,17 +460,17 @@ public class ReportServiceImpl implements ReportService {
                                     if (issue.getIssueTypeName().equalsIgnoreCase("Story")) {
                                         issuesSet.add(issue);
                                         dev.setActualPoints(dev.getActualPoints() + (int) issue.getPoints());
-                                        dev.setActualHours(help.isNull(dev.getActualHours()) + Math.round(issue.getTimeSpent() / 60));
+                                        dev.setActualHours(help.isNull(dev.getActualHours()) + issue.getTimeSpent());
                                     } else if (issue.getIssueTypeName().equalsIgnoreCase("Bug")) {
                                         if (isQAT(dev, report)) {
                                             dev.setDefectActual(dev.getDefectActual() + 1);
-                                            dev.setDefectActualHours(help.isNull(dev.getDefectActualHours()) + Math.round(issue.getTimeSpent() / 60));
-                                            dev.setActualHours(help.isNull(dev.getActualHours()) + Math.round(issue.getTimeSpent() / 60));
+                                            dev.setDefectActualHours(help.isNull(dev.getDefectActualHours()) + issue.getTimeSpent());
+                                            dev.setActualHours(help.isNull(dev.getActualHours()) + issue.getTimeSpent());
                                         } else {
-                                            dev.setUatDefectHours(help.isNull(dev.getDefectHours()) + Math.round(issue.getTimeSpent() / 60));
-                                            dev.setUatDefectActualHours(help.isNull(dev.getUatDefectActualHours()) + Math.round(issue.getTimeSpent() / 60));
+                                            dev.setUatDefectHours(help.isNull(dev.getDefectHours()) + issue.getTimeSpent());
+                                            dev.setUatDefectActualHours(help.isNull(dev.getUatDefectActualHours()) + issue.getTimeSpent());
                                             dev.setUatDefectActual(help.isNull(dev.getUatDefectActual()) + 1);
-                                            dev.setActualHours(help.isNull(dev.getActualHours()) + Math.round(issue.getTimeSpent() / 60));
+                                            dev.setActualHours(help.isNull(dev.getActualHours()) + issue.getTimeSpent());
                                         }
                                     }
                                 }
@@ -494,7 +494,7 @@ public class ReportServiceImpl implements ReportService {
                         sprint.setTargetPoints(sprint.getTargetPoints() + dev.getTargetPoints());
                         sprint.setActualQatDefectPoints(sprint.getActualQatDefectPoints() + dev.getDefectActual());
                         sprint.setTargetQatDefectHours(help.isNull(sprint.getTargetQatDefectHours()) + dev.getDefectTargetHours());
-                        sprint.setActualQatDefectHours(help.isNull(sprint.getActualQatDefectHours()) + dev.getDefectActualHours());
+                        sprint.setActualQatDefectHours(help.isNull(sprint.getActualQatDefectHours()) + Math.round(dev.getDefectActualHours() / 60));
                         sprint.setTargetQatDefectMin(sprint.getTargetQatDefectMin() + help.isNullDoubleToInt(dev.getDefectMin()));
                         sprint.setTargetQatDefectMax(sprint.getTargetQatDefectMax() + help.isNullDoubleToInt(dev.getDefectMax()));
                         if (sprint.isShowUat()) {
@@ -546,7 +546,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     private boolean isAgileDone(String statusName, List<String> agileDoneNames) {
-        for (String status :agileDoneNames){
+        for (String status : agileDoneNames) {
             if (status.equalsIgnoreCase(statusName)) {
                 return true;
             }
@@ -662,7 +662,6 @@ public class ReportServiceImpl implements ReportService {
                     .closedSprintsCount(finalClosedCount)
                     .build());
         }).start();
-
 
         return prRep;
     }
@@ -876,7 +875,7 @@ public class ReportServiceImpl implements ReportService {
 
             date = date + "," + formatter.format(currentDate);
 
-            float tar = ii.get(ii.size()-1);
+            float tar = ii.get(ii.size() - 1);
             Iterator<JiraIssueDto> iterator = issues.iterator();
             while (iterator.hasNext()) {
                 JiraIssueDto element = iterator.next();
@@ -890,6 +889,61 @@ public class ReportServiceImpl implements ReportService {
             ii.add((int) tar);
             startDate.add(Calendar.DATE, 1);
         }
+
+        chart = configureChart(date, ii, targetPoints);
+
+        if (sprintDto.isShowOutOfRange()) {
+            Calendar addDate = endDate;
+            if (issues.size() > 0) {
+                endDate = gitFinishDAte(issues, endDate);
+
+                while (!addDate.after(endDate)) {
+                    Date currentDate = addDate.getTime();
+
+                    if (help.isWeekend(currentDate) || nonWorkingDays.contains(currentDate)) {
+                        addDate.add(Calendar.DATE, 1);
+                        continue;
+                    }
+
+                    date = date + "," + formatter.format(currentDate);
+
+                    float tar = ii.get(ii.size() - 1);
+                    Iterator<JiraIssueDto> iterator = issues.iterator();
+                    while (iterator.hasNext()) {
+                        JiraIssueDto element = iterator.next();
+
+                        if (help.isSameDate(currentDate, element.getUpdated())) {
+                            tar = tar - element.getPoints();
+                            iterator.remove();
+                        }
+                    }
+
+                    ii.add((int) tar);
+
+                    addDate.add(Calendar.DATE, 1);
+                }
+            }
+
+            chart = configureChart(chart, date, ii);
+        }
+
+        return chart;
+    }
+
+    private Chart configureChart(Chart chart, String date, List<Integer> ii) {
+        String[] dateArrayNew = date.split(",");
+        chart.setLabel(dateArrayNew);
+
+        int[] arrayInts = new int[ii.size()];
+        for (int i = 0; i < ii.size(); i++) arrayInts[i] = ii.get(i);
+
+        chart.setActual(arrayInts);
+
+        return chart;
+    }
+
+    private Chart configureChart(String date, List<Integer> ii, float targetPoints) {
+        Chart chart = new Chart();
 
         String[] dateArray = date.split(",");
         chart.setLabel(dateArray);
@@ -910,5 +964,18 @@ public class ReportServiceImpl implements ReportService {
         chart.setTarget(targetArray);
 
         return chart;
+    }
+
+    private Calendar gitFinishDAte(Set<JiraIssueDto> issues, Calendar endDate) {
+        Calendar lastDate = endDate;
+
+        for (JiraIssueDto issue : issues) {
+            Calendar date = Calendar.getInstance();
+            date.setTime(issue.getUpdated());
+            if (date.after(endDate) && date.after(lastDate)) {
+                lastDate = date;
+            }
+        }
+        return lastDate;
     }
 }
