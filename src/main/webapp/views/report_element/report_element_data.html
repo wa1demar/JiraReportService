@@ -8,6 +8,7 @@
                         <canvas id="line" class="chart chart-line" chart-data="data" chart-options="options"
                                 chart-labels="labels" chart-legend="true" chart-series="series" chart-colours="colours">
                         </canvas>
+                        <span ng-show="sprintShowOutOfRange" class="aui-lozenge aui-lozenge-moved">Show Out Of Range</span>
                     </div>
                     <center ng-show="reportData.sprints.length == 0 || !hasSprintTeam">Sprints not found</center>
                 </div>
