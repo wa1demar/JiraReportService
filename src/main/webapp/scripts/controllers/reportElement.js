@@ -6,6 +6,7 @@ jiraPluginApp.controller('ReportElementCtrl',
             var self = this;
             $scope.loaderShow = true;
             $scope.hasSprintTeam = true;
+            $scope.sprintShowOutOfRange = false;
 //----------------------------------------------------------------------------------------------------------------------
 //update ProgressBar
             $scope.updateProgressBar = function (item) {
@@ -344,9 +345,11 @@ jiraPluginApp.controller('ReportElementCtrl',
                     $scope.showSprintId = null;
                     $scope.showSprintName = undefined;
                     $scope.hasSprintTeam = true;
+                    $scope.sprintShowOutOfRange = false;
                 } else {
                     $scope.showSprintId = item.id;
                     $scope.showSprintName = item.name;
+                    $scope.sprintShowOutOfRange = item.showOutOfRange;
                 }
 
                 $scope.updateProgressBar(item);
