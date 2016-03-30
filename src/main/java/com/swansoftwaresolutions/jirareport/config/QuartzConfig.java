@@ -100,7 +100,7 @@ public class QuartzConfig {
     CronTriggerFactoryBean loadJiraBoardsTrigger() {
         CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
         cronTriggerFactoryBean.setJobDetail(loadJiraBoardsJobDetail().getObject());
-        cronTriggerFactoryBean.setCronExpression("0 0/1 * * * ?");
+        cronTriggerFactoryBean.setCronExpression("0 0/5 * * * ?");
         return cronTriggerFactoryBean;
     }
 
