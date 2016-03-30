@@ -205,6 +205,7 @@ public class SprintServiceImpl implements SprintService {
             fullSpr.setNotCountTarget(sprint.isNotCountTarget());
             fullSpr.setShowUat(sprint.isShowUAT());
             fullSpr.setDevelopers(developers);
+            fullSpr.setShowOutOfRange(sprint.isShowOutOfRange());
 
             if (sprint.getJiraSprint() != null) {
                 fullSpr.setJiraSprintId(sprint.getJiraSprint().getId());

@@ -5,6 +5,8 @@ import com.swansoftwaresolutions.jirareport.core.dto.groups.JiraGroupsDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_project.ImportedProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUsersDto;
+import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpMethod;
@@ -32,6 +34,11 @@ public class RestClientImpl extends AbstractRestClient implements RestClient {
 
     @Value("${jira.projects}")
     private String jiraProjects;
+
+    @Autowired
+    public RestClientImpl(ConfigService configService) {
+        super(configService);
+    }
 
     @Override
     public JiraGroupsDto loadAllGroups() {

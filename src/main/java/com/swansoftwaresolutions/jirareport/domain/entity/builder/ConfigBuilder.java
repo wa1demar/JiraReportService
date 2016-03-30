@@ -17,8 +17,13 @@ public class ConfigBuilder {
         return this;
     }
 
-    public ConfigBuilder storyPointsName(String storyPointsName) {
-        config.setStoryPointsName(storyPointsName);
+    public ConfigBuilder jiraUser(String jiraUser) {
+        config.setJiraUser(jiraUser);
+        return this;
+    }
+
+    public ConfigBuilder jiraPassword(String jiraPassword) {
+        config.setJiraPass(jiraPassword);
         return this;
     }
 
@@ -39,11 +44,6 @@ public class ConfigBuilder {
 
     public ConfigBuilder nonWorkingDays(String nonWorkingDays) {
         config.setNonWorkingDays(nonWorkingDays);
-        return this;
-    }
-
-    public ConfigBuilder autoSyncTime(String autoSyncTime) {
-        config.setAutoSyncTime(autoSyncTime);
         return this;
     }
 

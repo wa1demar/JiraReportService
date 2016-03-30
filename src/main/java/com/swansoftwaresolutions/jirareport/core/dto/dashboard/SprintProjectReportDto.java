@@ -22,6 +22,7 @@ public class SprintProjectReportDto {
     private Date endDate;
     private Date completeDate;
     private boolean showUat;
+    private boolean showOutOfRange;
     private boolean closed;
     private float targetPoints;
     private Long targetHours;
@@ -282,5 +283,13 @@ public class SprintProjectReportDto {
 
     public void setDevelopers(List<SprintDeveloper> developers) {
         this.developers = developers;
+    }
+
+    public boolean isShowOutOfRange() {
+        return showOutOfRange;
+    }
+
+    public void setShowOutOfRange(boolean showOutOfRange) {
+        this.showOutOfRange = showOutOfRange;
     }
 }

@@ -310,6 +310,7 @@ public class ReportServiceImpl implements ReportService {
                 sprint.setName(sprintDto.getName());
                 sprint.setNotCountTarget(sprintDto.isNotCountTarget());
                 sprint.setShowUat(sprintDto.isShowUat());
+                sprint.setShowOutOfRange(sprintDto.isShowOutOfRange());
                 sprint.setState(sprintDto.getState());
                 sprint.setType(sprintDto.getType());
                 sprint.setStartDate(sprintDto.getStartDate());
@@ -449,6 +450,7 @@ public class ReportServiceImpl implements ReportService {
                 sprint.setClosed(sprintDto.getState().equalsIgnoreCase("closed"));
                 sprint.setCompleteDate(sprintDto.getEndDate());
                 sprint.setSprintTeam(sprintDto.getSprintTeams());
+                sprint.setShowOutOfRange(sprintDto.isShowOutOfRange());
 
                 if (sprintDto != null) {
                     List<SprintDeveloperDto> sprintDevelopers = new ArrayList<>();

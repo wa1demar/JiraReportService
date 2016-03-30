@@ -1,9 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.service;
 
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
-import com.swansoftwaresolutions.jirareport.core.dto.ConfigDto;
-
-import java.util.List;
+import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDto;
 
 /**
  * @author Vladimir Martynyuk

@@ -1,7 +1,7 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
 import com.swansoftwaresolutions.jirareport.config.*;
-import com.swansoftwaresolutions.jirareport.core.dto.ConfigDto;
+import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDto;
 import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
 import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDtoBuilder;
 import com.swansoftwaresolutions.jirareport.web.utils.TestUtil;

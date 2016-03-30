@@ -47,6 +47,11 @@ public class IssueDao extends AbstractRestClient implements RestClient {
     @Autowired
     JiraIssueService jiraIssueService;
 
+    @Autowired
+    public IssueDao(ConfigService configService) {
+        super(configService);
+    }
+
     @Override
     public void loadData() {
         List<ImportedJiraSprintDto> sprints;

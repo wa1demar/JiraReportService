@@ -5,6 +5,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.jira_project.ImportedProjec
 import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUsersDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraSprintMapper;
+import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
 import com.swansoftwaresolutions.jirareport.core.service.JiraBoardService;
 import com.swansoftwaresolutions.jirareport.core.service.JiraSprintsService;
 import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
@@ -46,6 +47,11 @@ public class BoardClient extends AbstractRestClient implements RestClient {
 
     @Autowired
     JiraSprintMapper jiraSprintMapper;
+
+    @Autowired
+    public BoardClient(ConfigService configService) {
+        super(configService);
+    }
 
 
     @Override

@@ -1,20 +1,40 @@
 package com.swansoftwaresolutions.jirareport.rest.client;
 
+import com.sun.xml.internal.ws.developer.Serialization;
+import com.swansoftwaresolutions.jirareport.core.Settings;
+import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDto;
+import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 /**
  * @author Vutaliy Holovko
  */
-public abstract class AbstractRestClient {
+@Service
+public class AbstractRestClient {
 
-    protected HttpEntity<String> request = new HttpEntity<>(getHeaders());
+    private ConfigService configService;
+
+
+    protected HttpEntity<String> request;
     RestTemplate restTemplate = new RestTemplate();
 
+
+    @Autowired
+    public AbstractRestClient(ConfigService configService) {
+        this.configService = configService;
+
+        request = new HttpEntity<>(getHeaders());
+
+    }
+
     public HttpHeaders getHeaders() {
-        String plainCreds = "vholovko:12345";
+        ConfigDto configDto = configService.retrieveConfig();
+        String plainCreds = configDto.getJiraUser() + ":" + configDto.getJiraPass();
         byte[] plainCredsBytes = plainCreds.getBytes();
         byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
         String base64Creds = new String(base64CredsBytes);

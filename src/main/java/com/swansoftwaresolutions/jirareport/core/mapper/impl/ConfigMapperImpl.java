@@ -2,7 +2,7 @@ package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
 import com.swansoftwaresolutions.jirareport.domain.entity.Config;
 import com.swansoftwaresolutions.jirareport.core.mapper.ConfigMapper;
-import com.swansoftwaresolutions.jirareport.core.dto.ConfigDto;
+import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

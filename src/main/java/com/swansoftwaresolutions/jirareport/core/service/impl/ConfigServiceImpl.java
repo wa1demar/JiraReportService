@@ -1,9 +1,10 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
+import com.swansoftwaresolutions.jirareport.core.Settings;
 import com.swansoftwaresolutions.jirareport.core.mapper.ConfigMapper;
 import com.swansoftwaresolutions.jirareport.domain.repository.ConfigRepository;
 import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
-import com.swansoftwaresolutions.jirareport.core.dto.ConfigDto;
+import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +22,32 @@ public class ConfigServiceImpl implements ConfigService {
 
     @Override
     public ConfigDto retrieveConfig() {
-        return configMapper.toDto(configRepository.findFirst());
+        if (Settings.isNotEmpty()) {
+            return Settings.configDto();
+        } else {
+            ConfigDto configDto = configMapper.toDto(configRepository.findFirst());
+            Settings.init(configDto.getId(),
+                    configDto.getJiraUser(),
+                    configDto.getJiraPass(),
+                    configDto.getAgileDoneName(),
+                    configDto.getJiraDevGroupName(),
+                    configDto.getBugName(),
+                    configDto.getNonWorkingDays()
+                    );
+            return configDto;
+        }
     }
 
     @Override
     public ConfigDto update(ConfigDto configDto) {
+        Settings.init(configDto.getId(),
+                configDto.getJiraUser(),
+                configDto.getJiraPass(),
+                configDto.getAgileDoneName(),
+                configDto.getJiraDevGroupName(),
+                configDto.getBugName(),
+                configDto.getNonWorkingDays()
+        );
         return configMapper.toDto(configRepository.update(configMapper.fromDto(configDto)));
     }
 }

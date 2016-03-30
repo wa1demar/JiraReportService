@@ -32,11 +32,11 @@ public class ConfigRepositoryImpl implements ConfigRepository {
         } else {
             return update(new ConfigBuilder()
                     .agileDoneName("")
-                    .autoSyncTime("")
+                    .jiraUser("")
+                    .jiraPassword("")
                     .bugName("")
                     .jiraDevGroupName("")
                     .nonWorkingDays("")
-                    .storyPointsName("")
                     .build());
         }
 
