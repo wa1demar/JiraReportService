@@ -1,0 +1,14 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="1459340825" author="viholovko">
+        <dropColumn tableName="configs" columnName="base_url" schemaName="public"/>
+        <dropColumn tableName="configs" columnName="jira_user" schemaName="public"/>
+        <dropColumn tableName="configs" columnName="jira_password" schemaName="public"/>
+        <dropColumn tableName="configs" columnName="path_to_ajax" schemaName="public"/>
+        <dropColumn tableName="configs" columnName="path_to_agile_rest" schemaName="public"/>
+
+        <comment>Drop column from table configs</comment>
+
+    </changeSet>
+</databaseChangeLog>

@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
+import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDto;
 import com.swansoftwaresolutions.jirareport.core.dto.groups.JiraGroupsDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_project.ImportedProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSprintDto;
@@ -47,10 +48,10 @@ public class IssueDao extends AbstractRestClient implements RestClient {
     @Autowired
     JiraIssueService jiraIssueService;
 
+
     @Autowired
-    public IssueDao(ConfigService configService) {
-        super(configService);
-    }
+    ConfigService configService;
+
 
     @Override
     public void loadData() {
@@ -80,9 +81,10 @@ public class IssueDao extends AbstractRestClient implements RestClient {
     }
 
     private void getAllIsuues(List<ImportedJiraSprintDto> agileSprints) throws NoSuchEntityException {
+        ConfigDto configDto = configService.retrieveConfig();
         for (ImportedJiraSprintDto sprint : agileSprints) {
             if (sprint.getSprintId()!=0) {
-                HttpEntity<String> request = new HttpEntity<>(getHeaders());
+                HttpEntity<String> request = new HttpEntity<>(getHeaders(configDto.getJiraUser(), configDto.getJiraPass()));
                 RestTemplate restTemplate = new RestTemplate();
 
                 IssuesDto issues = restTemplate.exchange(URL_ISSUES_BY_SPRINT.replace("{sprintId}", String.valueOf(sprint.getSprintId())), HttpMethod.GET, request, IssuesDto.class).getBody();

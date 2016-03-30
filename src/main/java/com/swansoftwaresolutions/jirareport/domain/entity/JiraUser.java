@@ -28,11 +28,10 @@ public class JiraUser {
     @Column(name = "jira_user_id")
     private Long jiraUserId;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "admins", cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "admins")
     private List<Report> reports = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users")
-    @Cascade({SAVE_UPDATE})
     private List<JiraGroup> groups = new ArrayList<>();
 
 

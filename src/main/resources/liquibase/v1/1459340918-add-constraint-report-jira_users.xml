@@ -1,0 +1,40 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="1459340918" author="Vladimir Martynyuk">
+
+        <createTable tableName="admins_reports">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="report_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="admin_login" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex indexName="idx_unique_login"
+                tableName="jira_users"
+                unique="true">
+            <column name="login"  type="varchar(255)"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="report_id"
+                                 baseTableName="admins_reports"
+                                 constraintName="fk_report_admin"
+                                 referencedColumnNames="id"
+                                 referencedTableName="reports"/>
+
+        <addForeignKeyConstraint baseColumnNames="admin_login"
+                                 baseTableName="admins_reports"
+                                 constraintName="fk_jira_user_report"
+                                 referencedColumnNames="login"
+                                 referencedTableName="jira_users"/>
+
+        <comment>Add admin_reports table and constraints</comment>
+
+
+    </changeSet>
+</databaseChangeLog>

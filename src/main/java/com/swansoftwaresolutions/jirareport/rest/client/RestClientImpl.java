@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.rest.client;
 
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUsersDto;
+import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDto;
 import com.swansoftwaresolutions.jirareport.core.dto.groups.JiraGroupsDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_project.ImportedProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUserDto;
@@ -9,6 +10,7 @@ import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
@@ -36,13 +38,12 @@ public class RestClientImpl extends AbstractRestClient implements RestClient {
     private String jiraProjects;
 
     @Autowired
-    public RestClientImpl(ConfigService configService) {
-        super(configService);
-    }
+    ConfigService configService;
 
     @Override
     public JiraGroupsDto loadAllGroups() {
-
+        ConfigDto configDto = configService.retrieveConfig();
+        HttpEntity<String> request = new HttpEntity<>(getHeaders(configDto.getJiraUser(), configDto.getJiraPass()));
         return restTemplate.exchange(jiraUrl + jiraGroups, HttpMethod.GET, request, JiraGroupsDto.class).getBody();
     }
 
@@ -50,11 +51,15 @@ public class RestClientImpl extends AbstractRestClient implements RestClient {
     public ImportedJiraUsersDto loadAllUsersByGroupName(String name) {
         Map<String, String> params = new HashMap<String, String>();
         params.put("group_name", name);
+        ConfigDto configDto = configService.retrieveConfig();
+        HttpEntity<String> request = new HttpEntity<>(getHeaders(configDto.getJiraUser(), configDto.getJiraPass()));
         return restTemplate.exchange(jiraUrl + jiraUsers, HttpMethod.GET, request, ImportedJiraUsersDto.class, params).getBody();
     }
 
     @Override
     public ImportedProjectDto[] loadAllProjects() {
+        ConfigDto configDto = configService.retrieveConfig();
+        HttpEntity<String> request = new HttpEntity<>(getHeaders(configDto.getJiraUser(), configDto.getJiraPass()));
         return restTemplate.exchange(jiraUrl + jiraProjects, HttpMethod.GET, request, ImportedProjectDto[].class).getBody();
     }
 

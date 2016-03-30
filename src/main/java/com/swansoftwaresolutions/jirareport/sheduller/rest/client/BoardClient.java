@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
+import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDto;
 import com.swansoftwaresolutions.jirareport.core.dto.groups.JiraGroupsDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_project.ImportedProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSprintDto;
@@ -49,9 +50,7 @@ public class BoardClient extends AbstractRestClient implements RestClient {
     JiraSprintMapper jiraSprintMapper;
 
     @Autowired
-    public BoardClient(ConfigService configService) {
-        super(configService);
-    }
+    private ConfigService configService;
 
 
     @Override
@@ -76,6 +75,8 @@ public class BoardClient extends AbstractRestClient implements RestClient {
     }
 
     private void loadDataForJiraSprints() {
+
+        ConfigDto configDto = configService.retrieveConfig();
         List<JiraBoard> boards = new ArrayList<>();
         try {
             boards = jiraBoardService.findAll();
@@ -83,7 +84,7 @@ public class BoardClient extends AbstractRestClient implements RestClient {
             log.warning("List<JiraBoard> NoSuchEntityException");
         }
         for (JiraBoard jiraBoard : boards) {
-            HttpEntity<String> request = new HttpEntity<>(getHeaders());
+            HttpEntity<String> request = new HttpEntity<>(getHeaders(configDto.getJiraUser(), configDto.getJiraPass()));
             RestTemplate restTemplate = new RestTemplate();
 
             AgileSprintsDto agileSprints = restTemplate.exchange(URL_SPRINT.replace("{boardId}", String.valueOf(jiraBoard.getBoardId())), HttpMethod.GET, request, AgileSprintsDto.class).getBody();
@@ -120,7 +121,8 @@ public class BoardClient extends AbstractRestClient implements RestClient {
     }
 
     private void loadDataForJiraBoards() {
-        HttpEntity<String> request = new HttpEntity<>(getHeaders());
+        ConfigDto configDto = configService.retrieveConfig();
+        HttpEntity<String> request = new HttpEntity<>(getHeaders(configDto.getJiraUser(), configDto.getJiraPass()));
         RestTemplate restTemplate = new RestTemplate();
         String BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board";
         JiraBoardObjectDto jiraBoardDtos = restTemplate.exchange(BOARD_URL, HttpMethod.GET, request, JiraBoardObjectDto.class).getBody();
@@ -143,7 +145,8 @@ public class BoardClient extends AbstractRestClient implements RestClient {
     }
 
     private JiraBoardDto getProjectInformationForBoard(JiraBoardDto jiraBoardDto) throws NoSuchEntityException {
-        HttpEntity<String> request = new HttpEntity<>(getHeaders());
+        ConfigDto configDto = configService.retrieveConfig();
+        HttpEntity<String> request = new HttpEntity<>(getHeaders(configDto.getJiraUser(), configDto.getJiraPass()));
         RestTemplate restTemplate = new RestTemplate();
 
         String ISSUES_BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board/{boardId}/issue";

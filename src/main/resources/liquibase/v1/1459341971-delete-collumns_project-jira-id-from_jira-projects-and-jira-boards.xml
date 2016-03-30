@@ -1,0 +1,17 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="1459341971" author="Vitaliy Holovko">
+
+        <dropColumn columnName="project_jira_id"
+                    schemaName="public"
+                    tableName="jira_boards"/>
+
+        <dropColumn columnName="jira_id"
+                    schemaName="public"
+                    tableName="jira_projects"/>
+
+        <comment>Deleted columns projectId from JiraProject and JiraBoards</comment>
+
+    </changeSet>
+</databaseChangeLog>

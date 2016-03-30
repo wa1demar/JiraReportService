@@ -1,0 +1,27 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="1459340811" author="viholovko">
+        <createTable tableName="jira_boards">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="board_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="type" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="project_key" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="project_jira_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <comment>Create table boards</comment>
+    </changeSet>
+</databaseChangeLog>
