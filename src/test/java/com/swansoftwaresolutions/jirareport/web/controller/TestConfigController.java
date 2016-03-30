@@ -51,12 +51,10 @@ public class TestConfigController {
     public void testGetAllConfigs() throws Exception {
         ConfigDto firstConfig = new ConfigDtoBuilder()
                 .id(1L)
-                .storyPointsName("Story Point")
                 .agileDoneName("AgileDone")
                 .jiraDevGroupName("JiraDevGroupName")
                 .bugName("BugName")
                 .nonWorkingDays("NonWorkingDays")
-                .autoSyncTime("AutoSyncTime")
                 .build();
 
         when(configServiceMock.retrieveConfig()).thenReturn(firstConfig);
@@ -82,21 +80,17 @@ public class TestConfigController {
     @Test
     public void testUpdateConfig() throws Exception {
         ConfigDto configDto = new ConfigDtoBuilder()
-                .storyPointsName("Story Point")
                 .agileDoneName("AgileDone")
                 .jiraDevGroupName("JiraDevGroupName")
                 .bugName("BugName")
                 .nonWorkingDays("NonWorkingDays")
-                .autoSyncTime("AutoSyncTime")
                 .build();
 
         ConfigDto updatedDto = new ConfigDtoBuilder()
-                .storyPointsName("Story Point 2")
                 .agileDoneName("AgileDone 2")
                 .jiraDevGroupName("JiraDevGroupName 2")
                 .bugName("BugName 2")
                 .nonWorkingDays("NonWorkingDays 2")
-                .autoSyncTime("AutoSyncTime 2")
                 .build();
 
         when(configServiceMock.update(configDto)).thenReturn(updatedDto);
@@ -122,12 +116,10 @@ public class TestConfigController {
 
         ConfigDto dtoArgument = dtoCaptor.getValue();
         assertThat(dtoArgument.getId(), is(1L));
-        assertThat(dtoArgument.getStoryPointsName(), is("storyPointsName"));
         assertThat(dtoArgument.getAgileDoneName(), is("agileDoneName"));
         assertThat(dtoArgument.getJiraDevGroupName(), is("jiraDevGroupName"));
         assertThat(dtoArgument.getBugName(), is("bugName"));
         assertThat(dtoArgument.getNonWorkingDays(), is("nonWorkingDays"));
-        assertThat(dtoArgument.getAutoSyncTime(), is("autoSyncTime"));
 
     }
 }
