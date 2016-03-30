@@ -1,7 +1,5 @@
 package com.swansoftwaresolutions.jirareport.rest.client;
 
-import com.sun.xml.internal.ws.developer.Serialization;
-import com.swansoftwaresolutions.jirareport.core.Settings;
 import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDto;
 import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
 import org.apache.commons.codec.binary.Base64;
