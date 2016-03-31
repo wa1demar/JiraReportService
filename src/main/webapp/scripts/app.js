@@ -74,6 +74,12 @@ jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
             access: {
                 requiredLogin: true
             }
+        }).when('/due_date_issue', {
+            templateUrl: 'views/due_date_issue/main.html',
+            controller: 'DueDateIssueCtrl',
+            access: {
+                requiredLogin: true
+            }
         }).otherwise({
             redirectTo: '/login'
         });

@@ -1,0 +1,65 @@
+<table ng-show="dataDueDate.length > 0" class="aui table">
+    <thead>
+        <tr>
+            <th style="width: 150px;">
+                <span ng-click="order('project')" class="cursor-pointer">Project</span>
+                <span ng-show="predicate === 'project'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+            </th>
+            <th style="width: 150px;">
+                <span ng-click="order('assignee')" class="cursor-pointer">Assignee</span>
+                <span ng-show="predicate === 'assignee'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+            </th>
+            <th style="width: 80px;">
+                <span ng-click="order('key')" class="cursor-pointer">Key</span>
+                <span ng-show="predicate === 'key'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+            </th>
+            <th style="width: 250px;">
+                <span ng-click="order('summary')" class="cursor-pointer">Summary</span>
+                <span ng-show="predicate === 'summary'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+            </th>
+            <th>
+                <span>Description</span>
+            </th>
+            <th style="width: 150px;">
+                <span ng-click="order('status')" class="cursor-pointer">Status</span>
+                <span ng-show="predicate === 'status'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+            </th>
+            <th style="width: 150px;">
+                <span>Due Date</span>
+            </th>
+            <th style="width: 100px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="data in filtered = (dataDueDate | filter:query | orderBy:predicate:reverse)">
+            <td>{{data.project}}</td>
+            <td>{{data.assignee}}</td>
+            <td>{{data.key}}</td>
+            <td>{{data.summary}}</td>
+            <td>{{data.description}}</td>
+            <td>
+                {{statusStyle = data.status === "ACTIVE" ? "aui-lozenge-success" : "aui-lozenge-error"; ""}}
+                <span class="aui-lozenge aui-lozenge-subtle {{statusStyle}}">{{data.status}}</span>
+            </td>
+            <td>
+                <div ng-repeat="dueDate in data.dueDate"><span class="">{{dueDate}}</span></div>
+            </td>
+            <td>
+                <div id="ghx-manage-boards-operation-popup-1-{{data.id}}" class="aui-dropdown2 aui-style-default">
+                    <ul class="aui-list-truncate">
+                        <li><a href="" >Action 1</a></li>
+                        <li><a href="" >Action 2</a></li>
+                        <li><a href="" >Action 3</a></li>
+                    </ul>
+                </div>
+                <button aria-haspopup="true" id="ghx-manage-boards-operation-trigger-1" aria-owns="ghx-manage-boards-operation-popup-1-{{data.id}}" class="aui-dropdown2-trigger aui-style-default aui-button aui-button-subtle">
+                    <span class="ghx-iconfont aui-icon aui-icon-small aui-iconfont-more ghx-clickable"></span>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="col-md-12 text-center" ng-if="dataDueDate.length === 0">
+    <strong>Not found!</strong>
+</div>
