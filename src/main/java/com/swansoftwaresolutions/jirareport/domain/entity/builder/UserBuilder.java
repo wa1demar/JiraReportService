@@ -17,6 +17,13 @@ public class UserBuilder {
         this.user = new User();
     }
 
+
+    public UserBuilder id(Long id) {
+        user.setId(id);
+        return this;
+    }
+
+
     public UserBuilder username(String userName) {
         user.setUsername(userName);
         return this;

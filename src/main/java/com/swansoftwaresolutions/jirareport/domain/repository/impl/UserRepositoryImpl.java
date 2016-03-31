@@ -38,6 +38,12 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public User saveOrUpdate(User user) {
+        sessionFactory.getCurrentSession().saveOrUpdate(user);
+        return user;
+    }
+
+    @Override
     public List<User> findAll() {
         Query query = sessionFactory.getCurrentSession().createQuery("FROM User u WHERE u.status != 'DELETED' ORDER BY  u.id DESC");
 
