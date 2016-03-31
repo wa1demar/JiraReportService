@@ -28,7 +28,7 @@
             <label for="show-uat-sprint" style="color: #000000;">UAT</label>
             <p class="sprint-note-text">* If checked then show UAT Defects</p>
         </div>
-        <div style="margin-top: 15px;">
+        <div ng-if="report.typeId === 1" style="margin-top: 15px;">
             <input ng-model="reportModel.sprint.showOutOfRange" name="show-out-of-range" id="show-out-of-range" type="checkbox"/>
             <label for="show-out-of-range" style="color: #000000;">Show Out Of Range</label>
             <p class="sprint-note-text">* If checked then show points which out of range</p>
