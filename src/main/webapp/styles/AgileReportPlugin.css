@@ -93,6 +93,7 @@ hr {
 .report-element-chart {
     box-sizing: border-box;
     padding: 20px;
+    min-width: 510px;
 }
 
 .report-element-sprint-table {
