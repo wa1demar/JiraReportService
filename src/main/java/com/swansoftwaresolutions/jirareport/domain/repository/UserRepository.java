@@ -11,7 +11,9 @@ import java.util.List;
 public interface UserRepository {
     User findByUsername(String username);
 
-    User add(User project);
+    User add(User user);
+
+    User saveOrUpdate(User user);
 
     List<User> findAll();
 
