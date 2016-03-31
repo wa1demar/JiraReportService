@@ -39,7 +39,7 @@ public class QuartzConfig {
 //                loadProjectsTrigger().getObject(),
 //                loadJiraUsersTrigger().getObject(),
 //                loadJiraBoardsTrigger().getObject(),
-                loadIssuesTrigger().getObject()
+//                loadIssuesTrigger().getObject()
         };
 
         quartzScheduler.setTriggers(triggers);
