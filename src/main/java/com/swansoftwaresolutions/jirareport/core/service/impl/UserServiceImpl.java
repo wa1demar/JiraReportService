@@ -129,8 +129,7 @@ public class UserServiceImpl implements UserService {
         Map model = new HashMap();
         user.setPassword(password);
         model.put("newUser", user);
-        model.put("currentUserName", currentUser.getFullName().equals("") ? "" : currentUser.getFullName());
-        applicationMailer.sendMail(user.getEmail(), "Swan Jira Service", model, "invite");
+        model.put("currentUserName", (currentUser.getFullName() == null || currentUser.getFullName().equals("")) ? currentUser.getUsername() : currentUser.getFullName());        applicationMailer.sendMail(user.getEmail(), "Swan Jira Service", model, "invite");
 
         return userMapper.toDto(user);
     }
