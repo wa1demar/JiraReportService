@@ -942,6 +942,17 @@ public class ReportServiceImpl implements ReportService {
         int[] arrayInts = new int[ii.size()];
         for (int i = 0; i < ii.size(); i++) arrayInts[i] = ii.get(i);
 
+        double[] arrayTar = new double[dateArrayNew.length];
+        double[] arrayTarOld = chart.getTarget();
+        for (int i = 0; i < dateArrayNew.length; i++) {
+         if (chart.getTarget().length>i){
+             arrayTar[i]= arrayTarOld[i];
+         }  else {
+             break;
+         }
+        }
+
+        chart.setTarget(arrayTar);
         chart.setActual(arrayInts);
 
         return chart;
