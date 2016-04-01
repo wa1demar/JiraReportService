@@ -68,6 +68,9 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', '$location', 'AuthenticationFact
             modalInstance.result.then(function (data) {
                 //add new report
                 data['creator'] = AuthenticationFactory.user;
+                if (data.typeId === 2) {
+                    data['boardId'] = null;
+                }
                 ReportsFactory.create({}, data, function(data){
                     $location.url("/report/" + data.id + "/configure");
                 }, function (error) {

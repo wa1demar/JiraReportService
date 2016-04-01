@@ -104,9 +104,18 @@ public class UserServiceImpl implements UserService {
     public UserDto invite(InviteUserDto inviteUserDto) throws NoSuchEntityException, MessagingException {
         User user = null;
         String password = RandomStringUtils.random(5, true, true);
+
+        User existedUser = userRepository.findByUsername(inviteUserDto.getInviteParam());
+
+        Long id = null;
+        if (existedUser != null) {
+            id = existedUser.getId();
+        }
+
         if (inviteUserDto.getInviteParam().indexOf("@") == -1) {
             JiraUser jiraUser = jiraUserRepository.findByLogin(inviteUserDto.getInviteParam());
-            user =  userRepository.add(new UserBuilder()
+            user =  userRepository.saveOrUpdate(new UserBuilder()
+                    .id(id)
                     .username(jiraUser.getLogin())
                     .fullName(jiraUser.getFullName())
                     .email(jiraUser.getEmail())
@@ -115,7 +124,8 @@ public class UserServiceImpl implements UserService {
                     .roles(roleRepository.findByName(UserRole.ROLE_MANAGER))
                     .build());
         } else {
-            user =  userRepository.add(new UserBuilder()
+            user =  userRepository.saveOrUpdate(new UserBuilder()
+                    .id(id)
                     .username(inviteUserDto.getInviteParam())
                     .email(inviteUserDto.getInviteParam())
                     .password(encoder.encode(password))
@@ -123,6 +133,7 @@ public class UserServiceImpl implements UserService {
                     .roles(roleRepository.findByName(UserRole.ROLE_MANAGER))
                     .build());
         }
+
 
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
