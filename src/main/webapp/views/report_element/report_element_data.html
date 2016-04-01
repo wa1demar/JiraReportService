@@ -275,7 +275,7 @@
             <tr>
                 <td></td>
                 <td ng-repeat="data in reportData.sprints" style="border-left: 1px solid #dddddd; min-width: 100px; text-align: center;" class="{{data.stateClass}}">
-                    {{data.endDate ? (data.endDate | date:'MM/dd/yyyy') : '-'}}
+                    {{(data.state === 'closed' && data.endDate) ? (data.endDate | date:'MM/dd/yyyy') : '-'}}
                 </td>
             </tr>
         </thead>

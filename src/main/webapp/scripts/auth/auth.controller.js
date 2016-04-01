@@ -3,8 +3,8 @@
 jiraPluginApp.controller('LoginCtrl', ['$scope', '$window', '$location', 'UserAuthFactory', 'AuthenticationFactory',
     function($scope, $window, $location, UserAuthFactory, AuthenticationFactory) {
         $scope.user = {
-            username: 'admin',
-            password: 'password'
+            username: '',
+            password: ''
         };
         $scope.loginError = {
             status: false,
