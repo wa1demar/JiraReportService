@@ -1,12 +1,9 @@
 package com.swansoftwaresolutions.jirareport.core.helper;
 
-import com.swansoftwaresolutions.jirareport.core.dto.sprint.FullSprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint_issue.IssuesByDayDto;
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssueDto;
 import com.swansoftwaresolutions.jirareport.core.dto.dashboard.Chart;
 import com.swansoftwaresolutions.jirareport.core.dto.dashboard.SprintProjectReportDto;
-import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDeveloperDto;
-import com.swansoftwaresolutions.jirareport.sheduller.dto.JiraIssueDto;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -81,19 +78,11 @@ public class HelperMethods {
     }
 
     public float isNullFloat(float target) {
-        Float object = new Float(target);
+        Float object = target;
         if (object !=null){
             return target;
         }
         return 0;
-    }
-
-    private int checkVelosity(List<SprintDeveloperDto> sprintDevList) {
-        int velocity = 0;
-        for (SprintDeveloperDto dev : sprintDevList) {
-            velocity = +dev.getEngineerLevel().intValue();
-        }
-        return velocity;
     }
 
     public Chart generateReportChart(List<SprintProjectReportDto> sprints, float targetPoints) {
@@ -157,23 +146,20 @@ public class HelperMethods {
 
 
         for (int i = 1; i < dateArray.length; i++) {
+            actual[i] =actual[i-1];
+
             if (helperMethods.isCurrentDay(dateArray[i])) {
-                boolean key = false;
-                actual[i] =actual[i-1];
                 for (IssuesByDayDto issuesDto : issuesByDayList) {
                     if (issuesDto.getDate().equals(dateArray[i])) {
                         for (SprintIssueDto sprintIssueDto : issuesDto.getIssues()) {
                             actual[i] = actual[i] - sprintIssueDto.getPoint();
-                            key = true;
                         }
                     }
-
-                    if (key) {
-                        ii.add(actual[i]);
-                        key = false;
-                    }
-
                 }
+
+                    ii.add(actual[i]);
+            } else {
+                ii.add(actual[i]);
             }
 
             target[i] = (targetPoint-targetPoint/(dateArray.length-1)*i);
