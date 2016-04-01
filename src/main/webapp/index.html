@@ -38,9 +38,9 @@
                 <ul class="nav navbar-nav" ng-show="showMenu">
                     <li ng-class="{active:isActive('/')}"><a ng-href="#/">Portfolio</a></li>
                     <li ng-class="{active:isActive('/dashboards')}"><a href="#/dashboards">Dashboard</a></li>
-                    <li ng-class="{active:isActive('/system_user')}" ng-if="roles | hasRole:'ROLE_ADMIN'"><a href="#/system_user">System users</a></li>
-                    <li ng-class="{active:isActive('/task')}" ng-if="roles | hasRole:'ROLE_ADMIN'"><a href="#/task">System tasks</a></li>
-                    <li ng-if="roles | hasRole:'ROLE_ADMIN'"><a href="javascript:" ng-click="processConfig()">Settings</a></li>
+                    <li ng-class="{active:isActive('/system_user')}" ng-if="isAdmin"><a href="#/system_user">System users</a></li>
+                    <li ng-class="{active:isActive('/task')}" ng-if="isAdmin"><a href="#/task">System tasks</a></li>
+                    <li ng-if="isAdmin"><a href="javascript:" ng-click="processConfig()">Settings</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right" ng-show="showMenu">
                     <li ng-class="{active:isActive('/profile')}"><a ng-href="#/profile">Profile</a></li>
