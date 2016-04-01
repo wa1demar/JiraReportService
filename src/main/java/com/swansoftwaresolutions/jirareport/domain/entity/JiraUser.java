@@ -31,7 +31,7 @@ public class JiraUser {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "admins")
     private List<Report> reports = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users", cascade = CascadeType.MERGE)
     private List<JiraGroup> groups = new ArrayList<>();
 
 

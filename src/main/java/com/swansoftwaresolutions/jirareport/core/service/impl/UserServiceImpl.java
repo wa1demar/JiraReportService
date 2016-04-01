@@ -66,11 +66,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto updateProfile(UserDto userDto) throws NoSuchEntityException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User existedUser = userRepository.findById(user.getId());
 
-        user.setEmail(userDto.getEmail());
-        user.setFullName(userDto.getFullName());
+        existedUser.setEmail(userDto.getEmail());
+        existedUser.setFullName(userDto.getFullName());
 
-        User updatedUser = userRepository.update(user);
+        User updatedUser = userRepository.update(existedUser);
 
         return userMapper.toDto(updatedUser);
     }
