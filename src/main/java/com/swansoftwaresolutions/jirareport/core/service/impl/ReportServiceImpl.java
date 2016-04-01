@@ -342,9 +342,9 @@ public class ReportServiceImpl implements ReportService {
                                         dev.setActualHours(help.isNull(dev.getActualHours()) + (long) issue.getHours());
                                     } else if (issue.getTypeName().equals("UAT Defect")) {
                                         dev.setUatDefectHours(help.isNull(dev.getDefectHours()) + (long) issue.getHours());
-                                        dev.setUatDefectActualHours(help.isNull(dev.getUatDefectActualHours()) + Math.round(issue.getHours()/60));
+                                        dev.setUatDefectActualHours(help.isNull(dev.getUatDefectActualHours()) + (long) issue.getHours());
                                         dev.setUatDefectActual(help.isNull(dev.getUatDefectActual()) + 1);
-                                        dev.setActualHours(help.isNull(dev.getActualHours()) + Math.round(issue.getHours()/60));
+                                        dev.setActualHours(help.isNull(dev.getActualHours()) + (long) issue.getHours());
                                     }
                                 }
                             }
@@ -487,8 +487,8 @@ public class ReportServiceImpl implements ReportService {
                         dev.setUatDefectTargetHours((long) Math.round(help.isNull(dev.getUatDefectTargetHours()) / 3600));
                         dev.setUatDefectActualHours((long) Math.round(help.isNull(dev.getUatDefectActualHours()) / 3600));
                         dev.setUatDefectActual(help.isNull(dev.getUatDefectActual()));
-                        dev.setUatDefectHours((long) Math.round(help.isNull(dev.getUatDefectHours())/3600));
-                        dev.setActualHours((long) Math.round(help.isNull(dev.getActualHours())/3600));
+                        dev.setUatDefectHours((long) Math.round(help.isNull(dev.getUatDefectHours()) / 3600));
+                        dev.setActualHours((long) Math.round(help.isNull(dev.getActualHours()) / 3600));
 
                         sprintDevelopers.add(dev);
                     }
@@ -794,6 +794,7 @@ public class ReportServiceImpl implements ReportService {
         List<Date> nonWorkingDays = new ArrayList<>();
         for (String dateString : Arrays.asList(nonWorkingDaysString.split(","))) {
             try {
+                if (dateString.isEmpty()) continue;
                 nonWorkingDays.add(formatter.parse(dateString));
             } catch (ParseException e) {
                 e.printStackTrace();
