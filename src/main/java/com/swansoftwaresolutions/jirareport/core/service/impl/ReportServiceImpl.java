@@ -177,7 +177,8 @@ public class ReportServiceImpl implements ReportService {
 
         return new ReportListDtoBuilder()
                 .page(page)
-                .total((int) Math.floor(paged.getTotal() / 10)+1)
+                .pages((int) Math.floor(paged.getTotal() / 10)+1)
+                .items(paged.getTotal())
                 .reportsDto(reportDtos)
                 .build();
     }
@@ -305,7 +306,8 @@ public class ReportServiceImpl implements ReportService {
 
         return new ReportListDtoBuilder()
                 .page(page)
-                .total((int) Math.floor(paged.getTotal() / 10) + 1)
+                .pages((int) Math.floor(paged.getTotal() / 10) + 1)
+                .items(paged.getTotal())
                 .reportsDto(reportDtos)
                 .build();
     }

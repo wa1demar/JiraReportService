@@ -10,8 +10,26 @@ import java.util.List;
 public class ReportListDto implements Serializable {
 
     private int page;
-    private int total;
+    private int totalPages;
+    private int totalItems;
+    private int itemsPerPage = 10;
     private List<ReportDto> reports = new ArrayList<>();
+
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(int totalPages) {
+        this.totalPages = totalPages;
+    }
+
+    public int getTotalItems() {
+        return totalItems;
+    }
+
+    public void setTotalItems(int totalItems) {
+        this.totalItems = totalItems;
+    }
 
     public int getPage() {
         return page;
@@ -19,14 +37,6 @@ public class ReportListDto implements Serializable {
 
     public void setPage(int page) {
         this.page = page;
-    }
-
-    public int getTotal() {
-        return total;
-    }
-
-    public void setTotal(int total) {
-        this.total = total;
     }
 
     public List<ReportDto> getReports() {
@@ -51,5 +61,13 @@ public class ReportListDto implements Serializable {
     @Override
     public int hashCode() {
         return reports.hashCode();
+    }
+
+    public int getItemsPerPage() {
+        return itemsPerPage;
+    }
+
+    public void setItemsPerPage(int itemsPerPage) {
+        this.itemsPerPage = itemsPerPage;
     }
 }

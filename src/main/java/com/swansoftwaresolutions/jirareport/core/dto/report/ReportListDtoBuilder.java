@@ -23,8 +23,13 @@ public class ReportListDtoBuilder {
         return this;
     }
 
-    public ReportListDtoBuilder total(int total) {
-        listDto.setTotal(total);
+    public ReportListDtoBuilder pages(int total) {
+        listDto.setTotalPages(total);
+        return this;
+    }
+
+    public ReportListDtoBuilder items(int total) {
+        listDto.setTotalItems(total);
         return this;
     }
 
