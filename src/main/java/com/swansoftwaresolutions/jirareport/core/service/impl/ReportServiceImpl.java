@@ -143,9 +143,12 @@ public class ReportServiceImpl implements ReportService {
     public ReportListDto retrieveAllClosedReportsList() {
         List<ReportDto> reportDtos = reportMapper.toDtos(reportRepository.findAllClosed());
 
+        List<Long> ids = reportDtos.stream().map(r -> r.getBoardId()).collect(Collectors.toList());
+        Map<Long, JiraBoard> boards = jiraBoardRepository.findByIds(ids).stream().collect(Collectors.toMap(JiraBoard::getId, b -> b));
+
         for (ReportDto dto : reportDtos) {
             if (dto.getBoardId() != null) {
-                JiraBoard board = jiraBoardRepository.findById(dto.getBoardId());
+                JiraBoard board = boards.get(dto.getBoardId());
                 dto.setBoardName(board.getName());
                 dto.setJiraBoardId(board.getBoardId());
             }
@@ -244,9 +247,11 @@ public class ReportServiceImpl implements ReportService {
     public ReportListDto retrieveAllOngoingReportsList() {
         List<ReportDto> reportDtos = reportMapper.toDtos(reportRepository.findAllOpened());
 
+        List<Long> ids = reportDtos.stream().map(r -> r.getBoardId()).collect(Collectors.toList());
+        Map<Long, JiraBoard> boards = jiraBoardRepository.findByIds(ids).stream().collect(Collectors.toMap(JiraBoard::getId, b -> b));
         for (ReportDto dto : reportDtos) {
             if (dto.getBoardId() != null) {
-                JiraBoard board = jiraBoardRepository.findById(dto.getBoardId());
+                JiraBoard board = boards.get(dto.getBoardId());
                 dto.setBoardName(board.getName());
                 dto.setJiraBoardId(board.getBoardId());
             }
@@ -262,7 +267,7 @@ public class ReportServiceImpl implements ReportService {
         try {
             Report report = reportRepository.findById(reportId);
             if (report.getBoardId() == null) {
-                projectDashboardDto.setSprints(buildManualSprints(report.getId()));
+                projectDashboardDto.setSprints(buildManualSprints(report));
                 projectDashboardDto.setReport(buildProjectReport(reportId, projectDashboardDto.getSprints()));
             } else {
                 projectDashboardDto.setSprints(buildAutomationSprints(report));
@@ -291,7 +296,7 @@ public class ReportServiceImpl implements ReportService {
         return reportRepository.showUat(reportId);
     }
 
-    private List<SprintProjectReportDto> buildManualSprints(Long reportId) {
+    private List<SprintProjectReportDto> buildManualSprints(Report report) {
 
         HelperMethods help = new HelperMethods();
 
@@ -299,7 +304,7 @@ public class ReportServiceImpl implements ReportService {
 
         List<FullSprintDto> sprintDtoList;
         try {
-            sprintDtoList = sprintService.findByReportId(reportId);
+            sprintDtoList = sprintService.findByReport(report);
 
             for (FullSprintDto sprintDto : sprintDtoList) {
 
@@ -426,14 +431,14 @@ public class ReportServiceImpl implements ReportService {
         List<FullSprintDto> sprintDtoList;
 
         try {
-            sprintDtoList = sprintService.findByReportId(report.getId());
+            sprintDtoList = sprintService.findByReport(report); //TODO: we have report.getSprints()
 
             for (FullSprintDto sprintDto : sprintDtoList) {
                 if (sprintDto.getState() == null || sprintDto.getState().equalsIgnoreCase("future") || sprintDto.getDevelopers() == null || sprintDto.getDevelopers().size() == 0) {
                     continue;
                 }
 
-                List<JiraIssueDto> jiraIssueList = jiraIssueService.findBySprintId(sprintDto.getJiraSprintId());
+                List<JiraIssueDto> jiraIssueList = jiraIssueService.findBySprintId(sprintDto.getJiraSprintId()); // TODO: sprint shoul have issues or push it from loop
 
                 Set<JiraIssueDto> issuesSet = new HashSet<>();
 

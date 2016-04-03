@@ -1,7 +1,5 @@
 package com.swansoftwaresolutions.jirareport.rest.service.impl;
 
-import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
-import com.swansoftwaresolutions.jirareport.core.dto.JiraUsersDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUsersDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;

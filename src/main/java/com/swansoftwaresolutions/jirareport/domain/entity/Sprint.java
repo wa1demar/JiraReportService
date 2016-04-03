@@ -1,5 +1,9 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -40,7 +44,9 @@ public class Sprint {
     @Column(name = "type")
     private int type;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
+    @BatchSize(size = 10)
     @JoinColumn(name = "jira_sprint_id")
     private JiraSprint jiraSprint;
 
@@ -51,7 +57,9 @@ public class Sprint {
     @JoinColumn(name = "report_id", nullable = false)
     private Report report = new Report();
 
-    @OneToMany(cascade={CascadeType.ALL}, mappedBy="sprint", fetch = FetchType.EAGER)
+    @OneToMany(cascade={CascadeType.ALL}, mappedBy="sprint", fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
+    @BatchSize(size = 10)
     private List<SprintDeveloper> developers = new ArrayList<>();
 
     public Long getId() {

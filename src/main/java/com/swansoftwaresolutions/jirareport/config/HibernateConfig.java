@@ -101,6 +101,11 @@ public class HibernateConfig {
         properties.put("hibernate.c3p0.timeout", c3poTimeout);
         properties.put("hibernate.c3p0.max_statements", c3poMaxStatements);
         properties.put("hibernate.c3p0.idle_test_period", c3poTestPeriod);
+
+        properties.put("hibernate.jdbc.batch_size", 20);
+        properties.put("hibernate.jdbc.batch_versioned_data", true);
+        properties.put("hibernate.order_updates", true);
+        properties.put("hibernate.order_updates", true);
         return properties;
     }
 

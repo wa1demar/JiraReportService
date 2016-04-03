@@ -1,9 +1,12 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
 import com.sun.org.apache.xpath.internal.operations.Bool;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * @author Vladimir Martynyuk
@@ -77,7 +80,10 @@ public class CacheProjectTotal {
     @Column(name = "sprints_count")
     private long sprintsCount;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Cascade(CascadeType.ALL)
+    @Fetch(FetchMode.JOIN)
+    @BatchSize(size = 10)
     @JoinColumn(name="report_id")
     private Report report;
 

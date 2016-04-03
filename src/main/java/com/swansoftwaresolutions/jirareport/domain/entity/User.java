@@ -2,6 +2,7 @@ package com.swansoftwaresolutions.jirareport.domain.entity;
 
 import com.swansoftwaresolutions.jirareport.core.dto.user.UserDto;
 import com.swansoftwaresolutions.jirareport.domain.enums.UserStatus;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
@@ -43,7 +44,9 @@ public class User implements UserDetails, Serializable {
     @Column(name = "status")
     private UserStatus status;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
+    @BatchSize(size = 10)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
