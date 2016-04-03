@@ -7,6 +7,32 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', '$location', 'AuthenticationFact
         $scope.loaderShow = true;
         //$scope.setLoading(true);
 
+//----------------------------------------------------------------------------------------------------------------------
+//TODO For pagination
+//        $scope.dataOngoing = [];
+//        $scope.totalOngoing = 0;
+//        $scope.ongoingPerPage = 5; // this should match however many results your API puts on one page
+//        getResultsPage(1);
+//
+//        $scope.pagination = {
+//            current: 1
+//        };
+//
+//        $scope.pageChanged = function(newPage) {
+//            getResultsPage(newPage);
+//        };
+//
+//        function getResultsPage(pageNumber) {
+//            // this is just an example, in reality this stuff should be in a service
+//            ReportsFactory.query({type: "ongoing"}, function(result){
+//                $scope.dataOngoing = result.reports;
+//                $scope.totalOngoing = result.reports.length;
+//                $scope.loaderShow = false;
+//                //$scope.setLoading(false);
+//            });
+//        }
+
+//----------------------------------------------------------------------------------------------------------------------
         this.getReportsData = function () {
             ReportsFactory.query({type: "ongoing"}, function(result){
                 $scope.dataOngoing = result.reports;
