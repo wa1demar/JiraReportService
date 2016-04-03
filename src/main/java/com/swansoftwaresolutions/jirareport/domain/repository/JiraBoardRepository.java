@@ -21,4 +21,6 @@ public interface JiraBoardRepository {
     void delete(final Long jiraBoard) throws NoSuchEntityException;
 
     JiraBoard update(JiraBoard jiraBoard) throws NoSuchEntityException;
+
+    List<JiraBoard> findByIds(List<Long> ids);
 }

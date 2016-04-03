@@ -18,6 +18,16 @@ public class ReportListDtoBuilder {
         return this;
     }
 
+    public ReportListDtoBuilder page(int page) {
+        listDto.setPage(page);
+        return this;
+    }
+
+    public ReportListDtoBuilder total(int total) {
+        listDto.setTotal(total);
+        return this;
+    }
+
     public ReportListDto build() {
         return listDto;
     }

@@ -71,4 +71,11 @@ public class JiraBoardRepositoryImpl implements JiraBoardRepository {
         }
         return (JiraBoard) sessionFactory.getCurrentSession().merge(jiraBoard);
     }
+
+    @Override
+    public List<JiraBoard> findByIds(List<Long> ids) {
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM JiraBoard jb WHERE jb.id IN :ids ORDER BY jb.name ASC");
+        query.setParameterList("ids", ids);
+        return query.list();
+    }
 }

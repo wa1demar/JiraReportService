@@ -3,6 +3,7 @@ package com.swansoftwaresolutions.jirareport.domain.repository;
 import com.swansoftwaresolutions.jirareport.domain.entity.SprintDeveloper;
 
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 public interface SprintDeveloperRepository {
 
@@ -14,4 +15,5 @@ public interface SprintDeveloperRepository {
 
     void deleteBySprintId(Long sprintId);
 
+    List<SprintDeveloper> findByIds(List<Long> ids);
 }
