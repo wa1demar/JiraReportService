@@ -8,7 +8,26 @@ import java.util.List;
  * @author Vladimir Martynyuk
  */
 public class ReportListDto implements Serializable {
+
+    private int page;
+    private int total;
     private List<ReportDto> reports = new ArrayList<>();
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
 
     public List<ReportDto> getReports() {
         return reports;

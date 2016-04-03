@@ -14,6 +14,7 @@ import com.swansoftwaresolutions.jirareport.core.service.*;
 import com.swansoftwaresolutions.jirareport.domain.entity.*;
 import com.swansoftwaresolutions.jirareport.domain.entity.builder.CacheProjectTotalBuilder;
 import com.swansoftwaresolutions.jirareport.domain.entity.builder.ReportBuilder;
+import com.swansoftwaresolutions.jirareport.domain.model.Paged;
 import com.swansoftwaresolutions.jirareport.domain.repository.*;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -85,7 +86,7 @@ public class ReportServiceImpl implements ReportService {
 
         for (ReportDto dto : reportDtos) {
             if (dto.getBoardId() != null) {
-                JiraBoard board = jiraBoardRepository.findById(dto.getBoardId());
+                JiraBoard board = jiraBoardRepository.findById(dto.getBoardId()); // TODO: push from loop
                 dto.setBoardName(board.getName());
                 dto.setJiraBoardId(board.getBoardId());
             }
@@ -114,7 +115,7 @@ public class ReportServiceImpl implements ReportService {
             sprint.setJiraSprint(jiraSprint);
             sprint.setReport(addedReport);
 
-            sprintRepository.add(sprint);
+            sprintRepository.add(sprint); //TODO: move to repository and add batch
         }
 
         ReportDto reportDto = reportMapper.toDto(addedReport);
@@ -158,6 +159,31 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    public ReportListDto retrieveAllClosedReportsListPaginated(int page) {
+        Paged paged = reportRepository.findAllClosedPaginated(page);
+        List<ReportDto> reportDtos = reportMapper.toDtos(paged.getList());
+
+        List<Long> ids = reportDtos.stream().map(r -> r.getBoardId()).collect(Collectors.toList());
+        Map<Long, JiraBoard> boards = jiraBoardRepository.findByIds(ids).stream().collect(Collectors.toMap(JiraBoard::getId, b -> b));
+
+        for (ReportDto dto : reportDtos) {
+            if (dto.getBoardId() != null) {
+                JiraBoard board = boards.get(dto.getBoardId());
+                dto.setBoardName(board.getName());
+                dto.setJiraBoardId(board.getBoardId());
+            }
+        }
+
+
+        return new ReportListDtoBuilder()
+                .page(page)
+                .total((int) Math.floor(paged.getTotal() / 10)+1)
+                .reportsDto(reportDtos)
+                .build();
+    }
+
+
+    @Override
     public ReportDto copy(long id) throws NoSuchEntityException {
 
         Report report = reportRepository.findById(id);
@@ -194,7 +220,7 @@ public class ReportServiceImpl implements ReportService {
             sprint.setEndDate(target.getEndDate());
             sprint.setState(target.getState());
 
-            List<SprintDeveloper> developers = sprintDeveloperRepository.findBySprintId(target.getId());
+            List<SprintDeveloper> developers = sprintDeveloperRepository.findBySprintId(target.getId()); // TODO : push from loop
 
             Sprint newSprint = sprintRepository.add(sprint);
 
@@ -202,7 +228,7 @@ public class ReportServiceImpl implements ReportService {
                 developer.setId(null);
                 developer.setSprint(newSprint);
 
-                sprintDeveloperRepository.add(developer);
+                sprintDeveloperRepository.add(developer); // TODO: move to thread?
             }
         }
 
@@ -258,6 +284,30 @@ public class ReportServiceImpl implements ReportService {
         }
 
         return new ReportListDtoBuilder().reportsDto(reportDtos).build();
+    }
+
+    @Override
+    public ReportListDto retrieveAllOngoingReportsListPaginated(int page) {
+        Paged paged = reportRepository.findAllOpenedPaginated(page);
+        List<ReportDto> reportDtos = reportMapper.toDtos(paged.getList());
+
+        List<Long> ids = reportDtos.stream().map(r -> r.getBoardId()).collect(Collectors.toList());
+        Map<Long, JiraBoard> boards = jiraBoardRepository.findByIds(ids).stream().collect(Collectors.toMap(JiraBoard::getId, b -> b));
+
+        for (ReportDto dto : reportDtos) {
+            if (dto.getBoardId() != null) {
+                JiraBoard board = boards.get(dto.getBoardId());
+                dto.setBoardName(board.getName());
+                dto.setJiraBoardId(board.getBoardId());
+            }
+        }
+
+
+        return new ReportListDtoBuilder()
+                .page(page)
+                .total((int) Math.floor(paged.getTotal() / 10) + 1)
+                .reportsDto(reportDtos)
+                .build();
     }
 
     @Override

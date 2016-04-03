@@ -118,9 +118,9 @@ public class SprintServiceImpl implements SprintService {
         for (SprintDeveloperDto dto : sprintDto.getDevelopers()) {
             SprintDeveloper developer = developerMapper.fromDto(dto);
             try {
-                developer.setJiraUser(jiraUserRepository.findByLogin(dto.getDeveloperName()));
+                developer.setJiraUser(jiraUserRepository.findByLogin(dto.getDeveloperName())); // TODO: push from loop
                 developer.setSprint(newSprint);
-                SprintDeveloper newDeveloper = developerRepository.add(developer);
+                SprintDeveloper newDeveloper = developerRepository.add(developer); //TODO ?
                 developers.add(newDeveloper);
             } catch (NoSuchEntityException e) {
                 e.printStackTrace();
@@ -149,7 +149,7 @@ public class SprintServiceImpl implements SprintService {
         for (SprintDeveloperDto dto : sprintDto.getSprintTeams()) {
             SprintDeveloper developer = developerMapper.fromDto(dto);
             try {
-                developer.setJiraUser(jiraUserRepository.findByLogin(dto.getDeveloperLogin()));
+                developer.setJiraUser(jiraUserRepository.findByLogin(dto.getDeveloperLogin())); //TODO push from loop
                 developer.setSprint(sprint);
                 developers.add(developer);
             } catch (NoSuchEntityException e) {
@@ -158,6 +158,7 @@ public class SprintServiceImpl implements SprintService {
 
         }
 
+        // TODO to many queries
         Sprint oldSprint = sprintRepository.findById(sprintDto.getId());
 
         sprint.setDevelopers(developers);
