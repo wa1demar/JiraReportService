@@ -52,7 +52,8 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
 
     @Override
     public List<JiraUser> findAll() {
-        return sessionFactory.getCurrentSession().createCriteria(JiraUser.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM JiraUser u");
+        return query.list();
     }
 
     @Override

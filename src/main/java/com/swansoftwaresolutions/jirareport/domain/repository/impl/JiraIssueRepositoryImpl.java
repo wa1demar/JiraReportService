@@ -100,4 +100,12 @@ public class JiraIssueRepositoryImpl implements JiraIssueRepository {
         }
         return (JiraIssue) sessionFactory.getCurrentSession().merge(jiraIssue);
     }
+
+    @Override
+    public List<JiraIssue> findBySprintIds(List<Long> ids) {
+        Query query = sessionFactory.getCurrentSession().createQuery("from JiraIssue i WHERE i.sprintId in :ids");
+        query.setParameterList("ids", ids);
+
+        return query.list();
+    }
 }

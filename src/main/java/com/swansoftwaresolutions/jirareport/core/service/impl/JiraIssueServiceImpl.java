@@ -11,6 +11,7 @@ import com.swansoftwaresolutions.jirareport.sheduller.dto.JiraIssueDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,6 +52,15 @@ public class JiraIssueServiceImpl implements JiraIssueService {
         jiraIssueRepository.delete(jiraIssueMapper.fromDto(jiraIssue));
     }
 
+    @Override
+    public List<JiraIssueDto> findBySprintIds(List<Long> ids) {
+        if (ids == null || ids.size() == 0) {
+            return new ArrayList<>();
+        }
+
+        return jiraIssueMapper.toDtos(jiraIssueRepository.findBySprintIds(ids));
+
+    }
 
 
 }
