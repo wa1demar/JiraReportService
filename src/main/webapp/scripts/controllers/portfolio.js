@@ -58,9 +58,28 @@ jiraPluginApp.controller("PortfolioCtrl", ['$scope', 'PortfoliosFactory', '$time
             return chart;
         };
 
-        this.getPortfoliosData = function () {
-            PortfoliosFactory.query({}, function (result) {
+//----------------------------------------------------------------------------------------------------------------------
+//For pagination
+        $scope.reportsData = [];
+        $scope.totalReportsData = 0;
+        $scope.reportsDataPerPage = 10; // this should match however many results your API puts on one page
+        getResultsPage(1);
+
+        $scope.pagination = {
+            current: 1
+        };
+
+        $scope.pageChanged = function(newPage) {
+            getResultsPage(newPage);
+        };
+
+        function getResultsPage(pageNumber) {
+            // this is just an example, in reality this stuff should be in a service
+            $scope.loaderShow = true;
+            PortfoliosFactory.query({page: pageNumber}, function (result) {
                 $scope.reportsData = result.dashboards;
+                $scope.totalReportsData = result.totalItems;
+                $scope.reportsDataPerPage = result.itemsPerPage;
 
                 for (var index = 0; index < $scope.reportsData.length; index++) {
                     $scope.reportsData[index] = $scope.reportsData[index].report;
@@ -79,50 +98,7 @@ jiraPluginApp.controller("PortfolioCtrl", ['$scope', 'PortfoliosFactory', '$time
                 $scope.reportsData = [];
                 $scope.loaderShow = false;
             });
-        };
-
-        self.getPortfoliosData();
-
-//----------------------------------------------------------------------------------------------------------------------
-//TODO For pagination
-//        $scope.reportsData = [];
-//        $scope.totalReportsData = 0;
-//        $scope.reportsDataPerPage = 10; // this should match however many results your API puts on one page
-//        getResultsPage(1);
-//
-//        $scope.pagination = {
-//            current: 1
-//        };
-//
-//        $scope.pageChanged = function(newPage) {
-//            getResultsPage(newPage);
-//        };
-//
-//        function getResultsPage(pageNumber) {
-//            // this is just an example, in reality this stuff should be in a service
-//            $scope.loaderShow = true;
-//            PortfoliosFactory.query({page: pageNumber}, function (result) {
-//                $scope.reportsData = result.dashboards;
-//                $scope.totalReportsData = result.totalItems;
-//
-//                for (var index = 0; index < $scope.reportsData.length; index++) {
-//                    $scope.reportsData[index] = $scope.reportsData[index].report;
-//
-//                    //Progress bar
-//                    $scope.reportsData[index]['progressBarData'] = self.updateProgressBar($scope.reportsData[index]);
-//                    //Chart
-//                    $scope.reportsData[index]['chart'] = self.updateChart($scope.reportsData[index]);
-//                }
-//
-//                //FIXME fix for normal size chart
-//                $timeout(function () {
-//                    $scope.loaderShow = false;
-//                }, 0);
-//            }, function (error) {
-//                $scope.reportsData = [];
-//                $scope.loaderShow = false;
-//            });
-//        }
+        }
 
     }
 ]);

@@ -2,6 +2,11 @@
 
 jiraPluginApp.controller("HeaderCtrl", ['$scope', '$location', 'UserAuthFactory','$uibModal', 'ConfigFactory', 'Notification',
     function($scope, $location, UserAuthFactory, $uibModal, ConfigFactory, Notification) {
+        $scope.menu = [];
+        $scope.showToggleMenu = function(item) {
+            console.log($scope.menu[item]);
+            $scope.menu[item] = !$scope.menu[item];
+        };
 
         $scope.isActive = function(route) {
             return route === $location.path();
