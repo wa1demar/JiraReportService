@@ -28,10 +28,10 @@ public class JiraSprintMapperImpl implements JiraSprintMapper {
         modelMapper.addMappings(new ImportedJiraSprintDtoMapper());
     }
 
-    @Override
-    public List<JiraSprint> fromDtos(List<JiraSprintDto> jiraSprintDtos) {
-        return null;
-    }
+//    @Override
+//    public List<JiraSprint> fromDtos(List<JiraSprintDto> jiraSprintDtos) {
+//        return null;
+//    }
 
     @Override
     public List<JiraSprint> fromShedullerDtos(List<ImportedJiraSprintDto> sprintDtos) {

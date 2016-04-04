@@ -53,6 +53,9 @@ public class SprintDeveloperRepositoryImpl implements SprintDeveloperRepository 
 
     @Override
     public List<SprintDeveloper> findByIds(List<Long> ids) {
+        if (ids == null || ids.size() == 0) {
+            return new ArrayList<>();
+        }
         Query query = sessionFactory.getCurrentSession().createQuery("FROM SprintDeveloper dev WHERE dev.sprint.id in :ids ORDER BY dev.id ASC");
         query.setParameterList("ids", ids);
         return query.list();
