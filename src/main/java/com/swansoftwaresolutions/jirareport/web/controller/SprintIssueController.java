@@ -25,13 +25,13 @@ public class SprintIssueController {
     @Autowired
     SprintService sprintService;
 
-    @RequestMapping(value = "/v1/sprint_issues/{sprintId}/{assignee}", method = RequestMethod.GET)
+    @RequestMapping(value = "/v1/sprint_issues/{sprintId}/{assignee:.+}", method = RequestMethod.GET)
     private ResponseEntity<List<IssuesByDayDto>> getAllIssues(@PathVariable("sprintId") Long sprintId, @PathVariable("assignee") String assignee) {
         List<IssuesByDayDto> results = sprintIssueService.getIssuesByDay(sprintId, assignee);
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/v1/sprint_issues/{sprintId}/{assignee}", method = RequestMethod.POST)
+    @RequestMapping(value = "/v1/sprint_issues/{sprintId}/{assignee:.+}", method = RequestMethod.POST)
     private ResponseEntity<SprintIssueDto> addIssue(@PathVariable("sprintId") Long sprintId, @PathVariable("assignee") String assignee, @RequestBody SprintIssueDto newSprintIssue) throws NoSuchEntityException {
         newSprintIssue.setSprintId(sprintId);
         newSprintIssue.setAssignee(assignee);

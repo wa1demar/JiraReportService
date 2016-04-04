@@ -392,10 +392,13 @@ public class ReportServiceImpl implements ReportService {
                 if (sprintDevList != null) {
                     List<SprintDeveloperDto> sprintDevelopers = new ArrayList<>();
                     for (SprintDeveloperDto dev : sprintDevList) {
+
                         Set<SprintIssueDto> issuesSet = new HashSet<>();
                         for (IssuesByDayDto issuesByDayDto : issuesByDayList) {
                             for (SprintIssueDto issue : issuesByDayDto.getIssues()) {
-                                issuesSet.add(issue);
+                                if (dev.getDeveloperLogin().equalsIgnoreCase(issue.getAssignee())) {
+                                    issuesSet.add(issue);
+                                }
                             }
                         }
 
@@ -908,12 +911,11 @@ public class ReportServiceImpl implements ReportService {
                 Date date2 = null;
                 try {
                     date2 = sdf.parse(sprintIssueDto.getIssueDate());
+                    if (helperMethods.isSameDate(currentDate, date2)) {
+                        issues.add(sprintIssueDto);
+                    }
                 } catch (ParseException e) {
                     e.printStackTrace();
-                }
-
-                if (helperMethods.isSameDate(currentDate, date2)) {
-                    issues.add(sprintIssueDto);
                 }
             }
 
