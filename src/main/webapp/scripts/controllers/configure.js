@@ -2,6 +2,9 @@
 
 jiraPluginApp.controller('ConfigureCtrl', ['$scope', '$routeParams', 'ReportFactory',
     function($scope, $routeParams, ReportFactory) {
+
+        //data for link
+        $scope.configureReportInfo = {};
 //--------------------------------------------------------------------------------------------------------------
 //Tabs
         $scope.tabs = [{
@@ -40,6 +43,10 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
                 }
                 $scope.report.admins = admins;
                 $scope.loaderShow = false;
+
+                //data for link
+                $scope.configureReportInfo.id = result.id;
+                $scope.configureReportInfo.title = result.title;
             });
         };
 
@@ -305,6 +312,10 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             ReportFactory.get({id: $routeParams.reportId}, function(result){
                 $scope.report = result;
                 $scope.getSprints(data);
+
+                //data for link
+                $scope.configureReportInfo.id = result.id;
+                $scope.configureReportInfo.title = result.title;
             });
         };
 

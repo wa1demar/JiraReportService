@@ -64,9 +64,9 @@ jiraPluginApp.controller('DueDateIssueCtrl',
                         assignee: "assignee 1",
                         key: "key-1",
                         summary: "summary 1",
-                        description: "description 1",
+                        description: ["description 1", "description 2", "description 3"],
                         status: "In Progress",
-                        dueDate: ['03/23/2016','03/25/2016','03/28/2016']
+                        dueDate: [new Date("2016-04-06"), new Date(new Date - 86400 * 1000), new Date(new Date - 172800 * 1000)]
                     },
                     {
                         id: 2,
@@ -74,9 +74,9 @@ jiraPluginApp.controller('DueDateIssueCtrl',
                         assignee: "assignee 2",
                         key: "key-2",
                         summary: "summary 2",
-                        description: "description 2",
+                        description: ["description 2"],
                         status: "To Do",
-                        dueDate: ['03/22/2016']
+                        dueDate: [new Date(new Date - 86400 * 1000)]
                     },
                     {
                         id: 3,
@@ -84,9 +84,9 @@ jiraPluginApp.controller('DueDateIssueCtrl',
                         assignee: "assignee 2",
                         key: "key-2",
                         summary: "summary 2",
-                        description: "description 2",
+                        description: ["description 2"],
                         status: "To Do",
-                        dueDate: ['03/22/2016']
+                        dueDate: [new Date("2016-04-05")]
                     },
                     {
                         id: 4,
@@ -94,9 +94,9 @@ jiraPluginApp.controller('DueDateIssueCtrl',
                         assignee: "assignee 2",
                         key: "key-2",
                         summary: "summary 2",
-                        description: "description 2",
+                        description: ["description 2"],
                         status: "To Do",
-                        dueDate: ['03/22/2016']
+                        dueDate: [new Date("2016-04-03"), new Date("2016-04-01")]
                     },
                     {
                         id: 5,
@@ -104,9 +104,9 @@ jiraPluginApp.controller('DueDateIssueCtrl',
                         assignee: "assignee 2",
                         key: "key-2",
                         summary: "summary 2",
-                        description: "description 2",
+                        description: ["description 2"],
                         status: "To Do",
-                        dueDate: ['03/22/2016']
+                        dueDate: [new Date()]
                     }
                 ];
 
