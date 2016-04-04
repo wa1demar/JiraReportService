@@ -10,7 +10,6 @@ import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDtoBuilder
 import com.swansoftwaresolutions.jirareport.core.dto.sprint.FullSprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDeveloperDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.ReportMapper;
-import com.swansoftwaresolutions.jirareport.core.mapper.SprintMapper;
 import com.swansoftwaresolutions.jirareport.core.service.*;
 import com.swansoftwaresolutions.jirareport.domain.entity.*;
 import com.swansoftwaresolutions.jirareport.domain.entity.builder.CacheProjectTotalBuilder;
@@ -62,9 +61,6 @@ public class ReportServiceImpl implements ReportService {
 
     @Autowired
     private ReportMapper reportMapper;
-
-    @Autowired
-    private SprintMapper sprintMapper;
 
     @Autowired
     SprintService sprintService;
@@ -387,36 +383,28 @@ public class ReportServiceImpl implements ReportService {
                 sprint.setCompleteDate(sprintDto.getEndDate());
 
                 List<SprintDeveloperDto> sprintDevList = sprintDto.getDevelopers();
-//                sprintProj.setSprintTeam(sprintDevList);
 
                 if (sprintDevList != null) {
                     List<SprintDeveloperDto> sprintDevelopers = new ArrayList<>();
                     for (SprintDeveloperDto dev : sprintDevList) {
 
-                        Set<SprintIssueDto> issuesSet = new HashSet<>();
                         for (IssuesByDayDto issuesByDayDto : issuesByDayList) {
                             for (SprintIssueDto issue : issuesByDayDto.getIssues()) {
-                                if (dev.getDeveloperLogin().equalsIgnoreCase(issue.getAssignee())) {
-                                    issuesSet.add(issue);
-                                }
-                            }
-                        }
-
-                        for (SprintIssueDto issue : issuesSet) {
-                            if (dev.getDeveloperLogin().equals(issue.getAssignee())) {
-                                if (issue.getStatusName().equals("Done")) {
-                                    if (issue.getTypeName().equals("Story")) {
-                                        dev.setActualPoints(dev.getActualPoints() + issue.getPoint());
-                                        dev.setActualHours(help.isNull(dev.getActualHours()) + (long) issue.getHours());
-                                    } else if (issue.getTypeName().equals("QAT Defect")) {
-                                        dev.setDefectActual(dev.getDefectActual() + 1);
-                                        dev.setDefectActualHours(help.isNull(dev.getDefectActualHours()) + (long) issue.getHours());
-                                        dev.setActualHours(help.isNull(dev.getActualHours()) + (long) issue.getHours());
-                                    } else if (issue.getTypeName().equals("UAT Defect")) {
-                                        dev.setUatDefectHours(help.isNull(dev.getDefectHours()) + (long) issue.getHours());
-                                        dev.setUatDefectActualHours(help.isNull(dev.getUatDefectActualHours()) + (long) issue.getHours());
-                                        dev.setUatDefectActual(help.isNull(dev.getUatDefectActual()) + 1);
-                                        dev.setActualHours(help.isNull(dev.getActualHours()) + (long) issue.getHours());
+                                if (dev.getDeveloperLogin().equals(issue.getAssignee())) {
+                                    if (issue.getStatusName().equals("Done")) {
+                                        if (issue.getTypeName().equals("Story")) {
+                                            dev.setActualPoints(dev.getActualPoints() + issue.getPoint());
+                                            dev.setActualHours(help.isNull(dev.getActualHours()) + (long) issue.getHours());
+                                        } else if (issue.getTypeName().equals("QAT Defect")) {
+                                            dev.setDefectActual(dev.getDefectActual() + 1);
+                                            dev.setDefectActualHours(help.isNull(dev.getDefectActualHours()) + (long) issue.getHours());
+                                            dev.setActualHours(help.isNull(dev.getActualHours()) + (long) issue.getHours());
+                                        } else if (issue.getTypeName().equals("UAT Defect")) {
+                                            dev.setUatDefectHours(help.isNull(dev.getDefectHours()) + (long) issue.getHours());
+                                            dev.setUatDefectActualHours(help.isNull(dev.getUatDefectActualHours()) + (long) issue.getHours());
+                                            dev.setUatDefectActual(help.isNull(dev.getUatDefectActual()) + 1);
+                                            dev.setActualHours(help.isNull(dev.getActualHours()) + (long) issue.getHours());
+                                        }
                                     }
                                 }
                             }

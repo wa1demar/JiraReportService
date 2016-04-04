@@ -1,7 +1,5 @@
 package com.swansoftwaresolutions.jirareport.config;
 
-import com.swansoftwaresolutions.jirareport.rest.client.RestClient;
-import com.swansoftwaresolutions.jirareport.sheduller.rest.client.*;
 import com.swansoftwaresolutions.jirareport.sheduller.job.*;
 import org.quartz.Trigger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,22 +77,6 @@ public class QuartzConfig {
         jobDetailFactory.setDurability(true);
         return jobDetailFactory;
     }
-
-//    @Bean
-//    CronTriggerFactoryBean loadJiraUsersTrigger() {
-//        CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
-//        cronTriggerFactoryBean.setJobDetail(loadJiraUsersJobDetail().getObject());
-//        cronTriggerFactoryBean.setCronExpression("12 0/2 * * * ?");
-//        return cronTriggerFactoryBean;
-//    }
-
-//    @Bean
-//    JobDetailFactoryBean loadJiraUsersJobDetail() {
-//        JobDetailFactoryBean jobDetailFactory = new JobDetailFactoryBean();
-//        jobDetailFactory.setJobClass(LoadUsersJob.class);
-//        jobDetailFactory.setDurability(true);
-//        return jobDetailFactory;
-//    }
 
     @Bean
     CronTriggerFactoryBean loadJiraBoardsTrigger() {
