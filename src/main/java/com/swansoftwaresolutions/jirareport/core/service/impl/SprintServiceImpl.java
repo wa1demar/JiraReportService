@@ -62,7 +62,7 @@ public class SprintServiceImpl implements SprintService {
     @Override
     public SprintDtos findByReportId(long reportId) throws NoSuchEntityException {
         Report report = reportRepository.findById(reportId);
-        List<Sprint> sprints = sprintRepository.findByReportId(reportId);
+        List<Sprint> sprints = new ArrayList<>(report.getSprints());
         if (report.getTypeId() == 1) {
             List<Sprint> spr = new ArrayList<>();
             for (Sprint s : sprints) {

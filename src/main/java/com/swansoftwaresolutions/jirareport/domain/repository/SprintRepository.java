@@ -20,4 +20,6 @@ public interface SprintRepository {
     Sprint findById(long sprintId) throws NoSuchEntityException;
 
     void deleteByReportId(long id);
+
+    void addAll(List<Sprint> sprints);
 }

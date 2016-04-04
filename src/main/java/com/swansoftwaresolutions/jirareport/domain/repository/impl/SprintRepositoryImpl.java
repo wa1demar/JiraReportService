@@ -4,6 +4,7 @@ import com.swansoftwaresolutions.jirareport.domain.entity.Sprint;
 import com.swansoftwaresolutions.jirareport.domain.repository.SprintRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -68,6 +69,20 @@ public class SprintRepositoryImpl implements SprintRepository {
         Query query = sessionFactory.getCurrentSession().createQuery("DELETE FROM Sprint s WHERE s.report.id = :id");
         query.setParameter("id", id);
         query.executeUpdate();
+    }
+
+    @Override
+    public void addAll(List<Sprint> sprints) {
+        Session session = sessionFactory.openSession();
+
+        for (Sprint sprint : sprints) {
+            session.save(sprint);
+        }
+
+        session.flush();
+        session.close();
+
+
     }
 
 
