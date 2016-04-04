@@ -29,6 +29,7 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', '$location', 'AuthenticationFact
             ReportsFactory.query({type: $scope.currentTabTitle, page: pageNumber}, function(result){
                 $scope.dataOngoing = result.reports;
                 $scope.totalOngoing = result.totalItems;
+                $scope.ongoingPerPage = result.itemsPerPage;
                 $scope.loaderShow = false;
                 //$scope.setLoading(false);
             });

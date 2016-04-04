@@ -79,6 +79,7 @@ jiraPluginApp.controller("PortfolioCtrl", ['$scope', 'PortfoliosFactory', '$time
             PortfoliosFactory.query({page: pageNumber}, function (result) {
                 $scope.reportsData = result.dashboards;
                 $scope.totalReportsData = result.totalItems;
+                $scope.reportsDataPerPage = result.itemsPerPage;
 
                 for (var index = 0; index < $scope.reportsData.length; index++) {
                     $scope.reportsData[index] = $scope.reportsData[index].report;
