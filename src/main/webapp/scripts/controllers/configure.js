@@ -2,22 +2,6 @@
 
 jiraPluginApp.controller('ConfigureCtrl', ['$scope', '$routeParams', 'ReportFactory',
     function($scope, $routeParams, ReportFactory) {
-        var self = this;
-
-        $scope.getReport = function () {
-            ReportFactory.get({id: $routeParams.reportId}, function (result) {
-                $scope.report = result;
-                var admins = [];
-                for (var index = 0; index < result.admins.length; index++) {
-                    admins.push(result.admins[index].login);
-                }
-                $scope.report.admins = admins;
-                $scope.loaderShow = false;
-            });
-        };
-
-        $scope.getReport();
-
 //--------------------------------------------------------------------------------------------------------------
 //Tabs
         $scope.tabs = [{
@@ -43,8 +27,23 @@ jiraPluginApp.controller('ConfigureCtrl', ['$scope', '$routeParams', 'ReportFact
 //General Settings
 jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', '$uibModal', 'ReportFactory', 'UsersFactory', 'Notification',
     function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, Notification) {
-        var self = this;
         $scope.loaderShow = true;
+
+        var self = this;
+
+        $scope.getReport = function () {
+            ReportFactory.get({id: $routeParams.reportId}, function (result) {
+                $scope.report = result;
+                var admins = [];
+                for (var index = 0; index < result.admins.length; index++) {
+                    admins.push(result.admins[index].login);
+                }
+                $scope.report.admins = admins;
+                $scope.loaderShow = false;
+            });
+        };
+
+        $scope.getReport();
 
 //----------------------------------------------------------------------------------------------------------------------
 //Calender
@@ -92,7 +91,7 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
                 ReportFactory.update({
                     id: $routeParams.reportId}, reportData, function(){
                     //FIXME not reinit select2
-                    $scope.$parent.getReport();
+                    $scope.getReport();
                     Notification.success('Save report success');
                 }, function () {
                     Notification.error('Server error');
