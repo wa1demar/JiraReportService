@@ -44,7 +44,7 @@
             </td>
             <td>
                 {{statusStyle = data.status === "ACTIVE" ? "aui-lozenge-success" : "aui-lozenge-error"; ""}}
-                <span class="aui-lozenge aui-lozenge-subtle {{statusStyle}}">{{data.status}}</span>
+                <span class="aui-lozenge aui-lozenge-subtle aui-lozenge-default">{{data.status}}</span>
             </td>
             <td>
                 <div ng-repeat="dueDate in data.dueDate">
