@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -74,8 +75,12 @@ public class JiraBoardRepositoryImpl implements JiraBoardRepository {
 
     @Override
     public List<JiraBoard> findByIds(List<Long> ids) {
+        if (ids != null && ids.size() > 0) {
         Query query = sessionFactory.getCurrentSession().createQuery("FROM JiraBoard jb WHERE jb.id IN :ids ORDER BY jb.name ASC");
         query.setParameterList("ids", ids);
         return query.list();
+        } else {
+            return new ArrayList<>();
+        }
     }
 }

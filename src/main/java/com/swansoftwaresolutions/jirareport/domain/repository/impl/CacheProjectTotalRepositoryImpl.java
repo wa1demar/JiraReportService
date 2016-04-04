@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
 import com.swansoftwaresolutions.jirareport.domain.entity.CacheProjectTotal;
+import com.swansoftwaresolutions.jirareport.domain.model.Paged;
 import com.swansoftwaresolutions.jirareport.domain.repository.CacheProjectTotalRepository;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -83,5 +84,17 @@ public class CacheProjectTotalRepositoryImpl implements CacheProjectTotalReposit
         Query query = sessionFactory.getCurrentSession().createQuery("FROM CacheProjectTotal d WHERE d.report.isClosed != true ORDER BY d.id DESC");
 
         return query.list();
+    }
+
+    @Override
+    public Paged findAllPaged(int page) {
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM CacheProjectTotal d WHERE d.report.isClosed != true ORDER BY d.id DESC");
+        Query count = sessionFactory.getCurrentSession().createQuery("select count(d.id) FROM CacheProjectTotal d WHERE d.report.isClosed != true");
+
+        Paged paged = new Paged();
+        paged.setPage(page);
+        paged.setTotal((int)((long)count.uniqueResult()));
+        paged.setList(query.setFirstResult((page - 1) * 10).setMaxResults(10).list());
+        return paged;
     }
 }

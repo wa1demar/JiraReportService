@@ -111,9 +111,10 @@ public class ReportRepositoryImpl implements ReportRepository{
     @Override
     public Paged findAllClosedPaginated(int page) {
         Query query = sessionFactory.getCurrentSession().createQuery("FROM Report r WHERE r.isClosed = true");
+        Query count = sessionFactory.getCurrentSession().createQuery("select count(r.id) FROM Report r WHERE r.isClosed = true");
         Paged paged = new Paged();
         paged.setPage(page);
-        paged.setTotal(query.list().size());
+        paged.setTotal((int)((long)count.uniqueResult()));
         paged.setList(query.setFirstResult((page - 1) * 10).setMaxResults(10).list());
         return paged;
     }
