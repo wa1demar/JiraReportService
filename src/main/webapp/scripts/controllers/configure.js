@@ -2,6 +2,19 @@
 
 jiraPluginApp.controller('ConfigureCtrl', ['$scope', '$routeParams', 'ReportFactory',
     function($scope, $routeParams, ReportFactory) {
+        $scope.getReport = function () {
+            ReportFactory.get({id: $routeParams.reportId}, function (result) {
+                $scope.report = result;
+                var admins = [];
+                for (var index = 0; index < result.admins.length; index++) {
+                    admins.push(result.admins[index].login);
+                }
+                $scope.report.admins = admins;
+                $scope.loaderShow = false;
+            });
+        };
+
+        $scope.getReport();
 //--------------------------------------------------------------------------------------------------------------
 //Tabs
         $scope.tabs = [{
