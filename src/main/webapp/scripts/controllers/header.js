@@ -1,12 +1,16 @@
 'use strict';
 
-jiraPluginApp.controller("HeaderCtrl", ['$scope', '$location', 'UserAuthFactory','$uibModal', 'ConfigFactory', 'Notification',
-    function($scope, $location, UserAuthFactory, $uibModal, ConfigFactory, Notification) {
-        $scope.menu = [];
-        $scope.showToggleMenu = function(item) {
-            console.log($scope.menu[item]);
-            $scope.menu[item] = !$scope.menu[item];
+jiraPluginApp.controller("HeaderCtrl", ['$scope', '$location', 'UserAuthFactory','$uibModal', 'ConfigFactory', 'Notification', '$timeout',
+    function($scope, $location, UserAuthFactory, $uibModal, ConfigFactory, Notification, $timeout) {
+        $scope.status = {
+            isopen: false
         };
+        $scope.toggleDropdown = function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            $scope.status.isopen = !$scope.status.isopen;
+        };
+
 
         $scope.isActive = function(route) {
             return route === $location.path();
