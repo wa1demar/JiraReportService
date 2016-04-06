@@ -8,6 +8,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSpr
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUsersDto;
 import com.swansoftwaresolutions.jirareport.core.helper.HelperMethods;
 import com.swansoftwaresolutions.jirareport.core.service.*;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.rest.client.AbstractRestClient;
 import com.swansoftwaresolutions.jirareport.rest.client.RestClient;
@@ -58,12 +59,7 @@ public class IssueDao extends AbstractRestClient implements RestClient {
     public void loadData() {
         List<ImportedJiraSprintDto> sprints;
 
-        try {
-            sprints = sprintService.findAll();
-            getAllIsuues(sprints);
-        } catch (NoSuchEntityException e) {
-            e.printStackTrace();
-        }
+//       95
     }
 
     @Override
@@ -86,23 +82,28 @@ public class IssueDao extends AbstractRestClient implements RestClient {
         return null;
     }
 
-    private void getAllIsuues(List<ImportedJiraSprintDto> agileSprints) throws NoSuchEntityException {
-        ConfigDto configDto = configService.retrieveConfig();
-        for (ImportedJiraSprintDto sprint : agileSprints) {
-            if (sprint.getSprintId()!=0) {
-                HttpEntity<String> request = new HttpEntity<>(getHeaders(configDto.getJiraUser(), configDto.getJiraPass()));
-                RestTemplate restTemplate = new RestTemplate();
-
-                IssuesDto issues = restTemplate.exchange(URL_ISSUES_BY_SPRINT.replace("{sprintId}", String.valueOf(sprint.getSprintId())), HttpMethod.GET, request, IssuesDto.class).getBody();
-                for (IssueDto issueDto : issues.issues) {
-                    JiraIssueDto jiraIssueDto = convertIssueDtoToJiraIssueDto(issueDto, sprint.getOriginBoardId());
-                    jiraIssueDto.setBoardId(sprint.getOriginBoardId());
-                    jiraIssueDto.setSprintId(sprint.getId());
-                    jiraIssueService.save(jiraIssueDto);
-                }
-            }
-        }
+    @Override
+    public ImportedSprintsDto loadAllSprintsByBoard(JiraBoard board) {
+        return null;
     }
+
+//    private void getAllIsuues(List<ImportedJiraSprintDto> agileSprints) throws NoSuchEntityException {
+//        ConfigDto configDto = configService.retrieveConfig();
+//        for (ImportedJiraSprintDto sprint : agileSprints) {
+//            if (sprint.getSprintId()!=0) {
+//                HttpEntity<String> request = new HttpEntity<>(getHeaders(configDto.getJiraUser(), configDto.getJiraPass()));
+//                RestTemplate restTemplate = new RestTemplate();
+//
+//                IssuesDto issues = restTemplate.exchange(URL_ISSUES_BY_SPRINT.replace("{sprintId}", String.valueOf(sprint.getSprintId())), HttpMethod.GET, request, IssuesDto.class).getBody();
+//                for (IssueDto issueDto : issues.issues) {
+//                    JiraIssueDto jiraIssueDto = convertIssueDtoToJiraIssueDto(issueDto, sprint.getOriginBoardId());
+//                    jiraIssueDto.setBoardId(sprint.getOriginBoardId());
+//                    jiraIssueDto.setSprintId(sprint.getId());
+//                    jiraIssueService.save(jiraIssueDto);
+//                }
+//            }
+//        }
+//    }
 
     private JiraIssueDto convertIssueDtoToJiraIssueDto(IssueDto issueDto, long boardId) {
         HelperMethods helperMethods = new HelperMethods();
