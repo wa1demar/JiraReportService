@@ -28,7 +28,7 @@ public class JiraBoardRepositoryImpl implements JiraBoardRepository {
     private SessionFactory sessionFactory;
 
     @Override
-    public List<JiraBoard> findAll() throws NoSuchEntityException {
+    public List<JiraBoard> findAll() {
         Query query = sessionFactory.getCurrentSession().createQuery("FROM JiraBoard jb ORDER BY jb.name ASC");
         return query.list();
     }

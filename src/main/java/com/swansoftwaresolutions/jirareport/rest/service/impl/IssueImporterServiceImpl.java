@@ -4,7 +4,9 @@ import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSpr
 import com.swansoftwaresolutions.jirareport.core.helper.HelperMethods;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraIssueMapper;
 import com.swansoftwaresolutions.jirareport.core.service.JiraSprintsService;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraSprint;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraIssueRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.JiraSprintRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.rest.client.RestClient;
 import com.swansoftwaresolutions.jirareport.rest.service.IssueImporterService;
@@ -35,23 +37,22 @@ public class IssueImporterServiceImpl implements IssueImporterService {
     JiraIssueRepository issueRepository;
 
     @Autowired
-    JiraSprintsService sprintService;
+    JiraSprintRepository sprintRepository;
 
     @Override
     public void importIssueFromJira() {
         HelperMethods hm = new HelperMethods();
         try {
-            List<ImportedJiraSprintDto> sprints = sprintService.findAll();
+            List<JiraSprint> sprints = sprintRepository.findAll();
 
-            for (ImportedJiraSprintDto sprint :sprints) {
+            for (JiraSprint sprint :sprints) {
                 IssuesDto issues = restClient.loadAllIssues(String.valueOf(sprint.getSprintId()));
 
                 List<JiraIssueDto> list = new ArrayList<>();
                 for (IssueDto issueDto : issues.issues) {
-                    JiraIssueDto jiraIssueDto = hm.convertIssueDtoToJiraIssueDto(issueDto, sprint.getOriginBoardId());
-                    jiraIssueDto.setBoardId(sprint.getOriginBoardId());
+                    JiraIssueDto jiraIssueDto = hm.convertIssueDtoToJiraIssueDto(issueDto, sprint.getBoardId());
+                    jiraIssueDto.setBoardId(sprint.getBoardId());
                     jiraIssueDto.setSprintId(sprint.getId());
-//                    jiraIssueService.save(jiraIssueDto);
                     list.add(jiraIssueDto);
                 }
 

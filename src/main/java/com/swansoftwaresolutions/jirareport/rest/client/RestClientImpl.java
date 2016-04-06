@@ -7,6 +7,8 @@ import com.swansoftwaresolutions.jirareport.core.dto.jira_project.ImportedProjec
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUsersDto;
 import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.IssuesDto;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
+import com.swansoftwaresolutions.jirareport.sheduller.dto.ImportedSprintsDto;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,9 @@ public class RestClientImpl extends AbstractRestClient implements RestClient {
     @Value("${jira.boards}")
     private String jiraBoards;
 
+    @Value("${jira.sprints}")
+    private String jiraSprints;
+
     @Autowired
     ConfigService configService;
 
@@ -67,6 +72,7 @@ public class RestClientImpl extends AbstractRestClient implements RestClient {
 
     @Override
     public ImportedProjectDto[] loadAllProjects() {
+        log.info("Import projects");
         ConfigDto configDto = configService.retrieveConfig();
         HttpEntity<String> request = new HttpEntity<>(getHeaders(configDto.getJiraUser(), configDto.getJiraPass()));
         return restTemplate.exchange(jiraUrl + jiraProjects, HttpMethod.GET, request, ImportedProjectDto[].class).getBody();
@@ -92,6 +98,17 @@ public class RestClientImpl extends AbstractRestClient implements RestClient {
         HttpEntity<String> request = new HttpEntity<>(getHeaders(configDto.getJiraUser(), configDto.getJiraPass()));
         return restTemplate.exchange(jiraUrl + jiraBoards, HttpMethod.GET, request, ImportedBardsDto.class, params).getBody();
 
+    }
+
+    @Override
+    public ImportedSprintsDto loadAllSprintsByBoard(JiraBoard board) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("board_id", String.valueOf(board.getBoardId()));
+
+        ConfigDto configDto = configService.retrieveConfig();
+        HttpEntity<String> request = new HttpEntity<>(getHeaders(configDto.getJiraUser(), configDto.getJiraPass()));
+
+        return restTemplate.exchange(jiraUrl + jiraSprints, HttpMethod.GET, request, ImportedSprintsDto.class, params).getBody();
     }
 
 

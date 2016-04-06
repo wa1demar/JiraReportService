@@ -6,6 +6,8 @@ import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUser
 import com.swansoftwaresolutions.jirareport.sheduller.dto.IssueDto;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.IssuesDto;
 import com.swansoftwaresolutions.jirareport.core.dto.ImportedBardsDto;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
+import com.swansoftwaresolutions.jirareport.sheduller.dto.ImportedSprintsDto;
 
 import java.util.List;
 
@@ -24,4 +26,6 @@ public interface RestClient {
     IssuesDto loadAllIssues(String sprintId);
 
     ImportedBardsDto loadAllBoardsByProjectKey(String key);
+
+    ImportedSprintsDto loadAllSprintsByBoard(JiraBoard board);
 }

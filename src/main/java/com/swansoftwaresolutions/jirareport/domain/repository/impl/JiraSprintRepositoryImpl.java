@@ -1,10 +1,13 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraSprint;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraSprintRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSprintDto;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Vitaliy Holovko
@@ -101,5 +106,40 @@ public class JiraSprintRepositoryImpl implements JiraSprintRepository {
         return (JiraSprint) sessionFactory.getCurrentSession()
                 .createCriteria(JiraSprint.class).add(Restrictions.eq("name", name)).
                         add(Restrictions.eq("boardId", boardId)).uniqueResult();
+    }
+
+    @Override
+    public void add(List<JiraSprint> sprints, Long boardId) {
+        if (sprints == null || sprints.size() == 0) {
+            return;
+        }
+
+        List<Long> ids = sprints.stream().map(r -> r.getSprintId()).collect(Collectors.toList());
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM JiraSprint js WHERE js.sprintId IN :ids");
+        query.setParameterList("ids", ids);
+        List<JiraSprint> existed = query.list();
+
+        Session session = sessionFactory.openSession();
+        Map<Long, JiraSprint> sprintsMap = existed.stream().collect(Collectors.toMap(JiraSprint::getSprintId, b -> b));
+
+        try {
+
+            for (JiraSprint sprint : sprints) {
+                JiraSprint existedSprint = sprintsMap.get(sprint.getSprintId());
+                if (existedSprint != null) {
+                    sprint.setBoardId(boardId);
+                    sprint.setId(existedSprint.getId());
+                    session.merge(sprint);
+                } else {
+                    sprint.setBoardId(boardId);
+                    session.save(sprint);
+                }
+            }
+
+            session.flush();
+
+        } finally {
+            session.close();
+        }
     }
 }
