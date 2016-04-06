@@ -1,0 +1,89 @@
+<header id="ghx-header" class="aui-page-header">
+    <title>Resource Management Board</title>
+    <div class="aui-page-header-inner">
+        <div class="aui-page-header-main">
+            <h2>Resource Management Board</h2>
+        </div>
+        <div class="aui-page-header-actions">
+            <!--<button class="btn btn-primary" type="submit" ng-click="inviteUser()" >Invite user</button>-->
+        </div>
+    </div>
+</header>
+<div id="ghx-content-main" class="ghx-content-main">
+    <div class="aui-page-panel" id="manage-boards-page">
+        <div class="aui-page-panel-inner">
+            <!-- .aui-page-panel-nav -->
+            <section class="aui-page-panel-content">
+                <div class="ghx-boards-list">
+                    <!--<form class="aui" style="margin: 20px 0;">-->
+                        <!--<input ng-model="query" id="search-by-name" type="text" placeholder="Find a issue" class="text" style="width: 250px;"/>-->
+                    <!--</form>-->
+                    <div id="report-box">
+
+
+                        <h1>Resource Management Board: test 1</h1>
+
+                        <div class="simpleDemo row">
+                            <div class="col-md-8">
+                                <div class="alert alert-success">
+                                    <strong>Ujgorod</strong>
+                                </div>
+                                <div class="row">
+                                    <div ng-repeat="(listName, list) in models.lists" class="col-md-3">
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">Assignment Type {{listName}}</h3>
+                                            </div>
+                                            <div class="panel-body" ng-include="'views/resource_management/simple.html'"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-success">
+                                    <strong>Cherkasy</strong>
+                                </div>
+                                <div class="row">
+                                    <div ng-repeat="(listName, list) in models.lists" class="col-md-3">
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">Assignment Type {{listName}}</h3>
+                                            </div>
+                                            <div class="panel-body" ng-include="'views/resource_management/simple.html'"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div view-source="simple"></div>
+
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">User info</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div ng-if="!models.selected">Need select user</div>
+                                        <div ng-if="models.selected">
+                                            <p>label: {{models.selected.label}}</p>
+                                            <p>project: {{models.selected.project}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Generated Model</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <pre class="code">{{modelAsJson}}</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            <!-- .aui-page-panel-content -->
+        </div>
+    </div>
+</div>

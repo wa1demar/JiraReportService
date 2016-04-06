@@ -14,7 +14,8 @@ var jiraPluginApp = angular.module('jiraPluginApp', [
     'chart.js',
     'ui-notification',
     'nl2br',
-    'angularUtils.directives.dirPagination'
+    'angularUtils.directives.dirPagination',
+    'dndLists'
 ]);
 
 jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
@@ -83,6 +84,12 @@ jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
         }).when('/productivity', {
             templateUrl: 'views/productivity/main.html',
             controller: 'ProductivityCtrl',
+            access: {
+                requiredLogin: true
+            }
+        }).when('/resource_management', {
+            templateUrl: 'views/resource_management/main.html',
+            controller: 'ResourceManagementCtrl',
             access: {
                 requiredLogin: true
             }
