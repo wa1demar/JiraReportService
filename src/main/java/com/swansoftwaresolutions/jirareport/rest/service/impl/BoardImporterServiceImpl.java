@@ -1,14 +1,18 @@
 package com.swansoftwaresolutions.jirareport.rest.service.impl;
 
-import com.swansoftwaresolutions.jirareport.core.mapper.JiraSprintMapper;
-import com.swansoftwaresolutions.jirareport.core.service.JiraBoardService;
-import com.swansoftwaresolutions.jirareport.core.service.JiraSprintsService;
-import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
+import com.swansoftwaresolutions.jirareport.core.dto.ImportedBardsDto;
+import com.swansoftwaresolutions.jirareport.core.mapper.JiraBoardMapper;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraProject;
+import com.swansoftwaresolutions.jirareport.domain.repository.JiraBoardRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.ProjectRepository;
 import com.swansoftwaresolutions.jirareport.rest.client.RestClient;
 import com.swansoftwaresolutions.jirareport.rest.service.BoardImporterService;
+import com.swansoftwaresolutions.jirareport.core.dto.ImportedJiraBoardDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Vladimir Martynyuk
@@ -21,21 +25,29 @@ public class BoardImporterServiceImpl implements BoardImporterService {
     RestClient restClient;
 
     @Autowired
-    JiraBoardService jiraBoardService;
-
-
-    @Autowired
-    ProjectService projectService;
+    ProjectRepository projectRepository;
 
     @Autowired
-    JiraSprintsService sprintsService;
+    JiraBoardRepository jiraBoardRepository;
 
     @Autowired
-    JiraSprintMapper jiraSprintMapper;
+    JiraBoardMapper jiraBoardMapper;
 
 
     @Override
     public void importBoardsFromJira() {
+
+        List<JiraProject> projects = projectRepository.findAll();
+
+        for (JiraProject project : projects) {
+            ImportedBardsDto importedBardsDto = restClient.loadAllBoardsByProjectKey(project.getKey());
+
+            List<ImportedJiraBoardDto> bordDtos = importedBardsDto.getValues();
+            if (bordDtos.size() > 0) {
+                jiraBoardRepository.add(jiraBoardMapper.fromImportedDtos(bordDtos), project.getKey());
+            }
+        }
+
 
     }
 }

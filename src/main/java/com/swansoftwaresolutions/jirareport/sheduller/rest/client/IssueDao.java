@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
+import com.swansoftwaresolutions.jirareport.core.dto.ImportedBardsDto;
 import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDto;
 import com.swansoftwaresolutions.jirareport.core.dto.groups.JiraGroupsDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_project.ImportedProjectDto;
@@ -78,6 +79,11 @@ public class IssueDao extends AbstractRestClient implements RestClient {
     @Override
     public ImportedProjectDto[] loadAllProjects() {
         return new ImportedProjectDto[0];
+    }
+
+    @Override
+    public ImportedBardsDto loadAllBoardsByProjectKey(String key) {
+        return null;
     }
 
     private void getAllIsuues(List<ImportedJiraSprintDto> agileSprints) throws NoSuchEntityException {

@@ -1,19 +1,19 @@
-package com.swansoftwaresolutions.jirareport.sheduller.dto;
+package com.swansoftwaresolutions.jirareport.core.dto;
 
 /**
  * @author Vitaliy Holovko
  */
-public class JiraBoardDto {
-    private int id;
+public class ImportedJiraBoardDto {
+    private Long id;
     private String name;
     private String type;
     private String projectKey;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -46,7 +46,7 @@ public class JiraBoardDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        JiraBoardDto that = (JiraBoardDto) o;
+        ImportedJiraBoardDto that = (ImportedJiraBoardDto) o;
 
         if (!name.equals(that.name)) return false;
         if (type != null ? !type.equals(that.type) : that.type != null) return false;
