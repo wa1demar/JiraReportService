@@ -186,4 +186,8 @@ public class BoardClient extends AbstractRestClient implements RestClient {
         return jiraBoard;
     }
 
+    @Override
+    public IssuesDto loadAllIssues(String sprintId) {
+        return null;
+    }
 }
