@@ -34,8 +34,5 @@ public class GroupImporterServiceImpl implements GroupImporterService {
 
         List<JiraGroup> groups = groupMapper.fromDtos(jiraGroupsDto.getGroups());
         groupRepository.save(groups);
-
-
-
     }
 }

@@ -3,10 +3,13 @@ package com.swansoftwaresolutions.jirareport.core.service.impl;
 import com.swansoftwaresolutions.jirareport.core.dto.task.TaskDto;
 import com.swansoftwaresolutions.jirareport.core.dto.task.TasksDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.TaskMapper;
+import com.swansoftwaresolutions.jirareport.core.service.JiraIssueService;
 import com.swansoftwaresolutions.jirareport.core.service.TaskService;
 import com.swansoftwaresolutions.jirareport.domain.entity.Task;
+import com.swansoftwaresolutions.jirareport.domain.repository.JiraIssueRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.TaskRepository;
 import com.swansoftwaresolutions.jirareport.rest.service.GroupImporterService;
+import com.swansoftwaresolutions.jirareport.rest.service.IssueImporterService;
 import com.swansoftwaresolutions.jirareport.rest.service.ProjectImporterService;
 import com.swansoftwaresolutions.jirareport.rest.service.UserImporterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +44,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Autowired
     ProjectImporterService projectImporterService;
+
+    @Autowired
+    IssueImporterService issueImporterService;
 
     @Override
     public TasksDto getAll() {
@@ -85,7 +91,6 @@ public class TaskServiceImpl implements TaskService {
                 startImportSprints();
                 startImportIssues();
                 break;
-
         }
 
         Task task = taskRepository.findByName(name);
@@ -120,6 +125,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     private void startImportIssues() {
-        // TODO: should be implemented
+        taskRepository.setStarted(ISSUES_TASK);
+        issueImporterService.importIssueFromJira();
+        taskRepository.setStopped(ISSUES_TASK);
     }
 }

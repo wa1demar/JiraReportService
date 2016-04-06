@@ -1,23 +1,65 @@
 package com.swansoftwaresolutions.jirareport.rest.service.impl;
 
+import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSprintDto;
+import com.swansoftwaresolutions.jirareport.core.helper.HelperMethods;
+import com.swansoftwaresolutions.jirareport.core.mapper.JiraIssueMapper;
+import com.swansoftwaresolutions.jirareport.core.service.JiraSprintsService;
+import com.swansoftwaresolutions.jirareport.domain.repository.JiraIssueRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.rest.client.RestClient;
-import com.swansoftwaresolutions.jirareport.rest.service.DueDateImporterService;
+import com.swansoftwaresolutions.jirareport.rest.service.IssueImporterService;
+import com.swansoftwaresolutions.jirareport.sheduller.dto.IssueDto;
+import com.swansoftwaresolutions.jirareport.sheduller.dto.IssuesDto;
+import com.swansoftwaresolutions.jirareport.sheduller.dto.JiraIssueDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * @author Vladimir Martynyuk
+ * @author Vitaliy Holovko
  */
 @Service
-public class IssueImporterServiceImpl implements DueDateImporterService {
+public class IssueImporterServiceImpl implements IssueImporterService {
 
     @Autowired
     @Qualifier("restClient")
     RestClient restClient;
 
+    @Autowired
+    JiraIssueMapper issueMapper;
+
+    @Autowired
+    JiraIssueRepository issueRepository;
+
+    @Autowired
+    JiraSprintsService sprintService;
+
     @Override
-    public void importDueDateFromJira() {
+    public void importIssueFromJira() {
+        HelperMethods hm = new HelperMethods();
+        try {
+            List<ImportedJiraSprintDto> sprints = sprintService.findAll();
+
+            for (ImportedJiraSprintDto sprint :sprints) {
+                IssuesDto issues = restClient.loadAllIssues(String.valueOf(sprint.getSprintId()));
+
+                List<JiraIssueDto> list = new ArrayList<>();
+                for (IssueDto issueDto : issues.issues) {
+                    JiraIssueDto jiraIssueDto = hm.convertIssueDtoToJiraIssueDto(issueDto, sprint.getOriginBoardId());
+                    jiraIssueDto.setBoardId(sprint.getOriginBoardId());
+                    jiraIssueDto.setSprintId(sprint.getId());
+//                    jiraIssueService.save(jiraIssueDto);
+                    list.add(jiraIssueDto);
+                }
+
+                issueRepository.saveAll(issueMapper.fromDtos(list));
+            }
+        } catch (NoSuchEntityException e) {
+            e.printStackTrace();
+        }
 
     }
 }

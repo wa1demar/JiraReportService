@@ -1,12 +1,11 @@
 package com.swansoftwaresolutions.jirareport.rest.client;
 
-import com.swansoftwaresolutions.jirareport.core.dto.JiraUsersDto;
 import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDto;
 import com.swansoftwaresolutions.jirareport.core.dto.groups.JiraGroupsDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_project.ImportedProjectDto;
-import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUsersDto;
 import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
+import com.swansoftwaresolutions.jirareport.sheduller.dto.IssuesDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -15,7 +14,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,6 +34,9 @@ public class RestClientImpl extends AbstractRestClient implements RestClient {
 
     @Value("${jira.projects}")
     private String jiraProjects;
+
+    @Value("${jira.issues}")
+    private String jiraIssue;
 
     @Autowired
     ConfigService configService;
@@ -63,6 +64,16 @@ public class RestClientImpl extends AbstractRestClient implements RestClient {
         return restTemplate.exchange(jiraUrl + jiraProjects, HttpMethod.GET, request, ImportedProjectDto[].class).getBody();
     }
 
+
+    @Override
+    public IssuesDto loadAllIssues(String sprintId) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("sprint_id", sprintId);
+        ConfigDto configDto = configService.retrieveConfig();
+        HttpEntity<String> request = new HttpEntity<>(getHeaders(configDto.getJiraUser(), configDto.getJiraPass()));
+        Object object = restTemplate.exchange(jiraUrl + jiraIssue, HttpMethod.GET, request, Object.class, params).getBody();
+        return restTemplate.exchange(jiraUrl + jiraIssue, HttpMethod.GET, request, IssuesDto.class, params).getBody();
+    }
 
     @Override
     public void loadData() {
