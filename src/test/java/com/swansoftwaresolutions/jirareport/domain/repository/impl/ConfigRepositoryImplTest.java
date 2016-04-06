@@ -30,27 +30,21 @@ public class ConfigRepositoryImplTest extends AbstractDbTest {
         dataFormatnew = new SimpleDateFormat("MM-dd-yyyy");
 
         Config config = configRepository.findById(1L);
-        config.setStoryPointsName("Story Point1");
         config.setAgileDoneName("Dev Done1");
         config.setBugName("Bug1");
         config.setNonWorkingDays("Sunday");
-        config.setAutoSyncTime(dataFormatnew.format(new Date()));
 
         Config updatedConfig = configRepository.update(config);
         assertNotNull(updatedConfig.getId());
-        assertEquals("Story Point1", updatedConfig.getStoryPointsName());
         assertEquals("Bug1", updatedConfig.getBugName());
-        assertEquals(dataFormatnew.format(new Date()), updatedConfig.getAutoSyncTime());
     }
 
     @Test(expected = NullPointerException.class)
     public void testWrongParseDataUpdateConfig() throws Exception {
         Config config = configRepository.findById(1L);
-        config.setStoryPointsName("Story Point1");
         config.setAgileDoneName("Dev Done1");
         config.setBugName("Bug1");
         config.setNonWorkingDays("Sunday");
-        config.setAutoSyncTime(dataFormatnew.format(new Date()));
 
         configRepository.update(config);
     }
@@ -58,7 +52,6 @@ public class ConfigRepositoryImplTest extends AbstractDbTest {
     @Test(expected = NoSuchEntityException.class)
     public void testUpdateWrongConfig() throws Exception {
         Config config = new Config();
-        config.setStoryPointsName("Story Point1");
         config.setAgileDoneName("Dev Done1");
         config.setBugName("Bug1");
         config.setNonWorkingDays("Sunday");
@@ -79,7 +72,6 @@ public class ConfigRepositoryImplTest extends AbstractDbTest {
         Config config = configRepository.findById(1L);
 
         assertNotNull(config);
-        assertEquals("Story Points", config.getStoryPointsName());
         assertEquals("Bug", config.getBugName());
     }
 
@@ -110,11 +102,9 @@ public class ConfigRepositoryImplTest extends AbstractDbTest {
         dataFormatnew = new SimpleDateFormat("MM-dd-yyyy");
 
         Config config = new Config();
-        config.setStoryPointsName("Story Point1");
         config.setAgileDoneName("Dev Done1");
         config.setBugName("Bug1");
         config.setNonWorkingDays("Sunday");
-        config.setAutoSyncTime(dataFormatnew.format(new Date()));
 
         configRepository.delete(config);
     }
@@ -122,11 +112,9 @@ public class ConfigRepositoryImplTest extends AbstractDbTest {
     @Test(expected = NullPointerException.class)
     public void testDeleteWrongParseDataConfig() throws Exception {
         Config config = new Config();
-        config.setStoryPointsName("Story Point1");
         config.setAgileDoneName("Dev Done1");
         config.setBugName("Bug1");
         config.setNonWorkingDays("Sunday");
-        config.setAutoSyncTime(dataFormatnew.format(new Date()));
 
         configRepository.delete(config);
     }

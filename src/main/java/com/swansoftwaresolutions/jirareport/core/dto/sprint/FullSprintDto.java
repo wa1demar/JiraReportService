@@ -15,6 +15,7 @@ public class FullSprintDto {
     private String name;
     private boolean notCountTarget;
     private boolean showUat;
+    private boolean showOutOfRange;
     private String state;
     private int type;
     private Date endDate;
@@ -145,5 +146,13 @@ public class FullSprintDto {
         result = 31 * result + type;
         result = 31 * result + reportId.hashCode();
         return result;
+    }
+
+    public boolean isShowOutOfRange() {
+        return showOutOfRange;
+    }
+
+    public void setShowOutOfRange(boolean showOutOfRange) {
+        this.showOutOfRange = showOutOfRange;
     }
 }

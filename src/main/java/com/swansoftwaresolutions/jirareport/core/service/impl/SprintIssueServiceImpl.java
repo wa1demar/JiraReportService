@@ -100,6 +100,7 @@ public class SprintIssueServiceImpl implements SprintIssueService {
             List<Date>  nonWorkingDays = new ArrayList<>();
             for (String dateString : Arrays.asList(nonWorkingDaysString.split(","))) {
                 try {
+                    if (dateString.isEmpty()) continue;
                     nonWorkingDays.add(formatter.parse(dateString));
                 } catch (ParseException e) {
                     e.printStackTrace();

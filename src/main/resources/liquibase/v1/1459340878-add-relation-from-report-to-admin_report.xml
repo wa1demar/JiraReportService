@@ -1,0 +1,23 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="1459340878" author="Vladimir Martynyuk">
+
+        <addColumn tableName="admin_reports">
+            <column name="report_id" type="bigint"/>
+        </addColumn>
+
+        <addForeignKeyConstraint baseColumnNames="report_id"
+                                 baseTableName="admin_reports"
+                                 constraintName="fk_admin_reports"
+                                 deferrable="true"
+                                 initiallyDeferred="true"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="reports"/>
+
+        <comment>Add relation from report to admin_report</comment>
+
+    </changeSet>
+</databaseChangeLog>

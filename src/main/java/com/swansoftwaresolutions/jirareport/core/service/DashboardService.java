@@ -8,4 +8,6 @@ import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEn
  */
 public interface DashboardService {
     ProjectDashboardsDto loadPortfolio() throws NoSuchEntityException;
+
+    ProjectDashboardsDto loadPortfolioPaged(int page);
 }

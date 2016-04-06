@@ -1,7 +1,5 @@
 package com.swansoftwaresolutions.jirareport.core.dto.config;
 
-import com.swansoftwaresolutions.jirareport.core.dto.ConfigDto;
-
 /**
  * @author Vladimir Martynyuk
  */
@@ -18,8 +16,13 @@ public class ConfigDtoBuilder {
         return this;
     }
 
-    public ConfigDtoBuilder storyPointsName(String storyPointsName) {
-        dto.setStoryPointsName(storyPointsName);
+    public ConfigDtoBuilder jiraUser(String jiraUser) {
+        dto.setJiraUser(jiraUser);
+        return this;
+    }
+
+    public ConfigDtoBuilder jiraPassword(String jiraPassword) {
+        dto.setJiraPass(jiraPassword);
         return this;
     }
 
@@ -40,11 +43,6 @@ public class ConfigDtoBuilder {
 
     public ConfigDtoBuilder nonWorkingDays(String nonWorkingDays) {
         dto.setNonWorkingDays(nonWorkingDays);
-        return this;
-    }
-
-    public ConfigDtoBuilder autoSyncTime(String autoSyncTime) {
-        dto.setAutoSyncTime(autoSyncTime);
         return this;
     }
 

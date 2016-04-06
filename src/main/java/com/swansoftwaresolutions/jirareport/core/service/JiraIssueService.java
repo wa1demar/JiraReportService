@@ -1,9 +1,5 @@
 package com.swansoftwaresolutions.jirareport.core.service;
 
-import com.swansoftwaresolutions.jirareport.core.dto.JiraBoardDto;
-import com.swansoftwaresolutions.jirareport.core.dto.JiraBoardInfoDto;
-import com.swansoftwaresolutions.jirareport.core.dto.JiraBoardsDto;
-import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.JiraIssueDto;
 
@@ -24,5 +20,5 @@ public interface JiraIssueService {
 
     void delete(JiraIssueDto jiraIssueDto) throws NoSuchEntityException;
 
-
+    List<JiraIssueDto>  findBySprintIds(List<Long> ids);
 }

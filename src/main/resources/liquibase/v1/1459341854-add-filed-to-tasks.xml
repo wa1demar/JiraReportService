@@ -1,0 +1,25 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="1459341854" author="Vladimir Martynyuk">
+
+        <addColumn tableName="tasks">
+            <column name="order" type="int">
+                <constraints nullable="true"/>
+            </column>
+
+        </addColumn>
+
+        <update tableName="tasks">
+            <column name="order" value="1" />
+            <where>name = 'groups'</where>
+        </update>
+
+
+        <update tableName="tasks">
+            <column name="order" value="2" />
+            <where>name = 'issues'</where>
+        </update>
+
+    </changeSet>
+</databaseChangeLog>

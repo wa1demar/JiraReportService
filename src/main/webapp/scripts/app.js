@@ -14,7 +14,8 @@ var jiraPluginApp = angular.module('jiraPluginApp', [
     'chart.js',
     'ui-notification',
     'nl2br',
-    'angularUtils.directives.dirPagination'
+    'angularUtils.directives.dirPagination',
+    'dndLists'
 ]);
 
 jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
@@ -74,12 +75,30 @@ jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
             access: {
                 requiredLogin: true
             }
+        }).when('/due_date_issue', {
+            templateUrl: 'views/due_date_issue/main.html',
+            controller: 'DueDateIssueCtrl',
+            access: {
+                requiredLogin: true
+            }
+        }).when('/productivity', {
+            templateUrl: 'views/productivity/main.html',
+            controller: 'ProductivityCtrl',
+            access: {
+                requiredLogin: true
+            }
+        }).when('/resource_management', {
+            templateUrl: 'views/resource_management/main.html',
+            controller: 'ResourceManagementCtrl',
+            access: {
+                requiredLogin: true
+            }
         }).otherwise({
             redirectTo: '/login'
         });
 });
 
-jiraPluginApp.run(function($rootScope, $window, $location, AuthenticationFactory, CONFIG) {
+jiraPluginApp.run(function($rootScope, $window, $location, $filter, AuthenticationFactory, CONFIG) {
     $rootScope.CONFIG = CONFIG;
 
     // when the page refreshes, check if the user is already logged in
@@ -105,6 +124,8 @@ jiraPluginApp.run(function($rootScope, $window, $location, AuthenticationFactory
     $rootScope.$on('$routeChangeSuccess', function(event, nextRoute, currentRoute) {
         $rootScope.showMenu = AuthenticationFactory.isLogged;
         $rootScope.roles = AuthenticationFactory.roles;
+        $rootScope.isAdmin = $filter('hasRole')(AuthenticationFactory.roles, "ROLE_ADMIN");
+
         // if the user is already logged in, take him to the home page
         if (AuthenticationFactory.isLogged === true && $location.path() === '/login') {
             $location.path('/');

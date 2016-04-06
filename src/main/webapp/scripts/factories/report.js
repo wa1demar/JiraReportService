@@ -1,7 +1,7 @@
 'use strict';
 
 jiraPluginApp.factory('ReportsFactory', ['$resource', 'CONFIG', function ($resource, CONFIG) {
-  return $resource(CONFIG.API_PATH + '/reports/:type', {type: "@type"}, {
+  return $resource(CONFIG.API_PATH + '/reports/:type/:page', {type: "@type", page: "@page"}, {
     query:  { method: 'GET', isArray: false },
     create: { method: 'POST' }
   });

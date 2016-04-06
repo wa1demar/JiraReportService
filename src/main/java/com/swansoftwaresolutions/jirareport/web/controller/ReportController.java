@@ -5,8 +5,6 @@ import com.swansoftwaresolutions.jirareport.core.dto.report.NewReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportListDto;
 import com.swansoftwaresolutions.jirareport.core.service.ReportService;
-import com.swansoftwaresolutions.jirareport.core.service.SprintIssueService;
-import com.swansoftwaresolutions.jirareport.core.service.SprintService;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,15 +23,10 @@ public class ReportController {
 
     private ReportService reportService;
 
-    private SprintService sprintService;
-
-    private SprintIssueService sprintIssueService;
 
     @Autowired
-    public ReportController(ReportService reportService, SprintService sprintService, SprintIssueService sprintIssueService) {
+    public ReportController(ReportService reportService) {
         this.reportService = reportService;
-        this.sprintService = sprintService;
-        this.sprintIssueService = sprintIssueService;
     }
 
     @RequestMapping(value = "/v1/reports", method = RequestMethod.GET)
@@ -79,9 +72,21 @@ public class ReportController {
         return new ResponseEntity<>(reportDtos, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/v1/reports/closed/{page}", method = RequestMethod.GET)
+    private ResponseEntity<ReportListDto> getAllClosedReportsPaginated(@PathVariable("page") int page) {
+        ReportListDto reportDtos = reportService.retrieveAllClosedReportsListPaginated(page);
+        return new ResponseEntity<>(reportDtos, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/v1/reports/ongoing", method = RequestMethod.GET)
     private ResponseEntity<ReportListDto> getAllOngoingReports() {
         ReportListDto reportDtos = reportService.retrieveAllOngoingReportsList();
+        return new ResponseEntity<>(reportDtos, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/v1/reports/ongoing/{page}", method = RequestMethod.GET)
+    private ResponseEntity<ReportListDto> getAllOngoingReportsPaginated(@PathVariable("page") int page) {
+        ReportListDto reportDtos = reportService.retrieveAllOngoingReportsListPaginated(page);
         return new ResponseEntity<>(reportDtos, HttpStatus.OK);
     }
 

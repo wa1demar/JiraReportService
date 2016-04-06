@@ -1,0 +1,34 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="1459341117" author="viholovko">
+        <addColumn tableName="sprint_developers">
+            <column name="target_points" type="double">
+                <constraints nullable="true"/>
+            </column>
+            <column name="target_hours" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="defect_min" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="defect_max" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="defect_hours" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="uat_defect_min" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="uat_defect_max" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="uat_defect_hours" type="int">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <comment>Add columns to table sprint_developers</comment>
+
+    </changeSet>
+</databaseChangeLog>

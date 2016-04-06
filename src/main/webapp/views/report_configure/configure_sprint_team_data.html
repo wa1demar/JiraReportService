@@ -1,6 +1,7 @@
 <form class="aui">
     <div class="autofill-box">
         <span ng-show="showAutoFillData.showAutoFillLabel" class="aui-lozenge aui-lozenge-current">Autofill {{showAutoFillData.sprintName}}</span>
+        <span ng-show="reportModel.sprint.state === 'future'" class="aui-lozenge aui-lozenge-moved">Future sprint</span>
     </div>
     <div id="sprint-autofill-box">
         <div>
@@ -26,6 +27,11 @@
             <input ng-model="reportModel.sprint.showUat" ng-change="calcParams()" name="show-uat-sprint" id="show-uat-sprint" type="checkbox"/>
             <label for="show-uat-sprint" style="color: #000000;">UAT</label>
             <p class="sprint-note-text">* If checked then show UAT Defects</p>
+        </div>
+        <div ng-if="report.typeId === 1" style="margin-top: 15px;">
+            <input ng-model="reportModel.sprint.showOutOfRange" name="show-out-of-range" id="show-out-of-range" type="checkbox"/>
+            <label for="show-out-of-range" style="color: #000000;">Show Out Of Range</label>
+            <p class="sprint-note-text">* If checked then show points which out of range</p>
         </div>
 
         <hr/>
@@ -121,7 +127,7 @@
                     <td class="dev-name">
                         {{data.developerName}}
                     </td>
-                    <td class="engineer-lvl text-center">{{data.engineerLevel === '4' ? '3' : data.engineerLevel}}</td>
+                    <td class="engineer-lvl text-center">{{data.engineerLevel === 4 ? 3 : data.engineerLevel}}</td>
                     <td class="participation-lvl text-center">{{data.participationLevel | number:1}}</td>
                     <td class="days-in-sprint text-center">{{data.daysInSprint}}</td>
 

@@ -25,12 +25,16 @@ public interface ReportService {
 
     ReportListDto retrieveAllClosedReportsList();
 
+    ReportListDto retrieveAllClosedReportsListPaginated(int page);
+
     ReportDto copy(long id) throws NoSuchEntityException;
 
     ReportDto findByBoardId(Long id) throws NoSuchEntityException;
 
 
     ReportListDto retrieveAllOngoingReportsList();
+
+    ReportListDto retrieveAllOngoingReportsListPaginated(int page);
 
     ProjectDashboardDto findProjectDashboard(Long id);
 

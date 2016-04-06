@@ -51,6 +51,11 @@ public class SprintBuilder {
         return this;
     }
 
+    public SprintBuilder showOutOfRange(boolean outOfRange) {
+        this.sprint.setShowOutOfRange(outOfRange);
+        return this;
+    }
+
     public SprintBuilder notCountTarget(boolean notCountTarget) {
         this.sprint.setNotCountTarget(notCountTarget);
         return this;

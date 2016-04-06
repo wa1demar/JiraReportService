@@ -5,6 +5,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDeve
 import com.swansoftwaresolutions.jirareport.core.mapper.SprintDeveloperMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.SprintMapper;
 import com.swansoftwaresolutions.jirareport.core.service.SprintService;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
 import com.swansoftwaresolutions.jirareport.domain.entity.Report;
 import com.swansoftwaresolutions.jirareport.domain.entity.Sprint;
 import com.swansoftwaresolutions.jirareport.domain.entity.SprintDeveloper;
@@ -14,11 +15,14 @@ import com.swansoftwaresolutions.jirareport.domain.repository.ReportRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.SprintDeveloperRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.SprintRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -58,7 +62,7 @@ public class SprintServiceImpl implements SprintService {
     @Override
     public SprintDtos findByReportId(long reportId) throws NoSuchEntityException {
         Report report = reportRepository.findById(reportId);
-        List<Sprint> sprints = sprintRepository.findByReportId(reportId);
+        List<Sprint> sprints = new ArrayList<>(report.getSprints());
         if (report.getTypeId() == 1) {
             List<Sprint> spr = new ArrayList<>();
             for (Sprint s : sprints) {
@@ -73,6 +77,7 @@ public class SprintServiceImpl implements SprintService {
                             .showUAT(s.isShowUAT())
                             .notCountTarget(s.isNotCountTarget())
                             .jiraSprint(s.getJiraSprint())
+                            .showOutOfRange(s.isShowOutOfRange())
                             .build());
                 }
             }
@@ -113,9 +118,9 @@ public class SprintServiceImpl implements SprintService {
         for (SprintDeveloperDto dto : sprintDto.getDevelopers()) {
             SprintDeveloper developer = developerMapper.fromDto(dto);
             try {
-                developer.setJiraUser(jiraUserRepository.findByLogin(dto.getDeveloperName()));
+                developer.setJiraUser(jiraUserRepository.findByLogin(dto.getDeveloperName())); // TODO: push from loop
                 developer.setSprint(newSprint);
-                SprintDeveloper newDeveloper = developerRepository.add(developer);
+                SprintDeveloper newDeveloper = developerRepository.add(developer); //TODO ?
                 developers.add(newDeveloper);
             } catch (NoSuchEntityException e) {
                 e.printStackTrace();
@@ -144,7 +149,7 @@ public class SprintServiceImpl implements SprintService {
         for (SprintDeveloperDto dto : sprintDto.getSprintTeams()) {
             SprintDeveloper developer = developerMapper.fromDto(dto);
             try {
-                developer.setJiraUser(jiraUserRepository.findByLogin(dto.getDeveloperLogin()));
+                developer.setJiraUser(jiraUserRepository.findByLogin(dto.getDeveloperLogin())); //TODO push from loop
                 developer.setSprint(sprint);
                 developers.add(developer);
             } catch (NoSuchEntityException e) {
@@ -153,6 +158,7 @@ public class SprintServiceImpl implements SprintService {
 
         }
 
+        // TODO to many queries
         Sprint oldSprint = sprintRepository.findById(sprintDto.getId());
 
         sprint.setDevelopers(developers);
@@ -182,14 +188,23 @@ public class SprintServiceImpl implements SprintService {
     }
 
     @Override
-    public List<FullSprintDto> findByReportId(Long reportId) throws NoSuchEntityException {
+    public List<FullSprintDto> findByReport(Report report) throws NoSuchEntityException {
         List<FullSprintDto> fullSprintDto = new ArrayList<>();
-        List<Sprint> sprints = sprintRepository.findByReportId(reportId);
+        List<Sprint> sprints = new ArrayList<>(report.getSprints());
+
+        List<Long> ids = sprints.stream().map(Sprint::getId).collect(Collectors.toList());
+        List<SprintDeveloper> allDevelopers = developerRepository.findByIds(ids);
+        Map<Long, List<SprintDeveloper>> devMap = createMap(allDevelopers);
+
 
         for (Sprint sprint : sprints) {
             List<SprintDeveloperDto> developers = new ArrayList<>();
 
-            for (SprintDeveloper developer : developerRepository.findBySprintId(sprint.getId())) {
+            List<SprintDeveloper> devs = devMap.get(sprint.getId());
+            if (devs == null) {
+                devs = new ArrayList<>();
+            }
+            for (SprintDeveloper developer : devs) {
                 SprintDeveloperDto developerDto = developerMapper.toDto(developer);
                 developerDto.setDeveloperName(developer.getJiraUser().getFullName() != null ? developer.getJiraUser().getFullName() : "NoName");
                 developerDto.setDeveloperLogin(developer.getJiraUser().getLogin() != null ? developer.getJiraUser().getLogin() : "NoName");
@@ -204,6 +219,7 @@ public class SprintServiceImpl implements SprintService {
             fullSpr.setNotCountTarget(sprint.isNotCountTarget());
             fullSpr.setShowUat(sprint.isShowUAT());
             fullSpr.setDevelopers(developers);
+            fullSpr.setShowOutOfRange(sprint.isShowOutOfRange());
 
             if (sprint.getJiraSprint() != null) {
                 fullSpr.setJiraSprintId(sprint.getJiraSprint().getId());
@@ -223,5 +239,24 @@ public class SprintServiceImpl implements SprintService {
         }
 
         return fullSprintDto;
+    }
+
+    private Map<Long, List<SprintDeveloper>> createMap(List<SprintDeveloper> allDevelopers) {
+        Map<Long, List<SprintDeveloper>> result = new HashMap<>();
+
+        for (SprintDeveloper d : allDevelopers) {
+            if (result.get(d.getSprint().getId()) == null) {
+                List<SprintDeveloper> devs = new ArrayList<>();
+                devs.add(d);
+
+                result.put(d.getSprint().getId(), devs);
+            } else {
+                List<SprintDeveloper> devs = result.get(d.getSprint().getId());
+                devs.add(d);
+                result.put(d.getSprint().getId(), devs);
+            }
+        }
+
+        return result;
     }
 }

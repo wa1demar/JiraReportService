@@ -1,10 +1,14 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.*;
 
@@ -69,13 +73,18 @@ public class Report  implements Serializable{
     @Column(name = "type_ID")
     private Integer typeId;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
+    @Fetch(FetchMode.JOIN)
+    @BatchSize(size = 10)
     @JoinTable(name = "admins_reports", joinColumns = {
             @JoinColumn(name = "report_id") },
             inverseJoinColumns = { @JoinColumn(name = "admin_login") })
     private List<JiraUser> admins = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "report")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "report")
+    @Fetch(FetchMode.JOIN)
+    @BatchSize(size = 10)
     private Set<Sprint> sprints = new HashSet<>();
 
     public Long getId() {

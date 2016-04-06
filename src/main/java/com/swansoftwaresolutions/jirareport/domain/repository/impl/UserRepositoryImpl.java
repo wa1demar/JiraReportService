@@ -26,14 +26,21 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User findByUsername(String username) {
-        return (User) sessionFactory.getCurrentSession().createCriteria(User.class)
-                .add(Restrictions.eq("username", username))
-                .uniqueResult();
+        Query query = sessionFactory.getCurrentSession().createQuery("from User u where u.username = :username");
+        query.setParameter("username", username);
+
+        return (User) query.uniqueResult();
     }
 
     @Override
     public User add(User user) {
         sessionFactory.getCurrentSession().save(user);
+        return user;
+    }
+
+    @Override
+    public User saveOrUpdate(User user) {
+        sessionFactory.getCurrentSession().saveOrUpdate(user);
         return user;
     }
 

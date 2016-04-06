@@ -66,11 +66,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto updateProfile(UserDto userDto) throws NoSuchEntityException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User existedUser = userRepository.findById(user.getId());
 
-        user.setEmail(userDto.getEmail());
-        user.setFullName(userDto.getFullName());
+        existedUser.setEmail(userDto.getEmail());
+        existedUser.setFullName(userDto.getFullName());
 
-        User updatedUser = userRepository.update(user);
+        User updatedUser = userRepository.update(existedUser);
 
         return userMapper.toDto(updatedUser);
     }
@@ -104,9 +105,18 @@ public class UserServiceImpl implements UserService {
     public UserDto invite(InviteUserDto inviteUserDto) throws NoSuchEntityException, MessagingException {
         User user = null;
         String password = RandomStringUtils.random(5, true, true);
+
+        User existedUser = userRepository.findByUsername(inviteUserDto.getInviteParam());
+
+        Long id = null;
+        if (existedUser != null) {
+            id = existedUser.getId();
+        }
+
         if (inviteUserDto.getInviteParam().indexOf("@") == -1) {
             JiraUser jiraUser = jiraUserRepository.findByLogin(inviteUserDto.getInviteParam());
-            user =  userRepository.add(new UserBuilder()
+            user =  userRepository.saveOrUpdate(new UserBuilder()
+                    .id(id)
                     .username(jiraUser.getLogin())
                     .fullName(jiraUser.getFullName())
                     .email(jiraUser.getEmail())
@@ -115,7 +125,8 @@ public class UserServiceImpl implements UserService {
                     .roles(roleRepository.findByName(UserRole.ROLE_MANAGER))
                     .build());
         } else {
-            user =  userRepository.add(new UserBuilder()
+            user =  userRepository.saveOrUpdate(new UserBuilder()
+                    .id(id)
                     .username(inviteUserDto.getInviteParam())
                     .email(inviteUserDto.getInviteParam())
                     .password(encoder.encode(password))
@@ -124,13 +135,13 @@ public class UserServiceImpl implements UserService {
                     .build());
         }
 
+
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Map model = new HashMap();
         user.setPassword(password);
         model.put("newUser", user);
-        model.put("currentUserName", currentUser.getFullName().equals("") ? "" : currentUser.getFullName());
-        applicationMailer.sendMail(user.getEmail(), "Swan Jira Service", model, "invite");
+        model.put("currentUserName", (currentUser.getFullName() == null || currentUser.getFullName().equals("")) ? currentUser.getUsername() : currentUser.getFullName());        applicationMailer.sendMail(user.getEmail(), "Swan Jira Service", model, "invite");
 
         return userMapper.toDto(user);
     }

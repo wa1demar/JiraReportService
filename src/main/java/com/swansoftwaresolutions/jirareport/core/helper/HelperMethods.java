@@ -1,11 +1,10 @@
 package com.swansoftwaresolutions.jirareport.core.helper;
 
-import com.swansoftwaresolutions.jirareport.core.dto.sprint.FullSprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint_issue.IssuesByDayDto;
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssueDto;
 import com.swansoftwaresolutions.jirareport.core.dto.dashboard.Chart;
 import com.swansoftwaresolutions.jirareport.core.dto.dashboard.SprintProjectReportDto;
-import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDeveloperDto;
+import com.swansoftwaresolutions.jirareport.sheduller.dto.IssueDto;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.JiraIssueDto;
 
 import java.text.ParseException;
@@ -81,19 +80,11 @@ public class HelperMethods {
     }
 
     public float isNullFloat(float target) {
-        Float object = new Float(target);
+        Float object = target;
         if (object !=null){
             return target;
         }
         return 0;
-    }
-
-    private int checkVelosity(List<SprintDeveloperDto> sprintDevList) {
-        int velocity = 0;
-        for (SprintDeveloperDto dev : sprintDevList) {
-            velocity = +dev.getEngineerLevel().intValue();
-        }
-        return velocity;
     }
 
     public Chart generateReportChart(List<SprintProjectReportDto> sprints, float targetPoints) {
@@ -157,23 +148,20 @@ public class HelperMethods {
 
 
         for (int i = 1; i < dateArray.length; i++) {
+            actual[i] =actual[i-1];
+
             if (helperMethods.isCurrentDay(dateArray[i])) {
-                boolean key = false;
-                actual[i] =actual[i-1];
                 for (IssuesByDayDto issuesDto : issuesByDayList) {
                     if (issuesDto.getDate().equals(dateArray[i])) {
                         for (SprintIssueDto sprintIssueDto : issuesDto.getIssues()) {
                             actual[i] = actual[i] - sprintIssueDto.getPoint();
-                            key = true;
                         }
                     }
-
-                    if (key) {
-                        ii.add(actual[i]);
-                        key = false;
-                    }
-
                 }
+
+                    ii.add(actual[i]);
+            } else {
+                ii.add(actual[i]);
             }
 
             target[i] = (targetPoint-targetPoint/(dateArray.length-1)*i);
@@ -186,5 +174,42 @@ public class HelperMethods {
         chart.setTarget(target);
 
         return chart;
+    }
+
+
+    public JiraIssueDto convertIssueDtoToJiraIssueDto(IssueDto issueDto, long boardId) {
+        HelperMethods helperMethods = new HelperMethods();
+
+        JiraIssueDto jiraIssueDto = new JiraIssueDto();
+
+        jiraIssueDto.setKey(issueDto.key);
+        jiraIssueDto.setProjectId(issueDto.fields.getProject().getId());
+        jiraIssueDto.setProjectKey(issueDto.fields.getProject().getKey());
+        jiraIssueDto.setIssueTypeId(issueDto.fields.getIssuetype().id);
+        jiraIssueDto.setIssueTypeName(issueDto.fields.getIssuetype().name);
+        jiraIssueDto.setIssueTypeSubTask(issueDto.fields.getIssuetype().subtask);
+        jiraIssueDto.setTimeSpent(helperMethods.isNull(issueDto.fields.getTimespent()));
+        if (issueDto.fields.getResolution() != null) {
+            jiraIssueDto.setResolutionId(issueDto.fields.getResolution().id);
+            jiraIssueDto.setResolutionName(issueDto.fields.getResolution().name);
+        } else {
+            jiraIssueDto.setResolutionId(0);
+            jiraIssueDto.setResolutionName("");
+        }
+        jiraIssueDto.setCreated(issueDto.fields.getCreated());
+        jiraIssueDto.setUpdated(issueDto.fields.getUpdated());
+        jiraIssueDto.setAssignedKey(issueDto.fields.getAssignee().key);
+        jiraIssueDto.setAssignedName(issueDto.fields.getAssignee().name);
+        jiraIssueDto.setAssignedFullName(issueDto.fields.getAssignee().displayName);
+        jiraIssueDto.setCreatorKey(issueDto.fields.getCreator().key);
+        jiraIssueDto.setCreatorName(issueDto.fields.getCreator().name);
+        jiraIssueDto.setCreatorFullName(issueDto.fields.getCreator().displayName);
+        jiraIssueDto.setStatusId(issueDto.fields.getStatus().id);
+        jiraIssueDto.setStatusName(issueDto.fields.getStatus().name);
+        jiraIssueDto.setDueDate(issueDto.fields.getDuedate());
+        jiraIssueDto.setPoints(issueDto.fields.getCustomfield_10102());
+        jiraIssueDto.setBoardId(boardId);
+        jiraIssueDto.setDescription(issueDto.fields.getDescription());
+        return jiraIssueDto;
     }
 }

@@ -28,11 +28,12 @@ public class Comment implements Serializable {
     @Column(name = "creator")
     private String creator;
 
-    @Column(name = "creator_name")
-    private String creatorDisplayName;
-
     @Column(name = "created_date")
     private Date createdDate;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     public Long getId() {
         return id;
@@ -80,5 +81,13 @@ public class Comment implements Serializable {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

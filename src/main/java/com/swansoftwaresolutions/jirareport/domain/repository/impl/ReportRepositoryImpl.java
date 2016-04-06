@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
 import com.swansoftwaresolutions.jirareport.domain.entity.Report;
+import com.swansoftwaresolutions.jirareport.domain.model.Paged;
 import com.swansoftwaresolutions.jirareport.domain.repository.ReportRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.hibernate.Query;
@@ -32,96 +33,6 @@ public class ReportRepositoryImpl implements ReportRepository{
     }
 
     @Override
-    public List<Report> getAllOngoingReports() {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("Report.findAllAutomaticOngoingReport");
-
-        @SuppressWarnings("unchecked")
-        List<Report> adminReports = (List<Report>) query.list();
-        return adminReports;
-    }
-
-    @Override
-    public List<Report> getAllAutomaticOngoingReports() {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("Report.findAllAutomaticOngoingReport");
-
-        @SuppressWarnings("unchecked")
-        List<Report> adminReports = (List<Report>) query.list();
-        return adminReports;
-    }
-
-    @Override
-    public List<Report> getAllManualOngoingReports() {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("Report.findAllManualOngoingReport");
-
-        @SuppressWarnings("unchecked")
-        List<Report> adminReports = (List<Report>) query.list();
-        return adminReports;
-    }
-
-    @Override
-    public List<Report> getAllClosedReports() {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("Report.findAllClosed");
-
-        @SuppressWarnings("unchecked")
-        List<Report> reports = (List<Report>) query.list();
-
-        return reports;
-    }
-
-    @Override
-    public List<Report> getAllAutomaticClosedReports() {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("Report.findAllAutomaticClosedReport");
-
-        @SuppressWarnings("unchecked")
-        List<Report> reports = (List<Report>) query.list();
-
-        return reports;
-    }
-
-    @Override
-    public List<Report> getAllManualClosedReports() {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("Report.findAllManualClosedReports");
-
-        @SuppressWarnings("unchecked")
-        List<Report> reports = (List<Report>) query.list();
-
-        return reports;
-    }
-
-    @Override
-    public List<Report> getAllClosedReportsByDateClose(Date dateFrom, Date dateTo) {
-
-        Query query = null;
-
-        if (dateFrom != null && dateTo != null) {
-            query = sessionFactory.getCurrentSession().getNamedQuery("Report.findAllClosedReportsByDateClose");
-            query.setParameter("dateFrom", dateFrom);
-            query.setParameter("dateTo", dateTo);
-        } else if (dateFrom != null && dateTo == null) {
-            query = sessionFactory.getCurrentSession().getNamedQuery("Report.findAllClosedReportsByDateCloseFrom");
-            query.setParameter("dateFrom", dateFrom);
-        } else if (dateFrom == null && dateTo != null) {
-            query = sessionFactory.getCurrentSession().getNamedQuery("Report.findAllClosedReportsByDateCloseTo");
-            query.setParameter("dateTo", dateTo);
-        }
-
-        @SuppressWarnings("unchecked")
-        List<Report> reports = (List<Report>) query.list();
-
-        return reports;
-    }
-
-    @Override
-    public List<Report> getLastUpdatedReports() {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("Report.findLastUpdatedReport");
-
-        @SuppressWarnings("unchecked")
-        List<Report> reports = (List<Report>) query.list();
-
-        return reports;
-    }
-
-    @Override
     public Report findById(Long id) throws NoSuchEntityException {
         Query query = sessionFactory.getCurrentSession().createQuery("FROM Report r WHERE r.id = :id");
         query.setParameter("id", id);
@@ -139,16 +50,6 @@ public class ReportRepositoryImpl implements ReportRepository{
         return (Report) sessionFactory.getCurrentSession()
                 .createCriteria(Report.class).add(Restrictions.eq("boardId", boardId)).uniqueResult();
 
-    }
-
-    @Override
-    public Report getLastAddedReport() {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery("Report.findLastAddedReport");
-
-        @SuppressWarnings("unchecked")
-        Report report = (Report) query.uniqueResult();
-
-        return report;
     }
 
     @Override
@@ -208,9 +109,30 @@ public class ReportRepositoryImpl implements ReportRepository{
     }
 
     @Override
+    public Paged findAllClosedPaginated(int page) {
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM Report r WHERE r.isClosed = true");
+        Query count = sessionFactory.getCurrentSession().createQuery("select count(r.id) FROM Report r WHERE r.isClosed = true");
+        Paged paged = new Paged();
+        paged.setPage(page);
+        paged.setTotal((int)((long)count.uniqueResult()));
+        paged.setList(query.setFirstResult((page - 1) * 10).setMaxResults(10).list());
+        return paged;
+    }
+
+    @Override
     public List<Report> findAllOpened() {
         Query query = sessionFactory.getCurrentSession().createQuery("FROM Report r WHERE r.isClosed = false ");
         return query.list();
+    }
+
+    @Override
+    public Paged findAllOpenedPaginated(int page) {
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM Report r WHERE r.isClosed = false ");
+        Paged paged = new Paged();
+        paged.setPage(page);
+        paged.setTotal(query.list().size());
+        paged.setList(query.setFirstResult((page - 1) * 10).setMaxResults(10).list());
+        return paged;
     }
 
     @Override

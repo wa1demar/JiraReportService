@@ -8,6 +8,7 @@
                         <canvas id="line" class="chart chart-line" chart-data="data" chart-options="options"
                                 chart-labels="labels" chart-legend="true" chart-series="series" chart-colours="colours">
                         </canvas>
+                        <span ng-show="sprintShowOutOfRange" class="aui-lozenge aui-lozenge-moved">Show Out Of Range</span>
                     </div>
                     <center ng-show="reportData.sprints.length == 0 || !hasSprintTeam">Sprints not found</center>
                 </div>
@@ -274,7 +275,7 @@
             <tr>
                 <td></td>
                 <td ng-repeat="data in reportData.sprints" style="border-left: 1px solid #dddddd; min-width: 100px; text-align: center;" class="{{data.stateClass}}">
-                    {{data.endDate ? (data.endDate | date:'MM/dd/yyyy') : '-'}}
+                    {{(data.state === 'closed' && data.endDate) ? (data.endDate | date:'MM/dd/yyyy') : '-'}}
                 </td>
             </tr>
         </thead>

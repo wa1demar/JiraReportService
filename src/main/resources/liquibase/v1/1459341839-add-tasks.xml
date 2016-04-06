@@ -1,0 +1,35 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="1459341839" author="Vladimir Martynyuk">
+       <createTable tableName="tasks">
+           <column name="name" type="varchar(255)">
+               <constraints nullable="false" primaryKey="true"/>
+           </column>
+
+           <column name="label" type="varchar(255)">
+               <constraints nullable="true" />
+           </column>
+
+           <column name="status" type="varchar(255)">
+               <constraints nullable="false"/>
+           </column>
+
+           <column name="last_update" type="datetime">
+               <constraints nullable="true"/>
+           </column>
+       </createTable>
+
+        <insert tableName="tasks">
+            <column name="name" value="groups" />
+            <column name="label" value="Load Groups" />
+            <column name="status" value="NEW" />
+        </insert>
+
+        <insert tableName="tasks">
+            <column name="name" value="issues" />
+            <column name="label" value="Load issues" />
+            <column name="status" value="NEW" />
+        </insert>
+    </changeSet>
+</databaseChangeLog>
