@@ -1,13 +1,11 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
-import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraIssue;
-import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
-import com.swansoftwaresolutions.jirareport.domain.repository.JiraBoardRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraIssueRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,5 +105,25 @@ public class JiraIssueRepositoryImpl implements JiraIssueRepository {
         query.setParameterList("ids", ids);
 
         return query.list();
+    }
+
+    @Override
+    public void saveAll(List<JiraIssue> list) {
+//        Session session = sessionFactory.openSession();
+        for (JiraIssue issue : list){
+            JiraIssue exist = null;
+            try {
+                exist = findByKey(issue.getKey());
+            } catch (NoSuchEntityException ex){
+                // ToDo new issue;
+            }
+
+            if (exist == null){
+                add(issue);
+            } else {
+                issue.setId(exist.getId());
+                sessionFactory.getCurrentSession().merge(issue);
+            }
+        }
     }
 }
