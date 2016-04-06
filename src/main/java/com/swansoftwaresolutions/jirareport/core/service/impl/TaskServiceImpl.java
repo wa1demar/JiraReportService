@@ -8,6 +8,7 @@ import com.swansoftwaresolutions.jirareport.core.service.TaskService;
 import com.swansoftwaresolutions.jirareport.domain.entity.Task;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraIssueRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.TaskRepository;
+import com.swansoftwaresolutions.jirareport.rest.service.BoardImporterService;
 import com.swansoftwaresolutions.jirareport.rest.service.GroupImporterService;
 import com.swansoftwaresolutions.jirareport.rest.service.IssueImporterService;
 import com.swansoftwaresolutions.jirareport.rest.service.ProjectImporterService;
@@ -44,6 +45,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Autowired
     ProjectImporterService projectImporterService;
+
+    @Autowired
+    BoardImporterService boardImporterService;
 
     @Autowired
     IssueImporterService issueImporterService;
@@ -117,7 +121,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     private void startImportBoards() {
-        // TODO: should be implemented
+        taskRepository.setStarted(BOARDS_TASK);
+        boardImporterService.importBoardsFromJira();
+        taskRepository.setStopped(BOARDS_TASK);
     }
 
     private void startImportSprints() {

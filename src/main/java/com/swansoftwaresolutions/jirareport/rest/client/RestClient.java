@@ -5,6 +5,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.jira_project.ImportedProjec
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUsersDto;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.IssueDto;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.IssuesDto;
+import com.swansoftwaresolutions.jirareport.core.dto.ImportedBardsDto;
 
 import java.util.List;
 
@@ -21,4 +22,6 @@ public interface RestClient {
     ImportedProjectDto[] loadAllProjects();
 
     IssuesDto loadAllIssues(String sprintId);
+
+    ImportedBardsDto loadAllBoardsByProjectKey(String key);
 }

@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraIssue;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraIssueRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Vitaliy Holovko
@@ -108,22 +111,35 @@ public class JiraIssueRepositoryImpl implements JiraIssueRepository {
     }
 
     @Override
-    public void saveAll(List<JiraIssue> list) {
-//        Session session = sessionFactory.openSession();
-        for (JiraIssue issue : list){
-            JiraIssue exist = null;
-            try {
-                exist = findByKey(issue.getKey());
-            } catch (NoSuchEntityException ex){
-                // ToDo new issue;
+    public void saveAll(List<JiraIssue> jiraIssues) {
+        if (jiraIssues == null || jiraIssues.size() == 0){
+            return;
+        }
+
+        List<String> keys = jiraIssues.stream().map(r -> r.getKey()).collect(Collectors.toList());
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM JiraIssue ji WHERE ji.key IN :keys");
+        query.setParameterList("keys", keys);
+        List<JiraIssue> existed = query.list();
+        Map<String, JiraIssue> issueMap = existed.stream().collect(Collectors.toMap(JiraIssue::getKey, b -> b));
+
+
+        Session session = sessionFactory.openSession();
+
+        try {
+            for (JiraIssue issue : jiraIssues) {
+                JiraIssue existedIssue = issueMap.get(issue.getKey());
+
+                if (existedIssue == null) {
+                    session.save(issue);
+                } else {
+                    issue.setId(existedIssue.getId());
+                    session.update(issue);
+                }
             }
 
-            if (exist == null){
-                add(issue);
-            } else {
-                issue.setId(exist.getId());
-                sessionFactory.getCurrentSession().merge(issue);
-            }
+            session.flush();
+        } finally {
+            session.close();
         }
     }
 }

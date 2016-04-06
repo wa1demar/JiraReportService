@@ -80,6 +80,12 @@ jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
             access: {
                 requiredLogin: true
             }
+        }).when('/productivity', {
+            templateUrl: 'views/productivity/main.html',
+            controller: 'ProductivityCtrl',
+            access: {
+                requiredLogin: true
+            }
         }).otherwise({
             redirectTo: '/login'
         });

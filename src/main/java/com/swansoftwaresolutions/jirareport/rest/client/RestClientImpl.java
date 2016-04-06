@@ -1,11 +1,14 @@
 package com.swansoftwaresolutions.jirareport.rest.client;
 
+import com.swansoftwaresolutions.jirareport.core.dto.ImportedBardsDto;
 import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDto;
 import com.swansoftwaresolutions.jirareport.core.dto.groups.JiraGroupsDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_project.ImportedProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUsersDto;
 import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.IssuesDto;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -23,6 +26,8 @@ import java.util.Map;
 @PropertySource("classpath:jira.properties")
 public class RestClientImpl extends AbstractRestClient implements RestClient {
 
+    Logger log = LogManager.getLogger(RestClientImpl.class);
+
     @Value("${jira.url}")
     private String jiraUrl;
 
@@ -37,6 +42,9 @@ public class RestClientImpl extends AbstractRestClient implements RestClient {
 
     @Value("${jira.issues}")
     private String jiraIssue;
+
+    @Value("${jira.boards}")
+    private String jiraBoards;
 
     @Autowired
     ConfigService configService;
@@ -74,9 +82,21 @@ public class RestClientImpl extends AbstractRestClient implements RestClient {
         Object object = restTemplate.exchange(jiraUrl + jiraIssue, HttpMethod.GET, request, Object.class, params).getBody();
         return restTemplate.exchange(jiraUrl + jiraIssue, HttpMethod.GET, request, IssuesDto.class, params).getBody();
     }
+    @Override
+    public ImportedBardsDto loadAllBoardsByProjectKey(String key) {
+        log.info("Import boards for Project " + key);
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("project_key", key);
+
+        ConfigDto configDto = configService.retrieveConfig();
+        HttpEntity<String> request = new HttpEntity<>(getHeaders(configDto.getJiraUser(), configDto.getJiraPass()));
+        return restTemplate.exchange(jiraUrl + jiraBoards, HttpMethod.GET, request, ImportedBardsDto.class, params).getBody();
+
+    }
+
 
     @Override
     public void loadData() {
-        // TODO: will remove
+        // TODO: going to remove
     }
 }

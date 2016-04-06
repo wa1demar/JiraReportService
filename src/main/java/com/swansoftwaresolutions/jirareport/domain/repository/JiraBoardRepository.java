@@ -23,4 +23,6 @@ public interface JiraBoardRepository {
     JiraBoard update(JiraBoard jiraBoard) throws NoSuchEntityException;
 
     List<JiraBoard> findByIds(List<Long> ids);
+
+    void add(List<JiraBoard> jiraBoards, String key);
 }

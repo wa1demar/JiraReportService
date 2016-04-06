@@ -1,14 +1,14 @@
-package com.swansoftwaresolutions.jirareport.sheduller.dto;
+package com.swansoftwaresolutions.jirareport.core.dto;
 
 import java.util.List;
 
 /**
  * @author Vitaliy Holovko
  */
-public class JiraBoardObjectDto {
+public class ImportedBardsDto {
     private int maxResults;
     private boolean isLast;
-    private List<JiraBoardDto> values;
+    private List<ImportedJiraBoardDto> values;
 
     public int getMaxResults() {
         return maxResults;
@@ -26,11 +26,11 @@ public class JiraBoardObjectDto {
         isLast = last;
     }
 
-    public List<JiraBoardDto> getValues() {
+    public List<ImportedJiraBoardDto> getValues() {
         return values;
     }
 
-    public void setValues(List<JiraBoardDto> values) {
+    public void setValues(List<ImportedJiraBoardDto> values) {
         this.values = values;
     }
 }

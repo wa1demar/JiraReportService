@@ -1,5 +1,7 @@
 package com.swansoftwaresolutions.jirareport.sheduller.rest.client;
 
+import com.swansoftwaresolutions.jirareport.core.dto.ImportedBardsDto;
+import com.swansoftwaresolutions.jirareport.core.dto.ImportedJiraBoardDto;
 import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDto;
 import com.swansoftwaresolutions.jirareport.core.dto.groups.JiraGroupsDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_project.ImportedProjectDto;
@@ -74,6 +76,11 @@ public class BoardClient extends AbstractRestClient implements RestClient {
         return new ImportedProjectDto[0];
     }
 
+    @Override
+    public ImportedBardsDto loadAllBoardsByProjectKey(String key) {
+        return null;
+    }
+
     private void loadDataForJiraSprints() {
 
         ConfigDto configDto = configService.retrieveConfig();
@@ -125,13 +132,13 @@ public class BoardClient extends AbstractRestClient implements RestClient {
         HttpEntity<String> request = new HttpEntity<>(getHeaders(configDto.getJiraUser(), configDto.getJiraPass()));
         RestTemplate restTemplate = new RestTemplate();
         String BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board";
-        JiraBoardObjectDto jiraBoardDtos = restTemplate.exchange(BOARD_URL, HttpMethod.GET, request, JiraBoardObjectDto.class).getBody();
+        ImportedBardsDto jiraBoardDtos = restTemplate.exchange(BOARD_URL, HttpMethod.GET, request, ImportedBardsDto.class).getBody();
 
         insertDataToDataBase(jiraBoardDtos.getValues());
     }
 
-    private void insertDataToDataBase(List<JiraBoardDto> jiraBoardDtos) {
-        removeDublicateAndSave(fromDtos(jiraBoardDtos));
+    private void insertDataToDataBase(List<ImportedJiraBoardDto> importedJiraBoardDtos) {
+        removeDublicateAndSave(fromDtos(importedJiraBoardDtos));
     }
 
     private void removeDublicateAndSave(List<JiraBoard> jiraBoards) {
@@ -144,29 +151,29 @@ public class BoardClient extends AbstractRestClient implements RestClient {
         jiraBoards.stream().filter(jiraBoard -> jiraBoard.getProjectKey() != null).forEach(jiraBoardService::save);
     }
 
-    private JiraBoardDto getProjectInformationForBoard(JiraBoardDto jiraBoardDto) throws NoSuchEntityException {
+    private ImportedJiraBoardDto getProjectInformationForBoard(ImportedJiraBoardDto importedJiraBoardDto) throws NoSuchEntityException {
         ConfigDto configDto = configService.retrieveConfig();
         HttpEntity<String> request = new HttpEntity<>(getHeaders(configDto.getJiraUser(), configDto.getJiraPass()));
         RestTemplate restTemplate = new RestTemplate();
 
         String ISSUES_BOARD_URL = "https://swansoftwaresolutions.atlassian.net/rest/agile/1.0/board/{boardId}/issue";
-        IssuesForJiraBoard jiraBoardDtos = restTemplate.exchange(ISSUES_BOARD_URL.replace("{boardId}", String.valueOf(jiraBoardDto.getId())), HttpMethod.GET, request, IssuesForJiraBoard.class).getBody();
+        IssuesForJiraBoard jiraBoardDtos = restTemplate.exchange(ISSUES_BOARD_URL.replace("{boardId}", String.valueOf(importedJiraBoardDto.getId())), HttpMethod.GET, request, IssuesForJiraBoard.class).getBody();
 
         if (jiraBoardDtos.issues.length > 0) {
-            jiraBoardDto.setProjectKey(jiraBoardDtos.issues[0].fields.getProject().getKey());
+            importedJiraBoardDto.setProjectKey(jiraBoardDtos.issues[0].fields.getProject().getKey());
         } else {
-            log.warning("Empty JiraProject Key for " + jiraBoardDto.getName());
+            log.warning("Empty JiraProject Key for " + importedJiraBoardDto.getName());
         }
 
-        return jiraBoardDto;
+        return importedJiraBoardDto;
     }
 
 
 //ToDo replace methods to Service
 
-    private List<JiraBoard> fromDtos(List<JiraBoardDto> jBoardDtos) {
+    private List<JiraBoard> fromDtos(List<ImportedJiraBoardDto> jBoardDtos) {
         List<JiraBoard> jiraBoards = new ArrayList<>();
-        for (JiraBoardDto jBoardDto : jBoardDtos) {
+        for (ImportedJiraBoardDto jBoardDto : jBoardDtos) {
             try {
                 jiraBoards.add(fromDto(getProjectInformationForBoard(jBoardDto)));
             } catch (NoSuchEntityException e) {
@@ -176,7 +183,7 @@ public class BoardClient extends AbstractRestClient implements RestClient {
         return jiraBoards;
     }
 
-    private JiraBoard fromDto(JiraBoardDto jBoardDto) {
+    private JiraBoard fromDto(ImportedJiraBoardDto jBoardDto) {
         JiraBoard jiraBoard = new JiraBoard();
         jiraBoard.setName(jBoardDto.getName());
         jiraBoard.setType(jBoardDto.getType());
