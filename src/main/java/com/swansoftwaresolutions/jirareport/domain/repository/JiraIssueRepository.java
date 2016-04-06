@@ -2,6 +2,7 @@ package com.swansoftwaresolutions.jirareport.domain.repository;
 
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraIssue;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
+import com.swansoftwaresolutions.jirareport.sheduller.dto.IssueDto;
 
 import java.util.List;
 
@@ -27,4 +28,6 @@ public interface JiraIssueRepository {
     JiraIssue update(JiraIssue jiraIssue) throws NoSuchEntityException;
 
     List<JiraIssue> findBySprintIds(List<Long> ids);
+
+    void saveAll(List<JiraIssue> list);
 }

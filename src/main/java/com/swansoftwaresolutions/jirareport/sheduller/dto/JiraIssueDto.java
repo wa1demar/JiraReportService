@@ -30,6 +30,7 @@ public class JiraIssueDto {
     private float points;
     private long boardId;
     private long sprintId;
+    private String description;
 
     public Long getId() {
         return id;
@@ -127,6 +128,10 @@ public class JiraIssueDto {
         this.updated = updated;
     }
 
+    public Date getDueDate() {
+        return dueDate;
+    }
+
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
@@ -217,5 +222,13 @@ public class JiraIssueDto {
 
     public void setSprintId(long sprintId) {
         this.sprintId = sprintId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

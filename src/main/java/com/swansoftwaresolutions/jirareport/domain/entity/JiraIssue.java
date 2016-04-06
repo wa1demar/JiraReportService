@@ -85,6 +85,9 @@ public class JiraIssue {
     @Column(name = "sprint_id")
     private long sprintId;
 
+    @Column(name = "description")
+    private String description;
+
     public Long getId() {
         return id;
     }
@@ -181,6 +184,10 @@ public class JiraIssue {
         this.updated = updated;
     }
 
+    public Date getDueDate() {
+        return dueDate;
+    }
+
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
@@ -271,6 +278,14 @@ public class JiraIssue {
 
     public void setSprintId(long sprintId) {
         this.sprintId = sprintId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

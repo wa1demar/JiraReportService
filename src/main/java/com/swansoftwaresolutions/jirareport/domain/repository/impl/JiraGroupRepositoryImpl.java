@@ -31,6 +31,7 @@ public class JiraGroupRepositoryImpl implements JiraGroupRepository {
 
     }
 
+    @Override
     public JiraGroup findByName(String name) {
         Query query  = sessionFactory.getCurrentSession().createQuery("FROM JiraGroup g WHERE g.name = :name");
         query.setParameter("name", name);
