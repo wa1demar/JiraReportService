@@ -6,6 +6,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
             var self = this;
             $scope.loaderShow = true;
 
+            //random
             function getRandomInt(min, max) {
                 return Math.floor(Math.random() * (max - min)) + min;
             }
