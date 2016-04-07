@@ -31,8 +31,8 @@
         </tr>
     </thead>
     <tbody>
-        <!--<tr class="element-row" dir-paginate="data in dataDueDate | filter: query | orderBy:predicate:reverse | itemsPerPage: dueDatePerPage" total-items="totalDueDate" current-page="pagination.current">-->
-        <tr ng-repeat="data in filtered = (dataDueDate | filter:query | orderBy:predicate:reverse)">
+        <tr class="element-row" dir-paginate="data in dataDueDate | filter: query | orderBy:predicate:reverse | itemsPerPage: dueDatePerPage" total-items="totalDueDate" current-page="pagination.current">
+        <!--<tr ng-repeat="data in filtered = (dataDueDate | filter:query | orderBy:predicate:reverse)">-->
             <td>{{data.project}}</td>
             <td>{{data.assignee}}</td>
             <td>
@@ -75,7 +75,7 @@
     </tbody>
 </table>
 <br>
-<!--<dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>-->
+<dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
 <div class="col-md-12 text-center" ng-if="dataDueDate.length === 0">
     <strong>Not found!</strong>
 </div>
