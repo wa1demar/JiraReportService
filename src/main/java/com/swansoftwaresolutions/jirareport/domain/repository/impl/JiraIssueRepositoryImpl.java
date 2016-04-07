@@ -1,6 +1,5 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
-import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraIssue;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraIssueRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;

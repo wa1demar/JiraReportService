@@ -2,7 +2,6 @@ package com.swansoftwaresolutions.jirareport.domain.repository;
 
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraIssue;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
-import com.swansoftwaresolutions.jirareport.sheduller.dto.IssueDto;
 
 import java.util.List;
 
