@@ -5,12 +5,12 @@ import com.swansoftwaresolutions.jirareport.core.dto.jira_issue.DueDatesDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraIssueMapper;
 import com.swansoftwaresolutions.jirareport.core.service.DueDateService;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraIssue;
+import com.swansoftwaresolutions.jirareport.domain.model.Paged;
 import com.swansoftwaresolutions.jirareport.domain.repository.DueDateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,11 +27,14 @@ public class DueDateServiceImpl implements DueDateService {
     @Autowired
     JiraIssueMapper jiraIssueMapper;
     @Override
-    public DueDatesDto retrieveDueDates() {
+    public DueDatesDto retrieveDueDates(int page) {
 
-        List<JiraIssue> datas = dueDateRepository.retrieveAllDueDatas();
+        Paged paged = dueDateRepository.retrieveAllDueDatas(page);
 
-       List<DueDateDto> dates = new ArrayList<>();
+        List<JiraIssue> datas = paged.getList();
+
+
+        List<DueDateDto> dates = new ArrayList<>();
         for (JiraIssue issue : datas) {
             List<Date> dds = issue.getDueDates().stream().map(r -> r.getDueDate()).collect(Collectors.toList());
             Date [] datesArray = new Date[dds.size()];
@@ -54,6 +57,9 @@ public class DueDateServiceImpl implements DueDateService {
 
         DueDatesDto result = new DueDatesDto();
         result.setDates(dates);
+        result.setTotalPages((int)Math.floor(paged.getTotal() / 10) + 1);
+        result.setPage(page);
+        result.setTotalItems(paged.getTotal());
 
         return result;
     }

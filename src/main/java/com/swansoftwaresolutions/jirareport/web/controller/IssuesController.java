@@ -5,10 +5,7 @@ import com.swansoftwaresolutions.jirareport.core.service.DueDateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Vladimir Martynyuk
@@ -20,11 +17,11 @@ public class IssuesController {
     @Autowired
     DueDateService dueDateService;
 
-    @RequestMapping(value = "/v1/issues/due_dates", method = RequestMethod.GET)
+    @RequestMapping(value = "/v1/issues/due_dates/{page}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<DueDatesDto> getAllBoards() {
+    public ResponseEntity<DueDatesDto> getAllBoards(@PathVariable("page") int page) {
 
-        DueDatesDto dueDatesDto = dueDateService.retrieveDueDates();
+        DueDatesDto dueDatesDto = dueDateService.retrieveDueDates(page);
 
         return new ResponseEntity<>(dueDatesDto, HttpStatus.OK);
     }
