@@ -86,6 +86,7 @@ public class TaskServiceImpl implements TaskService {
 
             case ISSUES_TASK:
                 startImportIssues();
+                startImportDueDate();
                 break;
 
             case SPRINTS_TASK:
