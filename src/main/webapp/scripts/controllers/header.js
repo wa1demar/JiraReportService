@@ -26,6 +26,7 @@ jiraPluginApp.controller("HeaderCtrl", ['$scope', '$location', 'UserAuthFactory'
         $scope.processConfig = function () {
             var modalInstance = $uibModal.open({
                 animation: true,
+                size: "lg",
                 templateUrl: 'views/dlg/dlg_process_config.html',
                 controller: 'DlgProcessConfigCtrl',
                 resolve: {
