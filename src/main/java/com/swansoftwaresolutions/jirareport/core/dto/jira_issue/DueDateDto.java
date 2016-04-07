@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class DueDateDto {
     private Long id;
-    private String projict;
+    private String project;
     private String assignee;
     private String key;
     private String summary;
@@ -23,12 +23,12 @@ public class DueDateDto {
         this.id = id;
     }
 
-    public String getProjict() {
-        return projict;
+    public String getProject() {
+        return project;
     }
 
-    public void setProjict(String projict) {
-        this.projict = projict;
+    public void setProject(String project) {
+        this.project = project;
     }
 
     public String getAssignee() {

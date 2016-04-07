@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author Vladimir Martynyuk
  */
@@ -20,9 +22,12 @@ public class DueDateRepositoryImpl implements DueDateRepository {
 
 
     @Override
-    public Paged retrieveAllDueDatas(int page) {
-        Query query = sessionFactory.getCurrentSession().createQuery("FROM JiraIssue i WHERE (i.dueDates.size > 1) and (i.statusName != 'closed')");
-        Query count = sessionFactory.getCurrentSession().createQuery("select count(i.id) FROM JiraIssue i WHERE (i.dueDates.size > 1) and (i.statusName != 'closed')");
+    public Paged retrieveAllDueDatas(List<String> agileDoneNames, int page) {
+        String hql = "FROM JiraIssue i WHERE (i.dueDates.size > 1 or i.dueDate < current_date) and (i.statusName not in (:agileDoneNames))";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameterList("agileDoneNames", agileDoneNames);
+        Query count = sessionFactory.getCurrentSession().createQuery("select count(*)" + hql);
+        count.setParameterList("agileDoneNames", agileDoneNames);
 
         Paged paged = new Paged();
         paged.setPage(page);
