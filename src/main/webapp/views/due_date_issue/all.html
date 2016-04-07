@@ -38,7 +38,9 @@
             <td>
                 <a ng-href="{{CONFIG.JIRA_PATH}}/browse/{{data.key}}">{{data.key}}</a>
             </td>
-            <td>{{data.summary}}</td>
+            <td>
+                <div ng-click="showFullSummary = !showFullSummary" ng-class="showFullSummary || (data.summary).length <= 80 ? 'summary-short full' : 'summary-short'">{{data.summary}}</div>
+            </td>
             <td>
                 <div ng-repeat="description in data.description"><span ng-if="description !== ''">{{description}}</span></div>
             </td>
