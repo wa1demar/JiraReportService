@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
+import com.swansoftwaresolutions.jirareport.domain.entity.DueDate;
 import com.swansoftwaresolutions.jirareport.domain.model.Paged;
 import com.swansoftwaresolutions.jirareport.domain.repository.DueDateRepository;
 import org.hibernate.Query;
@@ -34,5 +35,17 @@ public class DueDateRepositoryImpl implements DueDateRepository {
         paged.setTotal((int)((long)count.uniqueResult()));
         paged.setList(query.setFirstResult((page - 1) * 10).setMaxResults(10).list());
         return paged;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<DueDate> findAll() {
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM DueDate d order by d.updatedAt desc ");
+        return  query.list();
+    }
+
+    @Override
+    public void add(DueDate dueDate) {
+        sessionFactory.getCurrentSession().save(dueDate);
     }
 }

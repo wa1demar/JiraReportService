@@ -3,10 +3,8 @@ package com.swansoftwaresolutions.jirareport.core.service.impl;
 import com.swansoftwaresolutions.jirareport.core.dto.task.TaskDto;
 import com.swansoftwaresolutions.jirareport.core.dto.task.TasksDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.TaskMapper;
-import com.swansoftwaresolutions.jirareport.core.service.JiraIssueService;
 import com.swansoftwaresolutions.jirareport.core.service.TaskService;
 import com.swansoftwaresolutions.jirareport.domain.entity.Task;
-import com.swansoftwaresolutions.jirareport.domain.repository.JiraIssueRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.TaskRepository;
 import com.swansoftwaresolutions.jirareport.rest.service.*;
 import com.swansoftwaresolutions.jirareport.rest.service.BoardImporterService;
@@ -31,6 +29,7 @@ public class TaskServiceImpl implements TaskService {
     private static final String BOARDS_TASK = "boards";
     private static final String SPRINTS_TASK = "sprints";
     private static final String ISSUES_TASK = "issues";
+    private static final String DUEDATE_TASK = "duedate";
 
     @Autowired
     TaskRepository taskRepository;
@@ -56,6 +55,9 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     IssueImporterService issueImporterService;
 
+    @Autowired
+    DueDateImporterService dueDateImporterService;
+
     @Override
     public TasksDto getAll() {
         List<Task> tasks = taskRepository.findAll();
@@ -75,7 +77,11 @@ public class TaskServiceImpl implements TaskService {
 
             case GROUPS_TASK:
                 startImportGroups();
-                startImportUsers() ;
+                startImportUsers();
+                break;
+
+            case DUEDATE_TASK:
+                startImportDueDate();
                 break;
 
             case ISSUES_TASK:
@@ -99,6 +105,7 @@ public class TaskServiceImpl implements TaskService {
                 startImportSprints();
                 startImportIssues();
                 break;
+
         }
 
         Task task = taskRepository.findByName(name);
@@ -140,5 +147,9 @@ public class TaskServiceImpl implements TaskService {
         taskRepository.setStarted(ISSUES_TASK);
         issueImporterService.importIssueFromJira();
         taskRepository.setStopped(ISSUES_TASK);
+    }
+
+    private void startImportDueDate() {
+        dueDateImporterService.importDueDate();
     }
 }

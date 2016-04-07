@@ -29,4 +29,6 @@ public interface JiraIssueRepository {
     List<JiraIssue> findBySprintIds(List<Long> ids);
 
     void saveAll(List<JiraIssue> list);
+
+    List<JiraIssue> findAllDueDate(List<String> agileDoneNames);
 }

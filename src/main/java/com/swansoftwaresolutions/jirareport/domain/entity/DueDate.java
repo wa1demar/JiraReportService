@@ -1,5 +1,9 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -28,6 +32,8 @@ public class DueDate {
     private Date dueDate;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
+    @BatchSize(size = 10)
     @JoinColumn(name="issue_id")
     private JiraIssue issue;
 
