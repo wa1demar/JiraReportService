@@ -210,6 +210,7 @@ public class HelperMethods {
         jiraIssueDto.setPoints(issueDto.fields.getCustomfield_10102());
         jiraIssueDto.setBoardId(boardId);
         jiraIssueDto.setDescription(issueDto.fields.getDescription());
+        jiraIssueDto.setSummary(issueDto.fields.getSummary());
         return jiraIssueDto;
     }
 }

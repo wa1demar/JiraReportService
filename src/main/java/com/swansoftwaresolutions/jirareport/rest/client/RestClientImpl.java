@@ -85,7 +85,6 @@ public class RestClientImpl extends AbstractRestClient implements RestClient {
         params.put("sprint_id", sprintId);
         ConfigDto configDto = configService.retrieveConfig();
         HttpEntity<String> request = new HttpEntity<>(getHeaders(configDto.getJiraUser(), configDto.getJiraPass()));
-        Object object = restTemplate.exchange(jiraUrl + jiraIssue, HttpMethod.GET, request, Object.class, params).getBody();
         return restTemplate.exchange(jiraUrl + jiraIssue, HttpMethod.GET, request, IssuesDto.class, params).getBody();
     }
     @Override
