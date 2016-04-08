@@ -983,7 +983,7 @@ public class ReportServiceImpl implements ReportService {
         if (sprintDto.isShowOutOfRange()) {
             Calendar addDate = endDate;
             if (issues.size() > 0) {
-                endDate = gitFinishDAte(issues, endDate);
+                endDate = getFinishDate(issues, endDate);
 
                 while (!addDate.after(endDate)) {
                     Date currentDate = addDate.getTime();
@@ -1010,6 +1010,14 @@ public class ReportServiceImpl implements ReportService {
 
                     addDate.add(Calendar.DATE, 1);
                 }
+            }
+
+            if (issues.size() > 0) {
+                float tar = ii.get(ii.size() - 1);
+                for (JiraIssueDto issueDto : issues) {
+                    tar = tar - issueDto.getPoints();
+                }
+                ii.set(ii.size() - 1, (int) tar);
             }
 
             chart = configureChart(chart, date, ii);
@@ -1065,13 +1073,13 @@ public class ReportServiceImpl implements ReportService {
         return chart;
     }
 
-    private Calendar gitFinishDAte(Set<JiraIssueDto> issues, Calendar endDate) {
+    private Calendar getFinishDate(Set<JiraIssueDto> issues, Calendar endDate) {
         Calendar lastDate = endDate;
 
         for (JiraIssueDto issue : issues) {
             Calendar date = Calendar.getInstance();
             date.setTime(issue.getUpdated());
-            if (date.after(endDate) && date.after(lastDate)) {
+            if (date.compareTo(lastDate) > 0) {
                 lastDate = date;
             }
         }

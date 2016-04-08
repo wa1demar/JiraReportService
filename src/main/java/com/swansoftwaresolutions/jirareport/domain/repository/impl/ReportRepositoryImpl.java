@@ -5,13 +5,13 @@ import com.swansoftwaresolutions.jirareport.domain.model.Paged;
 import com.swansoftwaresolutions.jirareport.domain.repository.ReportRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -127,11 +127,18 @@ public class ReportRepositoryImpl implements ReportRepository{
 
     @Override
     public Paged findAllOpenedPaginated(int page) {
-        Query query = sessionFactory.getCurrentSession().createQuery("FROM Report r WHERE r.isClosed = false ");
+        Session session = sessionFactory.openSession();
         Paged paged = new Paged();
-        paged.setPage(page);
-        paged.setTotal(query.list().size());
-        paged.setList(query.setFirstResult((page - 1) * 10).setMaxResults(10).list());
+
+        try {
+            Query query = session.createQuery("FROM Report r WHERE r.isClosed = false ");
+            Query count = session.createQuery("select count(r.id) FROM Report r WHERE r.isClosed = false ");
+            paged.setPage(page);
+            paged.setTotal((int) ((long) count.uniqueResult()));
+            paged.setList(query.setFirstResult((page - 1) * 10).setMaxResults(10).list());
+        } finally {
+            session.close();
+        }
         return paged;
     }
 
