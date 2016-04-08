@@ -63,7 +63,7 @@ public class DueDateServiceImpl implements DueDateService {
             dateDto.setDescription(descs.toArray(descsArray));
             dateDto.setProject(issue.getProjectKey());
             dateDto.setStatus(issue.getStatusName());
-            dateDto.setSummary(issue.getDescription());
+            dateDto.setSummary(issue.getSummary());
 
             dates.add(dateDto);
         }

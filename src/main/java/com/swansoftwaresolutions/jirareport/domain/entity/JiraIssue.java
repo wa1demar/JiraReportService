@@ -94,6 +94,9 @@ public class JiraIssue {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "name_issue")
+    private String summary;
+
     @OneToMany(cascade={CascadeType.ALL}, mappedBy="issue", fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
     @BatchSize(size = 10)
@@ -323,5 +326,13 @@ public class JiraIssue {
 
     public void setDueDates(List<DueDate> dates) {
         this.dueDates = dates;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 }
