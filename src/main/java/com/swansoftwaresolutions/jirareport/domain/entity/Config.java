@@ -22,6 +22,9 @@ public class Config {
     @Column(name = "jira_dev_group_name")
     private String jiraDevGroupName;
 
+    @Column(name = "due_date_issue_status")
+    private String dueDateIssueStatus;
+
     @Column(name = "bug_name")
     private String bugName;
 
@@ -90,5 +93,13 @@ public class Config {
 
     public void setJiraPass(String jiraPassword) {
         this.jiraPass = jiraPassword;
+    }
+
+    public String getDueDateIssueStatus() {
+        return dueDateIssueStatus;
+    }
+
+    public void setDueDateIssueStatus(String dueDateIssueStatus) {
+        this.dueDateIssueStatus = dueDateIssueStatus;
     }
 }

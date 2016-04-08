@@ -36,7 +36,7 @@ public class DueDateServiceImpl implements DueDateService {
     @Override
     public DueDatesDto retrieveDueDates(int page) {
 
-        String agileDoneName = configService.retrieveConfig().getAgileDoneName();
+        String agileDoneName = configService.retrieveConfig().getDueDateIssueStatus();
         List<String> agileDoneNames = new ArrayList<>();
         for (String dateString : Arrays.asList(agileDoneName.split(","))) {
             agileDoneNames.add(dateString);

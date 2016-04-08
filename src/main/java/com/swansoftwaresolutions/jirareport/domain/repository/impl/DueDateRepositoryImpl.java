@@ -24,10 +24,13 @@ public class DueDateRepositoryImpl implements DueDateRepository {
 
     @Override
     public Paged retrieveAllDueDatas(List<String> agileDoneNames, int page) {
-        String hql = "FROM JiraIssue i WHERE (i.dueDates.size > 1 or i.dueDate < current_date) and (i.statusName not in (:agileDoneNames))";
+        String hql = "FROM JiraIssue i WHERE (i.dueDates.size > 1 or i.dueDate < current_date)";
+        if (agileDoneNames != null && agileDoneNames.size() > 0) {
+            hql += " and (i.statusName in (:agileDoneNames))";
+        }
         Query query = sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameterList("agileDoneNames", agileDoneNames);
-        Query count = sessionFactory.getCurrentSession().createQuery("select count(*)" + hql);
+        Query count = sessionFactory.getCurrentSession().createQuery("select count(*) " + hql);
         count.setParameterList("agileDoneNames", agileDoneNames);
 
         Paged paged = new Paged();

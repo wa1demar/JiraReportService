@@ -66,7 +66,6 @@ public class QuartzConfig {
         CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
         cronTriggerFactoryBean.setJobDetail(loadIssuesJobDetail().getObject());
         cronTriggerFactoryBean.setCronExpression("5 0 0 * * ?");
-//        cronTriggerFactoryBean.setCronExpression("12 0 * * * ?");
         return cronTriggerFactoryBean;
     }
 
