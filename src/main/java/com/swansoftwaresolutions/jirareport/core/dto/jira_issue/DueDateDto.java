@@ -11,7 +11,7 @@ public class DueDateDto {
     private String assignee;
     private String key;
     private String summary;
-    private String[] description;
+    private String description;
     private String status;
     private Date[] dueDate;
 
@@ -55,11 +55,11 @@ public class DueDateDto {
         this.summary = summary;
     }
 
-    public String[] getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(String[] description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
