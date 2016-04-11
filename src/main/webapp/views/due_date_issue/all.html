@@ -42,10 +42,10 @@
                 <div>{{data.summary}}</div>
             </td>
             <td>
-                <div ng-if="data.description !== '' && (data.description).length !== 0"
+                <div ng-if="data.description !== '' && (data.description).length > 1"
                      ng-click="showFullDescription = !showFullDescription"
                      ng-class="showFullDescription || (data.description).length <= 300 ? 'summary-short full' : 'summary-short'">{{data.description}}</div>
-                <div ng-if="data.description === '' || (data.description).length === 0"><i>Description is empty</i></div>
+                <div ng-if="data.description === '' || (data.description).length === 0 || ((data.description).length === 1 && data.description[0] === null)"><i>Description is empty</i></div>
             </td>
             <td>
                 {{statusStyle = data.status === "ACTIVE" ? "aui-lozenge-success" : "aui-lozenge-error"; ""}}
