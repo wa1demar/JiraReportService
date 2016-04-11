@@ -52,15 +52,15 @@ public class DueDateServiceImpl implements DueDateService {
             List<Date> dds = issue.getDueDates().stream().map(r -> r.getDueDate()).collect(Collectors.toList());
             Date [] datesArray = new Date[dds.size()];
 
-            List<String> descs = issue.getDueDates().stream().map(r -> r.getDescription()).collect(Collectors.toList());
-            String [] descsArray = new String[descs.size()];
+//            List<String> descs = issue.getDueDates().stream().map(r -> r.getDescription()).collect(Collectors.toList());
+//            String [] descsArray = new String[descs.size()];
 
             DueDateDto dateDto = new DueDateDto();
             dateDto.setId(issue.getId());
             dateDto.setAssignee(issue.getAssignedFullName());
             dateDto.setKey(issue.getKey());
             dateDto.setDueDate(dds.toArray(datesArray));
-            dateDto.setDescription(descs.toArray(descsArray));
+            dateDto.setDescription(issue.getDescription());
             dateDto.setProject(issue.getProjectKey());
             dateDto.setStatus(issue.getStatusName());
             dateDto.setSummary(issue.getSummary());
