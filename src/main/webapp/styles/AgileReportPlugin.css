@@ -638,6 +638,9 @@ table.aui .tr-for-progress-bar {
     border-bottom: none;
 }
 
+.ban-circle-size-100 {
+    font-size: 100px;
+}
 
 /*====================================================================================================================*/
 /*SPRINT TEAM ACTIVITY AND ISSUE*/
