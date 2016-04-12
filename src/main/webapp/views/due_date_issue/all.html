@@ -52,7 +52,7 @@
                 <span class="aui-lozenge aui-lozenge-subtle aui-lozenge-default">{{data.status}}</span>
             </td>
             <td>
-                <div ng-repeat="dueDate in data.dueDate">
+                <div ng-repeat="dueDate in data.dueDate track by $index">
                     <span ng-class="$first && data.dueDate.length === 1 && dueDate < todayDate ?
                                         'due-date-issues-red'
                                     : ($first && data.dueDate.length !== 1 && dueDate >= todayDate) || ($first && data.dueDate.length === 1 && dueDate >= todayDate) ?
