@@ -72,23 +72,36 @@ jiraPluginApp.controller('DictionaryCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //Dlg process report
             $scope.dlgData = {};
-            $scope.processElement = function (data) {
+            $scope.processElement = function (item) {
                 var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'views/dictionary/dlg/dlg_process_element.html',
                     controller: 'DlgProcessDictionaryCtrl',
                     resolve: {
                         dlgData: function () {
-                            return $scope.dlgData;
+                            return item;
                         }
                     }
                 });
                 modalInstance.result.then(function (data) {
-                    ReportsFactory.create({}, data, function(data){
-                        $location.url("/report/" + data.id + "/configure");
-                    }, function (error) {
-                        Notification.error("Server error");
-                    });
+
+                    console.log(data.id);
+
+                    if (data.id === undefined) {
+                        DictionaryFactory.create({name: $routeParams.name}, data, function(data){
+                            getResultsPage($scope.pagination.current);
+                            Notification.success('Add new element success');
+                        }, function (error) {
+                            Notification.error("Server error");
+                        });
+                    } else {
+                        DictionaryFactory.update({name: $routeParams.name, page: data.id}, data, function(data){
+                            getResultsPage($scope.pagination.current);
+                            Notification.success('Edit element success');
+                        }, function (error) {
+                            Notification.error("Server error");
+                        });
+                    }
                 }, function () {});
             };
 
@@ -108,7 +121,6 @@ jiraPluginApp.controller('DictionaryCtrl',
                 modalInstance.result.then(function (data) {
                     DictionaryFactory.delete({name: $routeParams.name, page: data.id}, function() {
                         getResultsPage($scope.pagination.current);
-                        //self.getReportsData();
                         Notification.success("Delete report success");
                     }, function () {
                         Notification.error("Server error");
@@ -121,18 +133,9 @@ jiraPluginApp.controller('DictionaryCtrl',
 jiraPluginApp.controller('DlgProcessDictionaryCtrl',
     ['$scope', '$uibModalInstance', 'dlgData', 'UsersFactory', 'BoardsFactory',
         function ($scope, $uibModalInstance, dlgData, UsersFactory, BoardsFactory) {
-            $scope.dlgData = {};
+            $scope.model = dlgData;
 
-            var users = UsersFactory.query(function(){
-                $scope.dlgData['users'] = users.users;
-            });
-            var boards = BoardsFactory.query(function(){
-                $scope.dlgData['boards'] = boards.boards;
-            });
-
-            $scope.model = {
-                typeId: 1
-            };
+            console.log($scope.model);
 
             $scope.ok = function () {
                 if($scope.dictionaryForm.$valid) {
