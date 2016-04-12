@@ -31,6 +31,7 @@ public class JiraIssueDto {
     private long boardId;
     private long sprintId;
     private String description;
+    private String summary;
 
     public Long getId() {
         return id;
@@ -230,5 +231,13 @@ public class JiraIssueDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 }

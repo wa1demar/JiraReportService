@@ -20,6 +20,7 @@ public class FildsDto {
     private Date duedate;
     private float customfield_10102;
     private String description;
+    private String summary;
 
     public ProjectDto getProject() {
         return project;
@@ -115,5 +116,13 @@ public class FildsDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 }

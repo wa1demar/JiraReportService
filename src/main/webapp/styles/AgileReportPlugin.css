@@ -775,6 +775,19 @@ table.aui .tr-for-progress-bar {
 .due-date-issues-black {
     color: #000000;
 }
+.summary-short {
+    display: -webkit-box;
+    height: 60px;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+.summary-short.full{
+    height: 100%;
+    -webkit-line-clamp: inherit;
+}
 
 /*====================================================================================================================*/
 /*MENU*/

@@ -515,6 +515,7 @@ public class ReportServiceImpl implements ReportService {
                 sprint.setCompleteDate(sprintDto.getEndDate());
                 sprint.setSprintTeam(sprintDto.getSprintTeams());
                 sprint.setShowOutOfRange(sprintDto.isShowOutOfRange());
+                sprint.setCompleteDate(sprintDto.getCompleteDate());
 
                 if (sprintDto != null) {
                     List<SprintDeveloperDto> sprintDevelopers = new ArrayList<>();
@@ -933,8 +934,16 @@ public class ReportServiceImpl implements ReportService {
         if (sprintDto.getEndDate() == null) {
             sprintDto.setEndDate(new Date());
         }
+
         Calendar endDate = Calendar.getInstance();
         endDate.setTime(sprintDto.getEndDate());
+
+        Calendar completeDate = Calendar.getInstance();
+        if (sprintDto.getCompleteDate() == null){
+            completeDate.setTime(sprintDto.getEndDate());
+        } else {
+            completeDate.setTime(sprintDto.getCompleteDate());
+        }
 
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         String nonWorkingDaysString = configService.retrieveConfig().getNonWorkingDays();
@@ -953,7 +962,7 @@ public class ReportServiceImpl implements ReportService {
         List<Integer> ii = new ArrayList<>();
         ii.add((int) targetPoints);
 
-        while (!startDate.after(endDate)) {
+        while (completeDate.after(startDate) || help.isSameDate(startDate.getTime(), completeDate.getTime())) {
             Date currentDate = startDate.getTime();
 
             if (help.isWeekend(currentDate) || nonWorkingDays.contains(currentDate)) {
@@ -983,7 +992,7 @@ public class ReportServiceImpl implements ReportService {
         if (sprintDto.isShowOutOfRange()) {
             Calendar addDate = endDate;
             if (issues.size() > 0) {
-                endDate = gitFinishDAte(issues, endDate);
+                endDate = getFinishDate(issues, endDate);
 
                 while (!addDate.after(endDate)) {
                     Date currentDate = addDate.getTime();
@@ -1010,6 +1019,14 @@ public class ReportServiceImpl implements ReportService {
 
                     addDate.add(Calendar.DATE, 1);
                 }
+            }
+
+            if (issues.size() > 0) {
+                float tar = ii.get(ii.size() - 1);
+                for (JiraIssueDto issueDto : issues) {
+                    tar = tar - issueDto.getPoints();
+                }
+                ii.set(ii.size() - 1, (int) tar);
             }
 
             chart = configureChart(chart, date, ii);
@@ -1041,7 +1058,7 @@ public class ReportServiceImpl implements ReportService {
         return chart;
     }
 
-    private Chart configureChart(String date, List<Integer> ii, float targetPoints) {
+    private Chart configureChart(String date, String endDate, List<Integer> ii, float targetPoints) {
         Chart chart = new Chart();
 
         String[] dateArray = date.split(",");
@@ -1065,13 +1082,13 @@ public class ReportServiceImpl implements ReportService {
         return chart;
     }
 
-    private Calendar gitFinishDAte(Set<JiraIssueDto> issues, Calendar endDate) {
+    private Calendar getFinishDate(Set<JiraIssueDto> issues, Calendar endDate) {
         Calendar lastDate = endDate;
 
         for (JiraIssueDto issue : issues) {
             Calendar date = Calendar.getInstance();
             date.setTime(issue.getUpdated());
-            if (date.after(endDate) && date.after(lastDate)) {
+            if (date.compareTo(lastDate) > 0) {
                 lastDate = date;
             }
         }

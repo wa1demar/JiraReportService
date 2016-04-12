@@ -20,6 +20,7 @@ public class FullSprintDto {
     private int type;
     private Date endDate;
     private Date startDate;
+    private Date completeDate;
     private Long reportId;
     List<SprintDeveloperDto> developers;
     List<SprintDeveloperDto> sprintTeams;
@@ -119,6 +120,14 @@ public class FullSprintDto {
 
     public void setJiraSprintId(long jiraSprintId) {
         this.jiraSprintId = jiraSprintId;
+    }
+
+    public Date getCompleteDate() {
+        return completeDate;
+    }
+
+    public void setCompleteDate(Date completeDate) {
+        this.completeDate = completeDate;
     }
 
     @Override

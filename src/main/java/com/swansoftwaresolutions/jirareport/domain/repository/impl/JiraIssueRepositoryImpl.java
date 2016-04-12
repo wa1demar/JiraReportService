@@ -1,6 +1,5 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
-import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraIssue;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraIssueRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -141,5 +140,13 @@ public class JiraIssueRepositoryImpl implements JiraIssueRepository {
         } finally {
             session.close();
         }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<JiraIssue> findAllDueDate(List<String> agileDoneNames) {
+        Query query = sessionFactory.getCurrentSession().createQuery("from JiraIssue issue where issue.dueDate is not null and (issue.statusName not in (:agileDoneNames))");
+        query.setParameterList("agileDoneNames", agileDoneNames);
+        return query.list();
     }
 }

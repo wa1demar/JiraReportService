@@ -1,9 +1,7 @@
 package com.swansoftwaresolutions.jirareport.rest.service.impl;
 
-import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSprintDto;
 import com.swansoftwaresolutions.jirareport.core.helper.HelperMethods;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraIssueMapper;
-import com.swansoftwaresolutions.jirareport.core.service.JiraSprintsService;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraSprint;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraIssueRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraSprintRepository;

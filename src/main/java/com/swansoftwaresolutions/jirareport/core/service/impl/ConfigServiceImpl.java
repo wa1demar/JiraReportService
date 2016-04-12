@@ -32,7 +32,8 @@ public class ConfigServiceImpl implements ConfigService {
                     configDto.getAgileDoneName(),
                     configDto.getJiraDevGroupName(),
                     configDto.getBugName(),
-                    configDto.getNonWorkingDays()
+                    configDto.getNonWorkingDays(),
+                    configDto.getDueDateIssueStatus()
                     );
             return configDto;
         }
@@ -46,7 +47,8 @@ public class ConfigServiceImpl implements ConfigService {
                 configDto.getAgileDoneName(),
                 configDto.getJiraDevGroupName(),
                 configDto.getBugName(),
-                configDto.getNonWorkingDays()
+                configDto.getNonWorkingDays(),
+                configDto.getDueDateIssueStatus()
         );
         return configMapper.toDto(configRepository.update(configMapper.fromDto(configDto)));
     }
