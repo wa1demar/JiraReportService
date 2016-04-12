@@ -1,10 +1,8 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.*;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -28,9 +26,7 @@ import java.util.*;
         @NamedQuery(name = "Report.Report.findAllClosedReportsByDateClose", query = "FROM Report c WHERE (c.isClosed = 1 AND c.closedDate >= :dataFrom) ORDER BY c.closedDate DESC"),
         @NamedQuery(name = "Report.Report.findAllClosedReportsByDateCloseFrom", query = "FROM Report c WHERE (c.isClosed = 1 AND c.closedDate >= :dataFrom) ORDER BY c.closedDate DESC"),
         @NamedQuery(name = "Report.Report.findAllClosedReportsByDateCloseTo", query = "FROM Report c WHERE (c.isClosed = 1 AND c.closedDate <= :dataTo) ORDER BY c.closedDate DESC"),
-//        @NamedQuery(name = "Report.findLastUpdatedReport", query = "FROM Report c WHERE c.isClosed = false ORDER BY c.updatedDate DESC LIMIT 5"),
         @NamedQuery(name = "Report.findReportBytId", query = "FROM Report c WHERE c.id = :id"),
-//        @NamedQuery(name = "Report.findLastAddedReport", query = "FROM Report c ORDER BY c.createdDate DESC LIMIT 1"),
         @NamedQuery(name = "Report.deleteAll", query = "DELETE FROM Report c"),
 })
 public class Report  implements Serializable{
