@@ -1058,7 +1058,7 @@ public class ReportServiceImpl implements ReportService {
         return chart;
     }
 
-    private Chart configureChart(String date, String endDate, List<Integer> ii, float targetPoints) {
+    private Chart configureChart(String date, List<Integer> ii, float targetPoints) {
         Chart chart = new Chart();
 
         String[] dateArray = date.split(",");
