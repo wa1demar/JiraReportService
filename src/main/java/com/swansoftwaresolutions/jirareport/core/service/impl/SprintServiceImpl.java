@@ -222,6 +222,7 @@ public class SprintServiceImpl implements SprintService {
             fullSpr.setShowOutOfRange(sprint.isShowOutOfRange());
 
             if (sprint.getJiraSprint() != null) {
+                fullSpr.setCompleteDate(sprint.getJiraSprint().getCompleteDate());
                 fullSpr.setJiraSprintId(sprint.getJiraSprint().getId());
                 fullSpr.setStartDate(sprint.getJiraSprint().getStartDate());
                 fullSpr.setEndDate(sprint.getJiraSprint().getEndDate());
@@ -230,6 +231,7 @@ public class SprintServiceImpl implements SprintService {
             } else {
                 fullSpr.setStartDate(sprint.getStartDate());
                 fullSpr.setEndDate(sprint.getEndDate());
+                fullSpr.setCompleteDate(sprint.getEndDate());
                 fullSpr.setName(sprint.getName());
                 fullSpr.setState(sprint.getState());
 

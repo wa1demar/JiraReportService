@@ -11,10 +11,7 @@ import com.swansoftwaresolutions.jirareport.domain.repository.DueDateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -51,6 +48,13 @@ public class DueDateServiceImpl implements DueDateService {
         for (JiraIssue issue : datas) {
             List<Date> dds = issue.getDueDates().stream().map(r -> r.getDueDate()).collect(Collectors.toList());
             Date [] datesArray = new Date[dds.size()];
+
+            Collections.sort(dds, new Comparator<Date>() {
+                @Override
+                public int compare(Date o1, Date o2) {
+                    return o2.compareTo(o1);
+                }
+            });
 
 //            List<String> descs = issue.getDueDates().stream().map(r -> r.getDescription()).collect(Collectors.toList());
 //            String [] descsArray = new String[descs.size()];
