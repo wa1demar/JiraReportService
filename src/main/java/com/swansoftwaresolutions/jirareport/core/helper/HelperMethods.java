@@ -4,6 +4,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.sprint_issue.IssuesByDayDto
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssueDto;
 import com.swansoftwaresolutions.jirareport.core.dto.dashboard.Chart;
 import com.swansoftwaresolutions.jirareport.core.dto.dashboard.SprintProjectReportDto;
+import com.swansoftwaresolutions.jirareport.domain.entity.Sprint;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.IssueDto;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.JiraIssueDto;
 
@@ -87,10 +88,15 @@ public class HelperMethods {
         return 0;
     }
 
-    public Chart generateReportChart(List<SprintProjectReportDto> sprints, float targetPoints) {
+    public Chart generateReportChart(List<SprintProjectReportDto> sprints) {
         Chart chart = new Chart();
 
         String date = "0,";
+
+        float targetPoints = 0;
+        for (SprintProjectReportDto sprintProjectReportDto : sprints){
+            targetPoints+=sprintProjectReportDto.getTargetPoints();
+        }
 
         int[] actual = new int[sprints.size()+1];
         double[] target = new double[sprints.size()+1];

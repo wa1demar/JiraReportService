@@ -722,7 +722,7 @@ public class ReportServiceImpl implements ReportService {
             prRep.setActualUatDefectPoints(0);
         }
 
-        prRep.setChart(helpM.generateReportChart(sprints, prRep.getTargetPoints()));
+        prRep.setChart(helpM.generateReportChart(sprints));
 
         final boolean finalIsShowUat = isShowUat;
         final long finalClosedCount = closedCount;
@@ -822,7 +822,7 @@ public class ReportServiceImpl implements ReportService {
                 prRep.setActualUatDefectPoints(0);
             }
 
-            prRep.setChart(helpM.generateReportChart(sprints, prRep.getTargetPoints()));
+            prRep.setChart(helpM.generateReportChart(sprints));
 
             final boolean finalIsShowUat = isShowUat;
             final long finalClosedCount = closedCount;
