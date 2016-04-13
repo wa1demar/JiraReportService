@@ -15,15 +15,19 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 
             $scope.models = {
                 selected: null,
-                lists: {"A": [], "B": [], "C": [], "D": []}
+                lists: {"A": [], "B": [], "C": [], "D": [], "E": [], "F": [], "X": [], "Y": []}
             };
 
             // Generate initial model
-            for (var i = 1; i <= 3; ++i) {
+            for (var i = 1; i <= 5; ++i) {
                 $scope.models.lists.A.push({label: "User A" + i, project: projects[getRandomInt(0, projects.length)]});
                 $scope.models.lists.B.push({label: "User B" + i, project: projects[getRandomInt(0, projects.length)]});
                 $scope.models.lists.C.push({label: "User C" + i, project: projects[getRandomInt(0, projects.length)]});
                 $scope.models.lists.D.push({label: "User D" + i, project: projects[getRandomInt(0, projects.length)]});
+                $scope.models.lists.E.push({label: "User E" + i, project: projects[getRandomInt(0, projects.length)]});
+                $scope.models.lists.F.push({label: "User F" + i, project: projects[getRandomInt(0, projects.length)]});
+                $scope.models.lists.X.push({label: "User X" + i, project: projects[getRandomInt(0, projects.length)]});
+                $scope.models.lists.Y.push({label: "User Y" + i, project: projects[getRandomInt(0, projects.length)]});
             }
 
             // Model to JSON for demo purpose
