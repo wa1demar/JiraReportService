@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -81,13 +82,14 @@ public class SprintRepositoryImpl implements SprintRepository {
     public void addAll(List<Sprint> sprints) {
         Session session = sessionFactory.openSession();
 
-        for (Sprint sprint : sprints) {
-            session.save(sprint);
+        try {
+            for (Sprint sprint : sprints) {
+                session.save(sprint);
+            }
+            session.flush();
+        } finally {
+            session.close();
         }
-
-        session.flush();
-        session.close();
-
 
     }
 
@@ -101,7 +103,12 @@ public class SprintRepositoryImpl implements SprintRepository {
         List<Sprint> existed = query.list();
 
         Session session = sessionFactory.openSession();
-        Map<Long, Sprint> sprintsMap = existed.stream().collect(Collectors.toMap(s -> s.getId(), js -> js, (js, s) -> s, HashMap::new));
+//        Map<Long, Sprint> sprintsMap = existed.stream().collect(Collectors.toMap(id -> Sprint::getJiraSprint.getId, sprint -> sprint));
+
+        Map<Long, Sprint> sprintsMap = new HashMap<>();
+        for (Sprint s : existed) {
+            sprintsMap.put(s.getJiraSprint().getSprintId(), s);
+        }
 
         try {
 
