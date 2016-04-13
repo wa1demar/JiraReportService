@@ -520,6 +520,8 @@ public class ReportServiceImpl implements ReportService {
                 if (sprintDto != null) {
                     List<SprintDeveloperDto> sprintDevelopers = new ArrayList<>();
                     for (SprintDeveloperDto dev : sprintDto.getDevelopers()) {
+                        if (jiraIssueList == null) continue;
+
                         for (JiraIssueDto issue : jiraIssueList) {
                             if (dev.getDeveloperLogin().equals(issue.getAssignedKey())) {
 
@@ -529,7 +531,7 @@ public class ReportServiceImpl implements ReportService {
                                         dev.setActualPoints(dev.getActualPoints() + (int) issue.getPoints());
                                         dev.setActualHours(help.isNull(dev.getActualHours()) + issue.getTimeSpent());
                                     } else if (issue.getIssueTypeName().equalsIgnoreCase("Bug")) {
-                                        if (isQAT(dev, report)) {
+                                        if (isQAT(dev, report, issue)) {
                                             dev.setDefectActual(dev.getDefectActual() + 1);
                                             dev.setDefectActualHours(help.isNull(dev.getDefectActualHours()) + issue.getTimeSpent());
                                             dev.setActualHours(help.isNull(dev.getActualHours()) + issue.getTimeSpent());
@@ -644,9 +646,9 @@ public class ReportServiceImpl implements ReportService {
 
     }
 
-    private boolean isQAT(SprintDeveloperDto dev, Report report) {
+    private boolean isQAT(SprintDeveloperDto dev, Report report, JiraIssueDto issu) {
         for (JiraUser jiraUser : report.getAdmins()) {
-            if (jiraUser.getLogin().equals(dev.getDeveloperLogin()))
+            if (jiraUser.getLogin().equals(issu.getCreatorName()));
                 return true;
         }
         return false;
@@ -722,7 +724,7 @@ public class ReportServiceImpl implements ReportService {
             prRep.setActualUatDefectPoints(0);
         }
 
-        prRep.setChart(helpM.generateReportChart(sprints, prRep.getTargetPoints()));
+        prRep.setChart(helpM.generateReportChart(sprints));
 
         final boolean finalIsShowUat = isShowUat;
         final long finalClosedCount = closedCount;
@@ -822,7 +824,7 @@ public class ReportServiceImpl implements ReportService {
                 prRep.setActualUatDefectPoints(0);
             }
 
-            prRep.setChart(helpM.generateReportChart(sprints, prRep.getTargetPoints()));
+            prRep.setChart(helpM.generateReportChart(sprints));
 
             final boolean finalIsShowUat = isShowUat;
             final long finalClosedCount = closedCount;
@@ -897,7 +899,7 @@ public class ReportServiceImpl implements ReportService {
             }
 
             for (SprintIssueDto sprintIssueDto : sprintIssueListDto.getSprintIssueDtos()) {
-                Date date2 = null;
+                Date date2;
                 try {
                     date2 = sdf.parse(sprintIssueDto.getIssueDate());
                     if (helperMethods.isSameDate(currentDate, date2)) {
@@ -924,7 +926,7 @@ public class ReportServiceImpl implements ReportService {
 
         HelperMethods help = new HelperMethods();
 
-        Chart chart = new Chart();
+        Chart chart;
 
         String date = "0";
 
@@ -962,6 +964,8 @@ public class ReportServiceImpl implements ReportService {
         List<Integer> ii = new ArrayList<>();
         ii.add((int) targetPoints);
 
+        String endDateStr = formatter.format(sprintDto.getEndDate());
+
         while (completeDate.after(startDate) || help.isSameDate(startDate.getTime(), completeDate.getTime())) {
             Date currentDate = startDate.getTime();
 
@@ -987,7 +991,7 @@ public class ReportServiceImpl implements ReportService {
             startDate.add(Calendar.DATE, 1);
         }
 
-        chart = configureChart(date, ii, targetPoints);
+        chart = configureChart(date, endDateStr, ii, targetPoints);
 
         if (sprintDto.isShowOutOfRange()) {
             Calendar addDate = endDate;
@@ -1058,7 +1062,7 @@ public class ReportServiceImpl implements ReportService {
         return chart;
     }
 
-    private Chart configureChart(String date, String endDate, List<Integer> ii, float targetPoints) {
+    private Chart configureChart(String date, List<Integer> ii, float targetPoints) {
         Chart chart = new Chart();
 
         String[] dateArray = date.split(",");
@@ -1075,6 +1079,41 @@ public class ReportServiceImpl implements ReportService {
 
         for (int i = 1; i < dateArray.length; i++) {
             targetArray[i] = (targetPoints - targetPoints / (dateArray.length - 1) * i);
+        }
+
+        chart.setTarget(targetArray);
+
+        return chart;
+    }
+
+    private Chart configureChart(String date, String closeDate, List<Integer> ii, float targetPoints) {
+        Chart chart = new Chart();
+
+        String[] dateArray = date.split(",");
+        chart.setLabel(dateArray);
+
+        int[] array = new int[ii.size()];
+        for (int i = 0; i < ii.size(); i++) array[i] = ii.get(i);
+
+        chart.setActual(array);
+
+        double[] targetArray = new double[dateArray.length];
+
+        targetArray[0] = targetPoints;
+
+        int index = 0;
+        for (int i = 0; i<dateArray.length; i++){
+            if (dateArray[i].equals(closeDate)){
+                index = i;
+            }
+        }
+
+        for (int i = 1; i < dateArray.length; i++) {
+            if (i<index) {
+                targetArray[i] = (targetPoints - targetPoints / (index) * i);
+            } else {
+                targetArray[i]=0;
+            }
         }
 
         chart.setTarget(targetArray);

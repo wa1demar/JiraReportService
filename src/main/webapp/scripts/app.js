@@ -93,6 +93,12 @@ jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
             access: {
                 requiredLogin: true
             }
+        }).when('/dictionary/:name', {
+            templateUrl: 'views/dictionary/main.html',
+            controller: 'DictionaryCtrl',
+            access: {
+                requiredLogin: true
+            }
         }).otherwise({
             redirectTo: '/login'
         });

@@ -4,7 +4,6 @@ import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraSprint;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraSprintRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
-import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSprintDto;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -37,8 +36,9 @@ public class JiraSprintRepositoryImpl implements JiraSprintRepository {
 
     @Override
     public List<JiraSprint> findByBoardId(Long boardId) {
-        return (List<JiraSprint>) sessionFactory.getCurrentSession()
-                .createCriteria(JiraSprint.class).add(Restrictions.eq("boardId", boardId)).list();
+        Query query = sessionFactory.getCurrentSession().createQuery("from JiraSprint s where s.boardId = :boardId");
+        query.setParameter("boardId", boardId);
+        return query.list();
     }
 
     @Override
@@ -109,14 +109,15 @@ public class JiraSprintRepositoryImpl implements JiraSprintRepository {
     }
 
     @Override
-    public void add(List<JiraSprint> sprints, Long boardId) {
+    public void add(List<JiraSprint> sprints, JiraBoard board) {
         if (sprints == null || sprints.size() == 0) {
             return;
         }
 
         List<Long> ids = sprints.stream().map(r -> r.getSprintId()).collect(Collectors.toList());
-        Query query = sessionFactory.getCurrentSession().createQuery("FROM JiraSprint js WHERE js.sprintId IN :ids");
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM JiraSprint js WHERE js.sprintId IN :ids and js.boardId = :boardId");
         query.setParameterList("ids", ids);
+        query.setParameter("boardId", board.getId());
         List<JiraSprint> existed = query.list();
 
         Session session = sessionFactory.openSession();
@@ -127,11 +128,11 @@ public class JiraSprintRepositoryImpl implements JiraSprintRepository {
             for (JiraSprint sprint : sprints) {
                 JiraSprint existedSprint = sprintsMap.get(sprint.getSprintId());
                 if (existedSprint != null) {
-                    sprint.setBoardId(boardId);
+                    sprint.setBoardId(board.getId());
                     sprint.setId(existedSprint.getId());
-                    session.merge(sprint);
+                    session.update(sprint);
                 } else {
-                    sprint.setBoardId(boardId);
+                    sprint.setBoardId(board.getId());
                     session.save(sprint);
                 }
             }
@@ -141,5 +142,12 @@ public class JiraSprintRepositoryImpl implements JiraSprintRepository {
         } finally {
             session.close();
         }
+    }
+
+    @Override
+    public List<JiraSprint> findByJiraBoardId(Long id) {
+        Query query = sessionFactory.getCurrentSession().createQuery("from JiraSprint s where s.boardId = :id");
+        query.setParameter("id", id);
+        return query.list();
     }
 }

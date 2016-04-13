@@ -123,4 +123,10 @@ public class JiraBoardRepositoryImpl implements JiraBoardRepository {
             session.close();
         }
     }
+
+    @Override
+    public List<JiraBoard> findAllWithReports() {
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM JiraBoard jb WHERE jb. IN :ids ORDER BY jb.name ASC");
+        return null;
+    }
 }

@@ -87,10 +87,15 @@ public class HelperMethods {
         return 0;
     }
 
-    public Chart generateReportChart(List<SprintProjectReportDto> sprints, float targetPoints) {
+    public Chart generateReportChart(List<SprintProjectReportDto> sprints) {
         Chart chart = new Chart();
 
         String date = "0,";
+
+        float targetPoints = 0;
+        for (SprintProjectReportDto sprintProjectReportDto : sprints){
+            targetPoints+=sprintProjectReportDto.getTargetPoints();
+        }
 
         int[] actual = new int[sprints.size()+1];
         double[] target = new double[sprints.size()+1];
@@ -104,7 +109,7 @@ public class HelperMethods {
         int i = 1;
         int j = 1;
         for (SprintProjectReportDto sprint : sprints) {
-            if (!sprint.isNotCountTarget() && sprint.getState()!=null && (sprint.getState().equals("Closed") || sprint.getState().equals("closed"))) {
+            if (!sprint.isNotCountTarget()){
                 actual[j] = actual[j - 1] - (int) sprint.getActualPoints();
                 list.add(actual[j - 1] - (int) sprint.getActualPoints());
                 j++;

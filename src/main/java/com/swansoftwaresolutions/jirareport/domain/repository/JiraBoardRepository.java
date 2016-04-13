@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.domain.repository;
 
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
+import com.swansoftwaresolutions.jirareport.domain.entity.Report;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 
 import java.util.List;
@@ -25,4 +26,6 @@ public interface JiraBoardRepository {
     List<JiraBoard> findByIds(List<Long> ids);
 
     void add(List<JiraBoard> jiraBoards, String key);
+
+    List<JiraBoard> findAllWithReports();
 }

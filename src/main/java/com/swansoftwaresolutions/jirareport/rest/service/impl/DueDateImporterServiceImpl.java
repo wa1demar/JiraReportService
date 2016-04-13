@@ -36,9 +36,7 @@ public class DueDateImporterServiceImpl implements DueDateImporterService {
 
         String agileDoneName = configService.retrieveConfig().getAgileDoneName();
         List<String> agileDoneNames = new ArrayList<>();
-        for (String dateString : Arrays.asList(agileDoneName.split(","))) {
-            agileDoneNames.add(dateString);
-        }
+        agileDoneNames.addAll(Arrays.asList(agileDoneName.split(",")));
 
         List<JiraIssue> jiraIssueList = jiraIssueRepository.findAllDueDate(agileDoneNames);
 
@@ -57,6 +55,8 @@ public class DueDateImporterServiceImpl implements DueDateImporterService {
 
                 dueDateRepository.add(dueDate);
             } else {
+                Collections.sort(existed, (o1, o2) -> o2.getUpdatedAt().compareTo(o1.getUpdatedAt()));
+
                 DueDate lastExisted = existed.get(0);
                 if (!hp.isSameDate(lastExisted.getUpdatedAt(), issue.getUpdated()) && !hp.isSameDate(lastExisted.getDueDate(), issue.getDueDate())){
                     DueDate dueDate = new DueDate();

@@ -47,7 +47,7 @@ jiraPluginApp.controller('DueDateIssueCtrl',
                     Notification.error("Server error");
                 });
             }
-            
+
             //this.getSystemUsers = function () {
             //    $scope.dataDueDate = [];
             //    DueDateIssueFactory.query({}, function (data) {

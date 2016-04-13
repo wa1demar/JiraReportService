@@ -163,4 +163,10 @@ public class ReportRepositoryImpl implements ReportRepository{
         return (long) query.uniqueResult();
     }
 
+    @Override
+    public List<Report> findAllAutomatic() {
+        Query query = sessionFactory.getCurrentSession().createQuery("SELECT r FROM Report r WHERE r.boardId != null ");
+        return query.list();
+    }
+
 }
