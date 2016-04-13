@@ -40,4 +40,6 @@ public interface ReportRepository {
     boolean showUat(Long reportId);
 
     long sprintCount(Long reportId);
+
+    List<Report> findAllAutomatic();
 }

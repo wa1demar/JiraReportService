@@ -1,5 +1,8 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraSprint;
+import com.swansoftwaresolutions.jirareport.domain.entity.Report;
 import com.swansoftwaresolutions.jirareport.domain.entity.Sprint;
 import com.swansoftwaresolutions.jirareport.domain.repository.SprintRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -10,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Vladimir Martynyuk
@@ -82,6 +88,38 @@ public class SprintRepositoryImpl implements SprintRepository {
         session.flush();
         session.close();
 
+
+    }
+
+    @Override
+    public void addOrUpdate(List<JiraSprint> sprints, Report report) {
+        if (sprints == null || sprints.size() == 0) {
+            return;
+        }
+
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM Sprint s");
+        List<Sprint> existed = query.list();
+
+        Session session = sessionFactory.openSession();
+        Map<Long, Sprint> sprintsMap = existed.stream().collect(Collectors.toMap(s -> s.getId(), js -> js, (js, s) -> s, HashMap::new));
+
+        try {
+
+            for (JiraSprint sprint : sprints) {
+                Sprint existedSprint = sprintsMap.get(sprint.getSprintId());
+                if (existedSprint == null) {
+                    Sprint newSprint = new Sprint();
+                    newSprint.setReport(report);
+                    newSprint.setJiraSprint(sprint);
+                    session.save(newSprint);
+                }
+            }
+
+            session.flush();
+
+        } finally {
+            session.close();
+        }
 
     }
 
