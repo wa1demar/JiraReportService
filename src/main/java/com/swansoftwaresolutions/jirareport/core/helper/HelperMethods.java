@@ -4,7 +4,6 @@ import com.swansoftwaresolutions.jirareport.core.dto.sprint_issue.IssuesByDayDto
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssueDto;
 import com.swansoftwaresolutions.jirareport.core.dto.dashboard.Chart;
 import com.swansoftwaresolutions.jirareport.core.dto.dashboard.SprintProjectReportDto;
-import com.swansoftwaresolutions.jirareport.domain.entity.Sprint;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.IssueDto;
 import com.swansoftwaresolutions.jirareport.sheduller.dto.JiraIssueDto;
 
@@ -111,7 +110,6 @@ public class HelperMethods {
         int j = 1;
         for (SprintProjectReportDto sprint : sprints) {
             if (!sprint.isNotCountTarget()){
-//                    && sprint.getState()!=null && (sprint.getState().equals("Closed") || sprint.getState().equals("closed"))) {
                 actual[j] = actual[j - 1] - (int) sprint.getActualPoints();
                 list.add(actual[j - 1] - (int) sprint.getActualPoints());
                 j++;

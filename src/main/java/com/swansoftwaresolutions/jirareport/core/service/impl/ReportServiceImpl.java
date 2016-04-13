@@ -962,6 +962,8 @@ public class ReportServiceImpl implements ReportService {
         List<Integer> ii = new ArrayList<>();
         ii.add((int) targetPoints);
 
+        String endDateStr = formatter.format(sprintDto.getEndDate());
+
         while (completeDate.after(startDate) || help.isSameDate(startDate.getTime(), completeDate.getTime())) {
             Date currentDate = startDate.getTime();
 
@@ -987,7 +989,7 @@ public class ReportServiceImpl implements ReportService {
             startDate.add(Calendar.DATE, 1);
         }
 
-        chart = configureChart(date, ii, targetPoints);
+        chart = configureChart(date, endDateStr, ii, targetPoints);
 
         if (sprintDto.isShowOutOfRange()) {
             Calendar addDate = endDate;
@@ -1075,6 +1077,41 @@ public class ReportServiceImpl implements ReportService {
 
         for (int i = 1; i < dateArray.length; i++) {
             targetArray[i] = (targetPoints - targetPoints / (dateArray.length - 1) * i);
+        }
+
+        chart.setTarget(targetArray);
+
+        return chart;
+    }
+
+    private Chart configureChart(String date, String closeDate, List<Integer> ii, float targetPoints) {
+        Chart chart = new Chart();
+
+        String[] dateArray = date.split(",");
+        chart.setLabel(dateArray);
+
+        int[] array = new int[ii.size()];
+        for (int i = 0; i < ii.size(); i++) array[i] = ii.get(i);
+
+        chart.setActual(array);
+
+        double[] targetArray = new double[dateArray.length];
+
+        targetArray[0] = targetPoints;
+
+        int index = 0;
+        for (int i = 0; i<dateArray.length; i++){
+            if (dateArray[i].equals(closeDate)){
+                index = i;
+            }
+        }
+
+        for (int i = 1; i < dateArray.length; i++) {
+            if (i<index) {
+                targetArray[i] = (targetPoints - targetPoints / (index) * i);
+            } else {
+                targetArray[i]=0;
+            }
         }
 
         chart.setTarget(targetArray);
