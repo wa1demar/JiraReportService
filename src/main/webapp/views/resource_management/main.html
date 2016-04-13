@@ -1,89 +1,239 @@
+<style>
+    .res {
+        height: calc(100vh - 130px);
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid red;
+    }
+    .res-left {
+        height: 100%;
+        width: 80%;
+        float: left;
+        box-sizing: border-box;
+        border: 1px solid green;
+    }
+    .res-left-head {
+        border-bottom: 1px solid black;
+        margin: 5px;;
+    }
+    .res-left-content {
+        width: 100%;
+        height: calc(100% - 30px);
+        overflow-x: auto;
+        overflow-y: auto;
+        border: 1px solid yellow;
+    }
+
+    .res-left-content-top {
+
+    }
+
+    .res-left-content-center {
+        width: 100%;
+        height: calc(100% - 60px);
+    }
+
+    .res-left-content ul.main {
+        height: 100%;
+        min-width: 100%;
+        white-space: nowrap;
+        padding: 0;
+        margin: 10px 0;
+    }
+
+    .res-left-content li.main.grey {
+        background: #EEEEEE;
+    }
+
+    .res-left-content li.main {
+        /*height: 100%;*/
+        display: inline-block;
+        vertical-align: top;
+        width: 200px;
+        margin: 0 10px;
+    }
+
+    .main h4 {
+        text-align: center;
+        margin-bottom: 0;
+    }
+
+
+    .res-left-content ul.item {
+        height: 100%;
+        min-width: 100%;
+        white-space: nowrap;
+        padding: 5px;
+    }
+
+    .res-left-content ul.item li {
+        background: #FFFFFF;
+        border: 1px solid #CCCCCC;
+        list-style-type: none;
+        margin: 0 0 10px 0;
+        padding: 2px;
+        cursor: pointer;
+        min-height: 45px;
+    }
+
+    .res-right {
+        width: 20%;
+        height: 100%;
+        float: right;
+        background: #EEEEEE;
+        box-sizing: border-box;
+        border: 1px solid blue;
+    }
+
+    .row.margin-0 {
+        margin: 0;
+    }
+</style>
+
 <header id="ghx-header" class="aui-page-header">
-    <title>Resource Management Board</title>
+    <title>Resource Board</title>
     <div class="aui-page-header-inner">
         <div class="aui-page-header-main">
-            <h2>Resource Management Board</h2>
+            <h2>Resource Board</h2>
         </div>
         <div class="aui-page-header-actions">
             <!--<button class="btn btn-primary" type="submit" ng-click="inviteUser()" >Invite user</button>-->
         </div>
     </div>
 </header>
-<div id="ghx-content-main" class="ghx-content-main">
-    <div class="aui-page-panel" id="manage-boards-page">
-        <div class="aui-page-panel-inner">
-            <!-- .aui-page-panel-nav -->
-            <section class="aui-page-panel-content">
-                <div class="ghx-boards-list">
-                    <!--<form class="aui" style="margin: 20px 0;">-->
-                        <!--<input ng-model="query" id="search-by-name" type="text" placeholder="Find a issue" class="text" style="width: 250px;"/>-->
-                    <!--</form>-->
-                    <div id="report-box">
+<div class="aui-page-panel" id="manage-boards-page">
+    <div class="res">
+        <div class="res-left">
+            <div class="res-left-head">add column</div>
+            <div class="res-left-content">
 
-
-                        <h1>Resource Management Board: test 1</h1>
-
-                        <div class="simpleDemo row">
-                            <div class="col-md-8">
-                                <div class="alert alert-success">
-                                    <strong>Ujgorod</strong>
-                                </div>
-                                <div class="row">
-                                    <div ng-repeat="(listName, list) in models.lists" class="col-md-3">
-                                        <div class="panel panel-info">
-                                            <div class="panel-heading">
-                                                <h3 class="panel-title">Assignment Type {{listName}}</h3>
-                                            </div>
-                                            <div class="panel-body" ng-include="'views/resource_management/simple.html'"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="alert alert-success">
-                                    <strong>Cherkasy</strong>
-                                </div>
-                                <div class="row">
-                                    <div ng-repeat="(listName, list) in models.lists" class="col-md-3">
-                                        <div class="panel panel-info">
-                                            <div class="panel-heading">
-                                                <h3 class="panel-title">Assignment Type {{listName}}</h3>
-                                            </div>
-                                            <div class="panel-body" ng-include="'views/resource_management/simple.html'"></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div view-source="simple"></div>
-
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">User info</h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div ng-if="!models.selected">Need select user</div>
-                                        <div ng-if="models.selected">
-                                            <p>label: {{models.selected.label}}</p>
-                                            <p>project: {{models.selected.project}}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">Generated Model</h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        <pre class="code">{{modelAsJson}}</pre>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+                <div class="res-left-content-top">
+                    <ul class="main">
+                        <li ng-repeat="(listName, list) in models.lists" class="main">
+                            <h4>Type {{listName}}</h4>
+                        </li>
+                    </ul>
                 </div>
-            </section>
-            <!-- .aui-page-panel-content -->
+
+
+                <div class="res-left-content-center">
+                    <ul class="main">
+                        <li ng-repeat="(listName, list) in models.lists" class="main grey">
+
+                            <div style="height: 100%;" ng-include="'views/resource_management/simple.html'"></div>
+
+                            <!--<div class="panel panel-info">-->
+                            <!--<div class="panel-heading">-->
+                            <!--<h3 class="panel-title">Assignment Type {{listName}}</h3>-->
+                            <!--</div>-->
+                            <!--<div class="panel-body" ng-include="'views/resource_management/simple.html'"></div>-->
+                            <!--</div>-->
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
         </div>
+        <div class="res-right">right</div>
     </div>
 </div>
+
+<!--<header id="ghx-header" class="aui-page-header">-->
+    <!--<title>Resource Board</title>-->
+    <!--<div class="aui-page-header-inner">-->
+        <!--<div class="aui-page-header-main">-->
+            <!--<h2>Resource Board</h2>-->
+        <!--</div>-->
+        <!--<div class="aui-page-header-actions">-->
+            <!--&lt;!&ndash;<button class="btn btn-primary" type="submit" ng-click="inviteUser()" >Invite user</button>&ndash;&gt;-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</header>-->
+<!--<div id="ghx-content-main" class="ghx-content-main">-->
+    <!--<div class="aui-page-panel" id="manage-boards-page">-->
+        <!--<div class="aui-page-panel-inner">-->
+            <!--&lt;!&ndash; .aui-page-panel-nav &ndash;&gt;-->
+            <!--<section class="aui-page-panel-content">-->
+                <!--<div class="ghx-boards-list">-->
+                    <!--&lt;!&ndash;<form class="aui" style="margin: 20px 0;">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<input ng-model="query" id="search-by-name" type="text" placeholder="Find a issue" class="text" style="width: 250px;"/>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</form>&ndash;&gt;-->
+                    <!--<div id="report-box">-->
+
+
+                        <!--<style>-->
+                            <!--.assignments-type-wrap {-->
+                                <!--width: 100%;-->
+                                <!--overflow-x: auto;-->
+                                <!--overflow-y: hidden;-->
+                            <!--}-->
+
+                            <!--.assignments-type-wrap ul.main {-->
+                                <!--min-width: 100%;-->
+                                <!--white-space: nowrap;-->
+                                <!--padding: 0;-->
+                            <!--}-->
+
+                            <!--.assignments-type-wrap li.main {-->
+                                <!--display: inline-block;-->
+                                <!--vertical-align: top;-->
+                                <!--width: 200px;-->
+                                <!--min-height: 200px;-->
+                                <!--margin-right: 20px;-->
+                            <!--}-->
+
+                            <!--.assignments-type-wrap-right {-->
+                                <!--width: 100%;-->
+                            <!--}-->
+                        <!--</style>-->
+
+                        <!--<div class="simpleDemo row">-->
+                            <!--<div class="col-lg-10 col-md-9">-->
+                                <!--<div class="assignments-type-wrap">-->
+                                    <!--<ul class="main">-->
+                                        <!--<li ng-repeat="(listName, list) in models.lists" class="main">-->
+                                            <!--<div class="panel panel-info">-->
+                                                <!--<div class="panel-heading">-->
+                                                    <!--<h3 class="panel-title">Assignment Type {{listName}}</h3>-->
+                                                <!--</div>-->
+                                                <!--<div class="panel-body" ng-include="'views/resource_management/simple.html'"></div>-->
+                                            <!--</div>-->
+                                        <!--</li>-->
+                                    <!--</ul>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="col-lg-2 col-md-3">-->
+                                <!--<div class="assignments-type-wrap-right">-->
+
+                                    <!--<div class="panel panel-default">-->
+                                        <!--<div class="panel-heading">-->
+                                            <!--<h3 class="panel-title">User info</h3>-->
+                                        <!--</div>-->
+                                        <!--<div class="panel-body">-->
+                                            <!--<div ng-if="!models.selected">Need select user</div>-->
+                                            <!--<div ng-if="models.selected">-->
+                                                <!--<p>label: {{models.selected.label}}</p>-->
+                                                <!--<p>project: {{models.selected.project}}</p>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;<div class="panel panel-default">&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<div class="panel-heading">&ndash;&gt;-->
+                                            <!--&lt;!&ndash;<h3 class="panel-title">Generated Model</h3>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<div class="panel-body">&ndash;&gt;-->
+                                            <!--&lt;!&ndash;<pre class="code">{{modelAsJson}}</pre>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</section>-->
+            <!--&lt;!&ndash; .aui-page-panel-content &ndash;&gt;-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->

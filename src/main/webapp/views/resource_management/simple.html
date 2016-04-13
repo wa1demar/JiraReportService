@@ -1,6 +1,6 @@
 <!-- The dnd-list directive allows to drop elements into it.
      The dropped data will be added to the referenced list -->
-<ul dnd-list="list">
+<ul dnd-list="list" class="item">
     <!-- The dnd-draggable directive makes an element draggable and will
          transfer the object that was assigned to it. If an element was
          dragged away, you have to remove it from the original list
@@ -13,7 +13,23 @@
         dnd-dragend="logEvent('Drag operation ended', event)"
         ng-class="{'selected': models.selected === item}"
             >
-        <div>{{item.label}}</div>
-        <div><i>project:</i> <span class="aui-lozenge aui-lozenge-{{item.project}}">{{item.project}}</span></div>
+
+
+        <div style="border-left: 5px solid dodgerblue;">
+            <div class="row margin-0">
+                <div class="col-md-4" style="text-align: center;">
+                    <span class="glyphicon glyphicon-user"></span>
+                </div>
+                <div class="col-md-8">
+                    <div>{{item.label}}</div>
+                </div>
+            </div>
+
+            <div class="row margin-0">
+                <div><i>project:</i> <span class="aui-lozenge aui-lozenge-{{item.project}}">{{item.project}}</span></div>
+            </div>
+        </div>
+
+
     </li>
 </ul>
