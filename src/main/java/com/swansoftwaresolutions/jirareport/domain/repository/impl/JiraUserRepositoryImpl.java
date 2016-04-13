@@ -95,7 +95,7 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
 
                 existed.setGroups(new ArrayList<>(groups));
 
-                sessionFactory.getCurrentSession().merge(existed);
+                sessionFactory.getCurrentSession().update(existed);
 
             }
         }

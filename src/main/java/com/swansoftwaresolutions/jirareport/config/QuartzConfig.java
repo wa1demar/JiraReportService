@@ -46,7 +46,8 @@ public class QuartzConfig {
 
         Trigger[] triggers = {
                 loadSmallTrigger().getObject(),
-                loadMediumTrigger().getObject()
+                loadMediumTrigger().getObject(),
+                loadFullTrigger().getObject()
         };
 
         quartzScheduler.setTriggers(triggers);
