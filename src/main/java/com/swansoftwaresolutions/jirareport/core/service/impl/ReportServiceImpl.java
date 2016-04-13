@@ -897,7 +897,7 @@ public class ReportServiceImpl implements ReportService {
             }
 
             for (SprintIssueDto sprintIssueDto : sprintIssueListDto.getSprintIssueDtos()) {
-                Date date2 = null;
+                Date date2;
                 try {
                     date2 = sdf.parse(sprintIssueDto.getIssueDate());
                     if (helperMethods.isSameDate(currentDate, date2)) {
@@ -924,7 +924,7 @@ public class ReportServiceImpl implements ReportService {
 
         HelperMethods help = new HelperMethods();
 
-        Chart chart = new Chart();
+        Chart chart;
 
         String date = "0";
 
