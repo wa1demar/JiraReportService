@@ -987,7 +987,9 @@ public class ReportServiceImpl implements ReportService {
                 }
             }
 
-            ii.add((int) tar);
+            if (currentDate.before(new Date())) {
+                ii.add((int) tar);
+            }
             startDate.add(Calendar.DATE, 1);
         }
 
@@ -1019,7 +1021,9 @@ public class ReportServiceImpl implements ReportService {
                         }
                     }
 
-                    ii.add((int) tar);
+                    if (currentDate.before(new Date())) {
+                        ii.add((int) tar);
+                    }
 
                     addDate.add(Calendar.DATE, 1);
                 }
