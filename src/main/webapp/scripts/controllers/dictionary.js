@@ -44,16 +44,6 @@ jiraPluginApp.controller('DictionaryCtrl',
                 }, function (error) {
                     Notification.error("Server error");
                 });
-
-
-                // $scope.dataDictionary = [];
-                // for (var i = 1; i < 10; i++) {
-                //     $scope.dataDictionary.push({
-                //         id: i,
-                //         name: "name " + i
-                //     });
-                // }
-                // $scope.loaderShow = false;
             }
 
 //----------------------------------------------------------------------------------------------------------------------
