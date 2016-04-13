@@ -520,6 +520,8 @@ public class ReportServiceImpl implements ReportService {
                 if (sprintDto != null) {
                     List<SprintDeveloperDto> sprintDevelopers = new ArrayList<>();
                     for (SprintDeveloperDto dev : sprintDto.getDevelopers()) {
+                        if (jiraIssueList == null) continue;
+
                         for (JiraIssueDto issue : jiraIssueList) {
                             if (dev.getDeveloperLogin().equals(issue.getAssignedKey())) {
 
@@ -529,7 +531,7 @@ public class ReportServiceImpl implements ReportService {
                                         dev.setActualPoints(dev.getActualPoints() + (int) issue.getPoints());
                                         dev.setActualHours(help.isNull(dev.getActualHours()) + issue.getTimeSpent());
                                     } else if (issue.getIssueTypeName().equalsIgnoreCase("Bug")) {
-                                        if (isQAT(dev, report)) {
+                                        if (isQAT(dev, report, issue)) {
                                             dev.setDefectActual(dev.getDefectActual() + 1);
                                             dev.setDefectActualHours(help.isNull(dev.getDefectActualHours()) + issue.getTimeSpent());
                                             dev.setActualHours(help.isNull(dev.getActualHours()) + issue.getTimeSpent());
@@ -644,9 +646,9 @@ public class ReportServiceImpl implements ReportService {
 
     }
 
-    private boolean isQAT(SprintDeveloperDto dev, Report report) {
+    private boolean isQAT(SprintDeveloperDto dev, Report report, JiraIssueDto issu) {
         for (JiraUser jiraUser : report.getAdmins()) {
-            if (jiraUser.getLogin().equals(dev.getDeveloperLogin()))
+            if (jiraUser.getLogin().equals(issu.getCreatorName()));
                 return true;
         }
         return false;
