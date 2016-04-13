@@ -7,4 +7,5 @@ import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
  */
 public interface SprintImporterService {
     void loadSprintsFromJiraByBoard();
+    void addNewSprintsToExitingProjects();
 }

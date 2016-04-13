@@ -81,7 +81,6 @@ public class TaskServiceImpl implements TaskService {
 
             case GROUPS_TASK:
                 startImportGroups();
-                startImportUsers();
                 break;
 
             case DUEDATE_TASK:
@@ -95,20 +94,14 @@ public class TaskServiceImpl implements TaskService {
 
             case SPRINTS_TASK:
                 startImportSprints();
-                startImportIssues();
                 break;
 
             case BOARDS_TASK:
                 startImportBoards();
-                startImportSprints();
-                startImportIssues();
                 break;
 
             case PROJECTS_TASK:
                 startImportProjects();
-                startImportBoards();
-                startImportSprints();
-                startImportIssues();
                 break;
 
         }
@@ -116,6 +109,32 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepository.findByName(name);
 
         return taskMapper.toDto(task);
+    }
+
+    @Override
+    public void startFullSynchronization() {
+        startImportGroups();
+        startImportUsers();
+        startImportProjects();
+        startImportBoards();
+        startImportSprints();
+        startImportIssues();
+        startImportDueDate();
+    }
+
+    @Override
+    public void startMediumSynchronization() {
+        startImportProjects();
+        startImportBoards();
+        startImportSprints();
+        startImportIssues();
+        startImportDueDate();
+    }
+
+    @Override
+    public void startSmallSynchronization() {
+        startImportIssues();
+        startImportDueDate();
     }
 
     private void startImportGroups() {
@@ -154,6 +173,7 @@ public class TaskServiceImpl implements TaskService {
         logger.info("Start task for sprints at " + new Date());
         taskRepository.setStarted(SPRINTS_TASK);
         sprintImporterService.loadSprintsFromJiraByBoard();
+        sprintImporterService.addNewSprintsToExitingProjects();
         taskRepository.setStopped(SPRINTS_TASK);
         logger.info("Stop task for sprints at " + new Date());
     }

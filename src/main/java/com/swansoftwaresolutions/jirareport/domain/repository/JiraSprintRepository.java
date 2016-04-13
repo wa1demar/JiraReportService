@@ -26,4 +26,6 @@ public interface JiraSprintRepository {
     JiraSprint findByNameAndBoardId(String name, Long boardId) throws NoSuchEntityException;
 
     void add(List<JiraSprint> sprints, Long boardId);
+
+    List<JiraSprint> findByJiraBoardId(Long id);
 }

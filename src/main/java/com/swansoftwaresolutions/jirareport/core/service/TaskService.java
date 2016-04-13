@@ -10,4 +10,10 @@ public interface TaskService {
     TasksDto getAll();
 
     TaskDto start(String name);
+
+    void startFullSynchronization();
+
+    void startMediumSynchronization();
+
+    void startSmallSynchronization();
 }

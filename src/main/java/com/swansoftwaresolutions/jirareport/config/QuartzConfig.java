@@ -3,10 +3,12 @@ package com.swansoftwaresolutions.jirareport.config;
 import com.swansoftwaresolutions.jirareport.sheduller.job.*;
 import org.quartz.Trigger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
 import org.springframework.scheduling.quartz.JobDetailFactoryBean;
@@ -17,9 +19,18 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
  * @author Vitaliy Holovko
  */
 @Configuration
-@ComponentScan("com.swansoftwaresolutions.jirareport.sheduller.rest.client")
+@ComponentScan("com.swansoftwaresolutions.jirareport.sheduller.job")
+@PropertySource("classpath:quartz.properties")
 public class QuartzConfig {
 
+    @Value("${job.small.expression}")
+    private String jobSmallExpression;
+
+    @Value("${job.medium.expression}")
+    private String jobMediumExpression;
+
+    @Value("${job.full.expression}")
+    private String jobFullExpression;
 
     @Autowired
     ApplicationContext applicationContext;
@@ -34,10 +45,8 @@ public class QuartzConfig {
         quartzScheduler.setJobFactory(jobFactory);
 
         Trigger[] triggers = {
-//                loadProjectsTrigger().getObject(),
-//                loadJiraUsersTrigger().getObject(),
-                loadJiraBoardsTrigger().getObject(),
-                loadIssuesTrigger().getObject()
+                loadSmallTrigger().getObject(),
+                loadMediumTrigger().getObject()
         };
 
         quartzScheduler.setTriggers(triggers);
@@ -46,49 +55,49 @@ public class QuartzConfig {
     }
 
     @Bean
-    CronTriggerFactoryBean loadProjectsTrigger() {
+    CronTriggerFactoryBean loadSmallTrigger() {
         CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
-        cronTriggerFactoryBean.setJobDetail(loadProjectsJobDetail().getObject());
-        cronTriggerFactoryBean.setCronExpression("12 * * * * ?");
+        cronTriggerFactoryBean.setJobDetail(loadSmallJobDetail().getObject());
+        cronTriggerFactoryBean.setCronExpression(jobSmallExpression);
         return cronTriggerFactoryBean;
     }
 
     @Bean
-    JobDetailFactoryBean loadProjectsJobDetail() {
+    JobDetailFactoryBean loadSmallJobDetail() {
         JobDetailFactoryBean jobDetailFactory = new JobDetailFactoryBean();
-        jobDetailFactory.setJobClass(LoadProjectsJob.class);
+        jobDetailFactory.setJobClass(SynchronizeSmallJob.class);
         jobDetailFactory.setDurability(true);
         return jobDetailFactory;
     }
 
     @Bean
-    CronTriggerFactoryBean loadIssuesTrigger() {
+    CronTriggerFactoryBean loadMediumTrigger() {
         CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
-        cronTriggerFactoryBean.setJobDetail(loadIssuesJobDetail().getObject());
-        cronTriggerFactoryBean.setCronExpression("5 0 0 * * ?");
+        cronTriggerFactoryBean.setJobDetail(loadMediumJobDetail().getObject());
+        cronTriggerFactoryBean.setCronExpression(jobMediumExpression);
         return cronTriggerFactoryBean;
     }
 
     @Bean
-    JobDetailFactoryBean loadIssuesJobDetail() {
+    JobDetailFactoryBean loadMediumJobDetail() {
         JobDetailFactoryBean jobDetailFactory = new JobDetailFactoryBean();
-        jobDetailFactory.setJobClass(LoadIssuesJob.class);
+        jobDetailFactory.setJobClass(SynchronizeMediumJob.class);
         jobDetailFactory.setDurability(true);
         return jobDetailFactory;
     }
 
     @Bean
-    CronTriggerFactoryBean loadJiraBoardsTrigger() {
+    CronTriggerFactoryBean loadFullTrigger() {
         CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
-        cronTriggerFactoryBean.setJobDetail(loadJiraBoardsJobDetail().getObject());
-        cronTriggerFactoryBean.setCronExpression("5 0 0 * * ?");
+        cronTriggerFactoryBean.setJobDetail(loadFullJobDetail().getObject());
+        cronTriggerFactoryBean.setCronExpression(jobFullExpression);
         return cronTriggerFactoryBean;
     }
 
     @Bean
-    JobDetailFactoryBean loadJiraBoardsJobDetail() {
+    JobDetailFactoryBean loadFullJobDetail() {
         JobDetailFactoryBean jobDetailFactory = new JobDetailFactoryBean();
-        jobDetailFactory.setJobClass(LoadJiraBoardsJob.class);
+        jobDetailFactory.setJobClass(SynchronizeFullJob.class);
         jobDetailFactory.setDurability(true);
         return jobDetailFactory;
     }
