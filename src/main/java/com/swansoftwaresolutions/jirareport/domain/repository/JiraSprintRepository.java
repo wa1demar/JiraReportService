@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository;
 
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraSprint;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 
@@ -25,7 +26,7 @@ public interface JiraSprintRepository {
 
     JiraSprint findByNameAndBoardId(String name, Long boardId) throws NoSuchEntityException;
 
-    void add(List<JiraSprint> sprints, Long boardId);
+    void add(List<JiraSprint> sprints, JiraBoard board);
 
     List<JiraSprint> findByJiraBoardId(Long id);
 }

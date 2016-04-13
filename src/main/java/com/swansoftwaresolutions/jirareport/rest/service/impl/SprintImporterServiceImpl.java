@@ -54,7 +54,7 @@ public class SprintImporterServiceImpl implements SprintImporterService {
             ImportedSprintsDto importedSprintsDto = restClient.loadAllSprintsByBoard(board);
             List<ImportedJiraSprintDto> sprints = Arrays.asList(importedSprintsDto.getValues());
 
-            jiraSprintRepository.add(jiraSprintMapper.fromShedullerDtos(sprints), board.getId());
+            jiraSprintRepository.add(jiraSprintMapper.fromShedullerDtos(sprints), board);
         }
 
 
