@@ -7,13 +7,13 @@ import java.util.List;
  * @author Vladimir Martynyuk
  */
 public class LocationsDto {
-    private List<LocationDto> locations = new ArrayList<>();
+    private List<LocationDto> items = new ArrayList<>();
 
     public List<LocationDto> getLocations() {
-        return locations;
+        return items;
     }
 
     public void setLocations(List<LocationDto> locations) {
-        this.locations = locations;
+        this.items = locations;
     }
 }
