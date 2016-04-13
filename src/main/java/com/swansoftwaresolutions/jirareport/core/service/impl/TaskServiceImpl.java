@@ -81,6 +81,7 @@ public class TaskServiceImpl implements TaskService {
 
             case GROUPS_TASK:
                 startImportGroups();
+                startImportUsers();
                 break;
 
             case DUEDATE_TASK:
@@ -94,14 +95,23 @@ public class TaskServiceImpl implements TaskService {
 
             case SPRINTS_TASK:
                 startImportSprints();
+                startImportIssues();
+                startImportDueDate();
                 break;
 
             case BOARDS_TASK:
                 startImportBoards();
+                startImportSprints();
+                startImportIssues();
+                startImportDueDate();
                 break;
 
             case PROJECTS_TASK:
                 startImportProjects();
+                startImportBoards();
+                startImportSprints();
+                startImportIssues();
+                startImportDueDate();
                 break;
 
         }
