@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraSprint;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraSprintRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -108,14 +109,15 @@ public class JiraSprintRepositoryImpl implements JiraSprintRepository {
     }
 
     @Override
-    public void add(List<JiraSprint> sprints, Long boardId) {
+    public void add(List<JiraSprint> sprints, JiraBoard board) {
         if (sprints == null || sprints.size() == 0) {
             return;
         }
 
         List<Long> ids = sprints.stream().map(r -> r.getSprintId()).collect(Collectors.toList());
-        Query query = sessionFactory.getCurrentSession().createQuery("FROM JiraSprint js WHERE js.sprintId IN :ids");
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM JiraSprint js WHERE js.sprintId IN :ids and js.boardId = :boardId");
         query.setParameterList("ids", ids);
+        query.setParameter("boardId", board.getId());
         List<JiraSprint> existed = query.list();
 
         Session session = sessionFactory.openSession();
@@ -126,11 +128,11 @@ public class JiraSprintRepositoryImpl implements JiraSprintRepository {
             for (JiraSprint sprint : sprints) {
                 JiraSprint existedSprint = sprintsMap.get(sprint.getSprintId());
                 if (existedSprint != null) {
-                    sprint.setBoardId(boardId);
+                    sprint.setBoardId(board.getId());
                     sprint.setId(existedSprint.getId());
-                    session.merge(sprint);
+                    session.update(sprint);
                 } else {
-                    sprint.setBoardId(boardId);
+                    sprint.setBoardId(board.getId());
                     session.save(sprint);
                 }
             }
