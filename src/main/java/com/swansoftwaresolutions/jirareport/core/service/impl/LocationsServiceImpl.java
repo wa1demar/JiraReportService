@@ -28,7 +28,7 @@ public class LocationsServiceImpl implements LocationsService {
         List<Location> locations = locationRepository.findAll();
 
         LocationsDto locationsDto = new LocationsDto();
-        locationsDto.setLocations(locationMapper.fromLocationsToLocationsDto(locations));
+        locationsDto.setItems(locationMapper.fromLocationsToLocationsDto(locations));
         return locationsDto;
     }
 

@@ -9,11 +9,11 @@ import java.util.List;
 public class LocationsDto {
     private List<LocationDto> items = new ArrayList<>();
 
-    public List<LocationDto> getLocations() {
+    public List<LocationDto> getItems() {
         return items;
     }
 
-    public void setLocations(List<LocationDto> locations) {
-        this.items = locations;
+    public void setItems(List<LocationDto> items) {
+        this.items = items;
     }
 }
