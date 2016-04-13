@@ -104,7 +104,8 @@ public class HelperMethods {
         int i = 1;
         int j = 1;
         for (SprintProjectReportDto sprint : sprints) {
-            if (!sprint.isNotCountTarget() && sprint.getState()!=null && (sprint.getState().equals("Closed") || sprint.getState().equals("closed"))) {
+            if (!sprint.isNotCountTarget()){
+//                    && sprint.getState()!=null && (sprint.getState().equals("Closed") || sprint.getState().equals("closed"))) {
                 actual[j] = actual[j - 1] - (int) sprint.getActualPoints();
                 list.add(actual[j - 1] - (int) sprint.getActualPoints());
                 j++;
