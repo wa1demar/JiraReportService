@@ -57,7 +57,7 @@
                                         'due-date-issues-red'
                                     : ($first && data.dueDate.length !== 1 && dueDate >= todayDate) || ($first && data.dueDate.length === 1 && dueDate >= todayDate) ?
                                         'due-date-issues-black'
-                                    : $first && data.dueDate.length !== 1 && dueDate < todayDate ?
+                                    : $first && data.dueDate.length !== 1 && dueDate < todayDate && (dueDate | date:'MM/dd/yyyy') !== (todayDate | date:'MM/dd/yyyy') ?
                                         'due-date-issues-red'
                                     : !$first && data.dueDate.length !== 1 ?
                                         'due-date-issues-grey'
