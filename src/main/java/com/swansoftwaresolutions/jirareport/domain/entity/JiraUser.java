@@ -39,6 +39,9 @@ public class JiraUser {
     @BatchSize(size = 10)
     private List<JiraGroup> groups = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id", nullable = true)
+    private Location location;
 
     public String getEmail() {
         return email;
@@ -86,5 +89,13 @@ public class JiraUser {
 
     public void setGroups(List<JiraGroup> groups) {
         this.groups = groups;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }
