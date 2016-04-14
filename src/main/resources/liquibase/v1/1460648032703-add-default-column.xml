@@ -1,0 +1,13 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="1460648032703" author="Vladimir Martynyuk">
+
+      <insert tableName="resource_columns">
+          <column name="id" value="1"/>
+          <column name="name" value="Bench"/>
+          <column name="color" value="#ff0000"/>
+      </insert>
+
+    </changeSet>
+</databaseChangeLog>
