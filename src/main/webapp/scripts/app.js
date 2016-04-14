@@ -15,7 +15,8 @@ var jiraPluginApp = angular.module('jiraPluginApp', [
     'ui-notification',
     'nl2br',
     'angularUtils.directives.dirPagination',
-    'dndLists'
+    'dndLists',
+    'xeditable'
 ]);
 
 jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
@@ -104,8 +105,11 @@ jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
         });
 });
 
-jiraPluginApp.run(function($rootScope, $window, $location, $filter, AuthenticationFactory, CONFIG) {
+jiraPluginApp.run(function($rootScope, $window, $location, $filter, AuthenticationFactory, editableOptions, CONFIG) {
     $rootScope.CONFIG = CONFIG;
+
+    //For angular-xeditable
+    editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
 
     // when the page refreshes, check if the user is already logged in
     AuthenticationFactory.check();

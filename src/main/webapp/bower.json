@@ -33,7 +33,8 @@
     "angular-ui-notification": "^0.1.0",
     "angular-nl2br": "^1.0.3",
     "angularUtils-pagination": "angular-utils-pagination#^0.11.0",
-    "angular-drag-and-drop-lists": "^1.4.0"
+    "angular-drag-and-drop-lists": "^1.4.0",
+    "angular-xeditable": "^0.1.11"
   },
   "resolutions": {
     "angular": "1.4.x"
