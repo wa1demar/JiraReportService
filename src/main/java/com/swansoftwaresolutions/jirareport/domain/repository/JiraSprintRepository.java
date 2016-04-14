@@ -28,5 +28,4 @@ public interface JiraSprintRepository {
 
     void add(List<JiraSprint> sprints, JiraBoard board);
 
-    List<JiraSprint> findByJiraBoardId(Long id);
 }
