@@ -42,12 +42,13 @@
                     <li ng-class="{active:isActive('/dashboards')}"><a href="#/dashboards">Project</a></li>
                     <!--<li ng-class="{active:isActive('/productivity')}"><a href="#/productivity">Productivity</a></li>-->
                     <li ng-class="{active:isActive('/due_date_issue')}"><a href="#/due_date_issue">Due Date</a></li>
-                    <li ng-if="isAdmin" uib-dropdown on-toggle="toggled(open)" ng-class="(isActive('/system_user') || isActive('/task') || isActive('/dictionary/locations')) ? 'dropdown active' : 'dropdown'" ng-click="showToggleMenu('system')">
+                    <li ng-if="isAdmin" uib-dropdown on-toggle="toggled(open)" ng-class="(isActive('/system_user') || isActive('/task') || isActive('/dictionary/locations') || isActive('/dictionary/technologies')) ? 'dropdown active' : 'dropdown'" ng-click="showToggleMenu('system')">
                         <a href="" class="menu-dropdown-item" id="system-dropdown" uib-dropdown-toggle>System <span class="caret"></span></a>
                         <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="system-dropdown">
                             <li><a ng-class="{active:isActive('/system_user')}" href="#/system_user">Users</a></li>
                             <li><a ng-class="{active:isActive('/task')}" href="#/task">Tasks</a></li>
                             <li><a ng-class="{active:isActive('/dictionary/locations')}" href="#/dictionary/locations">Locations</a></li>
+                            <li><a ng-class="{active:isActive('/dictionary/technologies')}" href="#/dictionary/technologies">Technologies</a></li>
                             <li><a href="javascript:" ng-click="processConfig()">Settings</a></li>
                         </ul>
                     </li>
