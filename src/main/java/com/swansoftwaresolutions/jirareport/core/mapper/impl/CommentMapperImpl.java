@@ -2,7 +2,7 @@ package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
 import com.swansoftwaresolutions.jirareport.core.dto.CommentDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.CommentMapper;
-import com.swansoftwaresolutions.jirareport.core.mapper.mappings.CommentDtoMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.CommentDtoMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.Comment;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;

@@ -4,7 +4,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.ImportedJiraSpr
 import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.JiraSprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_sprint.JiraSprintsDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraSprintMapper;
-import com.swansoftwaresolutions.jirareport.core.mapper.mappings.ImportedJiraSprintDtoMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.ImportedJiraSprintDtoMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraSprint;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
