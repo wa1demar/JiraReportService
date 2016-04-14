@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.core.mapper.mappings;
+package com.swansoftwaresolutions.jirareport.core.mapper.propertymap;
 
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUserDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;

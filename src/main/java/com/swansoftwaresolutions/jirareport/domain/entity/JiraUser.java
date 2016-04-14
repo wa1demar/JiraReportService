@@ -17,32 +17,16 @@ import static org.hibernate.annotations.CascadeType.*;
 @Entity
 @Table(name = "jira_users")
 public class JiraUser {
+    private String email;
+    private String login;
+    private String fullName;
+    private Long jiraUserId;
+    private List<Report> reports = new ArrayList<>();
+    private List<JiraGroup> groups = new ArrayList<>();
+    private Location location;
+    private List<Technology> technologies = new ArrayList<>();
 
     @Column(name = "email")
-    private String email;
-
-    @Id
-    @Column(name = "login")
-    private String login;
-
-    @Column(name = "full_name")
-    private String fullName;
-
-    @Column(name = "jira_user_id")
-    private Long jiraUserId;
-
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "admins")
-    private List<Report> reports = new ArrayList<>();
-
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.MERGE)
-    @Fetch(FetchMode.JOIN)
-    @BatchSize(size = 10)
-    private List<JiraGroup> groups = new ArrayList<>();
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id", nullable = true)
-    private Location location;
-
     public String getEmail() {
         return email;
     }
@@ -51,6 +35,8 @@ public class JiraUser {
         this.email = email;
     }
 
+    @Id
+    @Column(name = "login")
     public String getLogin() {
         return login;
     }
@@ -59,6 +45,7 @@ public class JiraUser {
         this.login = login;
     }
 
+    @Column(name = "full_name")
     public String getFullName() {
         return fullName;
     }
@@ -67,6 +54,7 @@ public class JiraUser {
         this.fullName = fullName;
     }
 
+    @Column(name = "jira_user_id")
     public Long getJiraUserId() {
         return jiraUserId;
     }
@@ -75,6 +63,7 @@ public class JiraUser {
         this.jiraUserId = jiraUserId;
     }
 
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "admins")
     public List<Report> getReports() {
         return reports;
     }
@@ -83,6 +72,9 @@ public class JiraUser {
         this.reports = reports;
     }
 
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.MERGE)
+    @Fetch(FetchMode.JOIN)
+    @BatchSize(size = 10)
     public List<JiraGroup> getGroups() {
         return groups;
     }
@@ -91,11 +83,22 @@ public class JiraUser {
         this.groups = groups;
     }
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id", nullable = true)
     public Location getLocation() {
         return location;
     }
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users")
+    public List<Technology> getTechnologies() {
+        return technologies;
+    }
+
+    public void setTechnologies(List<Technology> technologies) {
+        this.technologies = technologies;
     }
 }

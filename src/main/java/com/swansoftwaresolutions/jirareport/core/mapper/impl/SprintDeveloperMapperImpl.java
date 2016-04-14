@@ -5,7 +5,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDeve
 import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDevelopersDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDevelopersDtoBuilder;
 import com.swansoftwaresolutions.jirareport.core.mapper.SprintDeveloperMapper;
-import com.swansoftwaresolutions.jirareport.core.mapper.mappings.SprintDeveloperDtoMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.SprintDeveloperDtoMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.SprintDeveloper;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Vladimir Martynyuk

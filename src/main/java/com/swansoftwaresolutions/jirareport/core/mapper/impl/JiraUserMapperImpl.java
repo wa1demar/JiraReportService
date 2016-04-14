@@ -3,7 +3,7 @@ package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
-import com.swansoftwaresolutions.jirareport.core.mapper.mappings.ImportedJiraUsersMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.ImportedJiraUsersMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserAutoDto;
 import org.modelmapper.ModelMapper;
