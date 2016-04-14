@@ -20,7 +20,9 @@
                     <ul class="main">
                         <li ng-repeat="(listName, list) in models.lists" class="main">
                             <h4>
-                                Type {{listName}}
+                                <a href="#" editable-text="listName">{{ listName || 'empty' }}</a>
+
+                                <!--Type {{listName}}-->
                                 <span ng-click="delColumn()" class="glyphicon glyphicon-remove control-icon" title="Delete"></span>
                                 <span ng-click="processColumn()" class="glyphicon glyphicon-pencil control-icon" title="Edit"></span>
                             </h4>

@@ -76,13 +76,13 @@
                 {{data.closedDate | date:'MM/dd/yyyy'}}
             </td>
             <td>
-                <div id="ghx-manage-boards-operation-popup-1-{{data.id}}" class="aui-dropdown2 aui-style-default">
+                <div ng-if="isAdmin" id="ghx-manage-boards-operation-popup-1-{{data.id}}" class="aui-dropdown2 aui-style-default">
                     <ul class="aui-list-truncate">
                         <li ng-show="data.borardId !== 0 || data.typeId === 2"><a ng-href="#/report/{{data.id}}/configure">Configure</a></li>
                         <li><a href="" ng-click="deleteReport(data)">Delete</a></li>
                     </ul>
                 </div>
-                <button aria-haspopup="true" id="ghx-manage-boards-operation-trigger-1" aria-owns="ghx-manage-boards-operation-popup-1-{{data.id}}" class="aui-dropdown2-trigger aui-style-default aui-button aui-button-subtle">
+                <button ng-if="isAdmin" aria-haspopup="true" id="ghx-manage-boards-operation-trigger-1" aria-owns="ghx-manage-boards-operation-popup-1-{{data.id}}" class="aui-dropdown2-trigger aui-style-default aui-button aui-button-subtle">
                     <span class="ghx-iconfont aui-icon aui-icon-small aui-iconfont-more ghx-clickable"></span>
                 </button>
             </td>
