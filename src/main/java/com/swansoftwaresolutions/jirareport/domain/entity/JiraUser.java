@@ -21,6 +21,7 @@ public class JiraUser {
     private String login;
     private String fullName;
     private Long jiraUserId;
+    private String description;
     private List<Report> reports = new ArrayList<>();
     private List<JiraGroup> groups = new ArrayList<>();
     private Location location;
@@ -100,5 +101,14 @@ public class JiraUser {
 
     public void setTechnologies(List<Technology> technologies) {
         this.technologies = technologies;
+    }
+
+    @Column(name = "description")
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
