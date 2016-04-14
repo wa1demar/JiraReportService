@@ -1,0 +1,17 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="1460553537692" author="Vladimir Martynyuk">
+
+      <addColumn tableName="jira_users">
+          <column name="location_id" type="bigint">
+              <constraints nullable="true" />
+          </column>
+      </addColumn>
+
+        <addForeignKeyConstraint baseTableName="jira_users" baseColumnNames="location_id" constraintName="fk_jira_user_location"
+                                 referencedTableName="locations"
+                                 referencedColumnNames="id" />
+
+    </changeSet>
+</databaseChangeLog>

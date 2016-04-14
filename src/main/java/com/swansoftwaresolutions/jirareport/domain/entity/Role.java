@@ -3,6 +3,7 @@ package com.swansoftwaresolutions.jirareport.domain.entity;
 import com.swansoftwaresolutions.jirareport.domain.enums.UserRole;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "roles")
-public class Role {
+public class Role implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

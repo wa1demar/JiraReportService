@@ -12,6 +12,7 @@ public class ConfigDto implements Serializable {
     private String jiraPass;
     private String agileDoneName;
     private String jiraDevGroupName;
+    private String dueDateIssueStatus;
     private String bugName;
     private String nonWorkingDays;
 
@@ -70,5 +71,13 @@ public class ConfigDto implements Serializable {
 
     public void setJiraPass(String jiraPass) {
         this.jiraPass = jiraPass;
+    }
+
+    public String getDueDateIssueStatus() {
+        return dueDateIssueStatus;
+    }
+
+    public void setDueDateIssueStatus(String dueDateIssueStatus) {
+        this.dueDateIssueStatus = dueDateIssueStatus;
     }
 }

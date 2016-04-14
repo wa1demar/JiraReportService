@@ -4,7 +4,7 @@
       <h2>Dashboards</h2>
     </div>
     <div class="aui-page-header-actions">
-      <button class="btn btn-primary" type="submit" ng-click="processReport()" >Create dashboard</button>
+      <button ng-if="isAdmin" class="btn btn-primary" type="submit" ng-click="processReport()" >Create dashboard</button>
     </div>
   </div>
 </header>

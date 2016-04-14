@@ -1,6 +1,6 @@
 <table ng-show="reportsData.length > 0" class="aui table">
     <tbody>
-        <tr class="element-row" ng-repeat="data in filtered = (reportsData | filter:query)">
+        <tr class="element-row" dir-paginate="data in reportsData | filter: query | itemsPerPage: reportsDataPerPage" total-items="totalReportsData" current-page="pagination.current">
             <td class="report-element-table-chart">
                 <div class="name-box" style="font-size: 16px; font-weight: bold;">
                     <a ng-href="#/report/{{data.id}}">
@@ -22,7 +22,9 @@
                         </div>
                     </div>
 
-                    <center ng-show="data.sprintsCount === 0">Sprints not found</center>
+                    <center ng-show="data.sprintsCount === 0">
+                        <span class="glyphicon glyphicon-ban-circle red ban-circle-size-100"></span>
+                    </center>
                 </div>
             </td>
             <td class="report-element-table-sprint">
@@ -148,4 +150,7 @@
         </tr>
     </tbody>
 </table>
+<br/>
+<dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+
 <center><h2 ng-show="reportsData.length === 0">Data not found</h2></center>

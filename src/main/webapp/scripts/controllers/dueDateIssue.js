@@ -18,70 +18,47 @@ jiraPluginApp.controller('DueDateIssueCtrl',
 
 //----------------------------------------------------------------------------------------------------------------------
 //get data
-            this.getSystemUsers = function () {
-                //$scope.dataDueDate = [];
-                //DueDateIssueFactory.query({}, function (data) {
-                //    $scope.dataDueDate = data.dueDate;
-                //}, function (error) {
-                //    Notification.error("Server error");
-                //});
 
-                $scope.dataDueDate = [
-                    {
-                        id: 1,
-                        project: "test 1",
-                        assignee: "assignee 1",
-                        key: "key-1",
-                        summary: "summary 1",
-                        description: "description 1",
-                        status: "In Progress",
-                        dueDate: ['03/23/2016','03/25/2016','03/28/2016']
-                    },
-                    {
-                        id: 2,
-                        project: "test 2",
-                        assignee: "assignee 2",
-                        key: "key-2",
-                        summary: "summary 2",
-                        description: "description 2",
-                        status: "To Do",
-                        dueDate: ['03/22/2016']
-                    },
-                    {
-                        id: 3,
-                        project: "test 2",
-                        assignee: "assignee 2",
-                        key: "key-2",
-                        summary: "summary 2",
-                        description: "description 2",
-                        status: "To Do",
-                        dueDate: ['03/22/2016']
-                    },
-                    {
-                        id: 4,
-                        project: "test 2",
-                        assignee: "assignee 2",
-                        key: "key-2",
-                        summary: "summary 2",
-                        description: "description 2",
-                        status: "To Do",
-                        dueDate: ['03/22/2016']
-                    },
-                    {
-                        id: 5,
-                        project: "test 2",
-                        assignee: "assignee 2",
-                        key: "key-2",
-                        summary: "summary 2",
-                        description: "description 2",
-                        status: "To Do",
-                        dueDate: ['03/22/2016']
-                    }
-                ];
+//----------------------------------------------------------------------------------------------------------------------
+//TODO For pagination
+            $scope.dataDueDate = [];
+            $scope.totalDueDate = 0;
+            $scope.dueDatePerPage = 10; // this should match however many results your API puts on one page
+            getResultsPage(1);
 
-                $scope.loaderShow = false;
+            $scope.pagination = {
+                current: 1
             };
 
-            self.getSystemUsers();
+            $scope.pageChanged = function(newPage) {
+                getResultsPage(newPage);
+            };
+
+            function getResultsPage(pageNumber) {
+                // this is just an example, in reality this stuff should be in a service
+                $scope.loaderShow = true;
+                DueDateIssueFactory.query({page: pageNumber}, function(result){
+                    $scope.dataDueDate = result.dates;
+                    $scope.totalDueDate = result.totalItems;
+                    $scope.dueDatePerPage = result.itemsPerPage;
+                    $scope.loaderShow = false;
+                    //$scope.setLoading(false);
+                }, function (error) {
+                    Notification.error("Server error");
+                });
+            }
+
+            //this.getSystemUsers = function () {
+            //    $scope.dataDueDate = [];
+            //    DueDateIssueFactory.query({}, function (data) {
+            //        $scope.dataDueDate = data.dates;
+            //        $scope.loaderShow = false;
+            //    }, function (error) {
+            //        Notification.error("Server error");
+            //    });
+            //
+            //};
+            //
+            //self.getSystemUsers();
         }
 ]);

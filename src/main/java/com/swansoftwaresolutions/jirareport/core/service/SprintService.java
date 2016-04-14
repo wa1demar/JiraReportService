@@ -4,6 +4,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.sprint.FullSprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint.NewSprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDto;
 import com.swansoftwaresolutions.jirareport.core.dto.sprint.SprintDtos;
+import com.swansoftwaresolutions.jirareport.domain.entity.Report;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 
 import java.util.List;
@@ -27,5 +28,5 @@ public interface SprintService {
 
     FullSprintDto update(FullSprintDto sprintDto) throws NoSuchEntityException;
 
-    List<FullSprintDto> findByReportId(Long reportId) throws NoSuchEntityException;
+    List<FullSprintDto> findByReport(Report r) throws NoSuchEntityException;
 }

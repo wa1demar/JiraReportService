@@ -11,7 +11,7 @@ import java.util.List;
  * @author Vladimir Martynyuk
  */
 public interface JiraSprintMapper {
-    List<JiraSprint> fromDtos(List<JiraSprintDto> jiraSprintDtos);
+//    List<JiraSprint> fromDtos(List<JiraSprintDto> jiraSprintDtos);
 
     List<JiraSprint> fromShedullerDtos(List<ImportedJiraSprintDto> sprintDtos);
 

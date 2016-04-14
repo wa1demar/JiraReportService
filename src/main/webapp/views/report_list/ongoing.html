@@ -5,49 +5,51 @@
 <div ng-if="dataOngoing.length !== 0">
     <table class="aui table">
         <thead>
-        <tr>
-            <th style="width: 350px;">
-                <span ng-click="order('title')" class="cursor-pointer">Dashboard name</span>
-                <span ng-show="predicate === 'title'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
-            </th>
-            <th>
-                <span ng-click="order('typeId')" class="cursor-pointer">Project</span>
-                <span ng-show="predicate === 'typeId'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
-            </th>
-            <th style="width: 350px;">Administrators</th>
-            <th style="width: 100px;"></th>
-        </tr>
+            <tr>
+                <th style="width: 350px;">
+                    <span ng-click="order('title')" class="cursor-pointer">Dashboard name</span>
+                    <span ng-show="predicate === 'title'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+                </th>
+                <th>
+                    <span ng-click="order('typeId')" class="cursor-pointer">Project</span>
+                    <span ng-show="predicate === 'typeId'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+                </th>
+                <th style="width: 350px;">Administrators</th>
+                <th style="width: 100px;"></th>
+            </tr>
         </thead>
         <tbody>
-        <tr class="element-row" ng-repeat="data in filtered = (dataOngoing | filter:query | orderBy:predicate:reverse)">
-            <td>
-                <div class="name-box">
-                    <a ng-href="#/report/{{data.id}}">
-                        <span ng-show="data.title !== ''">{{data.title}}</span>
-                        <i ng-show="data.title === ''">No name</i>
-                    </a>
-                </div>
-            </td>
-            <td>
-                <a ng-href="{{CONFIG.JIRA_PATH}}/secure/RapidBoard.jspa?rapidView={{data.jiraBoardId}}" ng-show="data.borardId !== 0">{{data.boardName}}</a>
-                <strong ng-show="data.typeId === 2"><i>Manual</i></strong>
-            </td>
-            <td>
-                <a ng-repeat="adminData in data.admins" ng-href="{{CONFIG.JIRA_PATH}}/secure/ViewProfile.jspa?name={{adminData.login}}">{{adminData.fullName}}{{$last ? '' : ', '}}</a>
-            </td>
-            <td>
-                <div id="ghx-manage-boards-operation-popup-1-{{data.id}}" class="aui-dropdown2 aui-style-default">
-                    <ul class="aui-list-truncate">
-                        <li ng-show="data.borardId !== 0 || data.typeId === 2"><a ng-href="#/report/{{data.id}}/configure">Configure</a></li>
-                        <li ng-show="data.borardId !== 0 || data.typeId === 2"><a href="" ng-click="copyReport(data)">Copy</a></li>
-                        <li><a href="" ng-click="deleteReport(data)">Delete</a></li>
-                    </ul>
-                </div>
-                <button aria-haspopup="true" id="ghx-manage-boards-operation-trigger-1" aria-owns="ghx-manage-boards-operation-popup-1-{{data.id}}" class="aui-dropdown2-trigger aui-style-default aui-button aui-button-subtle">
-                    <span class="ghx-iconfont aui-icon aui-icon-small aui-iconfont-more ghx-clickable"></span>
-                </button>
-            </td>
-        </tr>
+            <!--<tr class="element-row" ng-repeat="data in filtered = (dataOngoing | filter:query | orderBy:predicate:reverse)">-->
+                <!--<td>-->
+                    <!--<div class="name-box">-->
+                        <!--<a ng-href="#/report/{{data.id}}">-->
+                            <!--<span ng-show="data.title !== ''">{{data.title}}</span>-->
+                            <!--<i ng-show="data.title === ''">No name</i>-->
+                        <!--</a>-->
+                    <!--</div>-->
+                <!--</td>-->
+                <!--<td>-->
+                    <!--<a ng-href="{{CONFIG.JIRA_PATH}}/secure/RapidBoard.jspa?rapidView={{data.jiraBoardId}}" ng-show="data.borardId !== 0">{{data.boardName}}</a>-->
+                    <!--<strong ng-show="data.typeId === 2"><i>Manual</i></strong>-->
+                <!--</td>-->
+                <!--<td>-->
+                    <!--<a ng-repeat="adminData in data.admins" ng-href="{{CONFIG.JIRA_PATH}}/secure/ViewProfile.jspa?name={{adminData.login}}">{{adminData.fullName}}{{$last ? '' : ', '}}</a>-->
+                <!--</td>-->
+                <!--<td>-->
+                    <!--<div id="ghx-manage-boards-operation-popup-1-{{data.id}}" class="aui-dropdown2 aui-style-default">-->
+                        <!--<ul class="aui-list-truncate">-->
+                            <!--<li ng-show="data.borardId !== 0 || data.typeId === 2"><a ng-href="#/report/{{data.id}}/configure">Configure</a></li>-->
+                            <!--<li ng-show="data.borardId !== 0 || data.typeId === 2"><a href="" ng-click="copyReport(data)">Copy</a></li>-->
+                            <!--<li><a href="" ng-click="deleteReport(data)">Delete</a></li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                    <!--<button aria-haspopup="true" id="ghx-manage-boards-operation-trigger-1" aria-owns="ghx-manage-boards-operation-popup-1-{{data.id}}" class="aui-dropdown2-trigger aui-style-default aui-button aui-button-subtle">-->
+                        <!--<span class="ghx-iconfont aui-icon aui-icon-small aui-iconfont-more ghx-clickable"></span>-->
+                    <!--</button>-->
+                <!--</td>-->
+            <!--</tr>-->
+        <!--</tbody>-->
+    <!--</table>-->
 
         <!--<tr class="element-row" dir-paginate="data in dataOngoing | filter: query | orderBy:predicate:reverse | itemsPerPage:5">-->
             <!--<td>-->
@@ -86,6 +88,41 @@
             <!--direction-links="true"-->
             <!--boundary-links="true" >-->
     <!--</dir-pagination-controls>-->
+
+        <tr class="element-row" dir-paginate="data in dataOngoing | filter: query | orderBy:predicate:reverse | itemsPerPage: ongoingPerPage" total-items="totalOngoing" current-page="pagination.current">
+            <td>
+                <div class="name-box">
+                    <a ng-href="#/report/{{data.id}}">
+                        <span ng-show="data.title !== ''">{{data.title}}</span>
+                        <i ng-show="data.title === ''">No name</i>
+                    </a>
+                </div>
+            </td>
+            <td>
+                <a ng-href="{{CONFIG.JIRA_PATH}}/secure/RapidBoard.jspa?rapidView={{data.jiraBoardId}}" ng-show="data.borardId !== 0">{{data.boardName}}</a>
+                <strong ng-show="data.typeId === 2"><i>Manual</i></strong>
+            </td>
+            <td>
+                <a ng-repeat="adminData in data.admins" ng-href="{{CONFIG.JIRA_PATH}}/secure/ViewProfile.jspa?name={{adminData.login}}">{{adminData.fullName}}{{$last ? '' : ', '}}</a>
+            </td>
+            <td>
+                <div ng-if="isAdmin" id="ghx-manage-boards-operation-popup-1-{{data.id}}" class="aui-dropdown2 aui-style-default">
+                    <ul class="aui-list-truncate">
+                        <li ng-show="data.borardId !== 0 || data.typeId === 2"><a ng-href="#/report/{{data.id}}/configure">Configure</a></li>
+                        <li ng-show="data.borardId !== 0 || data.typeId === 2"><a href="" ng-click="copyReport(data)">Copy</a></li>
+                        <li><a href="" ng-click="deleteReport(data)">Delete</a></li>
+                    </ul>
+                </div>
+                <button ng-if="isAdmin" aria-haspopup="true" id="ghx-manage-boards-operation-trigger-1" aria-owns="ghx-manage-boards-operation-popup-1-{{data.id}}" class="aui-dropdown2-trigger aui-style-default aui-button aui-button-subtle">
+                    <span class="ghx-iconfont aui-icon aui-icon-small aui-iconfont-more ghx-clickable"></span>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <br/>
+    <dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+
 </div>
 <div class="col-md-12 text-center" ng-if="dataOngoing.length === 0">
     <strong>Not found!</strong>

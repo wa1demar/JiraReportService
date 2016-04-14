@@ -1,7 +1,13 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Vitaliy Holovko
@@ -84,6 +90,18 @@ public class JiraIssue {
 
     @Column(name = "sprint_id")
     private long sprintId;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "name_issue")
+    private String summary;
+
+    @OneToMany(cascade={CascadeType.ALL}, mappedBy="issue", fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
+    @BatchSize(size = 10)
+    @OrderBy("updatedAt desc")
+    private List<DueDate> dueDates = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -181,6 +199,10 @@ public class JiraIssue {
         this.updated = updated;
     }
 
+    public Date getDueDate() {
+        return dueDate;
+    }
+
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
@@ -273,6 +295,14 @@ public class JiraIssue {
         this.sprintId = sprintId;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -288,5 +318,21 @@ public class JiraIssue {
     @Override
     public int hashCode() {
         return key.hashCode();
+    }
+
+    public List<DueDate> getDueDates() {
+        return dueDates;
+    }
+
+    public void setDueDates(List<DueDate> dates) {
+        this.dueDates = dates;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 }

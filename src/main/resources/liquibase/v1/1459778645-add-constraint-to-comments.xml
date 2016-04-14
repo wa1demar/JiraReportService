@@ -1,0 +1,23 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="1459778645" author="Vladimir Martynyuk">
+
+        <dropColumn tableName="comments" columnName="creator_name" />
+
+        <addColumn tableName="comments">
+            <column name="user_id" type="bigint">
+
+            </column>
+        </addColumn>
+
+
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="comments"
+                                 constraintName="fk_comments_creator"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+
+    </changeSet>
+</databaseChangeLog>

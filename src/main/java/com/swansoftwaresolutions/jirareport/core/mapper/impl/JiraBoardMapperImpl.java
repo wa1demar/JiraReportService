@@ -1,8 +1,10 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
+import com.swansoftwaresolutions.jirareport.core.dto.ImportedJiraBoardDto;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraBoardDto;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraBoardInfoDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraBoardMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.ImportedJiraBoardDtoMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraProject;
 import org.modelmapper.ModelMapper;
@@ -20,8 +22,14 @@ import java.util.List;
 @Component
 public class JiraBoardMapperImpl implements JiraBoardMapper {
 
-    @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    public JiraBoardMapperImpl(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+
+        modelMapper.addMappings(new ImportedJiraBoardDtoMapper());
+    }
 
     @Override
     public JiraBoardDto toDto(JiraBoard jiraBoard) {
@@ -45,6 +53,13 @@ public class JiraBoardMapperImpl implements JiraBoardMapper {
         Type targetistType = new TypeToken<List<JiraProject>>() {
         }.getType();
         return modelMapper.map(jiraBoardDtoList, targetistType);
+    }
+
+    @Override
+    public List<JiraBoard> fromImportedDtos(List<ImportedJiraBoardDto> importedJiraBoardDtos) {
+        Type targetistType = new TypeToken<List<JiraBoard>>() {
+        }.getType();
+        return modelMapper.map(importedJiraBoardDtos, targetistType);
     }
 
     @Override

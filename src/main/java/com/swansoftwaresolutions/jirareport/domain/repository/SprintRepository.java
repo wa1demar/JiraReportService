@@ -1,5 +1,7 @@
 package com.swansoftwaresolutions.jirareport.domain.repository;
 
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraSprint;
+import com.swansoftwaresolutions.jirareport.domain.entity.Report;
 import com.swansoftwaresolutions.jirareport.domain.entity.Sprint;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 
@@ -20,4 +22,8 @@ public interface SprintRepository {
     Sprint findById(long sprintId) throws NoSuchEntityException;
 
     void deleteByReportId(long id);
+
+    void addAll(List<Sprint> sprints);
+
+    void addOrUpdate(List<JiraSprint> sprints, Report report);
 }

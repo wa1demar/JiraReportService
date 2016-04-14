@@ -6,10 +6,7 @@ import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEn
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Vladimir Martynyuk
@@ -25,6 +22,15 @@ public class PortfolioController {
     public ResponseEntity<ProjectDashboardsDto> getAllUsers() throws NoSuchEntityException {
 
         ProjectDashboardsDto dashboards = dashboardService.loadPortfolio();
+
+        return new ResponseEntity<>(dashboards, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/rest/v1/portfolio/{page}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<ProjectDashboardsDto> getAllUsersPaged(@PathVariable("page") int page) throws NoSuchEntityException {
+
+        ProjectDashboardsDto dashboards = dashboardService.loadPortfolioPaged(page);
 
         return new ResponseEntity<>(dashboards, HttpStatus.OK);
     }

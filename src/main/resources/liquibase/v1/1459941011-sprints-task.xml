@@ -1,0 +1,14 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="1459941011" author="Vladimir Martynyuk">
+
+        <insert tableName="tasks">
+            <column name="name" value="sprints" />
+            <column name="label" value="Load sprints from Jira" />
+            <column name="status" value="NEW" />
+            <column name="position" value="5" />
+        </insert>
+
+    </changeSet>
+</databaseChangeLog>

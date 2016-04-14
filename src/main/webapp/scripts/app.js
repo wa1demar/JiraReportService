@@ -14,7 +14,9 @@ var jiraPluginApp = angular.module('jiraPluginApp', [
     'chart.js',
     'ui-notification',
     'nl2br',
-    'angularUtils.directives.dirPagination'
+    'angularUtils.directives.dirPagination',
+    'dndLists',
+    'xeditable'
 ]);
 
 jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
@@ -80,13 +82,34 @@ jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
             access: {
                 requiredLogin: true
             }
+        }).when('/productivity', {
+            templateUrl: 'views/productivity/main.html',
+            controller: 'ProductivityCtrl',
+            access: {
+                requiredLogin: true
+            }
+        }).when('/resource_management', {
+            templateUrl: 'views/resource_management/main.html',
+            controller: 'ResourceManagementCtrl',
+            access: {
+                requiredLogin: true
+            }
+        }).when('/dictionary/:name', {
+            templateUrl: 'views/dictionary/main.html',
+            controller: 'DictionaryCtrl',
+            access: {
+                requiredLogin: true
+            }
         }).otherwise({
             redirectTo: '/login'
         });
 });
 
-jiraPluginApp.run(function($rootScope, $window, $location, $filter, AuthenticationFactory, CONFIG) {
+jiraPluginApp.run(function($rootScope, $window, $location, $filter, AuthenticationFactory, editableOptions, CONFIG) {
     $rootScope.CONFIG = CONFIG;
+
+    //For angular-xeditable
+    editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
 
     // when the page refreshes, check if the user is already logged in
     AuthenticationFactory.check();

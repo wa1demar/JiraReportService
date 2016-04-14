@@ -25,4 +25,10 @@ public interface JiraIssueRepository {
     void delete(final Long JiraIssue) throws NoSuchEntityException;
 
     JiraIssue update(JiraIssue jiraIssue) throws NoSuchEntityException;
+
+    List<JiraIssue> findBySprintIds(List<Long> ids);
+
+    void saveAll(List<JiraIssue> list);
+
+    List<JiraIssue> findAllDueDate(List<String> agileDoneNames);
 }

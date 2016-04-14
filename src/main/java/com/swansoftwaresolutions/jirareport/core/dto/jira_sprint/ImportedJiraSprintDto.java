@@ -3,23 +3,22 @@ package com.swansoftwaresolutions.jirareport.core.dto.jira_sprint;
 import java.util.Date;
 
 /**
- * @author Vladimir Martynyuk
+ * @author Vitaliy Holovko
  */
 public class ImportedJiraSprintDto {
-    private int id;
+    private Long id;
     private String state;
     private String name;
     private Date startDate;
     private Date endDate;
     private Date completeDate;
-    private long originBoardId;
-    private long sprintId;
+    private Long originBoardId;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -63,44 +62,11 @@ public class ImportedJiraSprintDto {
         this.completeDate = completeDate;
     }
 
-    public long getOriginBoardId() {
+    public Long getOriginBoardId() {
         return originBoardId;
     }
 
-    public void setOriginBoardId(long originBoardId) {
+    public void setOriginBoardId(Long originBoardId) {
         this.originBoardId = originBoardId;
-    }
-
-    public long getSprintId() {
-        return sprintId;
-    }
-
-    public void setSprintId(long sprintId) {
-        this.sprintId = sprintId;
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ImportedJiraSprintDto that = (ImportedJiraSprintDto) o;
-
-        if (originBoardId != that.originBoardId) return false;
-        if (!name.equals(that.name)) return false;
-        if (!startDate.equals(that.startDate)) return false;
-        if (!state.equals(that.state)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = state.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + startDate.hashCode();
-        result = 31 * result + (int) (originBoardId ^ (originBoardId >>> 32));
-        return result;
     }
 }

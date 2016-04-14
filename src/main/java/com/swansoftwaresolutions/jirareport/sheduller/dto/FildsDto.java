@@ -19,6 +19,8 @@ public class FildsDto {
     private AssigneeDto creator;
     private Date duedate;
     private float customfield_10102;
+    private String description;
+    private String summary;
 
     public ProjectDto getProject() {
         return project;
@@ -106,5 +108,21 @@ public class FildsDto {
 
     public void setCustomfield_10102(float customfield_10102) {
         this.customfield_10102 = customfield_10102;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 }

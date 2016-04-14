@@ -4,6 +4,8 @@ import com.swansoftwaresolutions.jirareport.core.dto.sprint_issue.IssuesByDayDto
 import com.swansoftwaresolutions.jirareport.core.dto.SprintIssueDto;
 import com.swansoftwaresolutions.jirareport.core.dto.dashboard.Chart;
 import com.swansoftwaresolutions.jirareport.core.dto.dashboard.SprintProjectReportDto;
+import com.swansoftwaresolutions.jirareport.sheduller.dto.IssueDto;
+import com.swansoftwaresolutions.jirareport.sheduller.dto.JiraIssueDto;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -85,10 +87,15 @@ public class HelperMethods {
         return 0;
     }
 
-    public Chart generateReportChart(List<SprintProjectReportDto> sprints, float targetPoints) {
+    public Chart generateReportChart(List<SprintProjectReportDto> sprints) {
         Chart chart = new Chart();
 
         String date = "0,";
+
+        float targetPoints = 0;
+        for (SprintProjectReportDto sprintProjectReportDto : sprints){
+            targetPoints+=sprintProjectReportDto.getTargetPoints();
+        }
 
         int[] actual = new int[sprints.size()+1];
         double[] target = new double[sprints.size()+1];
@@ -102,7 +109,7 @@ public class HelperMethods {
         int i = 1;
         int j = 1;
         for (SprintProjectReportDto sprint : sprints) {
-            if (!sprint.isNotCountTarget() && sprint.getState()!=null && (sprint.getState().equals("Closed") || sprint.getState().equals("closed"))) {
+            if (!sprint.isNotCountTarget() && (sprint.getState()!= null && sprint.getState().equalsIgnoreCase("closed"))){
                 actual[j] = actual[j - 1] - (int) sprint.getActualPoints();
                 list.add(actual[j - 1] - (int) sprint.getActualPoints());
                 j++;
@@ -172,5 +179,43 @@ public class HelperMethods {
         chart.setTarget(target);
 
         return chart;
+    }
+
+
+    public JiraIssueDto convertIssueDtoToJiraIssueDto(IssueDto issueDto, long boardId) {
+        HelperMethods helperMethods = new HelperMethods();
+
+        JiraIssueDto jiraIssueDto = new JiraIssueDto();
+
+        jiraIssueDto.setKey(issueDto.key);
+        jiraIssueDto.setProjectId(issueDto.fields.getProject().getId());
+        jiraIssueDto.setProjectKey(issueDto.fields.getProject().getKey());
+        jiraIssueDto.setIssueTypeId(issueDto.fields.getIssuetype().id);
+        jiraIssueDto.setIssueTypeName(issueDto.fields.getIssuetype().name);
+        jiraIssueDto.setIssueTypeSubTask(issueDto.fields.getIssuetype().subtask);
+        jiraIssueDto.setTimeSpent(helperMethods.isNull(issueDto.fields.getTimespent()));
+        if (issueDto.fields.getResolution() != null) {
+            jiraIssueDto.setResolutionId(issueDto.fields.getResolution().id);
+            jiraIssueDto.setResolutionName(issueDto.fields.getResolution().name);
+        } else {
+            jiraIssueDto.setResolutionId(0);
+            jiraIssueDto.setResolutionName("");
+        }
+        jiraIssueDto.setCreated(issueDto.fields.getCreated());
+        jiraIssueDto.setUpdated(issueDto.fields.getUpdated());
+        jiraIssueDto.setAssignedKey(issueDto.fields.getAssignee().key);
+        jiraIssueDto.setAssignedName(issueDto.fields.getAssignee().name);
+        jiraIssueDto.setAssignedFullName(issueDto.fields.getAssignee().displayName);
+        jiraIssueDto.setCreatorKey(issueDto.fields.getCreator().key);
+        jiraIssueDto.setCreatorName(issueDto.fields.getCreator().name);
+        jiraIssueDto.setCreatorFullName(issueDto.fields.getCreator().displayName);
+        jiraIssueDto.setStatusId(issueDto.fields.getStatus().id);
+        jiraIssueDto.setStatusName(issueDto.fields.getStatus().name);
+        jiraIssueDto.setDueDate(issueDto.fields.getDuedate());
+        jiraIssueDto.setPoints(issueDto.fields.getCustomfield_10102());
+        jiraIssueDto.setBoardId(boardId);
+        jiraIssueDto.setDescription(issueDto.fields.getDescription());
+        jiraIssueDto.setSummary(issueDto.fields.getSummary());
+        return jiraIssueDto;
     }
 }

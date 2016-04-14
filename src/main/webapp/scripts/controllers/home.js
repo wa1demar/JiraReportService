@@ -5,21 +5,50 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', '$location', 'AuthenticationFact
 
         var self = this;
         $scope.loaderShow = true;
+        $scope.currentTabTitle = 'ongoing';
         //$scope.setLoading(true);
 
-        this.getReportsData = function () {
-            ReportsFactory.query({type: "ongoing"}, function(result){
+//----------------------------------------------------------------------------------------------------------------------
+//TODO For pagination
+        $scope.dataOngoing = [];
+        $scope.totalOngoing = 0;
+        $scope.ongoingPerPage = 10; // this should match however many results your API puts on one page
+        getResultsPage(1);
+
+        $scope.pagination = {
+            current: 1
+        };
+
+        $scope.pageChanged = function(newPage) {
+            getResultsPage(newPage);
+        };
+
+        function getResultsPage(pageNumber) {
+            // this is just an example, in reality this stuff should be in a service
+            $scope.loaderShow = true;
+            ReportsFactory.query({type: $scope.currentTabTitle, page: pageNumber}, function(result){
                 $scope.dataOngoing = result.reports;
+                $scope.totalOngoing = result.totalItems;
+                $scope.ongoingPerPage = result.itemsPerPage;
                 $scope.loaderShow = false;
                 //$scope.setLoading(false);
             });
+        }
 
-            ReportsFactory.query({type: "closed"}, function(result){
-                $scope.dataClosed = result.reports;
-            });
-        };
-
-        self.getReportsData();
+//----------------------------------------------------------------------------------------------------------------------
+//        this.getReportsData = function () {
+//            ReportsFactory.query({type: "ongoing"}, function(result){
+//                $scope.dataOngoing = result.reports;
+//                $scope.loaderShow = false;
+//                //$scope.setLoading(false);
+//            });
+//
+//            ReportsFactory.query({type: "closed"}, function(result){
+//                $scope.dataClosed = result.reports;
+//            });
+//        };
+//
+//        self.getReportsData();
 
 //----------------------------------------------------------------------------------------------------------------------
 //Tabs
@@ -35,6 +64,8 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', '$location', 'AuthenticationFact
 
         $scope.onClickTab = function (tab) {
             $scope.currentTab = tab.url;
+            $scope.currentTabTitle = tab.title.toLowerCase();
+            getResultsPage(1);
         };
 
         $scope.isActiveTab = function(tabUrl) {
@@ -43,8 +74,8 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', '$location', 'AuthenticationFact
 
 //----------------------------------------------------------------------------------------------------------------------
 //Order reports
-        $scope.predicate = 'closedDate';
-        $scope.reverse = true;
+        $scope.predicate = 'title';
+        $scope.reverse = false;
         $scope.order = function(predicate) {
             $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
             $scope.predicate = predicate;
@@ -94,7 +125,8 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', '$location', 'AuthenticationFact
             });
             modalInstance.result.then(function (data) {
                 ReportFactory.delete({id: data.id}, function() {
-                    self.getReportsData();
+                    getResultsPage($scope.pagination.current);
+                    //self.getReportsData();
                     Notification.success("Delete report success");
                 }, function () {
                     Notification.error("Server error");
@@ -118,7 +150,8 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', '$location', 'AuthenticationFact
             });
             modalInstance.result.then(function (data) {
                 CopyReportFactory.copy({reportId: data.id}, function(){
-                    self.getReportsData();
+                    getResultsPage($scope.pagination.current);
+                    //self.getReportsData();
                     Notification.success("Copy report success");
                 }, function () {
                     Notification.error("Server error");

@@ -31,6 +31,11 @@ public class ConfigDtoBuilder {
         return this;
     }
 
+    public ConfigDtoBuilder dueDateIssueStatus(String dueDateIssueStatus) {
+        dto.setDueDateIssueStatus(dueDateIssueStatus);
+        return this;
+    }
+
     public ConfigDtoBuilder jiraDevGroupName(String jiraDevGroupName) {
         dto.setJiraDevGroupName(jiraDevGroupName);
         return this;

@@ -638,6 +638,9 @@ table.aui .tr-for-progress-bar {
     border-bottom: none;
 }
 
+.ban-circle-size-100 {
+    font-size: 100px;
+}
 
 /*====================================================================================================================*/
 /*SPRINT TEAM ACTIVITY AND ISSUE*/
@@ -761,4 +764,51 @@ table.aui .tr-for-progress-bar {
     font-size: 4em;
     color:white;
     text-shadow: 2px 2px 2px #021124;
+}
+
+/*====================================================================================================================*/
+/*DUE DATE ISSUES*/
+/*====================================================================================================================*/
+.due-date-issues-red {
+    color: #FF0000;
+}
+.due-date-issues-grey {
+    color: #808080;
+}
+.due-date-issues-black {
+    color: #000000;
+}
+.summary-short {
+    display: -webkit-box;
+    height: 60px;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+.summary-short.full{
+    height: 100%;
+    -webkit-line-clamp: inherit;
+}
+
+/*====================================================================================================================*/
+/*MENU*/
+/*====================================================================================================================*/
+.menu-dropdown-item {
+    cursor: pointer;
+}
+
+.dropdown-menu li a.active{
+    color: #262626;
+    text-decoration: none;
+    background-color: #f5f5f5;
+}
+
+/*====================================================================================================================*/
+/*DICTIONARY*/
+/*====================================================================================================================*/
+#dictionary-table {
+    width: 800px;
+    margin: 0 auto;
 }

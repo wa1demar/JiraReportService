@@ -2,22 +2,9 @@
 
 jiraPluginApp.controller('ConfigureCtrl', ['$scope', '$routeParams', 'ReportFactory',
     function($scope, $routeParams, ReportFactory) {
-        var self = this;
 
-        $scope.getReport = function () {
-            ReportFactory.get({id: $routeParams.reportId}, function (result) {
-                $scope.report = result;
-                var admins = [];
-                for (var index = 0; index < result.admins.length; index++) {
-                    admins.push(result.admins[index].login);
-                }
-                $scope.report.admins = admins;
-                $scope.loaderShow = false;
-            });
-        };
-
-        $scope.getReport();
-
+        //data for link
+        $scope.configureReportInfo = {};
 //--------------------------------------------------------------------------------------------------------------
 //Tabs
         $scope.tabs = [{
@@ -43,8 +30,27 @@ jiraPluginApp.controller('ConfigureCtrl', ['$scope', '$routeParams', 'ReportFact
 //General Settings
 jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', '$uibModal', 'ReportFactory', 'UsersFactory', 'Notification',
     function($scope, $routeParams, $uibModal, ReportFactory, UsersFactory, Notification) {
-        var self = this;
         $scope.loaderShow = true;
+
+        var self = this;
+
+        $scope.getReport = function () {
+            ReportFactory.get({id: $routeParams.reportId}, function (result) {
+                $scope.report = result;
+                var admins = [];
+                for (var index = 0; index < result.admins.length; index++) {
+                    admins.push(result.admins[index].login);
+                }
+                $scope.report.admins = admins;
+                $scope.loaderShow = false;
+
+                //data for link
+                $scope.configureReportInfo.id = result.id;
+                $scope.configureReportInfo.title = result.title;
+            });
+        };
+
+        $scope.getReport();
 
 //----------------------------------------------------------------------------------------------------------------------
 //Calender
@@ -92,7 +98,7 @@ jiraPluginApp.controller('ConfigureGeneralDataCtrl', ['$scope', '$routeParams', 
                 ReportFactory.update({
                     id: $routeParams.reportId}, reportData, function(){
                     //FIXME not reinit select2
-                    $scope.$parent.getReport();
+                    $scope.getReport();
                     Notification.success('Save report success');
                 }, function () {
                     Notification.error('Server error');
@@ -117,7 +123,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 
 //----------------------------------------------------------------------------------------------------------------------
 //get developer
-        UsersFactory.query({id: "filtered"}, function(result) {
+        UsersFactory.query({}, function(result) {
             $scope.devUsers = result.users;
         });
 
@@ -271,7 +277,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //get developer
 //TODO need refactoring
-            var users = UsersFactory.query({id: "filtered"}, function() {
+            UsersFactory.query({id: "filtered"}, function(users) {
                 $scope.devUsersForAdd = users.users;
                 for (var index = 0; index < $scope.devUsersForAdd.length; index++) {
                     for (var indexTeam = 0; indexTeam < $scope.sprintTeams.length; indexTeam++) {
@@ -306,6 +312,10 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             ReportFactory.get({id: $routeParams.reportId}, function(result){
                 $scope.report = result;
                 $scope.getSprints(data);
+
+                //data for link
+                $scope.configureReportInfo.id = result.id;
+                $scope.configureReportInfo.title = result.title;
             });
         };
 
@@ -336,7 +346,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 
 //----------------------------------------------------------------------------------------------------------------------
 //get developer
-            var users = UsersFactory.query({id: "filtered"}, function(){
+            UsersFactory.query({id: "filtered"}, function(users){
                 for (var index = 0; index < users.users.length; index++) {
                     for (var indexTeam = 0; indexTeam < $scope.sprintTeams.length; indexTeam++) {
                         if (users.users[index].login === $scope.sprintTeams[indexTeam].developerLogin) {
@@ -354,7 +364,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
 
 //----------------------------------------------------------------------------------------------------------------------
 //get developer
-            var users = UsersFactory.query({id: "filtered"}, function(){
+            UsersFactory.query({id: "filtered"}, function(users){
                 for (var index = 0; index < users.users.length; index++) {
                     for (var indexTeam = 0; indexTeam < $scope.sprintTeams.length; indexTeam++) {
                         if (users.users[index].login === $scope.sprintTeams[indexTeam].developerLogin) {

@@ -1,0 +1,18 @@
+<div class="modal-header">
+  <h3 class="modal-title">Add new element</h3>
+</div>
+<form name="dictionaryForm" ng-submit="submit()" novalidate>
+  <div class="modal-body">
+      <div class="form-group" ng-class="{ 'has-error': dictionaryForm.$submitted || dictionaryForm.name.$touched && dictionaryForm.name.$invalid }">
+        <label for="name">Dashboard name:</label>
+        <input type="text" class="form-control" id="name" name="name" ng-model="model.name" required>
+        <div class="help-block" ng-messages="dictionaryForm.title.$error" ng-if="dictionaryForm.name.$touched || dictionaryForm.$submitted">
+          <p ng-message="required">Name name is required</p>
+        </div>
+      </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="submit" ng-click="ok()">Save</button>
+    <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+  </div>
+</form>

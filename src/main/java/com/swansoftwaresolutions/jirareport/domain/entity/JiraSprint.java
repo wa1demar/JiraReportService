@@ -103,33 +103,4 @@ public class JiraSprint implements Serializable {
         this.sprintId = sprintId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        JiraSprint that = (JiraSprint) o;
-
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (!boardId.equals(that.boardId)) return false;
-        if (!name.equals(that.name)) return false;
-        if (!state.equals(that.state)) return false;
-        if (!startDate.equals(that.startDate)) return false;
-        if (endDate != null ? !endDate.equals(that.endDate) : that.endDate != null) return false;
-        return completeDate != null ? completeDate.equals(that.completeDate) : that.completeDate == null;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + boardId.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + state.hashCode();
-        result = 31 * result + startDate.hashCode();
-        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
-        result = 31 * result + (completeDate != null ? completeDate.hashCode() : 0);
-        return result;
-    }
-
 }

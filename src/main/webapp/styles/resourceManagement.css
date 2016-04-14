@@ -1,0 +1,289 @@
+/*====================================================================================================================*/
+/*GENERAL LEFT*/
+/*====================================================================================================================*/
+.res {
+    height: calc(100vh - 130px);
+    width: 100%;
+    box-sizing: border-box;
+    /*border: 1px solid red;*/
+}
+.res-left {
+    height: 100%;
+    width: 80%;
+    float: left;
+    box-sizing: border-box;
+    /*border: 1px solid green;*/
+}
+.res-left-head {
+    border-bottom: 1px solid black;
+    margin: 5px;;
+}
+.res-left-content {
+    width: 100%;
+    /*height: calc(100% - 30px);*/
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: auto;
+    /*border: 1px solid yellow;*/
+}
+
+.res-left-content-top {
+
+}
+
+.res-left-content-center {
+    width: 100%;
+    height: calc(100% - 60px);
+}
+
+.res-left-content ul.main {
+    height: 100%;
+    min-width: 100%;
+    white-space: nowrap;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.res-left-content li.main.grey {
+    background: #EEEEEE;
+}
+
+.res-left-content li.main {
+    /*height: 100%;*/
+    display: inline-block;
+    vertical-align: top;
+    width: 220px;
+    margin: 0 10px;
+}
+
+.main h4 {
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.main h4 .control-icon {
+    float: right;
+    font-size: 14px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.res-left-content ul.item {
+    height: 100%;
+    min-width: 100%;
+    white-space: nowrap;
+    padding: 10px;
+    border: 1px solid #CCCCCC;
+}
+
+.res-left-content ul.item:empty {
+    padding: 25px 5px;
+}
+
+.res-left-content ul.item li {
+    background: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    list-style-type: none;
+    margin: 0 0 10px 0;
+    padding: 2px;
+    cursor: pointer;
+    min-height: 75px;
+}
+
+.res-left-content ul.item li.selected {
+    color: #3c763d;
+    background-color: #dff0d8;
+}
+
+.avatar {
+    text-align: center;
+    font-size: 25px;
+    margin: 10px 0;
+}
+
+.name-label {
+    text-align: left;
+    margin-top: 5px;
+}
+
+.engineer-lvl-label {
+    text-align: left;
+    font-weight: bold;
+}
+
+.technologies-label {
+    text-align: left;
+    margin-left: 5px;;
+}
+
+/*====================================================================================================================*/
+/*GENERAL RIGHT*/
+/*====================================================================================================================*/
+
+.res-right {
+    width: 20%;
+    height: 100%;
+    float: right;
+    background: #EEEEEE;
+    box-sizing: border-box;
+    overflow-x: auto;
+    overflow-y: auto;
+    border-left: 1px solid #CCCCCC;
+    /*border: 1px solid blue;*/
+}
+
+/*====================================================================================================================*/
+/*SEARCH BLOCK*/
+/*====================================================================================================================*/
+.search-block {
+
+}
+
+.search-block-title {
+    background: #DDDDDD;
+    padding: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.search-block-content {
+    padding: 25px;
+}
+
+.search-block-content select{
+    width: 100%;
+}
+
+
+
+/*====================================================================================================================*/
+/*MEMBER INFO BLOCK*/
+/*====================================================================================================================*/
+.member-info-block {
+
+}
+
+.member-info-block-content {
+    padding: 25px;
+}
+
+.member-info-block-content-el {
+    padding-left: 10px;
+}
+
+.row.margin-0 {
+    margin: 0;
+}
+
+.control-icon-right {
+    float: right;
+}
+
+.member-info-block-content-subtitle {
+    display: block;
+    text-align: left;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.member-info-ul {
+    padding-left: 30px;
+}
+
+.member-info-ul.without-list-style-type li {
+    list-style-type: none;
+}
+
+.member-info-ul li {
+    /*list-style-type: none;*/
+}
+
+.member-info-divider {
+    border-bottom: 2px dashed #CCCCCC;
+    margin: 10px 0;
+}
+
+.empty-items {
+    text-align: center;
+    font-style: italic;
+}
+
+.editable-description .editable-buttons {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.editable-description .editable-textarea,
+.editable-description .editable-controls,
+.editable-description .editable-wrap .editable-controls>textarea {
+    width: 100%;
+}
+
+/*====================================================================================================================*/
+/*DEFAULT STYLES*/
+/*====================================================================================================================*/
+/**
+ * For the correct positioning of the placeholder element, the dnd-list and
+ * it's children must have position: relative
+ */
+.simpleDemo ul[dnd-list],
+.simpleDemo ul[dnd-list] > li {
+    position: relative;
+}
+
+/**
+ * The dnd-list should always have a min-height,
+ * otherwise you can't drop to it once it's empty
+ */
+.simpleDemo ul[dnd-list] {
+    min-height: 42px;
+    padding-left: 0px;
+}
+
+/**
+ * The dndDraggingSource class will be applied to
+ * the source element of a drag operation. It makes
+ * sense to hide it to give the user the feeling
+ * that he's actually moving it.
+ */
+.simpleDemo ul[dnd-list] .dndDraggingSource {
+    display: none;
+}
+
+/**
+ * An element with .dndPlaceholder class will be
+ * added to the dnd-list while the user is dragging
+ * over it.
+ */
+.simpleDemo ul[dnd-list] .dndPlaceholder {
+    display: block;
+    background-color: #ddd;
+    min-height: 42px;
+}
+
+/**
+ * The dnd-lists's child elements currently MUST have
+ * position: relative. Otherwise we can not determine
+ * whether the mouse pointer is in the upper or lower
+ * half of the element we are dragging over. In other
+ * browsers we can use event.offsetY for this.
+ */
+.simpleDemo ul[dnd-list] li {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: block;
+    padding: 10px 15px;
+    margin: 10px 0;
+}
+
+/**
+ * Show selected elements in green
+ */
+.simpleDemo ul[dnd-list] li.selected {
+    background-color: #dff0d8;
+    color: #3c763d;
+}

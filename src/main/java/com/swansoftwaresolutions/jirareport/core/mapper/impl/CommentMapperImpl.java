@@ -2,6 +2,7 @@ package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
 import com.swansoftwaresolutions.jirareport.core.dto.CommentDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.CommentMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.CommentDtoMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.Comment;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -17,8 +18,14 @@ import java.util.List;
 @Component
 public class CommentMapperImpl implements CommentMapper {
 
-    @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    public CommentMapperImpl(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+
+        modelMapper.addMappings(new CommentDtoMapper());
+    }
 
     @Override
     public CommentDto toDto(Comment comment) {

@@ -2,36 +2,68 @@
     <h3 class="modal-title">Plugin config</h3>
 </div>
 <div class="modal-body">
-    <div class="form-group">
-        <label for="jira-user">Jira User:</label>
-        <input type="text" class="form-control" id="jira-user" ng-model="configData.jiraUser">
-        <p class="for-example">for example: admin</p>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Dashboard</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label for="jira-user">Jira User:</label>
+                        <input type="text" class="form-control" id="jira-user" ng-model="configData.jiraUser">
+                        <p class="for-example">for example: admin</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="jira-pass">Jira Pass:</label>
+                        <input type="text" class="form-control" id="jira-pass" ng-model="configData.jiraPass">
+                        <p class="for-example">for example: admin</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="agile-done-name">Agile Done Name:</label>
+                        <input type="text" class="form-control" id="agile-done-name" ng-model="configData.agileDoneName">
+                        <p class="for-example">for example: Done</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="jira-dev-group-name">Jira Dev Group Name:</label>
+                        <input type="text" class="form-control" id="jira-dev-group-name" ng-model="configData.jiraDevGroupName">
+                        <p class="for-example">for example: jira-developers</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="bug-name">Bug Name:</label>
+                        <input type="text" class="form-control" id="bug-name" ng-model="configData.bugName">
+                        <p class="for-example">for example: Bug</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="non-working-days">Non Working Days:</label>
+                        <input type="text" class="form-control" id="non-working-days" ng-model="configData.nonWorkingDays">
+                        <p class="for-example">for example: 09/05/2015, 10/15/2015</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Due Date Issues/Productivity</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label for="due-date-issue-status">Due Date Issue Status:</label>
+                        <input type="text" class="form-control" id="due-date-issue-status" ng-model="configData.dueDateIssueStatus">
+                        <p class="for-example">for example: done</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="group-in-report">Groups in report:</label>
+                        <input type="text" class="form-control" id="group-in-report" ng-model="configData.groupInReport">
+                        <p class="for-example">for example: jira-developers</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="jira-pass">Jira Pass:</label>
-        <input type="text" class="form-control" id="jira-pass" ng-model="configData.jiraPass">
-        <p class="for-example">for example: admin</p>
-    </div>
-    <div class="form-group">
-        <label for="agile-done-name">Agile Done Name:</label>
-        <input type="text" class="form-control" id="agile-done-name" ng-model="configData.agileDoneName">
-        <p class="for-example">for example: Done</p>
-    </div>
-    <div class="form-group">
-        <label for="jira-dev-group-name">Jira Dev Group Name:</label>
-        <input type="text" class="form-control" id="jira-dev-group-name" ng-model="configData.jiraDevGroupName">
-        <p class="for-example">for example: jira-developers</p>
-    </div>
-    <div class="form-group">
-        <label for="bug-name">Bug Name:</label>
-        <input type="text" class="form-control" id="bug-name" ng-model="configData.bugName">
-        <p class="for-example">for example: Bug</p>
-    </div>
-    <div class="form-group">
-        <label for="non-working-days">Non Working Days:</label>
-        <input type="text" class="form-control" id="non-working-days" ng-model="configData.nonWorkingDays">
-        <p class="for-example">for example: 09/05/2015, 10/15/2015</p>
-    </div>
+
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" type="button" ng-click="ok()">Save</button>

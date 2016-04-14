@@ -27,39 +27,60 @@
             <th style="width: 150px;">
                 <span>Due Date</span>
             </th>
-            <th style="width: 100px;"></th>
+            <!--<th style="width: 100px;"></th>-->
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="data in filtered = (dataDueDate | filter:query | orderBy:predicate:reverse)">
+        <tr class="element-row" dir-paginate="data in dataDueDate | filter: query | orderBy:predicate:reverse | itemsPerPage: dueDatePerPage" total-items="totalDueDate" current-page="pagination.current">
+        <!--<tr ng-repeat="data in filtered = (dataDueDate | filter:query | orderBy:predicate:reverse)">-->
             <td>{{data.project}}</td>
             <td>{{data.assignee}}</td>
-            <td>{{data.key}}</td>
-            <td>{{data.summary}}</td>
-            <td>{{data.description}}</td>
+            <td>
+                <a ng-href="{{CONFIG.JIRA_PATH}}/browse/{{data.key}}">{{data.key}}</a>
+            </td>
+            <td>
+                <div>{{data.summary}}</div>
+            </td>
+            <td>
+                <div ng-if="data.description !== '' && data.description !== null"
+                     ng-click="showFullDescription = !showFullDescription"
+                     ng-class="showFullDescription || (data.description).length <= 300 ? 'summary-short full' : 'summary-short'">{{data.description}}</div>
+                <div ng-if="data.description === '' || data.description === null || (data.description).length === 0"><i>Description is empty</i></div>
+            </td>
             <td>
                 {{statusStyle = data.status === "ACTIVE" ? "aui-lozenge-success" : "aui-lozenge-error"; ""}}
-                <span class="aui-lozenge aui-lozenge-subtle {{statusStyle}}">{{data.status}}</span>
+                <span class="aui-lozenge aui-lozenge-subtle aui-lozenge-default">{{data.status}}</span>
             </td>
             <td>
-                <div ng-repeat="dueDate in data.dueDate"><span class="">{{dueDate}}</span></div>
-            </td>
-            <td>
-                <div id="ghx-manage-boards-operation-popup-1-{{data.id}}" class="aui-dropdown2 aui-style-default">
-                    <ul class="aui-list-truncate">
-                        <li><a href="" >Action 1</a></li>
-                        <li><a href="" >Action 2</a></li>
-                        <li><a href="" >Action 3</a></li>
-                    </ul>
+                <div ng-repeat="dueDate in data.dueDate track by $index">
+                    <span ng-class="$first && data.dueDate.length === 1 && dueDate < todayDate ?
+                                        'due-date-issues-red'
+                                    : ($first && data.dueDate.length !== 1 && dueDate >= todayDate) || ($first && data.dueDate.length === 1 && dueDate >= todayDate) ?
+                                        'due-date-issues-black'
+                                    : $first && data.dueDate.length !== 1 && dueDate < todayDate && (dueDate | date:'MM/dd/yyyy') !== (todayDate | date:'MM/dd/yyyy') ?
+                                        'due-date-issues-red'
+                                    : !$first && data.dueDate.length !== 1 ?
+                                        'due-date-issues-grey'
+                                    : 'due-date-issues-grey'">{{dueDate | date:'MM/dd/yyyy'}}</span>
                 </div>
-                <button aria-haspopup="true" id="ghx-manage-boards-operation-trigger-1" aria-owns="ghx-manage-boards-operation-popup-1-{{data.id}}" class="aui-dropdown2-trigger aui-style-default aui-button aui-button-subtle">
-                    <span class="ghx-iconfont aui-icon aui-icon-small aui-iconfont-more ghx-clickable"></span>
-                </button>
             </td>
+            <!--<td>-->
+                <!--<div id="ghx-manage-boards-operation-popup-1-{{data.id}}" class="aui-dropdown2 aui-style-default">-->
+                    <!--<ul class="aui-list-truncate">-->
+                        <!--<li><a href="" >Action 1</a></li>-->
+                        <!--<li><a href="" >Action 2</a></li>-->
+                        <!--<li><a href="" >Action 3</a></li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+                <!--<button aria-haspopup="true" id="ghx-manage-boards-operation-trigger-1" aria-owns="ghx-manage-boards-operation-popup-1-{{data.id}}" class="aui-dropdown2-trigger aui-style-default aui-button aui-button-subtle">-->
+                    <!--<span class="ghx-iconfont aui-icon aui-icon-small aui-iconfont-more ghx-clickable"></span>-->
+                <!--</button>-->
+            <!--</td>-->
         </tr>
     </tbody>
 </table>
-
+<br>
+<dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
 <div class="col-md-12 text-center" ng-if="dataDueDate.length === 0">
     <strong>Not found!</strong>
 </div>

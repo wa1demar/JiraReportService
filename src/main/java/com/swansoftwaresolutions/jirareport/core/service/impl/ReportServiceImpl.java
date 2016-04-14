@@ -14,6 +14,7 @@ import com.swansoftwaresolutions.jirareport.core.service.*;
 import com.swansoftwaresolutions.jirareport.domain.entity.*;
 import com.swansoftwaresolutions.jirareport.domain.entity.builder.CacheProjectTotalBuilder;
 import com.swansoftwaresolutions.jirareport.domain.entity.builder.ReportBuilder;
+import com.swansoftwaresolutions.jirareport.domain.model.Paged;
 import com.swansoftwaresolutions.jirareport.domain.repository.*;
 import com.swansoftwaresolutions.jirareport.core.dto.report.ReportDto;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -75,6 +76,7 @@ public class ReportServiceImpl implements ReportService {
 
     @Autowired
     ConfigService configService;
+
     @Autowired
     JiraIssueService jiraIssueService;
 
@@ -83,9 +85,12 @@ public class ReportServiceImpl implements ReportService {
     public ReportListDto retrieveAllReportsList() {
         List<ReportDto> reportDtos = reportMapper.toDtos(reportRepository.findAll());
 
+        List<Long> ids = reportDtos.stream().map(r -> r.getBoardId()).collect(Collectors.toList());
+        Map<Long, JiraBoard> boards = jiraBoardRepository.findByIds(ids).stream().collect(Collectors.toMap(JiraBoard::getId, b -> b));
+
         for (ReportDto dto : reportDtos) {
             if (dto.getBoardId() != null) {
-                JiraBoard board = jiraBoardRepository.findById(dto.getBoardId());
+                JiraBoard board = boards.get(dto.getBoardId());
                 dto.setBoardName(board.getName());
                 dto.setJiraBoardId(board.getBoardId());
             }
@@ -109,15 +114,19 @@ public class ReportServiceImpl implements ReportService {
 
         List<JiraSprint> jiraSprints = jiraSprintRepository.findByBoardId(addedReport.getBoardId());
 
+        List<Sprint> sprints = new ArrayList<>();
         for (JiraSprint jiraSprint : jiraSprints) {
             Sprint sprint = new Sprint();
             sprint.setJiraSprint(jiraSprint);
             sprint.setReport(addedReport);
 
-            sprintRepository.add(sprint);
+            sprints.add(sprint);
         }
 
+        sprintRepository.addAll(sprints);
+
         ReportDto reportDto = reportMapper.toDto(addedReport);
+
         if (reportDto.getBoardId() != null) {
             JiraBoard board = jiraBoardRepository.findById(reportDto.getBoardId());
             reportDto.setBoardName(board.getName());
@@ -143,9 +152,12 @@ public class ReportServiceImpl implements ReportService {
     public ReportListDto retrieveAllClosedReportsList() {
         List<ReportDto> reportDtos = reportMapper.toDtos(reportRepository.findAllClosed());
 
+        List<Long> ids = reportDtos.stream().map(r -> r.getBoardId()).collect(Collectors.toList());
+        Map<Long, JiraBoard> boards = jiraBoardRepository.findByIds(ids).stream().collect(Collectors.toMap(JiraBoard::getId, b -> b));
+
         for (ReportDto dto : reportDtos) {
             if (dto.getBoardId() != null) {
-                JiraBoard board = jiraBoardRepository.findById(dto.getBoardId());
+                JiraBoard board = boards.get(dto.getBoardId());
                 dto.setBoardName(board.getName());
                 dto.setJiraBoardId(board.getBoardId());
             }
@@ -153,6 +165,32 @@ public class ReportServiceImpl implements ReportService {
 
         return new ReportListDtoBuilder().reportsDto(reportDtos).build();
     }
+
+    @Override
+    public ReportListDto retrieveAllClosedReportsListPaginated(int page) {
+        Paged paged = reportRepository.findAllClosedPaginated(page);
+        List<ReportDto> reportDtos = reportMapper.toDtos(paged.getList());
+
+        List<Long> ids = reportDtos.stream().map(r -> r.getBoardId()).collect(Collectors.toList());
+        Map<Long, JiraBoard> boards = jiraBoardRepository.findByIds(ids).stream().collect(Collectors.toMap(JiraBoard::getId, b -> b));
+
+        for (ReportDto dto : reportDtos) {
+            if (dto.getBoardId() != null) {
+                JiraBoard board = boards.get(dto.getBoardId());
+                dto.setBoardName(board.getName());
+                dto.setJiraBoardId(board.getBoardId());
+            }
+        }
+
+
+        return new ReportListDtoBuilder()
+                .page(page)
+                .pages((int) Math.floor(paged.getTotal() / 10) + 1)
+                .items(paged.getTotal())
+                .reportsDto(reportDtos)
+                .build();
+    }
+
 
     @Override
     public ReportDto copy(long id) throws NoSuchEntityException {
@@ -191,7 +229,7 @@ public class ReportServiceImpl implements ReportService {
             sprint.setEndDate(target.getEndDate());
             sprint.setState(target.getState());
 
-            List<SprintDeveloper> developers = sprintDeveloperRepository.findBySprintId(target.getId());
+            List<SprintDeveloper> developers = sprintDeveloperRepository.findBySprintId(target.getId()); // TODO : push from loop
 
             Sprint newSprint = sprintRepository.add(sprint);
 
@@ -199,7 +237,7 @@ public class ReportServiceImpl implements ReportService {
                 developer.setId(null);
                 developer.setSprint(newSprint);
 
-                sprintDeveloperRepository.add(developer);
+                sprintDeveloperRepository.add(developer); // TODO: move to repository?
             }
         }
 
@@ -244,9 +282,11 @@ public class ReportServiceImpl implements ReportService {
     public ReportListDto retrieveAllOngoingReportsList() {
         List<ReportDto> reportDtos = reportMapper.toDtos(reportRepository.findAllOpened());
 
+        List<Long> ids = reportDtos.stream().map(r -> r.getBoardId()).collect(Collectors.toList());
+        Map<Long, JiraBoard> boards = jiraBoardRepository.findByIds(ids).stream().collect(Collectors.toMap(JiraBoard::getId, b -> b));
         for (ReportDto dto : reportDtos) {
             if (dto.getBoardId() != null) {
-                JiraBoard board = jiraBoardRepository.findById(dto.getBoardId());
+                JiraBoard board = boards.get(dto.getBoardId());
                 dto.setBoardName(board.getName());
                 dto.setJiraBoardId(board.getBoardId());
             }
@@ -256,13 +296,38 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    public ReportListDto retrieveAllOngoingReportsListPaginated(int page) {
+        Paged paged = reportRepository.findAllOpenedPaginated(page);
+        List<ReportDto> reportDtos = reportMapper.toDtos(paged.getList());
+
+        List<Long> ids = reportDtos.stream().map(r -> r.getBoardId()).collect(Collectors.toList());
+        Map<Long, JiraBoard> boards = jiraBoardRepository.findByIds(ids).stream().collect(Collectors.toMap(JiraBoard::getId, b -> b));
+
+        for (ReportDto dto : reportDtos) {
+            if (dto.getBoardId() != null) {
+                JiraBoard board = boards.get(dto.getBoardId());
+                dto.setBoardName(board.getName());
+                dto.setJiraBoardId(board.getBoardId());
+            }
+        }
+
+
+        return new ReportListDtoBuilder()
+                .page(page)
+                .pages((int) Math.floor(paged.getTotal() / 10) + 1)
+                .items(paged.getTotal())
+                .reportsDto(reportDtos)
+                .build();
+    }
+
+    @Override
     public ProjectDashboardDto findProjectDashboard(Long reportId) {
         ProjectDashboardDto projectDashboardDto = new ProjectDashboardDto();
 
         try {
             Report report = reportRepository.findById(reportId);
             if (report.getBoardId() == null) {
-                projectDashboardDto.setSprints(buildManualSprints(report.getId()));
+                projectDashboardDto.setSprints(buildManualSprints(report));
                 projectDashboardDto.setReport(buildProjectReport(reportId, projectDashboardDto.getSprints()));
             } else {
                 projectDashboardDto.setSprints(buildAutomationSprints(report));
@@ -270,7 +335,7 @@ public class ReportServiceImpl implements ReportService {
             }
 
         } catch (NoSuchEntityException e) {
-
+            e.printStackTrace();
         }
 
         return projectDashboardDto;
@@ -291,7 +356,7 @@ public class ReportServiceImpl implements ReportService {
         return reportRepository.showUat(reportId);
     }
 
-    private List<SprintProjectReportDto> buildManualSprints(Long reportId) {
+    private List<SprintProjectReportDto> buildManualSprints(Report report) {
 
         HelperMethods help = new HelperMethods();
 
@@ -299,7 +364,7 @@ public class ReportServiceImpl implements ReportService {
 
         List<FullSprintDto> sprintDtoList;
         try {
-            sprintDtoList = sprintService.findByReportId(reportId);
+            sprintDtoList = sprintService.findByReport(report);
 
             for (FullSprintDto sprintDto : sprintDtoList) {
 
@@ -318,33 +383,28 @@ public class ReportServiceImpl implements ReportService {
                 sprint.setCompleteDate(sprintDto.getEndDate());
 
                 List<SprintDeveloperDto> sprintDevList = sprintDto.getDevelopers();
-//                sprintProj.setSprintTeam(sprintDevList);
 
                 if (sprintDevList != null) {
                     List<SprintDeveloperDto> sprintDevelopers = new ArrayList<>();
                     for (SprintDeveloperDto dev : sprintDevList) {
-                        Set<SprintIssueDto> issuesSet = new HashSet<>();
+
                         for (IssuesByDayDto issuesByDayDto : issuesByDayList) {
                             for (SprintIssueDto issue : issuesByDayDto.getIssues()) {
-                                issuesSet.add(issue);
-                            }
-                        }
-
-                        for (SprintIssueDto issue : issuesSet) {
-                            if (dev.getDeveloperLogin().equals(issue.getAssignee())) {
-                                if (issue.getStatusName().equals("Done")) {
-                                    if (issue.getTypeName().equals("Story")) {
-                                        dev.setActualPoints(dev.getActualPoints() + issue.getPoint());
-                                        dev.setActualHours(help.isNull(dev.getActualHours()) + (long) issue.getHours());
-                                    } else if (issue.getTypeName().equals("QAT Defect")) {
-                                        dev.setDefectActual(dev.getDefectActual() + 1);
-                                        dev.setDefectActualHours(help.isNull(dev.getDefectActualHours()) + (long) issue.getHours());
-                                        dev.setActualHours(help.isNull(dev.getActualHours()) + (long) issue.getHours());
-                                    } else if (issue.getTypeName().equals("UAT Defect")) {
-                                        dev.setUatDefectHours(help.isNull(dev.getDefectHours()) + (long) issue.getHours());
-                                        dev.setUatDefectActualHours(help.isNull(dev.getUatDefectActualHours()) + (long) issue.getHours());
-                                        dev.setUatDefectActual(help.isNull(dev.getUatDefectActual()) + 1);
-                                        dev.setActualHours(help.isNull(dev.getActualHours()) + (long) issue.getHours());
+                                if (dev.getDeveloperLogin().equals(issue.getAssignee())) {
+                                    if (issue.getStatusName().equals("Done")) {
+                                        if (issue.getTypeName().equals("Story")) {
+                                            dev.setActualPoints(dev.getActualPoints() + issue.getPoint());
+                                            dev.setActualHours(help.isNull(dev.getActualHours()) + (long) issue.getHours());
+                                        } else if (issue.getTypeName().equals("QAT Defect")) {
+                                            dev.setDefectActual(dev.getDefectActual() + 1);
+                                            dev.setDefectActualHours(help.isNull(dev.getDefectActualHours()) + (long) issue.getHours());
+                                            dev.setActualHours(help.isNull(dev.getActualHours()) + (long) issue.getHours());
+                                        } else if (issue.getTypeName().equals("UAT Defect")) {
+                                            dev.setUatDefectHours(help.isNull(dev.getDefectHours()) + (long) issue.getHours());
+                                            dev.setUatDefectActualHours(help.isNull(dev.getUatDefectActualHours()) + (long) issue.getHours());
+                                            dev.setUatDefectActual(help.isNull(dev.getUatDefectActual()) + 1);
+                                            dev.setActualHours(help.isNull(dev.getActualHours()) + (long) issue.getHours());
+                                        }
                                     }
                                 }
                             }
@@ -426,14 +486,18 @@ public class ReportServiceImpl implements ReportService {
         List<FullSprintDto> sprintDtoList;
 
         try {
-            sprintDtoList = sprintService.findByReportId(report.getId());
+            sprintDtoList = sprintService.findByReport(report);
+
+            List<Long> ids = sprintDtoList.stream().map(r -> r.getJiraSprintId()).collect(Collectors.toList());
+            List<JiraIssueDto> issues = jiraIssueService.findBySprintIds(ids);
+            Map<Long, List<JiraIssueDto>> map = createMap(issues);
 
             for (FullSprintDto sprintDto : sprintDtoList) {
                 if (sprintDto.getState() == null || sprintDto.getState().equalsIgnoreCase("future") || sprintDto.getDevelopers() == null || sprintDto.getDevelopers().size() == 0) {
                     continue;
                 }
 
-                List<JiraIssueDto> jiraIssueList = jiraIssueService.findBySprintId(sprintDto.getJiraSprintId());
+                List<JiraIssueDto> jiraIssueList = map.get(sprintDto.getJiraSprintId());
 
                 Set<JiraIssueDto> issuesSet = new HashSet<>();
 
@@ -451,10 +515,13 @@ public class ReportServiceImpl implements ReportService {
                 sprint.setCompleteDate(sprintDto.getEndDate());
                 sprint.setSprintTeam(sprintDto.getSprintTeams());
                 sprint.setShowOutOfRange(sprintDto.isShowOutOfRange());
+                sprint.setCompleteDate(sprintDto.getCompleteDate());
 
                 if (sprintDto != null) {
                     List<SprintDeveloperDto> sprintDevelopers = new ArrayList<>();
                     for (SprintDeveloperDto dev : sprintDto.getDevelopers()) {
+                        if (jiraIssueList == null) continue;
+
                         for (JiraIssueDto issue : jiraIssueList) {
                             if (dev.getDeveloperLogin().equals(issue.getAssignedKey())) {
 
@@ -464,7 +531,7 @@ public class ReportServiceImpl implements ReportService {
                                         dev.setActualPoints(dev.getActualPoints() + (int) issue.getPoints());
                                         dev.setActualHours(help.isNull(dev.getActualHours()) + issue.getTimeSpent());
                                     } else if (issue.getIssueTypeName().equalsIgnoreCase("Bug")) {
-                                        if (isQAT(dev, report)) {
+                                        if (isQAT(dev, report, issue)) {
                                             dev.setDefectActual(dev.getDefectActual() + 1);
                                             dev.setDefectActualHours(help.isNull(dev.getDefectActualHours()) + issue.getTimeSpent());
                                             dev.setActualHours(help.isNull(dev.getActualHours()) + issue.getTimeSpent());
@@ -481,8 +548,8 @@ public class ReportServiceImpl implements ReportService {
 
                         dev.setTargetHours(Math.round(dev.getParticipationLevel() * dev.getDaysInSprint()) * 8);
 
-                        dev.setDefectTargetHours((long) Math.round(help.isNull(dev.getDefectHours())/3600));
-                        dev.setDefectActualHours((long) Math.round(help.isNull(dev.getDefectActualHours())/3600));
+                        dev.setDefectTargetHours((long) Math.round(help.isNull(dev.getDefectHours()) / 3600));
+                        dev.setDefectActualHours((long) Math.round(help.isNull(dev.getDefectActualHours()) / 3600));
 
                         dev.setUatDefectTargetHours((long) Math.round(help.isNull(dev.getUatDefectTargetHours()) / 3600));
                         dev.setUatDefectActualHours((long) Math.round(help.isNull(dev.getUatDefectActualHours()) / 3600));
@@ -539,15 +606,30 @@ public class ReportServiceImpl implements ReportService {
             e.printStackTrace();
         }
 
-        sprints.sort(new Comparator<SprintProjectReportDto>() {
-            @Override
-            public int compare(SprintProjectReportDto o1, SprintProjectReportDto o2) {
-                return o1.getStartDate().compareTo(o2.getStartDate());
-            }
-        });
+        sprints.sort((o1, o2) -> o1.getStartDate().compareTo(o2.getStartDate()));
 
         return sprints;
     }
+
+    private Map<Long, List<JiraIssueDto>> createMap(List<JiraIssueDto> issues) {
+        Map<Long, List<JiraIssueDto>> result = new HashMap<>();
+
+        for (JiraIssueDto i : issues) {
+            if (result.get(i.getSprintId()) == null) {
+                List<JiraIssueDto> devs = new ArrayList<>();
+                devs.add(i);
+
+                result.put(i.getSprintId(), devs);
+            } else {
+                List<JiraIssueDto> devs = result.get(i.getSprintId());
+                devs.add(i);
+                result.put(i.getSprintId(), devs);
+            }
+        }
+
+        return result;
+    }
+
 
     private boolean isAgileDone(String statusName, List<String> agileDoneNames) {
         for (String status : agileDoneNames) {
@@ -559,9 +641,9 @@ public class ReportServiceImpl implements ReportService {
 
     }
 
-    private boolean isQAT(SprintDeveloperDto dev, Report report) {
+    private boolean isQAT(SprintDeveloperDto dev, Report report, JiraIssueDto issu) {
         for (JiraUser jiraUser : report.getAdmins()) {
-            if (jiraUser.getLogin().equals(dev.getDeveloperLogin()))
+            if (jiraUser.getLogin().equals(issu.getCreatorName()));
                 return true;
         }
         return false;
@@ -637,7 +719,7 @@ public class ReportServiceImpl implements ReportService {
             prRep.setActualUatDefectPoints(0);
         }
 
-        prRep.setChart(helpM.generateReportChart(sprints, prRep.getTargetPoints()));
+        prRep.setChart(helpM.generateReportChart(sprints));
 
         final boolean finalIsShowUat = isShowUat;
         final long finalClosedCount = closedCount;
@@ -737,7 +819,7 @@ public class ReportServiceImpl implements ReportService {
                 prRep.setActualUatDefectPoints(0);
             }
 
-            prRep.setChart(helpM.generateReportChart(sprints, prRep.getTargetPoints()));
+            prRep.setChart(helpM.generateReportChart(sprints));
 
             final boolean finalIsShowUat = isShowUat;
             final long finalClosedCount = closedCount;
@@ -812,15 +894,14 @@ public class ReportServiceImpl implements ReportService {
             }
 
             for (SprintIssueDto sprintIssueDto : sprintIssueListDto.getSprintIssueDtos()) {
-                Date date2 = null;
+                Date date2;
                 try {
                     date2 = sdf.parse(sprintIssueDto.getIssueDate());
+                    if (helperMethods.isSameDate(currentDate, date2)) {
+                        issues.add(sprintIssueDto);
+                    }
                 } catch (ParseException e) {
                     e.printStackTrace();
-                }
-
-                if (helperMethods.isSameDate(currentDate, date2)) {
-                    issues.add(sprintIssueDto);
                 }
             }
 
@@ -840,7 +921,7 @@ public class ReportServiceImpl implements ReportService {
 
         HelperMethods help = new HelperMethods();
 
-        Chart chart = new Chart();
+        Chart chart;
 
         String date = "0";
 
@@ -850,8 +931,16 @@ public class ReportServiceImpl implements ReportService {
         if (sprintDto.getEndDate() == null) {
             sprintDto.setEndDate(new Date());
         }
+
         Calendar endDate = Calendar.getInstance();
         endDate.setTime(sprintDto.getEndDate());
+
+        Calendar completeDate = Calendar.getInstance();
+        if (sprintDto.getCompleteDate() == null){
+            completeDate.setTime(sprintDto.getEndDate());
+        } else {
+            completeDate.setTime(sprintDto.getCompleteDate());
+        }
 
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         String nonWorkingDaysString = configService.retrieveConfig().getNonWorkingDays();
@@ -870,7 +959,9 @@ public class ReportServiceImpl implements ReportService {
         List<Integer> ii = new ArrayList<>();
         ii.add((int) targetPoints);
 
-        while (!startDate.after(endDate)) {
+        String endDateStr = formatter.format(sprintDto.getEndDate());
+
+        while (completeDate.after(startDate) || help.isSameDate(startDate.getTime(), completeDate.getTime())) {
             Date currentDate = startDate.getTime();
 
             if (help.isWeekend(currentDate) || nonWorkingDays.contains(currentDate)) {
@@ -891,16 +982,18 @@ public class ReportServiceImpl implements ReportService {
                 }
             }
 
-            ii.add((int) tar);
+            if (currentDate.before(new Date())) {
+                ii.add((int) tar);
+            }
             startDate.add(Calendar.DATE, 1);
         }
 
-        chart = configureChart(date, ii, targetPoints);
+        chart = configureChart(date, endDateStr, ii, targetPoints);
 
         if (sprintDto.isShowOutOfRange()) {
             Calendar addDate = endDate;
             if (issues.size() > 0) {
-                endDate = gitFinishDAte(issues, endDate);
+                endDate = getFinishDate(issues, endDate);
 
                 while (!addDate.after(endDate)) {
                     Date currentDate = addDate.getTime();
@@ -923,10 +1016,20 @@ public class ReportServiceImpl implements ReportService {
                         }
                     }
 
-                    ii.add((int) tar);
+                    if (currentDate.before(new Date())) {
+                        ii.add((int) tar);
+                    }
 
                     addDate.add(Calendar.DATE, 1);
                 }
+            }
+
+            if (issues.size() > 0) {
+                float tar = ii.get(ii.size() - 1);
+                for (JiraIssueDto issueDto : issues) {
+                    tar = tar - issueDto.getPoints();
+                }
+                ii.set(ii.size() - 1, (int) tar);
             }
 
             chart = configureChart(chart, date, ii);
@@ -945,11 +1048,11 @@ public class ReportServiceImpl implements ReportService {
         double[] arrayTar = new double[dateArrayNew.length];
         double[] arrayTarOld = chart.getTarget();
         for (int i = 0; i < dateArrayNew.length; i++) {
-         if (chart.getTarget().length>i){
-             arrayTar[i]= arrayTarOld[i];
-         }  else {
-             break;
-         }
+            if (chart.getTarget().length > i) {
+                arrayTar[i] = arrayTarOld[i];
+            } else {
+                break;
+            }
         }
 
         chart.setTarget(arrayTar);
@@ -982,13 +1085,48 @@ public class ReportServiceImpl implements ReportService {
         return chart;
     }
 
-    private Calendar gitFinishDAte(Set<JiraIssueDto> issues, Calendar endDate) {
+    private Chart configureChart(String date, String closeDate, List<Integer> ii, float targetPoints) {
+        Chart chart = new Chart();
+
+        String[] dateArray = date.split(",");
+        chart.setLabel(dateArray);
+
+        int[] array = new int[ii.size()];
+        for (int i = 0; i < ii.size(); i++) array[i] = ii.get(i);
+
+        chart.setActual(array);
+
+        double[] targetArray = new double[dateArray.length];
+
+        targetArray[0] = targetPoints;
+
+        int index = 0;
+        for (int i = 0; i<dateArray.length; i++){
+            if (dateArray[i].equals(closeDate)){
+                index = i;
+            }
+        }
+
+        for (int i = 1; i < dateArray.length; i++) {
+            if (i<index) {
+                targetArray[i] = (targetPoints - targetPoints / (index) * i);
+            } else {
+                targetArray[i]=0;
+            }
+        }
+
+        chart.setTarget(targetArray);
+
+        return chart;
+    }
+
+    private Calendar getFinishDate(Set<JiraIssueDto> issues, Calendar endDate) {
         Calendar lastDate = endDate;
 
         for (JiraIssueDto issue : issues) {
             Calendar date = Calendar.getInstance();
             date.setTime(issue.getUpdated());
-            if (date.after(endDate) && date.after(lastDate)) {
+            if (date.compareTo(lastDate) > 0) {
                 lastDate = date;
             }
         }

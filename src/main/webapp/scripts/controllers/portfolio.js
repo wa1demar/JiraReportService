@@ -45,11 +45,11 @@ jiraPluginApp.controller("PortfolioCtrl", ['$scope', 'PortfoliosFactory', '$time
             var chart = {
                 labels: chartData.label,
                 data: [
-                    chartData.actual,
-                    chartData.target
+                    chartData.target,
+                    chartData.actual
                 ],
-                series: ['Actual', 'Target'],
-                colours: [actualChartColor, '#000000'],
+                series: ['Target', 'Actual'],
+                colours: ['#000000', actualChartColor],
                 options: {
                     datasetFill : false
                 }
@@ -58,9 +58,28 @@ jiraPluginApp.controller("PortfolioCtrl", ['$scope', 'PortfoliosFactory', '$time
             return chart;
         };
 
-        this.getPortfoliosData = function () {
-            PortfoliosFactory.query({}, function (result) {
+//----------------------------------------------------------------------------------------------------------------------
+//For pagination
+        $scope.reportsData = [];
+        $scope.totalReportsData = 0;
+        $scope.reportsDataPerPage = 10; // this should match however many results your API puts on one page
+        getResultsPage(1);
+
+        $scope.pagination = {
+            current: 1
+        };
+
+        $scope.pageChanged = function(newPage) {
+            getResultsPage(newPage);
+        };
+
+        function getResultsPage(pageNumber) {
+            // this is just an example, in reality this stuff should be in a service
+            $scope.loaderShow = true;
+            PortfoliosFactory.query({page: pageNumber}, function (result) {
                 $scope.reportsData = result.dashboards;
+                $scope.totalReportsData = result.totalItems;
+                $scope.reportsDataPerPage = result.itemsPerPage;
 
                 for (var index = 0; index < $scope.reportsData.length; index++) {
                     $scope.reportsData[index] = $scope.reportsData[index].report;
@@ -79,111 +98,7 @@ jiraPluginApp.controller("PortfolioCtrl", ['$scope', 'PortfoliosFactory', '$time
                 $scope.reportsData = [];
                 $scope.loaderShow = false;
             });
+        }
 
-            //$scope.reportsData = [
-            //    {
-            //        id : 1,
-            //        title : "Man",
-            //        typeId : 2,
-            //
-            //        targetPoints: 1,
-            //        targetHours: 1,
-            //        targetQatDefectMin: 1,
-            //        targetQatDefectMax: 1,
-            //        targetQatDefectHours: 1,
-            //        targetUatDefectMin: 1,
-            //        targetUatDefectMax: 1,
-            //        targetUatDefectHours: 1,
-            //        actualPoints: 1,
-            //        actualHours: 1,
-            //        actualQatDefectPoints: 1,
-            //        actualQatDefectHours: 1,
-            //        actualUatDefectPoints: 1,
-            //        actualUatDefectHours: 1,
-            //
-            //        chart: {
-            //            label:  [0, 1, 2, 3],
-            //            target: [129, 83, 41, 0],
-            //            actual: [129, 77, 31, -3]
-            //        },
-            //
-            //        showUat: true,
-            //        closedSprintCount: 1
-            //    },
-            //    {
-            //        id : 2,
-            //        title : "test2",
-            //        typeId : 2,
-            //
-            //        targetPoints: 1,
-            //        targetHours: 1,
-            //        targetQatDefectMin: 1,
-            //        targetQatDefectMax: 1,
-            //        targetQatDefectHours: 1,
-            //        targetUatDefectMin: 1,
-            //        targetUatDefectMax: 1,
-            //        targetUatDefectHours: 1,
-            //        actualPoints: 1,
-            //        actualHours: 1,
-            //        actualQatDefectPoints: 1,
-            //        actualQatDefectHours: 1,
-            //        actualUatDefectPoints: 1,
-            //        actualUatDefectHours: 1,
-            //
-            //        chart: {
-            //            label:  [0, 1, 2, 3],
-            //            target: [129, 83, 41, 0],
-            //            actual: [129, 77, 31, 2]
-            //        },
-            //
-            //        showUat: true,
-            //        closedSprintCount: 1
-            //    },
-            //    {
-            //        id : 3,
-            //        title : "more report",
-            //        typeId : 2,
-            //
-            //        targetPoints: 1,
-            //        targetHours: 1,
-            //        targetQatDefectMin: 1,
-            //        targetQatDefectMax: 1,
-            //        targetQatDefectHours: 1,
-            //        targetUatDefectMin: 1,
-            //        targetUatDefectMax: 1,
-            //        targetUatDefectHours: 1,
-            //        actualPoints: 1,
-            //        actualHours: 1,
-            //        actualQatDefectPoints: 1,
-            //        actualQatDefectHours: 1,
-            //        actualUatDefectPoints: 1,
-            //        actualUatDefectHours: 1,
-            //
-            //        chart: {
-            //            label:  [0, 1, 2, 3],
-            //            target: [129, 83, 41, 0],
-            //            actual: [129, 77, 31, -3]
-            //        },
-            //
-            //        showUat: true,
-            //        closedSprintCount: 1
-            //    }
-            //];
-            //
-            //for (var index = 0; index < $scope.reportsData.length; index++) {
-            //    //Progress bar
-            //    $scope.reportsData[index]['progressBarData'] = self.updateProgressBar($scope.reportsData[index]);
-            //    //Chart
-            //    $scope.reportsData[index]['chart'] = self.updateChart($scope.reportsData[index]);
-            //}
-            //
-            ////FIXME fix for normal size chart
-            //$timeout(function () {
-            //    $scope.loaderShow = false;
-            //}, 0);
-
-        };
-
-        self.getPortfoliosData();
     }
 ]);

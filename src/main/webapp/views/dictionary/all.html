@@ -1,0 +1,28 @@
+<table ng-show="dataDictionary.length > 0" id="dictionary-table" class="aui table">
+    <thead>
+        <tr>
+            <th style="width: 60px;">
+                <span ng-click="order('id')" class="cursor-pointer">Id</span>
+                <span ng-show="predicate === 'id'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+            </th>
+            <th>
+                <span ng-click="order('name')" class="cursor-pointer">Name</span>
+                <span ng-show="predicate === 'name'" class="{{reverse ? 'aui-icon aui-icon-small aui-iconfont-arrows-down js-copy-clipboard' : 'aui-icon aui-icon-small aui-iconfont-arrows-up js-copy-clipboard'}}"></span>
+            </th>
+            <th style="width: 60px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="data in filtered = (dataDictionary | filter:query | orderBy:predicate:reverse)">
+            <td>{{data.id}}</td>
+            <td>{{data.name}}</td>
+            <td>
+                <span class="glyphicon glyphicon-pencil cursor-pointer" ng-click="processElement(data)" title="Edit"></span>
+                <span class="glyphicon glyphicon-remove cursor-pointer" ng-click="delElement(data)" title="Delete"></span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div class="col-md-12 text-center" ng-if="dataDictionary.length === 0">
+    <strong>Not found!</strong>
+</div>
