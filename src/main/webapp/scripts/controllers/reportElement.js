@@ -74,8 +74,8 @@ jiraPluginApp.controller('ReportElementCtrl',
                 }
 
                 $scope.labels = $scope.chartData.label;
-                $scope.series = ['Actual', 'Target'];
-                $scope.colours = [actualChartColor, '#000000'];
+                $scope.series = ['Target', 'Actual'];
+                $scope.colours = ['#000000', actualChartColor];
                 $scope.options = {
                     datasetFill : false
                 };
@@ -83,8 +83,8 @@ jiraPluginApp.controller('ReportElementCtrl',
                 //FIXME fix for normal size chart
                 $timeout(function () {
                     $scope.data = [
-                        $scope.chartData.actual,
-                        $scope.chartData.target
+                        $scope.chartData.target,
+                        $scope.chartData.actual
                     ];
                 }, 100);
             };
