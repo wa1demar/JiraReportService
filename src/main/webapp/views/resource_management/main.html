@@ -1,116 +1,3 @@
-<style>
-    .res {
-        height: calc(100vh - 130px);
-        width: 100%;
-        box-sizing: border-box;
-        border: 1px solid red;
-    }
-    .res-left {
-        height: 100%;
-        width: 80%;
-        float: left;
-        box-sizing: border-box;
-        border: 1px solid green;
-    }
-    .res-left-head {
-        border-bottom: 1px solid black;
-        margin: 5px;;
-    }
-    .res-left-content {
-        width: 100%;
-        height: calc(100% - 30px);
-        overflow-x: auto;
-        overflow-y: auto;
-        border: 1px solid yellow;
-    }
-
-    .res-left-content-top {
-
-    }
-
-    .res-left-content-center {
-        width: 100%;
-        height: calc(100% - 60px);
-    }
-
-    .res-left-content ul.main {
-        height: 100%;
-        min-width: 100%;
-        white-space: nowrap;
-        padding: 0;
-        margin: 10px 0;
-    }
-
-    .res-left-content li.main.grey {
-        background: #EEEEEE;
-    }
-
-    .res-left-content li.main {
-        /*height: 100%;*/
-        display: inline-block;
-        vertical-align: top;
-        width: 200px;
-        margin: 0 10px;
-    }
-
-    .main h4 {
-        text-align: center;
-        margin-bottom: 0;
-    }
-
-
-    .res-left-content ul.item {
-        height: 100%;
-        min-width: 100%;
-        white-space: nowrap;
-        padding: 5px;
-    }
-
-    .res-left-content ul.item li {
-        background: #FFFFFF;
-        border: 1px solid #CCCCCC;
-        list-style-type: none;
-        margin: 0 0 10px 0;
-        padding: 2px;
-        cursor: pointer;
-        min-height: 75px;
-    }
-
-    .avatar {
-        text-align: center;
-        font-size: 25px;
-        margin: 10px 0;
-    }
-
-    .name-label {
-        text-align: left;
-        margin-top: 5px;
-    }
-
-    .engineer-lvl-label {
-        text-align: left;
-        font-weight: bold;
-    }
-
-    .technologies-label {
-        text-align: left;
-        margin-left: 5px;;
-    }
-
-    .res-right {
-        width: 20%;
-        height: 100%;
-        float: right;
-        background: #EEEEEE;
-        box-sizing: border-box;
-        border: 1px solid blue;
-    }
-
-    .row.margin-0 {
-        margin: 0;
-    }
-</style>
-
 <header id="ghx-header" class="aui-page-header">
     <title>Resource Board</title>
     <div class="aui-page-header-inner">
@@ -118,20 +5,25 @@
             <h2>Resource Board</h2>
         </div>
         <div class="aui-page-header-actions">
-            <!--<button class="btn btn-primary" type="submit" ng-click="inviteUser()" >Invite user</button>-->
+            <button class="btn btn-primary" type="submit" ng-click="processColumn()">Add column</button>
+            <button class="btn btn-primary" type="submit" ng-click="addMember()">Add member</button>
         </div>
     </div>
 </header>
 <div class="aui-page-panel" id="manage-boards-page">
     <div class="res">
         <div class="res-left">
-            <div class="res-left-head">add column</div>
+            <!--<div class="res-left-head">add column</div>-->
             <div class="res-left-content">
 
                 <div class="res-left-content-top">
                     <ul class="main">
                         <li ng-repeat="(listName, list) in models.lists" class="main">
-                            <h4>Type {{listName}}</h4>
+                            <h4>
+                                Type {{listName}}
+                                <span ng-click="delColumn()" class="glyphicon glyphicon-remove control-icon" title="Delete"></span>
+                                <span ng-click="processColumn()" class="glyphicon glyphicon-pencil control-icon" title="Edit"></span>
+                            </h4>
                         </li>
                     </ul>
                 </div>
@@ -155,7 +47,119 @@
 
             </div>
         </div>
-        <div class="res-right">right</div>
+        <div class="res-right">
+            <div class="search-block" ng-if="showSearch">
+                <div class="search-block-title">Quick filters:</div>
+
+                <div class="search-block-content">
+                    <div class="form-group">
+                        <label for="technology">Technology</label>
+                        <select ui-select2 multiple style="width: 100%;" ng-model="model.technology" data-placeholder="Select technologies" id="technology" name="technology" convert-to-number>
+                            <option ng-repeat="value in technologies" value="{{value.id}}">{{value.name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="project">Project</label>
+                        <select ui-select2 multiple style="width: 100%;" ng-model="model.project" data-placeholder="Select projects" id="project" name="project" convert-to-number>
+                            <option ng-repeat="value in projects" value="{{value.id}}">{{value.name}}</option>
+                        </select>
+                    </div>
+                    <!--<div class="form-group">-->
+                        <!--<label for="el">EL</label>-->
+                        <!--<select ui-select2 multiple style="width: 100%;" ng-model="model.el" data-placeholder="Select administrators" id="el" name="el" convert-to-number>-->
+                            <!--<option ng-repeat="value in [1, 2, 3, 4]" value="{{value}}">EL - {{value}}</option>-->
+                        <!--</select>-->
+                    <!--</div>-->
+                    <div class="form-group">
+                        <label for="location">Locations</label>
+                        <select ui-select2 multiple style="width: 100%;" ng-model="model.location" data-placeholder="Select locations" id="location" name="location" convert-to-number>
+                            <option ng-repeat="value in locations" value="{{value.id}}">{{value.name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" ng-model="model.name">
+                    </div>
+                </div>
+
+            </div>
+            <div class="member-info-block" ng-if="showMemberInfo">
+                <div class="search-block-title">Member info "{{currentMember.label}}"</div>
+                <div class="member-info-block-content">
+                    <div class="row margin-0">
+                        <div class="col-md-3 avatar">
+                            <span class="glyphicon glyphicon-user" style="font-size: 45px;"></span>
+                        </div>
+                        <div class="col-md-9" style="padding: 25px; font-weight: bold;">
+                            {{currentMember.label}} <span class="member-info-block-content-el">EL - 1</span> <span class="glyphicon glyphicon-pencil control-icon-right cursor-pointer" title="Edit engineer level"></span>
+                        </div>
+                    </div>
+                    <div class="row margin-0">
+                        <span class="member-info-block-content-subtitle">
+                            Experience: <span ng-class="addExperience()" class="glyphicon glyphicon-plus cursor-pointer control-icon-right" title="Add"></span>
+                        </span>
+                        <ul ng-if="currentMember.experiencies.length > 0" class="member-info-ul">
+                            <li ng-repeat="value in currentMember.experiencies">
+                                {{value.name}} <span ng-click="delExperience(value)" class="glyphicon glyphicon-trash control-icon-right" title="Delete"></span>
+                            </li>
+                        </ul>
+                        <p class="empty-items" ng-if="currentMember.experiencies === undefined || currentMember.experiencies.length === 0">Empty</p>
+                    </div>
+                    <div class="member-info-divider"></div>
+                    <div class="row margin-0">
+                        <span class="member-info-block-content-subtitle">
+                            Project:  <span ng-class="addProject()" class="glyphicon glyphicon-plus cursor-pointer control-icon-right" title="Add"></span>
+                        </span>
+                        <ul ng-if="currentMember.project.length > 0" class="member-info-ul">
+                            <li ng-repeat="value in currentMember.projects">
+                                {{value.name}} <span ng-click="delProject(value)" class="glyphicon glyphicon-trash control-icon-right cursor-pointer" title="Delete"></span>
+                            </li>
+                        </ul>
+                        <p class="empty-items" ng-if="currentMember.projects === undefined || currentMember.projects.length === 0">Empty</p>
+                    </div>
+                    <div class="member-info-divider"></div>
+                    <div class="row margin-0">
+                        <span class="member-info-block-content-subtitle">Location:</span>
+                        <div class="form-group">
+                            <select class="form-control" ng-model="currentMember.location" id="member-location" name="member-location" convert-to-number>
+                                <option ng-repeat="value in locations" value="{{value.id}}">{{value.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="member-info-divider"></div>
+                    <div class="row margin-0">
+                        <span class="member-info-block-content-subtitle">Assignment type:</span>
+                        <div class="form-group">
+                            <select class="form-control" ng-model="currentMember.assignmentType" id="member-assignment-type" name="member-assignment-type" convert-to-number>
+                                <option ng-repeat="value in assignmentTypes" value="{{value.id}}">{{value.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="member-info-divider"></div>
+                    <div class="row margin-0">
+                        <span class="member-info-block-content-subtitle">
+                            Attachments: <span class="glyphicon glyphicon-download-alt cursor-pointer control-icon-right" title="Upload attach"></span>
+                        </span>
+                        <ul ng-if="currentMember.attach.length > 0" class="member-info-ul without-list-style-type">
+                            <li ng-repeat="value in currentMember.attach">
+                                <span class="glyphicon glyphicon-file"></span> {{value.name}} <span ng-click="delAttach(value)" class="glyphicon glyphicon-trash control-icon-right cursor-pointer" title="Delete"></span>
+                            </li>
+                        </ul>
+                        <p class="empty-items" ng-if="currentMember.attach === undefined || currentMember.attach.length === 0">Empty</p>
+                    </div>
+                    <div class="member-info-divider"></div>
+                    <div class="row margin-0">
+                        <span class="member-info-block-content-subtitle">Description:</span>
+                        <div class="form-group editable-description">
+                            <!--<textarea class="form-control" name="" id="" cols="30" rows="5" placeholder="Description"></textarea>-->
+                            <a href="#" editable-textarea="currentMember.description" e-rows="5" onbeforesave="updateMemberDescription($data)">
+                                <pre>{{ currentMember.description || 'no description' }}</pre>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
