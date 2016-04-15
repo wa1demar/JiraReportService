@@ -26,6 +26,7 @@ public class JiraUser {
     private List<JiraGroup> groups = new ArrayList<>();
     private Location location;
     private List<Technology> technologies = new ArrayList<>();
+    private List<Attachment> attachments = new ArrayList<>();
 
     @Column(name = "email")
     public String getEmail() {
@@ -110,5 +111,14 @@ public class JiraUser {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "jiraUser")
+    public List<Attachment> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<Attachment> attachments) {
+        this.attachments = attachments;
     }
 }
