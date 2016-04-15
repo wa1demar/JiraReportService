@@ -44,29 +44,18 @@ public class DueDateImporterServiceImpl implements DueDateImporterService {
 
         Map<Long, List<DueDate>> mapDueDate = generateMap(dueDateList);
 
+
+
         for (JiraIssue issue : jiraIssueList){
             List<DueDate> existed = mapDueDate.get(issue.getId());
             if (existed == null || existed.size()==0){
-                DueDate dueDate = new DueDate();
-                dueDate.setIssue(issue);
-                dueDate.setIssueKey(issue.getKey());
-                dueDate.setDueDate(issue.getDueDate());
-                dueDate.setUpdatedAt(issue.getUpdated());
-
-                dueDateRepository.add(dueDate);
+                addDewDate(issue);
             } else {
                 Collections.sort(existed, (o1, o2) -> o2.getUpdatedAt().compareTo(o1.getUpdatedAt()));
 
                 DueDate lastExisted = existed.get(0);
                 if (!hp.isSameDate(lastExisted.getUpdatedAt(), issue.getUpdated()) && !hp.isSameDate(lastExisted.getDueDate(), issue.getDueDate())){
-                    DueDate dueDate = new DueDate();
-                    dueDate.setIssue(issue);
-                    dueDate.setIssueKey(issue.getKey());
-                    dueDate.setDueDate(issue.getDueDate());
-                    dueDate.setUpdatedAt(issue.getUpdated());
-                    dueDate.setDescription(getDescription(issue.getDescription()));
-
-                    dueDateRepository.add(dueDate);
+                    addDewDate(issue);
                 }
             }
         }
@@ -74,20 +63,14 @@ public class DueDateImporterServiceImpl implements DueDateImporterService {
 
     }
 
-    private String getDescription(String summary){
-        String result = null;
-        int pos = summary.lastIndexOf("due date changed");
-        if (pos>-1){
-            result=summary.substring(pos);
-            pos=result.indexOf("\n");
-            if (pos>-1) {
-                result = result.substring(0, pos);
-            }
-        } else {
-            result="";
-        }
+    private void addDewDate(JiraIssue issue) {
+        DueDate dueDate = new DueDate();
+        dueDate.setIssue(issue);
+        dueDate.setIssueKey(issue.getKey());
+        dueDate.setDueDate(issue.getDueDate());
+        dueDate.setUpdatedAt(issue.getUpdated());
 
-        return result;
+        dueDateRepository.add(dueDate);
     }
 
     private Map<Long, List<DueDate>> generateMap(List<DueDate> dueDateList) {
