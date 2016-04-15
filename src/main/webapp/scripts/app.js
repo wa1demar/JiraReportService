@@ -16,7 +16,8 @@ var jiraPluginApp = angular.module('jiraPluginApp', [
     'nl2br',
     'angularUtils.directives.dirPagination',
     'dndLists',
-    'xeditable'
+    'xeditable',
+    'colorpicker.module'
 ]);
 
 jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
