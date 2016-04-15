@@ -1,12 +1,19 @@
 'use strict';
 
 jiraPluginApp.controller('ResourceManagementCtrl',
-    ['$scope', '$uibModal', 'ResourceColumn', 'Notification',
-        function($scope, $uibModal, ResourceColumn, Notification) {
+    ['$scope', '$uibModal', '$filter', 'ResourceColumn', 'UsersFactory', 'DictionaryFactory', 'Notification',
+        function($scope, $uibModal, $filter, ResourceColumn, UsersFactory, DictionaryFactory, Notification) {
             var self = this;
             $scope.loaderShow = true;
             $scope.showSearch = true;
             $scope.showMemberInfo = false;
+
+            $scope.search = {
+                technology: [],
+                project: [],
+                location: [],
+                name: null
+            };
 
 //----------------------------------------------------------------------------------------------------------------------
 //Get all data for Resource Board
@@ -18,7 +25,6 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 // }, function (error) {
                 //     Notification.error("Server error");
                 // });
-
 
                 $scope.columns = [
                     {
@@ -38,14 +44,18 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                                     {id: 4, name: 'CSS'},
                                     {id: 5, name: 'PHP'}
                                 ],
-                                projects: [],
+                                projects: [
+                                    {id: 1, name: "project 1"}
+                                ],
                                 location: 2,
                                 assignmentType: 1,
-                                attach: [],
+                                attachments: [
+                                    {id: 1, name: "attach 1", url: "http://google.com"}
+                                ],
                                 description: "description"
                             },
                             {
-                                id: 1,
+                                id: 2,
                                 name: "Full Name 2",
                                 engineerLevel: 3,
                                 experiencies: [
@@ -56,7 +66,10 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                                 projects: [],
                                 location: 2,
                                 assignmentType: 1,
-                                attach: [],
+                                attachments: [
+                                    {id: 1, name: "attach 1", url: "http://google.com"},
+                                    {id: 2, name: "attach 2", url: "http://google.com"}
+                                ],
                                 description: "description 2"
                             }
                         ]
@@ -68,7 +81,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                         fixed: false,
                         members: [
                             {
-                                id: 1,
+                                id: 3,
                                 name: "Full Name 2",
                                 engineerLevel: 3,
                                 experiencies: [
@@ -79,8 +92,10 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                                 ],
                                 projects: [],
                                 location: 2,
-                                assignmentType: 1,
-                                attach: [],
+                                assignmentType: 2,
+                                attachments: [
+                                    {id: 1, name: "attach 1", url: "http://google.com"}
+                                ],
                                 description: "description"
                             }
                         ]
@@ -95,31 +110,54 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 
             $scope.currentMember = {};
 
-            //test data--------------------------
-            $scope.technologies = [
-                {id: 1, name: "technology 1"},
-                {id: 2, name: "technology 2"},
-                {id: 3, name: "technology 3"},
-                {id: 4, name: "technology 4"},
-                {id: 5, name: "technology 5"}
-            ];
+//----------------------------------------------------------------------------------------------------------------------
+//Get technologies
+            $scope.technologies = [];
+            $scope.getTechnologies = function () {
+                DictionaryFactory.query({name: 'technologies'}, function(result){
+                    $scope.technologies = result.items;
+                }, function (error) {
+                    Notification.error("Server error: get technologies");
+                });
+            };
+            $scope.getTechnologies();
 
-            $scope.projects = [
-                {id: 1, name: "project 1"},
-                {id: 2, name: "project 2"},
-                {id: 3, name: "project 3"},
-                {id: 4, name: "project 4"},
-                {id: 5, name: "project 5"}
-            ];
+//----------------------------------------------------------------------------------------------------------------------
+//Get projects
+            $scope.projects = [];
+            $scope.getProjects = function () {
+                $scope.projects = [
+                    {id: 1, name: "project 1"},
+                    {id: 2, name: "project 2"},
+                    {id: 3, name: "project 3"},
+                    {id: 4, name: "project 4"},
+                    {id: 5, name: "project 5"}
+                ];
+            };
+            $scope.getProjects();
 
-            $scope.locations = [
-                {id: 1, name: "locations 1"},
-                {id: 2, name: "locations 2"},
-                {id: 3, name: "locations 3"},
-                {id: 4, name: "locations 4"},
-                {id: 5, name: "locations 5"}
-            ];
-            //-----------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+//Get locations
+            $scope.locations = [];
+            $scope.getLocations = function () {
+                DictionaryFactory.query({name: 'locations'}, function(result){
+                    $scope.locations = result.items;
+                }, function (error) {
+                    Notification.error("Server error: get locations");
+                });
+            };
+            $scope.getLocations();
+
+//----------------------------------------------------------------------------------------------------------------------
+//Get assignment type
+            $scope.assignmentTypes = [];
+            $scope.getAssignmentTypes = function () {
+                $scope.assignmentTypes = [
+                    {id: 1, name: "Bench"},
+                    {id: 2, name: "PM"}
+                ];
+            };
+            $scope.getAssignmentTypes();
 
             // Model to JSON for demo purpose
             $scope.$watch('models', function(model) {
@@ -132,6 +170,41 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 console.log($scope.columns);
             };
 
+            // $scope.changeSearch = function() {
+            //     // console.log($scope.search);
+            // };
+
+            $scope.$watch('search', function() {
+                console.log($scope.search);
+            }, true);
+
+//----------------------------------------------------------------------------------------------------------------------
+//Get dragend member
+            $scope.dragendElement = function(item) {
+                //Find column when drag
+                var column = undefined;
+                var result = undefined;
+                var indexElementInColumn = null;
+                var count = $scope.columns.length;
+                for (var index = 0; index < count; index++) {
+                    result = _.findWhere($scope.columns[index].members, {id: item.id});
+                    if (result !== undefined) {
+                        //save column data
+                        column = $scope.columns[index];
+                        //find index new position in column
+                        indexElementInColumn = $scope.columns[index].members.indexOf(result);
+                        break;
+                    }
+                }
+
+                //TODO save new member position
+                //change member assignment type
+                $scope.columns[index].members[indexElementInColumn].assignmentType = column.id;
+                // $scope.getResourceColumns();
+            };
+
+//----------------------------------------------------------------------------------------------------------------------
+//Select member
             $scope.selectElement = function (item) {
                 console.log(item);
                 if ($scope.columns.selected === item) {
@@ -151,23 +224,27 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 }
             };
 
+//----------------------------------------------------------------------------------------------------------------------
+//Show member info in right part
             $scope.showMemberInfoData = function(item) {
                 console.log('showMemberInfoData');
                 $scope.currentMember = item;
-
-                $scope.currentMember.attach = [
-                    {id: 1, name: "name"}
-                ]
             };
 
+//----------------------------------------------------------------------------------------------------------------------
+//Show search in right part
             $scope.showSearchFilters = function() {
                 console.log('showSearchFilters');
             };
 
+//----------------------------------------------------------------------------------------------------------------------
+//Change some search filter
             $scope.searchFiltersChange = function() {
                 console.log('searchFiltersChange');
             };
 
+//----------------------------------------------------------------------------------------------------------------------
+//Update member description
             $scope.updateMemberDescription = function(data) {
                 console.log('updateMemberDescription:');
                 console.log(data);
@@ -230,6 +307,39 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 }, function () {});
             };
 
+//----------------------------------------------------------------------------------------------------------------------
+//Dlg add member
+            $scope.dlgData = {};
+            $scope.addMember = function () {
+
+                UsersFactory.query({}, function(users){
+                    var members = users.users;
+
+                    var modalInstance = $uibModal.open({
+                        animation: true,
+                        templateUrl: 'views/resource_management/dlg/dlg_add_member.html',
+                        controller: 'DlgAddMemberCtrl',
+                        resolve: {
+                            dlgData: function () {
+                                return {
+                                    members:      members,
+                                    technologies: $scope.technologies
+                                };
+                            }
+                        }
+                    });
+                    modalInstance.result.then(function (data) {
+                        console.log(data);
+                        // ResourceMember.create({}, data, function(data){
+                        //     Notification.success("Create column success");
+                        //     $scope.getResourceColumns();
+                        // }, function (error) {
+                        //     Notification.error("Server error");
+                        // });
+                    }, function () {});
+                });
+            };
+
         }
 ]);
 
@@ -237,8 +347,6 @@ jiraPluginApp.controller('DlgProcessColumnCtrl',
     ['$scope', '$uibModalInstance', 'dlgData',
         function ($scope, $uibModalInstance, dlgData) {
             $scope.model = dlgData;
-
-            console.log($scope.model);
 
             $scope.ok = function () {
                 if($scope.processColumnForm.$valid) {
@@ -266,3 +374,23 @@ jiraPluginApp.controller('DlgDeleteColumnCtrl',
             };
         }
 ]);
+
+jiraPluginApp.controller('DlgAddMemberCtrl',
+    ['$scope', '$uibModalInstance', 'dlgData',
+        function ($scope, $uibModalInstance, dlgData) {
+            // $scope.model = dlgData;
+
+            $scope.members = dlgData.members;
+            $scope.technologies = dlgData.technologies;
+
+            $scope.ok = function () {
+                if($scope.addMemberForm.$valid) {
+                    $uibModalInstance.close($scope.model);
+                }
+            };
+
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+        }
+    ]);

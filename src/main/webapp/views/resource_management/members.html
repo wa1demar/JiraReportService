@@ -4,7 +4,7 @@
         dnd-moved="column.members.splice($index, 1)"
         dnd-effect-allowed="move"
         dnd-selected="selectElement(item)"
-        dnd-dragend="logEvent('Drag operation ended', event)"
+        dnd-dragend="dragendElement(item)"
         ng-class="{'selected': columns.selected === item}">
 
         <div style="border-left: 8px solid {{column.color}}">
