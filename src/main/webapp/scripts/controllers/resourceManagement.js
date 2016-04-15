@@ -24,7 +24,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     {
                         id: 1,
                         name: "Bench",
-                        color: "#DDDDDD",
+                        color: "#CF2926",
                         fixed: true,
                         members: [
                             {
@@ -51,9 +51,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                                 experiencies: [
                                     {id: 1, name: 'JS'},
                                     {id: 2, name: 'HTML'},
-                                    {id: 3, name: 'Angular'},
-                                    {id: 4, name: 'CSS'},
-                                    {id: 5, name: 'PHP'}
+                                    {id: 3, name: 'Angular'}
                                 ],
                                 projects: [],
                                 location: 2,
