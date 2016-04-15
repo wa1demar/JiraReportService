@@ -113,7 +113,9 @@
 
 .technologies-label {
     text-align: left;
-    margin-left: 5px;;
+    margin-left: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /*====================================================================================================================*/

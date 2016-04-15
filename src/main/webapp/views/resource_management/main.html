@@ -18,13 +18,12 @@
 
                 <div class="res-left-content-top">
                     <ul class="main">
-                        <li ng-repeat="(listName, list) in models.lists" class="main">
+                        <li ng-repeat="column in columns" class="main">
                             <h4>
-                                <a href="#" editable-text="listName">{{ listName || 'empty' }}</a>
-
-                                <!--Type {{listName}}-->
-                                <span ng-click="delColumn()" class="glyphicon glyphicon-remove control-icon" title="Delete"></span>
-                                <span ng-click="processColumn()" class="glyphicon glyphicon-pencil control-icon" title="Edit"></span>
+                                <!--<a href="#" editable-text="listName">{{ listName || 'empty' }}</a>-->
+                                {{column.name}}
+                                <span ng-click="delColumn(column)" class="glyphicon glyphicon-remove control-icon" title="Delete"></span>
+                                <span ng-click="processColumn(column)" class="glyphicon glyphicon-pencil control-icon" title="Edit"></span>
                             </h4>
                         </li>
                     </ul>
@@ -33,16 +32,8 @@
 
                 <div class="res-left-content-center">
                     <ul class="main">
-                        <li ng-repeat="(listName, list) in models.lists" class="main grey">
-
+                        <li ng-repeat="column in columns" class="main grey">
                             <div style="height: 100%;" ng-include="'views/resource_management/simple.html'"></div>
-
-                            <!--<div class="panel panel-info">-->
-                            <!--<div class="panel-heading">-->
-                            <!--<h3 class="panel-title">Assignment Type {{listName}}</h3>-->
-                            <!--</div>-->
-                            <!--<div class="panel-body" ng-include="'views/resource_management/simple.html'"></div>-->
-                            <!--</div>-->
                         </li>
                     </ul>
                 </div>
@@ -112,7 +103,7 @@
                         <span class="member-info-block-content-subtitle">
                             Project:  <span ng-class="addProject()" class="glyphicon glyphicon-plus cursor-pointer control-icon-right" title="Add"></span>
                         </span>
-                        <ul ng-if="currentMember.project.length > 0" class="member-info-ul">
+                        <ul ng-if="currentMember.projects.length > 0" class="member-info-ul">
                             <li ng-repeat="value in currentMember.projects">
                                 {{value.name}} <span ng-click="delProject(value)" class="glyphicon glyphicon-trash control-icon-right cursor-pointer" title="Delete"></span>
                             </li>

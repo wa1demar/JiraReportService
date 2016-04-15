@@ -1,12 +1,99 @@
 'use strict';
 
 jiraPluginApp.controller('ResourceManagementCtrl',
-    ['$scope', 'DueDateIssueFactory', 'Notification',
-        function($scope, DueDateIssueFactory, Notification) {
+    ['$scope', '$uibModal', 'ResourceColumn', 'Notification',
+        function($scope, $uibModal, ResourceColumn, Notification) {
             var self = this;
             $scope.loaderShow = true;
             $scope.showSearch = true;
             $scope.showMemberInfo = false;
+
+//----------------------------------------------------------------------------------------------------------------------
+//Get all data for Resource Board
+            $scope.columns = [];
+            $scope.getResourceColumns = function () {
+                // ResourceColumn.query({}, function (result) {
+                //     $scope.columns = result;
+                //     $scope.loaderShow = false;
+                // }, function (error) {
+                //     Notification.error("Server error");
+                // });
+
+
+                $scope.columns = [
+                    {
+                        id: 1,
+                        name: "Bench",
+                        color: "#DDDDDD",
+                        fixed: true,
+                        members: [
+                            {
+                                id: 1,
+                                name: "Full Name 1",
+                                engineerLevel: 1,
+                                experiencies: [
+                                    {id: 1, name: 'JS'},
+                                    {id: 2, name: 'HTML'},
+                                    {id: 3, name: 'Angular'},
+                                    {id: 4, name: 'CSS'},
+                                    {id: 5, name: 'PHP'}
+                                ],
+                                projects: [],
+                                location: 2,
+                                assignmentType: 1,
+                                attach: [],
+                                description: "description"
+                            },
+                            {
+                                id: 1,
+                                name: "Full Name 2",
+                                engineerLevel: 3,
+                                experiencies: [
+                                    {id: 1, name: 'JS'},
+                                    {id: 2, name: 'HTML'},
+                                    {id: 3, name: 'Angular'},
+                                    {id: 4, name: 'CSS'},
+                                    {id: 5, name: 'PHP'}
+                                ],
+                                projects: [],
+                                location: 2,
+                                assignmentType: 1,
+                                attach: [],
+                                description: "description 2"
+                            }
+                        ]
+                    },
+                    {
+                        id: 2,
+                        name: "PM",
+                        color: "#1E90FF",
+                        fixed: false,
+                        members: [
+                            {
+                                id: 1,
+                                name: "Full Name 2",
+                                engineerLevel: 3,
+                                experiencies: [
+                                    {
+                                        id: 1,
+                                        name: 'Scrum'
+                                    }
+                                ],
+                                projects: [],
+                                location: 2,
+                                assignmentType: 1,
+                                attach: [],
+                                description: "description"
+                            }
+                        ]
+                    }
+                ];
+
+                console.log($scope.columns);
+
+            };
+            $scope.getResourceColumns();
+
 
             $scope.currentMember = {};
 
@@ -36,30 +123,6 @@ jiraPluginApp.controller('ResourceManagementCtrl',
             ];
             //-----------------------------------
 
-            //random
-            function getRandomInt(min, max) {
-                return Math.floor(Math.random() * (max - min)) + min;
-            }
-
-            var projects = ['success', 'error', 'current', 'complete', 'moved'];
-
-            $scope.models = {
-                // selected: null,
-                lists: {"A": [], "B": [], "C": [], "D": [], "E": [], "F": [], "X": [], "Y": []}
-            };
-
-            // Generate initial model
-            for (var i = 1; i <= 5; ++i) {
-                $scope.models.lists.A.push({id: i, label: "Full Name A" + i, project: projects[getRandomInt(0, projects.length)]});
-                $scope.models.lists.B.push({id: i, label: "Full Name B" + i, project: projects[getRandomInt(0, projects.length)]});
-                $scope.models.lists.C.push({id: i, label: "Full Name C" + i, project: projects[getRandomInt(0, projects.length)]});
-                $scope.models.lists.D.push({id: i, label: "Full Name D" + i, project: projects[getRandomInt(0, projects.length)]});
-                $scope.models.lists.E.push({id: i, label: "Full Name E" + i, project: projects[getRandomInt(0, projects.length)]});
-                $scope.models.lists.F.push({id: i, label: "Full Name F" + i, project: projects[getRandomInt(0, projects.length)]});
-                $scope.models.lists.X.push({id: i, label: "Full Name X" + i, project: projects[getRandomInt(0, projects.length)]});
-                $scope.models.lists.Y.push({id: i, label: "Full Name Y" + i, project: projects[getRandomInt(0, projects.length)]});
-            }
-
             // Model to JSON for demo purpose
             $scope.$watch('models', function(model) {
                 $scope.modelAsJson = angular.toJson(model, true);
@@ -68,20 +131,20 @@ jiraPluginApp.controller('ResourceManagementCtrl',
             $scope.logEvent = function(message, event) {
                 console.log(message, '(triggered by the following', event.type, 'event)');
                 console.log(event);
-                console.log($scope.models);
+                console.log($scope.columns);
             };
 
             $scope.selectElement = function (item) {
                 console.log(item);
-                if ($scope.models.selected === item) {
-                    $scope.models.selected = null;
+                if ($scope.columns.selected === item) {
+                    $scope.columns.selected = null;
 
                     $scope.showSearch = true;
                     $scope.showMemberInfo = false;
 
                     $scope.showSearchFilters();
                 } else {
-                    $scope.models.selected = item;
+                    $scope.columns.selected = item;
 
                     $scope.showSearch = false;
                     $scope.showMemberInfo = true;
@@ -110,6 +173,98 @@ jiraPluginApp.controller('ResourceManagementCtrl',
             $scope.updateMemberDescription = function(data) {
                 console.log('updateMemberDescription:');
                 console.log(data);
+            };
+
+//----------------------------------------------------------------------------------------------------------------------
+//Dlg process column
+            $scope.dlgData = {};
+            $scope.processColumn = function (item) {
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: 'views/resource_management/dlg/dlg_process_column.html',
+                    controller: 'DlgProcessColumnCtrl',
+                    size: 'md',
+                    resolve: {
+                        dlgData: function () {
+                            return item;
+                        }
+                    }
+                });
+                modalInstance.result.then(function (data) {
+                    if (data.id == undefined) {
+                        ResourceColumn.create({}, data, function(data){
+                            Notification.success("Create column success");
+                            $scope.getResourceColumns();
+                        }, function (error) {
+                            Notification.error("Server error");
+                        });
+                    } else {
+                        ResourceColumn.update({id: data.id}, data, function(data){
+                            Notification.success("Update column success");
+                            $scope.getResourceColumns();
+                        }, function (error) {
+                            Notification.error("Server error");
+                        });
+                    }
+                }, function () {});
+            };
+
+//----------------------------------------------------------------------------------------------------------------------
+//Dlg delete column
+            $scope.delColumn = function (item) {
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: 'views/dlg/dlg_delete_element.html',
+                    controller: 'DlgDeleteColumnCtrl',
+                    resolve: {
+                        dlgData: function () {
+                            return item;
+                        }
+                    }
+                });
+                modalInstance.result.then(function (data) {
+                    ResourceColumn.delete({id: data.id}, function() {
+                        $scope.getResourceColumns();
+                        Notification.success("Delete column success");
+                    }, function () {
+                        Notification.error("Server error");
+                    });
+                }, function () {});
+            };
+
+        }
+]);
+
+jiraPluginApp.controller('DlgProcessColumnCtrl',
+    ['$scope', '$uibModalInstance', 'dlgData',
+        function ($scope, $uibModalInstance, dlgData) {
+            $scope.model = dlgData;
+
+            console.log($scope.model);
+
+            $scope.ok = function () {
+                if($scope.processColumnForm.$valid) {
+                    $uibModalInstance.close($scope.model);
+                }
+            };
+
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+        }
+    ]);
+
+jiraPluginApp.controller('DlgDeleteColumnCtrl',
+    ['$scope', '$uibModalInstance', 'dlgData',
+        function ($scope, $uibModalInstance, dlgData) {
+            $scope.dlgData = dlgData;
+
+            $scope.ok = function () {
+                $uibModalInstance.close($scope.dlgData);
+            };
+
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
             };
         }
 ]);

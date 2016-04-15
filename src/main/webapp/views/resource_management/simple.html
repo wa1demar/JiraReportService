@@ -1,31 +1,29 @@
-<ul dnd-list="list" class="item">
-    <li ng-repeat="item in list"
+<ul dnd-list="column.members" class="item">
+    <li ng-repeat="item in column.members"
         dnd-draggable="item"
-        dnd-moved="list.splice($index, 1)"
+        dnd-moved="column.members.splice($index, 1)"
         dnd-effect-allowed="move"
         dnd-selected="selectElement(item)"
         dnd-dragend="logEvent('Drag operation ended', event)"
-        ng-class="{'selected': models.selected === item}"
-            >
+        ng-class="{'selected': columns.selected === item}">
 
-
-        <div style="border-left: 8px solid dodgerblue;">
+        <div style="border-left: 8px solid {{column.color}}">
             <div class="row margin-0">
                 <div class="col-md-3 avatar">
                     <span class="glyphicon glyphicon-user"></span>
                 </div>
                 <div class="col-md-9">
-                    <div class="name-label">{{item.label}}</div>
-                    <div class="engineer-lvl-label">EL - 1</div>
+                    <div class="name-label">{{item.name}}</div>
+                    <div class="engineer-lvl-label">EL - {{item.engineerLevel}}</div>
                 </div>
             </div>
 
             <div class="row margin-0">
-                <div class="technologies-label">technologies</div>
-                <!--<div class="technologies-label"><i>project:</i> <span class="aui-lozenge aui-lozenge-{{item.project}}">{{item.project}}</span></div>-->
+                <div class="technologies-label">
+                    <span ng-repeat="value in item.experiencies track by $index">{{value.name}}{{$last ? '' : ', '}}</span>
+                </div>
             </div>
         </div>
-
 
     </li>
 </ul>
