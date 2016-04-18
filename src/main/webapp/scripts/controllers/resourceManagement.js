@@ -183,7 +183,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 var indexElementInColumn = null;
                 var count = $scope.columns.length;
                 for (var index = 0; index < count; index++) {
-                    result = _.findWhere($scope.columns[index].users, {id: item.id});
+                    result = _.findWhere($scope.columns[index].users, {login: item.login});
                     if (result !== undefined) {
                         //save column data
                         column = $scope.columns[index];
