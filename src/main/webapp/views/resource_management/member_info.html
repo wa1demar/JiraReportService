@@ -10,7 +10,7 @@
     </div>
     <div class="row margin-0">
         <span class="member-info-block-content-subtitle">
-            Experience: <span ng-class="addExperience()" class="glyphicon glyphicon-plus cursor-pointer control-icon-right" title="Add"></span>
+            Experience: <span ng-click="addExperience()" class="glyphicon glyphicon-plus cursor-pointer control-icon-right" title="Add"></span>
         </span>
         <ul ng-if="currentMember.experiencies.length > 0" class="member-info-ul">
             <li ng-repeat="value in currentMember.experiencies">
@@ -21,9 +21,9 @@
     </div>
     <div class="member-info-divider"></div>
     <div class="row margin-0">
-                        <span class="member-info-block-content-subtitle">
-                            Project:  <span ng-class="addProject()" class="glyphicon glyphicon-plus cursor-pointer control-icon-right" title="Add"></span>
-                        </span>
+        <span class="member-info-block-content-subtitle">
+            Project:  <span ng-class="addProject()" class="glyphicon glyphicon-plus cursor-pointer control-icon-right" title="Add"></span>
+        </span>
         <ul ng-if="currentMember.projects.length > 0" class="member-info-ul">
             <li ng-repeat="value in currentMember.projects">
                 {{value.name}} <span ng-click="delProject(value)" class="glyphicon glyphicon-trash control-icon-right cursor-pointer" title="Delete"></span>
