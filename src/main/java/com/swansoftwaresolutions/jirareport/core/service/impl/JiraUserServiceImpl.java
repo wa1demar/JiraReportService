@@ -126,4 +126,12 @@ public class JiraUserServiceImpl implements JiraUserService {
 
         return jiraUserMapper.fromJiraUserToResourceUserDto(user);
     }
+
+    @Override
+    public ResourceUserDto removeUserFromBoardFully(String login) throws NoSuchEntityException {
+        JiraUser user = jiraUserRepository.findByLogin(login);
+        user.setColumn(null);
+
+        return jiraUserMapper.fromJiraUserToResourceUserDto(jiraUserRepository.merge(user));
+    }
 }
