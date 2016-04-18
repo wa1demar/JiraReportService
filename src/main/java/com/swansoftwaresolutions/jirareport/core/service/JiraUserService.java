@@ -33,4 +33,6 @@ public interface JiraUserService {
     ResourceUserDto addUserToBoard(NewResourceUserDto resourceUserDto) throws NoSuchEntityException;
 
     ResourceUserDto removeUserFromBoard(String login) throws NoSuchEntityException;
+
+    ResourceUserDto removeUserFromBoardFully(String login) throws NoSuchEntityException;
 }
