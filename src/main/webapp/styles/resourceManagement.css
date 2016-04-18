@@ -104,6 +104,8 @@
 .name-label {
     text-align: left;
     margin-top: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .engineer-lvl-label {

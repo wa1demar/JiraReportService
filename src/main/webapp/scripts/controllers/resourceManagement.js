@@ -19,86 +19,86 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 //Get all data for Resource Board
             $scope.columns = [];
             $scope.getResourceColumns = function () {
-                // ResourceColumnFactory.query({}, function (result) {
-                //     $scope.columns = result;
-                //     $scope.loaderShow = false;
-                // }, function (error) {
-                //     Notification.error("Server error");
-                // });
+                ResourceColumnFactory.query({}, function (result) {
+                    $scope.columns = result.columns;
+                    $scope.loaderShow = false;
+                }, function (error) {
+                    Notification.error("Server error");
+                });
 
-                $scope.columns = [
-                    {
-                        id: 1,
-                        name: "Bench",
-                        color: "#CF2926",
-                        fixed: true,
-                        members: [
-                            {
-                                id: 1,
-                                name: "Full Name 1",
-                                engineerLevel: 1,
-                                experiencies: [
-                                    {id: 31, name: 'JS'},
-                                    {id: 41, name: 'HTML'},
-                                    {id: 51, name: 'CSS'},
-                                    {id: 61, name: 'Angular'}
-                                ],
-                                projects: [
-                                    {id: 1, name: "project 1"}
-                                ],
-                                location: 2,
-                                assignmentType: 1,
-                                attachments: [
-                                    {id: 1, name: "attach 1", url: "http://google.com"}
-                                ],
-                                description: "description"
-                            },
-                            {
-                                id: 2,
-                                name: "Full Name 2",
-                                engineerLevel: 3,
-                                experiencies: [
-                                    {id: 13, name: 'JS'},
-                                    {id: 14, name: 'HTML'},
-                                    {id: 16, name: 'Angular'}
-                                ],
-                                projects: [],
-                                location: 2,
-                                assignmentType: 1,
-                                attachments: [
-                                    {id: 1, name: "attach 1", url: "http://google.com"},
-                                    {id: 2, name: "attach 2", url: "http://google.com"}
-                                ],
-                                description: "description 2"
-                            }
-                        ]
-                    },
-                    {
-                        id: 2,
-                        name: "PM",
-                        color: "#1E90FF",
-                        fixed: false,
-                        members: [
-                            {
-                                id: 3,
-                                name: "Full Name 2",
-                                engineerLevel: 3,
-                                experiencies: [
-                                    {id: 111, name: 'Scrum'}
-                                ],
-                                projects: [],
-                                location: 2,
-                                assignmentType: 2,
-                                attachments: [
-                                    {id: 1, name: "attach 1", url: "http://google.com"}
-                                ],
-                                description: "description"
-                            }
-                        ]
-                    }
-                ];
-
-                console.log($scope.columns);
+                // $scope.columns = [
+                //     {
+                //         id: 1,
+                //         name: "Bench",
+                //         color: "#CF2926",
+                //         fixed: true,
+                //         members: [
+                //             {
+                //                 id: 1,
+                //                 name: "Full Name 1",
+                //                 engineerLevel: 1,
+                //                 experiencies: [
+                //                     {id: 31, name: 'JS'},
+                //                     {id: 41, name: 'HTML'},
+                //                     {id: 51, name: 'CSS'},
+                //                     {id: 61, name: 'Angular'}
+                //                 ],
+                //                 projects: [
+                //                     {id: 1, name: "project 1"}
+                //                 ],
+                //                 location: 2,
+                //                 assignmentType: 1,
+                //                 attachments: [
+                //                     {id: 1, name: "attach 1", url: "http://google.com"}
+                //                 ],
+                //                 description: "description"
+                //             },
+                //             {
+                //                 id: 2,
+                //                 name: "Full Name 2",
+                //                 engineerLevel: 3,
+                //                 experiencies: [
+                //                     {id: 13, name: 'JS'},
+                //                     {id: 14, name: 'HTML'},
+                //                     {id: 16, name: 'Angular'}
+                //                 ],
+                //                 projects: [],
+                //                 location: 2,
+                //                 assignmentType: 1,
+                //                 attachments: [
+                //                     {id: 1, name: "attach 1", url: "http://google.com"},
+                //                     {id: 2, name: "attach 2", url: "http://google.com"}
+                //                 ],
+                //                 description: "description 2"
+                //             }
+                //         ]
+                //     },
+                //     {
+                //         id: 2,
+                //         name: "PM",
+                //         color: "#1E90FF",
+                //         fixed: false,
+                //         members: [
+                //             {
+                //                 id: 3,
+                //                 name: "Full Name 2",
+                //                 engineerLevel: 3,
+                //                 experiencies: [
+                //                     {id: 111, name: 'Scrum'}
+                //                 ],
+                //                 projects: [],
+                //                 location: 2,
+                //                 assignmentType: 2,
+                //                 attachments: [
+                //                     {id: 1, name: "attach 1", url: "http://google.com"}
+                //                 ],
+                //                 description: "description"
+                //             }
+                //         ]
+                //     }
+                // ];
+                //
+                // console.log($scope.columns);
 
             };
             $scope.getResourceColumns();
@@ -316,20 +316,21 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                         resolve: {
                             dlgData: function () {
                                 return {
-                                    members:      members,
-                                    technologies: $scope.technologies
+                                    members:        members,
+                                    locations:      $scope.locations,
+                                    technologies:   $scope.technologies
                                 };
                             }
                         }
                     });
                     modalInstance.result.then(function (data) {
                         console.log(data);
-                        // ResourceMember.create({}, data, function(data){
-                        //     Notification.success("Create column success");
-                        //     $scope.getResourceColumns();
-                        // }, function (error) {
-                        //     Notification.error("Server error");
-                        // });
+                        ResourceColumnFactory.create({id: "add_user"}, data, function(data){
+                            Notification.success("Add member success");
+                            $scope.getResourceColumns();
+                        }, function (error) {
+                            Notification.error("Server error");
+                        });
                     }, function () {});
                 });
             };
@@ -481,9 +482,9 @@ jiraPluginApp.controller('DlgDeleteColumnCtrl',
 jiraPluginApp.controller('DlgAddMemberCtrl',
     ['$scope', '$uibModalInstance', 'dlgData',
         function ($scope, $uibModalInstance, dlgData) {
-            // $scope.model = dlgData;
 
             $scope.members = dlgData.members;
+            $scope.locations = dlgData.locations;
             $scope.technologies = dlgData.technologies;
 
             $scope.ok = function () {
