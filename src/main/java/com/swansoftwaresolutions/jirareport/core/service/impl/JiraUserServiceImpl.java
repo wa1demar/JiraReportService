@@ -8,6 +8,7 @@ import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.LocationRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.ResourceBordRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.TechnologyRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -32,6 +33,9 @@ public class JiraUserServiceImpl implements JiraUserService {
 
     @Autowired
     TechnologyRepository technologyRepository;
+
+    @Autowired
+    LocationRepository locationRepository;
 
     @Autowired
     ResourceBordRepository resourceBordRepository;
@@ -108,6 +112,8 @@ public class JiraUserServiceImpl implements JiraUserService {
         jiraUser.setTechnologies(technologyRepository.findAllByIds(newResourceUserDto.getTechnologies()));
 
         jiraUser.setColumn(resourceBordRepository.findDefaultColumn());
+
+        jiraUser.setLocation(locationRepository.findById(newResourceUserDto.getLocation()));
 
         JiraUser newJiraUser = jiraUserRepository.update(jiraUser);
 

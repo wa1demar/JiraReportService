@@ -7,6 +7,7 @@ public class NewResourceUserDto {
 
     private String userLogin;
     private Integer level;
+    private Long location;
     private Long[] technologies;
     private String description;
 
@@ -40,5 +41,13 @@ public class NewResourceUserDto {
 
     public void setTechnologies(Long[] technologies) {
         this.technologies = technologies;
+    }
+
+    public Long getLocation() {
+        return location;
+    }
+
+    public void setLocation(Long location) {
+        this.location = location;
     }
 }
