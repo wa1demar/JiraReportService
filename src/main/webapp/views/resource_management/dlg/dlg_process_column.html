@@ -5,10 +5,10 @@
 </div>
 <form name="processColumnForm" ng-submit="submit()" novalidate>
   <div class="modal-body">
-      <div class="form-group" ng-class="{ 'has-error': processColumnForm.$submitted || processColumnForm.title.$touched && processColumnForm.name.$invalid }">
+      <div class="form-group" ng-class="{ 'has-error': processColumnForm.$submitted || processColumnForm.name.$touched && processColumnForm.name.$invalid }">
         <label for="name">Column name:</label>
         <input type="text" class="form-control" id="name" name="name" ng-model="model.name" required>
-        <div class="help-block" ng-messages="processColumnForm.name.$error" ng-if="processColumnForm.title.$touched || processColumnForm.$submitted">
+        <div class="help-block" ng-messages="processColumnForm.name.$error" ng-if="processColumnForm.name.$touched || processColumnForm.$submitted">
           <p ng-message="required">Your name is required</p>
         </div>
       </div>

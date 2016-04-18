@@ -21,8 +21,8 @@
                             <h4>
                                 <!--<a href="#" editable-text="listName">{{ listName || 'empty' }}</a>-->
                                 {{column.name}}
-                                <span ng-click="delColumn(column)" class="glyphicon glyphicon-remove control-icon" title="Delete"></span>
-                                <span ng-if="!column.fixed" ng-click="processColumn(column)" class="glyphicon glyphicon-pencil control-icon" title="Edit"></span>
+                                <span ng-if="!column.fixed" ng-click="delColumn(column)" class="glyphicon glyphicon-remove control-icon" title="Delete"></span>
+                                <span ng-click="processColumn(column)" class="glyphicon glyphicon-pencil control-icon" title="Edit"></span>
                             </h4>
                         </li>
                     </ul>
