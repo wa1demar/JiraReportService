@@ -1,7 +1,10 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.NewResourceUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.service.ResourceBordService;
+import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,5 +38,14 @@ public class ResourceBoardController {
         ResourceColumnDto newLocationDto = resourceBordService.update(columnDto);
 
         return new ResponseEntity<>(newLocationDto, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/rest/v1/resource_columns/add_user", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResourceUserDto> addUserColumn(@Valid @RequestBody NewResourceUserDto resourceUserDto) throws NoSuchEntityException {
+
+        ResourceUserDto newNewResourceUserDto = resourceBordService.addUserToBoard(resourceUserDto);
+
+        return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
     }
 }

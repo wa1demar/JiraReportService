@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,5 +52,16 @@ public class TechnologyRepositoryImpl implements TechnologyRepository {
     public Technology update(Technology technology) {
         sessionFactory.getCurrentSession().update(technology);
         return technology;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Technology> findAllByIds(Long[] technologies) {
+        if (technologies.length == 0) {
+            return new ArrayList<>();
+        }
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM Technology t WHERE t.id in (:ids)");
+        query.setParameterList("ids", technologies);
+        return query.list();
     }
 }

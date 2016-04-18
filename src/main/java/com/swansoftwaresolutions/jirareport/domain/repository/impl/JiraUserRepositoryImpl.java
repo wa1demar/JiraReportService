@@ -38,10 +38,13 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
 
     @Override
     public JiraUser update(JiraUser user) throws NoSuchEntityException {
-//        if (user.getId() == null || findById(user.getId()) == null) {
-//            throw new NoSuchEntityException("Entity not found");
-//        }
         return (JiraUser) sessionFactory.getCurrentSession().merge(user);
+    }
+
+    @Override
+    public JiraUser merge(JiraUser user) throws NoSuchEntityException {
+        sessionFactory.getCurrentSession().update(user);
+        return user;
     }
 
     @Override

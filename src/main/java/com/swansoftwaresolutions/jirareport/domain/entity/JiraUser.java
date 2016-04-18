@@ -21,12 +21,14 @@ public class JiraUser {
     private String login;
     private String fullName;
     private Long jiraUserId;
+    private Integer level;
     private String description;
     private List<Report> reports = new ArrayList<>();
     private List<JiraGroup> groups = new ArrayList<>();
     private Location location;
     private List<Technology> technologies = new ArrayList<>();
     private List<Attachment> attachments = new ArrayList<>();
+    private List<ResourceColumn> columns = new ArrayList<>();
 
     @Column(name = "email")
     public String getEmail() {
@@ -95,7 +97,7 @@ public class JiraUser {
         this.location = location;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.ALL)
     public List<Technology> getTechnologies() {
         return technologies;
     }
@@ -120,5 +122,23 @@ public class JiraUser {
 
     public void setAttachments(List<Attachment> attachments) {
         this.attachments = attachments;
+    }
+
+    @Column(name = "level")
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.ALL)
+    public List<ResourceColumn> getColumns() {
+        return columns;
+    }
+
+    public void setColumns(List<ResourceColumn> columns) {
+        this.columns = columns;
     }
 }
