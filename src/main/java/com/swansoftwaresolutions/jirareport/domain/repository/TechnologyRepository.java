@@ -17,4 +17,6 @@ public interface TechnologyRepository {
     Technology findById(Long id);
 
     Technology update(Technology technology);
+
+    List<Technology> findAllByIds(Long[] technologies);
 }

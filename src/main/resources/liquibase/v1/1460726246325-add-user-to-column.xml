@@ -1,0 +1,26 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="1460709496734" author="Vladimir Martynyuk">
+
+     <createTable tableName="jira_users_resource_columns">
+         <column name="resource_column_id" type="bigint">
+             <constraints nullable="false"/>
+         </column>
+         <column name="jira_user_login" type="varchar">
+             <constraints nullable="false"/>
+         </column>
+     </createTable>
+
+        <addForeignKeyConstraint baseTableName="jira_users_resource_columns" baseColumnNames="resource_column_id"
+                                 constraintName="fk_jira_users_resource_columns_resource_column_id"
+                                 referencedTableName="resource_columns"
+                                 referencedColumnNames="id" />
+
+        <addForeignKeyConstraint baseTableName="jira_users_resource_columns" baseColumnNames="jira_user_login"
+                                 constraintName="fk_jira_users_resource_columns_jira_user_login"
+                                 referencedTableName="jira_users"
+                                 referencedColumnNames="login" />
+
+    </changeSet>
+</databaseChangeLog>

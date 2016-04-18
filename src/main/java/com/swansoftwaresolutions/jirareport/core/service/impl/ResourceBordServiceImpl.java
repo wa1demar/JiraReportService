@@ -1,10 +1,17 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.NewResourceUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
+import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.ResourceBordMapper;
 import com.swansoftwaresolutions.jirareport.core.service.ResourceBordService;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
+import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.ResourceBordRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.TechnologyRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +25,16 @@ public class ResourceBordServiceImpl implements ResourceBordService {
     ResourceBordRepository resourceBordRepository;
 
     @Autowired
+    JiraUserRepository jiraUserRepository;
+
+    @Autowired
+    TechnologyRepository technologyRepository;
+
+    @Autowired
     ResourceBordMapper resourceBordMapper;
+
+    @Autowired
+    JiraUserMapper jiraUserMapper;
 
     @Override
     public ResourceColumnDto add(ResourceColumnDto columnDto) {
@@ -32,5 +48,20 @@ public class ResourceBordServiceImpl implements ResourceBordService {
         ResourceColumn resourceColumn = resourceBordRepository.update(resourceBordMapper.fromResourceColumnDtoToresourceColumn(columnDto));
 
         return resourceBordMapper.fromResourceColumnToresourceColumnDto(resourceColumn);
+    }
+
+    @Override
+    public ResourceUserDto addUserToBoard(NewResourceUserDto newResourceUserDto) throws NoSuchEntityException {
+        JiraUser jiraUser = jiraUserRepository.findByLogin(newResourceUserDto.getUserLogin());
+
+        jiraUser.setDescription(newResourceUserDto.getDescription());
+        jiraUser.setLevel(newResourceUserDto.getLevel());
+        jiraUser.setTechnologies(technologyRepository.findAllByIds(newResourceUserDto.getTechnologies()));
+
+        jiraUser.setColumns(resourceBordRepository.findDefaultColumn());
+
+        JiraUser newJiraUser = jiraUserRepository.merge(jiraUser);
+
+        return jiraUserMapper.fromJiraUserToResourceUserDto(newJiraUser);
     }
 }
