@@ -183,19 +183,19 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 var indexElementInColumn = null;
                 var count = $scope.columns.length;
                 for (var index = 0; index < count; index++) {
-                    result = _.findWhere($scope.columns[index].members, {id: item.id});
+                    result = _.findWhere($scope.columns[index].users, {id: item.id});
                     if (result !== undefined) {
                         //save column data
                         column = $scope.columns[index];
                         //find index new position in column
-                        indexElementInColumn = $scope.columns[index].members.indexOf(result);
+                        indexElementInColumn = $scope.columns[index].users.indexOf(result);
                         break;
                     }
                 }
 
                 //TODO save new member position
                 //change member assignment type
-                $scope.columns[index].members[indexElementInColumn].assignmentType = column.id;
+                $scope.columns[index].users[indexElementInColumn].assignmentType = column.id;
                 // $scope.getResourceColumns();
             };
 
