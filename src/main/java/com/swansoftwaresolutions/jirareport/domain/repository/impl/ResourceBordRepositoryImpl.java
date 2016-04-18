@@ -33,9 +33,9 @@ public class ResourceBordRepositoryImpl implements ResourceBordRepository {
     }
 
     @Override
-    public List<ResourceColumn> findDefaultColumn() {
+    public ResourceColumn findDefaultColumn() {
         Query query = sessionFactory.getCurrentSession().createQuery("from ResourceColumn c WHERE c.id = 1");
-        return query.list();
+        return (ResourceColumn) query.uniqueResult();
     }
 
     @Override

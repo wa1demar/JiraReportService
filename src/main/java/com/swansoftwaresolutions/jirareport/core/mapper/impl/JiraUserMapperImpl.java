@@ -32,7 +32,6 @@ public class JiraUserMapperImpl implements JiraUserMapper {
         this.modelMapper = modelMapper;
         this.technologyMapper = technologyMapper;
         modelMapper.addMappings(new ImportedJiraUsersMapper());
-        modelMapper.addMappings(new JiraUserToResourceUserDtoMapper());
     }
 
     @Override
@@ -93,7 +92,7 @@ public class JiraUserMapperImpl implements JiraUserMapper {
     @Override
     public ResourceUserDto fromJiraUserToResourceUserDto(JiraUser jiraUser) {
         ResourceUserDto userDto = modelMapper.map(jiraUser, ResourceUserDto.class);
-        userDto.setExperiences(technologyMapper.fromTechnologiesToTechnologiesDto(jiraUser.getTechnologies()));
+        userDto.setTechnologies(technologyMapper.fromTechnologiesToTechnologiesDto(jiraUser.getTechnologies()));
         return userDto;
     }
 

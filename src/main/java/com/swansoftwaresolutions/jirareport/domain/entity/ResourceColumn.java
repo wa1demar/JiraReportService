@@ -59,12 +59,7 @@ public class ResourceColumn implements Serializable {
         this.fixed = fixed;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "jira_users_resource_columns", joinColumns = {
-            @JoinColumn(name = "resource_column_id")},
-            inverseJoinColumns = {@JoinColumn(name = "jira_user_login")})
-    @Fetch(FetchMode.SELECT)
-    @BatchSize(size = 10)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "column")
     public List<JiraUser> getUsers() {
         return users;
     }

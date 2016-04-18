@@ -29,7 +29,7 @@ public class JiraUser implements Serializable {
     private Location location;
     private List<Technology> technologies = new ArrayList<>();
     private List<Attachment> attachments = new ArrayList<>();
-    private List<ResourceColumn> columns = new ArrayList<>();
+    private ResourceColumn column;
 
     @Column(name = "email")
     public String getEmail() {
@@ -134,12 +134,13 @@ public class JiraUser implements Serializable {
         this.level = level;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.ALL)
-    public List<ResourceColumn> getColumns() {
-        return columns;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "resource_column_id", nullable = false)
+    public ResourceColumn getColumn() {
+        return column;
     }
 
-    public void setColumns(List<ResourceColumn> columns) {
-        this.columns = columns;
+    public void setColumn(ResourceColumn column) {
+        this.column = column;
     }
 }

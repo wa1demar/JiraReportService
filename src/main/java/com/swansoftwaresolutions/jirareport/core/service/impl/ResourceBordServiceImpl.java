@@ -55,26 +55,12 @@ public class ResourceBordServiceImpl implements ResourceBordService {
     }
 
     @Override
-    public ResourceUserDto addUserToBoard(NewResourceUserDto newResourceUserDto) throws NoSuchEntityException {
-        JiraUser jiraUser = jiraUserRepository.findByLogin(newResourceUserDto.getUserLogin());
-
-        jiraUser.setDescription(newResourceUserDto.getDescription());
-        jiraUser.setLevel(newResourceUserDto.getLevel());
-        jiraUser.setTechnologies(technologyRepository.findAllByIds(newResourceUserDto.getTechnologies()));
-
-        jiraUser.setColumns(resourceBordRepository.findDefaultColumn());
-
-        JiraUser newJiraUser = jiraUserRepository.update(jiraUser);
-
-        return jiraUserMapper.fromJiraUserToResourceUserDto(newJiraUser);
-    }
-
-    @Override
     public FullResourceColumnDtoList getColumns() {
         List<ResourceColumn> columns = resourceBordRepository.findAll();
         List<FullResourceColumnDto> columnDtos = resourceBordMapper.fromResourceColumnsToFullResourceColumnDtos(columns);
         FullResourceColumnDtoList fullResourceColumnDtoList = new FullResourceColumnDtoList();
         fullResourceColumnDtoList.setColumns(columnDtos);
+
         return fullResourceColumnDtoList;
     }
 }
