@@ -361,7 +361,8 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 modalInstance.result.then(function (data) {
                     MemberFactory.create({id: $scope.currentMember.id, relation: "technologies"}, data, function(data){
                         Notification.success("Add new technology success");
-                        $scope.getResourceColumns();
+                        //get member info
+                        // $scope.getResourceColumns();
                     }, function (error) {
                         Notification.error("Server error");
                     });
@@ -383,8 +384,59 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 });
                 modalInstance.result.then(function (data) {
                     MemberFactory.delete({relation: "technologies", idRelation: data.id}, function() {
-                        $scope.getResourceColumns();
                         Notification.success("Delete technology success");
+                        //get member info
+                        // $scope.getResourceColumns();
+                    }, function () {
+                        Notification.error("Server error");
+                    });
+                }, function () {});
+            };
+
+//----------------------------------------------------------------------------------------------------------------------
+//Dlg add project
+            $scope.addProject = function () {
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: 'views/resource_management/dlg/dlg_add_project.html',
+                    controller: 'DlgAddProjectCtrl',
+                    resolve: {
+                        dlgData: function () {
+                            return {
+                                projects: $scope.projects
+                            };
+                        }
+                    }
+                });
+                modalInstance.result.then(function (data) {
+                    MemberFactory.create({id: $scope.currentMember.id, relation: "projects"}, data, function(data){
+                        Notification.success("Add new project success");
+                        //get member info
+                        // $scope.getResourceColumns();
+                    }, function (error) {
+                        Notification.error("Server error");
+                    });
+                }, function () {});
+            };
+
+//----------------------------------------------------------------------------------------------------------------------
+//Dlg delete project
+            $scope.delProject = function (item) {
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: 'views/dlg/dlg_delete_element.html',
+                    controller: 'DlgDeleteProjectCtrl',
+                    resolve: {
+                        dlgData: function () {
+                            return item;
+                        }
+                    }
+                });
+                modalInstance.result.then(function (data) {
+                    MemberFactory.delete({relation: "projects", idRelation: data.id}, function() {
+                        Notification.success("Delete project success");
+                        //get member info
+                        // $scope.getResourceColumns();
                     }, function () {
                         Notification.error("Server error");
                     });
@@ -464,6 +516,38 @@ jiraPluginApp.controller('DlgAddExperienceCtrl',
     ]);
 
 jiraPluginApp.controller('DlgDeleteExperienceCtrl',
+    ['$scope', '$uibModalInstance', 'dlgData',
+        function ($scope, $uibModalInstance, dlgData) {
+            $scope.dlgData = dlgData;
+
+            $scope.ok = function () {
+                $uibModalInstance.close($scope.dlgData);
+            };
+
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+        }
+    ]);
+
+jiraPluginApp.controller('DlgAddProjectCtrl',
+    ['$scope', '$uibModalInstance', 'dlgData',
+        function ($scope, $uibModalInstance, dlgData) {
+            $scope.projects = dlgData.projects;
+
+            $scope.ok = function () {
+                if($scope.addProjectForm.$valid) {
+                    $uibModalInstance.close($scope.model);
+                }
+            };
+
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+        }
+    ]);
+
+jiraPluginApp.controller('DlgDeleteProjectCtrl',
     ['$scope', '$uibModalInstance', 'dlgData',
         function ($scope, $uibModalInstance, dlgData) {
             $scope.dlgData = dlgData;

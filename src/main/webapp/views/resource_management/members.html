@@ -7,7 +7,7 @@
         dnd-dragend="dragendElement(item)"
         ng-class="{'selected': columns.selected === item}">
 
-        <div style="border-left: 8px solid {{column.color}}">
+        <div class="members-item-box" style="border-left: 8px solid {{column.color}}">
             <div class="row margin-0">
                 <div class="col-md-3 avatar">
                     <span class="glyphicon glyphicon-user"></span>
@@ -20,7 +20,7 @@
 
             <div class="row margin-0">
                 <div class="technologies-label">
-                    <span ng-repeat="value in item.experiences track by $index">{{value.name}}{{$last ? '' : ', '}}</span>
+                    <span ng-repeat="value in item.experiencies track by $index">{{value.name}}{{$last ? '' : ', '}}</span>
                 </div>
             </div>
         </div>

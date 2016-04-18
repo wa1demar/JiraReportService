@@ -1,0 +1,21 @@
+<div class="modal-header">
+  <h3 class="modal-title">Add project</h3>
+</div>
+<form name="addProjectForm" ng-submit="submit()" novalidate>
+  <div class="modal-body">
+      <div class="form-group" ng-class="{ 'has-error': addProjectForm.$submitted || addProjectForm.idProject.$touched && addProjectForm.idProject.$invalid }">
+          <label for="idProject">Name:</label>
+          <select ui-select2 ng-model="model.idProject" data-placeholder="Select member" id="idProject" name="idProject" style="width: 100%;" required>
+              <option value=""></option>
+              <option ng-repeat="value in projects" value="{{value.id}}">{{value.name}}</option>
+          </select>
+          <div class="help-block" ng-messages="addProjectForm.idProject.$error" ng-if="addProjectForm.idProject.$touched || addProjectForm.$submitted">
+              <p ng-message="required">Project is required</p>
+          </div>
+      </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="submit" ng-click="ok()">Save</button>
+    <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+  </div>
+</form>
