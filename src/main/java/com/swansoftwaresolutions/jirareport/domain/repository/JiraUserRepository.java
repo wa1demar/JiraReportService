@@ -19,9 +19,9 @@ public interface JiraUserRepository {
 
     JiraUser findByLogin(String login) throws NoSuchEntityException;
 
-    JiraUser update(JiraUser user) throws NoSuchEntityException;
-
     JiraUser merge(JiraUser user) throws NoSuchEntityException;
+
+    JiraUser update(JiraUser user) throws NoSuchEntityException;
 
     List<JiraUser> findAll();
 

@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "jira_groups")
-public class JiraGroup {
+public class JiraGroup  implements Serializable {
 
     @Id
     @Column(name = "name")

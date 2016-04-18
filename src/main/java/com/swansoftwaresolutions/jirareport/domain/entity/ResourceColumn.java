@@ -5,6 +5,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "resource_columns")
-public class ResourceColumn {
+public class ResourceColumn implements Serializable {
 
     private Long id;
     private String name;

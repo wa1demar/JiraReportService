@@ -14,4 +14,5 @@ public interface ResourceBordRepository {
 
     List<ResourceColumn> findDefaultColumn();
 
+    List<ResourceColumn> findAll();
 }

@@ -7,7 +7,7 @@
           <label for="name">Name:</label>
           <select ui-select2 ng-model="model.name" data-placeholder="Select member" id="name" name="name" style="width: 100%;" required>
               <option value=""></option>
-              <option ng-repeat="value in members" value="{{value.login}}">{{value.fullName}}</option>
+              <option ng-repeat="value in users" value="{{value.login}}">{{value.fullName}}</option>
           </select>
           <div class="help-block" ng-messages="addMemberForm.name.$error" ng-if="addMemberForm.name.$touched || addMemberForm.$submitted">
               <p ng-message="required">Member is required</p>

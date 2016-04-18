@@ -38,7 +38,7 @@ public class Technology implements Serializable {
         this.name = name;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "jira_users_technologies", joinColumns = {
             @JoinColumn(name = "technology_id")},
             inverseJoinColumns = {@JoinColumn(name = "jira_user_login")})

@@ -1,13 +1,14 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author Vladimir Martynyuk
  */
 @Entity
 @Table(name = "attachments")
-public class Attachment {
+public class Attachment implements Serializable {
 
     private Long id;
     private String title;

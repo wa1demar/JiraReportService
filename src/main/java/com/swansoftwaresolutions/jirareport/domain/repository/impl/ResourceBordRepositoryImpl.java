@@ -37,4 +37,10 @@ public class ResourceBordRepositoryImpl implements ResourceBordRepository {
         Query query = sessionFactory.getCurrentSession().createQuery("from ResourceColumn c WHERE c.id = 1");
         return query.list();
     }
+
+    @Override
+    public List<ResourceColumn> findAll() {
+        Query query = sessionFactory.getCurrentSession().createQuery("from ResourceColumn c");
+        return query.list();
+    }
 }

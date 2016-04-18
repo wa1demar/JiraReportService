@@ -5,6 +5,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "jira_issues")
-public class JiraIssue {
+public class JiraIssue  implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
