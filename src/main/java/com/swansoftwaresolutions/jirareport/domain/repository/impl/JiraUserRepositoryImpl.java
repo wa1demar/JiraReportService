@@ -4,10 +4,13 @@ import com.sun.mail.util.QEncoderStream;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraGroup;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
+import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
+import com.swansoftwaresolutions.jirareport.domain.entity.Technology;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Restrictions;
@@ -37,20 +40,40 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
     }
 
     @Override
-    public JiraUser update(JiraUser user) throws NoSuchEntityException {
+    public JiraUser merge(JiraUser user) throws NoSuchEntityException {
         return (JiraUser) sessionFactory.getCurrentSession().merge(user);
     }
 
     @Override
-    public JiraUser merge(JiraUser user) throws NoSuchEntityException {
+    public JiraUser update(JiraUser user) throws NoSuchEntityException {
+
+        Set<Technology> technologies = new HashSet<>(user.getTechnologies());
+        for (Technology technology : technologies) {
+            Set<JiraUser> users = new HashSet<>(technology.getUsers());
+            users.add(user);
+            technology.setUsers(new ArrayList<>(users));
+        }
+        user.setTechnologies(new ArrayList<>(technologies));
+
+        List<ResourceColumn> columns = user.getColumns();
+        for (ResourceColumn column : columns) {
+            Set<JiraUser> users = new HashSet<>(column.getUsers());
+            users.add(user);
+            column.setUsers(new ArrayList<>(users));
+        }
+        user.setColumns(columns);
+
+
+
         sessionFactory.getCurrentSession().update(user);
         return user;
     }
 
     @Override
     public JiraUser findByLogin(String login) throws NoSuchEntityException {
-        return (JiraUser) sessionFactory.getCurrentSession()
-                .createCriteria(JiraUser.class).add(Restrictions.eq("login", login)).uniqueResult();
+        Query query = sessionFactory.getCurrentSession().createQuery("from JiraUser u WHERE u.login = :login");
+        query.setParameter("login", login);
+        return (JiraUser) query.uniqueResult();
     }
 
     @Override

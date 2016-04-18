@@ -4,6 +4,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.TechnologyMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.ImportedJiraUsersMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.JiraUserToResourceUserDtoMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
@@ -24,10 +25,12 @@ import java.util.List;
 public class JiraUserMapperImpl implements JiraUserMapper {
 
     private ModelMapper modelMapper;
+    private TechnologyMapper technologyMapper;
 
     @Autowired
-    public JiraUserMapperImpl(ModelMapper modelMapper) {
+    public JiraUserMapperImpl(ModelMapper modelMapper, TechnologyMapper technologyMapper) {
         this.modelMapper = modelMapper;
+        this.technologyMapper = technologyMapper;
         modelMapper.addMappings(new ImportedJiraUsersMapper());
         modelMapper.addMappings(new JiraUserToResourceUserDtoMapper());
     }
@@ -90,6 +93,7 @@ public class JiraUserMapperImpl implements JiraUserMapper {
     @Override
     public ResourceUserDto fromJiraUserToResourceUserDto(JiraUser jiraUser) {
         ResourceUserDto userDto = modelMapper.map(jiraUser, ResourceUserDto.class);
+        userDto.setExperiences(technologyMapper.fromTechnologiesToTechnologiesDto(jiraUser.getTechnologies()));
         return userDto;
     }
 

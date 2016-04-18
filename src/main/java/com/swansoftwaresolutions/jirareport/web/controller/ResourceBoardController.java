@@ -2,6 +2,8 @@ package com.swansoftwaresolutions.jirareport.web.controller;
 
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.NewResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDto;
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDtoList;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.service.ResourceBordService;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -47,5 +49,14 @@ public class ResourceBoardController {
         ResourceUserDto newNewResourceUserDto = resourceBordService.addUserToBoard(resourceUserDto);
 
         return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/rest/v1/resource_columns", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<FullResourceColumnDtoList> getColumnsWithUsers() throws NoSuchEntityException {
+
+        FullResourceColumnDtoList fullResourceColumnDtoList = resourceBordService.getColumns();
+
+        return new ResponseEntity<>(fullResourceColumnDtoList, HttpStatus.OK);
     }
 }

@@ -1,13 +1,14 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author Vitaliy Holovko
  */
 @Entity
 @Table(name = "jira_boards")
-public class JiraBoard {
+public class JiraBoard implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

@@ -6,6 +6,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import static org.hibernate.annotations.CascadeType.*;
  */
 @Entity
 @Table(name = "jira_users")
-public class JiraUser {
+public class JiraUser implements Serializable {
     private String email;
     private String login;
     private String fullName;

@@ -4,6 +4,7 @@ import com.swansoftwaresolutions.jirareport.domain.enums.TaskStatus;
 import org.hibernate.annotations.CollectionId;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -11,7 +12,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "tasks")
-public class Task {
+public class Task implements Serializable {
 
     @Id
     @Column(name = "name")

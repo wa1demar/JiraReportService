@@ -1,7 +1,10 @@
 package com.swansoftwaresolutions.jirareport.core.mapper;
 
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
+
+import java.util.List;
 
 /**
  * @author Vladimir Martynyuk
@@ -9,5 +12,7 @@ import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
 public interface ResourceBordMapper {
     ResourceColumn fromResourceColumnDtoToresourceColumn(ResourceColumnDto columnDto);
 
-    ResourceColumnDto fromResourceColumnToresourceColumnDto(ResourceColumn resourceColumn);
+    ResourceColumnDto fromResourceColumnToResourceColumnDto(ResourceColumn resourceColumn);
+
+    List<FullResourceColumnDto> fromResourceColumnsToFullResourceColumnDtos(List<ResourceColumn> columns);
 }

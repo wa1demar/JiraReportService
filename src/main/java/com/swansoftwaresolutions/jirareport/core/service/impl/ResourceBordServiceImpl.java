@@ -2,6 +2,8 @@ package com.swansoftwaresolutions.jirareport.core.service.impl;
 
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.NewResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDto;
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDtoList;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.ResourceBordMapper;
@@ -14,6 +16,8 @@ import com.swansoftwaresolutions.jirareport.domain.repository.TechnologyReposito
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Vladimir Martynyuk
@@ -40,14 +44,14 @@ public class ResourceBordServiceImpl implements ResourceBordService {
     public ResourceColumnDto add(ResourceColumnDto columnDto) {
         ResourceColumn resourceColumn = resourceBordRepository.add(resourceBordMapper.fromResourceColumnDtoToresourceColumn(columnDto));
 
-        return resourceBordMapper.fromResourceColumnToresourceColumnDto(resourceColumn);
+        return resourceBordMapper.fromResourceColumnToResourceColumnDto(resourceColumn);
     }
 
     @Override
     public ResourceColumnDto update(ResourceColumnDto columnDto) {
         ResourceColumn resourceColumn = resourceBordRepository.update(resourceBordMapper.fromResourceColumnDtoToresourceColumn(columnDto));
 
-        return resourceBordMapper.fromResourceColumnToresourceColumnDto(resourceColumn);
+        return resourceBordMapper.fromResourceColumnToResourceColumnDto(resourceColumn);
     }
 
     @Override
@@ -60,8 +64,17 @@ public class ResourceBordServiceImpl implements ResourceBordService {
 
         jiraUser.setColumns(resourceBordRepository.findDefaultColumn());
 
-        JiraUser newJiraUser = jiraUserRepository.merge(jiraUser);
+        JiraUser newJiraUser = jiraUserRepository.update(jiraUser);
 
         return jiraUserMapper.fromJiraUserToResourceUserDto(newJiraUser);
+    }
+
+    @Override
+    public FullResourceColumnDtoList getColumns() {
+        List<ResourceColumn> columns = resourceBordRepository.findAll();
+        List<FullResourceColumnDto> columnDtos = resourceBordMapper.fromResourceColumnsToFullResourceColumnDtos(columns);
+        FullResourceColumnDtoList fullResourceColumnDtoList = new FullResourceColumnDtoList();
+        fullResourceColumnDtoList.setColumns(columnDtos);
+        return fullResourceColumnDtoList;
     }
 }

@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author Vladimir Martynyuk
@@ -9,7 +10,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "configs")
-public class Config {
+public class Config implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

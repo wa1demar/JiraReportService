@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.dto.jira_users;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.swansoftwaresolutions.jirareport.core.dto.locations.LocationDto;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologyDto;
@@ -17,7 +18,8 @@ public class ResourceUserDto {
     private Integer engineerLevel;
     private List<TechnologyDto> experiences = new ArrayList<>();
     private LocationDto location;
-    private ResourceColumnDto columnDto;
+    @JsonIgnore
+    private List<ResourceColumnDto> columns;
     private String description;
 
     public String getLogin() {
@@ -60,19 +62,19 @@ public class ResourceUserDto {
         this.location = location;
     }
 
-    public ResourceColumnDto getColumnDto() {
-        return columnDto;
-    }
-
-    public void setColumnDto(ResourceColumnDto columnDto) {
-        this.columnDto = columnDto;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<ResourceColumnDto> getColumns() {
+        return columns;
+    }
+
+    public void setColumns(List<ResourceColumnDto> columns) {
+        this.columns = columns;
     }
 }
