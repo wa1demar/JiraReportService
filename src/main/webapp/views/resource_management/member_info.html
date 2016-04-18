@@ -13,12 +13,12 @@
         <span class="member-info-block-content-subtitle">
             Experience: <span ng-click="addExperience()" class="glyphicon glyphicon-plus cursor-pointer control-icon-right" title="Add"></span>
         </span>
-        <ul ng-if="currentMember.experiencies.length > 0" class="member-info-ul">
-            <li ng-repeat="value in currentMember.experiencies">
+        <ul ng-if="currentMember.technologies.length > 0" class="member-info-ul">
+            <li ng-repeat="value in currentMember.technologies">
                 {{value.name}} <span ng-click="delExperience(value)" class="glyphicon glyphicon-trash control-icon-right cursor-pointer" title="Delete"></span>
             </li>
         </ul>
-        <p class="empty-items" ng-if="currentMember.experiencies === undefined || currentMember.experiencies.length === 0">Empty</p>
+        <p class="empty-items" ng-if="currentMember.technologies === undefined || currentMember.technologies.length === 0">Empty</p>
     </div>
     <div class="member-info-divider"></div>
     <div class="row margin-0">
@@ -36,7 +36,7 @@
     <div class="row margin-0">
         <span class="member-info-block-content-subtitle">Location:</span>
         <div class="form-group">
-            <select class="form-control" ng-model="currentMember.location" id="member-location" name="member-location" convert-to-number>
+            <select class="form-control" ng-model="currentMember.location.id" id="member-location" name="member-location" convert-to-number>
                 <option ng-repeat="value in locations" value="{{value.id}}">{{value.name}}</option>
             </select>
         </div>
