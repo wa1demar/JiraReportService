@@ -38,10 +38,10 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                                 name: "Full Name 1",
                                 engineerLevel: 1,
                                 experiencies: [
-                                    {id: 3, name: 'JS'},
-                                    {id: 4, name: 'HTML'},
-                                    {id: 5, name: 'CSS'},
-                                    {id: 6, name: 'Angular'}
+                                    {id: 31, name: 'JS'},
+                                    {id: 41, name: 'HTML'},
+                                    {id: 51, name: 'CSS'},
+                                    {id: 61, name: 'Angular'}
                                 ],
                                 projects: [
                                     {id: 1, name: "project 1"}
@@ -58,9 +58,9 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                                 name: "Full Name 2",
                                 engineerLevel: 3,
                                 experiencies: [
-                                    {id: 3, name: 'JS'},
-                                    {id: 4, name: 'HTML'},
-                                    {id: 6, name: 'Angular'}
+                                    {id: 13, name: 'JS'},
+                                    {id: 14, name: 'HTML'},
+                                    {id: 16, name: 'Angular'}
                                 ],
                                 projects: [],
                                 location: 2,
@@ -84,7 +84,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                                 name: "Full Name 2",
                                 engineerLevel: 3,
                                 experiencies: [
-                                    {id: 1, name: 'Scrum'}
+                                    {id: 111, name: 'Scrum'}
                                 ],
                                 projects: [],
                                 location: 2,
@@ -340,7 +340,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 var count = $scope.technologies.length;
                 var result = [];
                 for (var index = 0; index < count; index++) {
-                    var flag = _.findWhere($scope.currentMember.experiencies, {id: $scope.technologies[index].id});
+                    var flag = _.findWhere($scope.currentMember.experiencies, {name: $scope.technologies[index].name});
                     if (flag === undefined) {
                         result.push($scope.technologies[index]);
                     }
@@ -360,9 +360,32 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 });
                 modalInstance.result.then(function (data) {
                     MemberFactory.create({id: $scope.currentMember.id, relation: "technologies"}, data, function(data){
-                        Notification.success("Add new technologies");
+                        Notification.success("Add new technology success");
                         $scope.getResourceColumns();
                     }, function (error) {
+                        Notification.error("Server error");
+                    });
+                }, function () {});
+            };
+
+//----------------------------------------------------------------------------------------------------------------------
+//Dlg delete experience
+            $scope.delExperience = function (item) {
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: 'views/dlg/dlg_delete_element.html',
+                    controller: 'DlgDeleteExperienceCtrl',
+                    resolve: {
+                        dlgData: function () {
+                            return item;
+                        }
+                    }
+                });
+                modalInstance.result.then(function (data) {
+                    MemberFactory.delete({relation: "technologies", idRelation: data.id}, function() {
+                        $scope.getResourceColumns();
+                        Notification.success("Delete technology success");
+                    }, function () {
                         Notification.error("Server error");
                     });
                 }, function () {});
@@ -432,6 +455,21 @@ jiraPluginApp.controller('DlgAddExperienceCtrl',
                 if($scope.addExperienceForm.$valid) {
                     $uibModalInstance.close($scope.model);
                 }
+            };
+
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+        }
+    ]);
+
+jiraPluginApp.controller('DlgDeleteExperienceCtrl',
+    ['$scope', '$uibModalInstance', 'dlgData',
+        function ($scope, $uibModalInstance, dlgData) {
+            $scope.dlgData = dlgData;
+
+            $scope.ok = function () {
+                $uibModalInstance.close($scope.dlgData);
             };
 
             $scope.cancel = function () {
