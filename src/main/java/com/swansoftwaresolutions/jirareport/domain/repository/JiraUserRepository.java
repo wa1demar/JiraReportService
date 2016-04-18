@@ -30,4 +30,6 @@ public interface JiraUserRepository {
     void saveAll(List<JiraUser> jiraUsers, JiraGroup group);
 
     List<JiraUser> findByGroups(String[] groups);
+
+    JiraUser deleteUserFromColumn(String login) throws NoSuchEntityException;
 }

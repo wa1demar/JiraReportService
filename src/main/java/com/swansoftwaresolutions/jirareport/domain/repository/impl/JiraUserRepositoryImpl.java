@@ -55,15 +55,11 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
         }
         user.setTechnologies(new ArrayList<>(technologies));
 
-        List<ResourceColumn> columns = user.getColumns();
-        for (ResourceColumn column : columns) {
-            Set<JiraUser> users = new HashSet<>(column.getUsers());
-            users.add(user);
-            column.setUsers(new ArrayList<>(users));
-        }
-        user.setColumns(columns);
-
-
+        ResourceColumn column = user.getColumn();
+        Set<JiraUser> users = new HashSet<>(column.getUsers());
+        users.add(user);
+        column.setUsers(new ArrayList<>(users));
+        user.setColumn(column);
 
         sessionFactory.getCurrentSession().update(user);
         return user;
@@ -133,5 +129,13 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
         query.setParameterList("groups", Arrays.asList(groups));
 
         return query.list();
+    }
+
+    @Override
+    public JiraUser deleteUserFromColumn(String login) throws NoSuchEntityException {
+        Query query = sessionFactory.getCurrentSession().createQuery("update JiraUser u set u.column = (from ResourceColumn r WHERE r.fixed = true) where u.login = :login");
+        query.setParameter("login", login);
+        query.executeUpdate();
+        return findByLogin(login);
     }
 }

@@ -15,7 +15,5 @@ public interface ResourceBordService {
 
     ResourceColumnDto update(ResourceColumnDto columnDto);
 
-    ResourceUserDto addUserToBoard(NewResourceUserDto newResourceUserDto) throws NoSuchEntityException;
-
     FullResourceColumnDtoList getColumns();
 }

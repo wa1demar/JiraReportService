@@ -1,10 +1,16 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
 import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.NewResourceUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
+import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.LocationRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.ResourceBordRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.TechnologyRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
@@ -24,6 +30,15 @@ public class JiraUserServiceImpl implements JiraUserService {
 
     @Autowired
     JiraUserRepository jiraUserRepository;
+
+    @Autowired
+    TechnologyRepository technologyRepository;
+
+    @Autowired
+    LocationRepository locationRepository;
+
+    @Autowired
+    ResourceBordRepository resourceBordRepository;
 
     @Autowired
     JiraUserMapper jiraUserMapper;
@@ -86,5 +101,29 @@ public class JiraUserServiceImpl implements JiraUserService {
         JiraUsersDto usersDto = new JiraUsersDto();
         usersDto.setUsers(userDtoList);
         return usersDto;
+    }
+
+    @Override
+    public ResourceUserDto addUserToBoard(NewResourceUserDto newResourceUserDto) throws NoSuchEntityException {
+        JiraUser jiraUser = jiraUserRepository.findByLogin(newResourceUserDto.getUserLogin());
+
+        jiraUser.setDescription(newResourceUserDto.getDescription());
+        jiraUser.setLevel(newResourceUserDto.getLevel());
+        jiraUser.setTechnologies(technologyRepository.findAllByIds(newResourceUserDto.getTechnologies()));
+
+        jiraUser.setColumn(resourceBordRepository.findDefaultColumn());
+
+        jiraUser.setLocation(locationRepository.findById(newResourceUserDto.getLocation()));
+
+        JiraUser newJiraUser = jiraUserRepository.update(jiraUser);
+
+        return jiraUserMapper.fromJiraUserToResourceUserDto(newJiraUser);
+    }
+
+    @Override
+    public ResourceUserDto removeUserFromBoard(String login) throws NoSuchEntityException {
+        JiraUser user = jiraUserRepository.deleteUserFromColumn(login);
+
+        return jiraUserMapper.fromJiraUserToResourceUserDto(user);
     }
 }

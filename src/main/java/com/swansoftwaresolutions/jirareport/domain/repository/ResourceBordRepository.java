@@ -12,7 +12,7 @@ public interface ResourceBordRepository {
 
     ResourceColumn update(ResourceColumn resourceColumn);
 
-    List<ResourceColumn> findDefaultColumn();
+    ResourceColumn findDefaultColumn();
 
     List<ResourceColumn> findAll();
 }

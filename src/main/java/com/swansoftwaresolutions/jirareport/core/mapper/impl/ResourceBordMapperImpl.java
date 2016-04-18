@@ -3,6 +3,8 @@ package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.ResourceBordMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.JiraUserToFullResourceUserDtoMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.JiraUserToResourceUserDtoMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -18,8 +20,15 @@ import java.util.List;
 @Component
 public class ResourceBordMapperImpl implements ResourceBordMapper {
 
-    @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    public ResourceBordMapperImpl(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+
+        modelMapper.addMappings(new JiraUserToResourceUserDtoMapper());
+        modelMapper.addMappings(new JiraUserToFullResourceUserDtoMapper());
+    }
 
     @Override
     public ResourceColumn fromResourceColumnDtoToresourceColumn(ResourceColumnDto columnDto) {

@@ -1,6 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.dto.resourceboard;
 
-import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.FullResourceUserDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,8 @@ public class FullResourceColumnDto {
     private Long id;
     private String name;
     private String color;
-    private List<ResourceUserDto> users = new ArrayList<>();
+    private boolean fixed;
+    private List<FullResourceUserDto> users = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -39,11 +40,19 @@ public class FullResourceColumnDto {
         this.color = color;
     }
 
-    public List<ResourceUserDto> getUsers() {
+    public List<FullResourceUserDto> getUsers() {
         return users;
     }
 
-    public void setUsers(List<ResourceUserDto> users) {
+    public void setUsers(List<FullResourceUserDto> users) {
         this.users = users;
+    }
+
+    public boolean isFixed() {
+        return fixed;
+    }
+
+    public void setFixed(boolean fixed) {
+        this.fixed = fixed;
     }
 }
