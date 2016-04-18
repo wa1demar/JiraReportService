@@ -32,15 +32,11 @@
           </select>
       </div>
 
-      <div class="form-group" ng-class="{ 'has-error': addMemberForm.$submitted || addMemberForm.level.$touched && addMemberForm.level.$invalid }">
+      <div class="form-group">
           <label for="level">EL</label>
-          <select class="form-control" style="width: 100%;" ng-init="model.level = 1" ng-model="model.el" data-placeholder="Select level" id="level" name="level" required>
-            <option value="">Select EL</option>
+          <select class="form-control" style="width: 100%;" ng-init="model.level = 1" ng-model="model.level" data-placeholder="Select level" id="level" name="level" convert-to-number>
             <option ng-repeat="value in [1, 2, 3, 4]" value="{{value}}">EL - {{value}}</option>
           </select>
-          <div class="help-block" ng-messages="addMemberForm.level.$error" ng-if="addMemberForm.level.$touched || addMemberForm.$submitted">
-              <p ng-message="required">EL is required</p>
-          </div>
       </div>
 
       <div class="form-group">

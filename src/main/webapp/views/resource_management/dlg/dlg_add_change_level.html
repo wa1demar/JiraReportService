@@ -1,0 +1,17 @@
+<div class="modal-header">
+  <h3 class="modal-title">Change level</h3>
+</div>
+<form name="changeLevelForm" ng-submit="submit()" novalidate>
+  <div class="modal-body">
+      <div class="form-group">
+          <label for="engineerLevel">EL</label>
+          <select class="form-control" style="width: 100%;" ng-model="model.engineerLevel" data-placeholder="Select level" id="engineerLevel" name="engineerLevel" convert-to-number>
+              <option ng-repeat="value in [1, 2, 3, 4]" value="{{value}}">EL - {{value}}</option>
+          </select>
+      </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="submit" ng-click="ok()">Save</button>
+    <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+  </div>
+</form>

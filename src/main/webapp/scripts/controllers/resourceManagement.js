@@ -244,6 +244,14 @@ jiraPluginApp.controller('ResourceManagementCtrl',
             $scope.updateMemberDescription = function(data) {
                 console.log('updateMemberDescription:');
                 console.log(data);
+                $scope.currentMember.description = data;
+                MemberFactory.update({login: $scope.currentMember.login}, $scope.currentMember, function(data){
+                    Notification.success("Update description success");
+                    //get member info
+                    // $scope.getResourceColumns();
+                }, function (error) {
+                    Notification.error("Server error");
+                });
             };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -325,7 +333,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     });
                     modalInstance.result.then(function (data) {
                         console.log(data);
-                        ResourceColumnFactory.create({id: "add_user"}, data, function(data){
+                        MemberFactory.create({}, data, function(data){
                             Notification.success("Add member success");
                             $scope.getResourceColumns();
                         }, function (error) {
@@ -333,6 +341,35 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                         });
                     }, function () {});
                 });
+            };
+
+//----------------------------------------------------------------------------------------------------------------------
+//Dlg delete member
+            $scope.delMember = function () {
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: 'views/dlg/dlg_delete_element.html',
+                    controller: 'DlgDeleteMemberCtrl',
+                    resolve: {
+                        dlgData: function () {
+                            return $scope.currentMember;
+                        }
+                    }
+                });
+                modalInstance.result.then(function (data) {
+                    MemberFactory.delete({login: data.login}, function() {
+                        Notification.success("Delete member success");
+
+                        $scope.columns.selected = null;
+                        $scope.showSearch = true;
+                        $scope.showMemberInfo = false;
+                        $scope.showSearchFilters();
+
+                        $scope.getResourceColumns();
+                    }, function () {
+                        Notification.error("Server error");
+                    });
+                }, function () {});
             };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -360,7 +397,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     }
                 });
                 modalInstance.result.then(function (data) {
-                    MemberFactory.create({id: $scope.currentMember.id, relation: "technologies"}, data, function(data){
+                    MemberFactory.create({login: $scope.currentMember.login, relation: "technologies"}, data, function(data){
                         Notification.success("Add new technology success");
                         //get member info
                         // $scope.getResourceColumns();
@@ -384,7 +421,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     }
                 });
                 modalInstance.result.then(function (data) {
-                    MemberFactory.delete({relation: "technologies", idRelation: data.id}, function() {
+                    MemberFactory.delete({login: $scope.currentMember.login, relation: "technologies", idRelation: data.id}, function() {
                         Notification.success("Delete technology success");
                         //get member info
                         // $scope.getResourceColumns();
@@ -410,7 +447,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     }
                 });
                 modalInstance.result.then(function (data) {
-                    MemberFactory.create({id: $scope.currentMember.id, relation: "projects"}, data, function(data){
+                    MemberFactory.create({login: $scope.currentMember.login, relation: "projects"}, data, function(data){
                         Notification.success("Add new project success");
                         //get member info
                         // $scope.getResourceColumns();
@@ -434,11 +471,35 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     }
                 });
                 modalInstance.result.then(function (data) {
-                    MemberFactory.delete({relation: "projects", idRelation: data.id}, function() {
+                    MemberFactory.delete({login: $scope.currentMember.login, relation: "projects", idRelation: data.id}, function() {
                         Notification.success("Delete project success");
                         //get member info
                         // $scope.getResourceColumns();
                     }, function () {
+                        Notification.error("Server error");
+                    });
+                }, function () {});
+            };
+
+//----------------------------------------------------------------------------------------------------------------------
+//Dlg add project
+            $scope.changeLevel = function () {
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: 'views/resource_management/dlg/dlg_add_change_level.html',
+                    controller: 'DlgChangeLevelCtrl',
+                    resolve: {
+                        dlgData: function () {
+                            return $scope.currentMember;
+                        }
+                    }
+                });
+                modalInstance.result.then(function (data) {
+                    MemberFactory.update({login: data.login}, data, function(data){
+                        Notification.success("Change level success");
+                        //get member info
+                        // $scope.getResourceColumns();
+                    }, function (error) {
                         Notification.error("Server error");
                     });
                 }, function () {});
@@ -491,6 +552,21 @@ jiraPluginApp.controller('DlgAddMemberCtrl',
                 if($scope.addMemberForm.$valid) {
                     $uibModalInstance.close($scope.model);
                 }
+            };
+
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+        }
+    ]);
+
+jiraPluginApp.controller('DlgDeleteMemberCtrl',
+    ['$scope', '$uibModalInstance', 'dlgData',
+        function ($scope, $uibModalInstance, dlgData) {
+            $scope.dlgData = dlgData;
+
+            $scope.ok = function () {
+                $uibModalInstance.close($scope.dlgData);
             };
 
             $scope.cancel = function () {
@@ -555,6 +631,21 @@ jiraPluginApp.controller('DlgDeleteProjectCtrl',
 
             $scope.ok = function () {
                 $uibModalInstance.close($scope.dlgData);
+            };
+
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+        }
+    ]);
+
+jiraPluginApp.controller('DlgChangeLevelCtrl',
+    ['$scope', '$uibModalInstance', 'dlgData',
+        function ($scope, $uibModalInstance, dlgData) {
+            $scope.model = dlgData;
+
+            $scope.ok = function () {
+                $uibModalInstance.close($scope.model);
             };
 
             $scope.cancel = function () {

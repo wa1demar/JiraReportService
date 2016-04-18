@@ -1,11 +1,12 @@
-<div class="search-block-title">Member info "{{currentMember.name}}"</div>
+<div class="search-block-title">Member: "{{currentMember.name}}"  <span ng-click="delMember()" class="glyphicon glyphicon-remove-circle control-icon-right cursor-pointer" title="Remove member"></span></div>
 <div class="member-info-block-content">
     <div class="row margin-0">
         <div class="col-md-3 avatar">
             <span class="glyphicon glyphicon-user" style="font-size: 45px;"></span>
         </div>
         <div class="col-md-9" style="padding: 25px; font-weight: bold;">
-            {{currentMember.name}} <span class="member-info-block-content-el">EL - 1</span> <span class="glyphicon glyphicon-pencil control-icon-right cursor-pointer" title="Edit engineer level"></span>
+            <div>{{currentMember.name}}</div>
+            <div><span class="member-info-block-content-el">EL - {{currentMember.engineerLevel}}</span> <span ng-click="changeLevel()" class="glyphicon glyphicon-pencil control-icon-right cursor-pointer" title="Edit engineer level"></span></div>
         </div>
     </div>
     <div class="row margin-0">
