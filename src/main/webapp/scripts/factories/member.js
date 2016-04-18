@@ -1,7 +1,7 @@
 'use strict';
 
-jiraPluginApp.factory('ResourceColumnFactory', ['$resource', 'CONFIG', function ($resource, CONFIG) {
-    return $resource(CONFIG.API_PATH + '/resource_columns/:id', {id: "@id"}, {
+jiraPluginApp.factory('MemberFactory', ['$resource', 'CONFIG', function ($resource, CONFIG) {
+    return $resource(CONFIG.API_PATH + '/members/:id/:relation', {id: "@id", relation: "@relation"}, {
         query:  { method: 'GET' },
         get:    { method: 'GET', isArray: false },
         create: { method: 'POST' },

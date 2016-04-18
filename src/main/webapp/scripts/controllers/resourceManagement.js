@@ -1,8 +1,8 @@
 'use strict';
 
 jiraPluginApp.controller('ResourceManagementCtrl',
-    ['$scope', '$uibModal', '$filter', 'ResourceColumn', 'UsersFactory', 'DictionaryFactory', 'Notification',
-        function($scope, $uibModal, $filter, ResourceColumn, UsersFactory, DictionaryFactory, Notification) {
+    ['$scope', '$uibModal', '$filter', 'ResourceColumnFactory', 'UsersFactory', 'DictionaryFactory', 'MemberFactory', 'Notification',
+        function($scope, $uibModal, $filter, ResourceColumnFactory, UsersFactory, DictionaryFactory, MemberFactory, Notification) {
             var self = this;
             $scope.loaderShow = true;
             $scope.showSearch = true;
@@ -19,7 +19,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 //Get all data for Resource Board
             $scope.columns = [];
             $scope.getResourceColumns = function () {
-                // ResourceColumn.query({}, function (result) {
+                // ResourceColumnFactory.query({}, function (result) {
                 //     $scope.columns = result;
                 //     $scope.loaderShow = false;
                 // }, function (error) {
@@ -38,11 +38,10 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                                 name: "Full Name 1",
                                 engineerLevel: 1,
                                 experiencies: [
-                                    {id: 1, name: 'JS'},
-                                    {id: 2, name: 'HTML'},
-                                    {id: 3, name: 'Angular'},
-                                    {id: 4, name: 'CSS'},
-                                    {id: 5, name: 'PHP'}
+                                    {id: 3, name: 'JS'},
+                                    {id: 4, name: 'HTML'},
+                                    {id: 5, name: 'CSS'},
+                                    {id: 6, name: 'Angular'}
                                 ],
                                 projects: [
                                     {id: 1, name: "project 1"}
@@ -59,9 +58,9 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                                 name: "Full Name 2",
                                 engineerLevel: 3,
                                 experiencies: [
-                                    {id: 1, name: 'JS'},
-                                    {id: 2, name: 'HTML'},
-                                    {id: 3, name: 'Angular'}
+                                    {id: 3, name: 'JS'},
+                                    {id: 4, name: 'HTML'},
+                                    {id: 6, name: 'Angular'}
                                 ],
                                 projects: [],
                                 location: 2,
@@ -85,10 +84,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                                 name: "Full Name 2",
                                 engineerLevel: 3,
                                 experiencies: [
-                                    {
-                                        id: 1,
-                                        name: 'Scrum'
-                                    }
+                                    {id: 1, name: 'Scrum'}
                                 ],
                                 projects: [],
                                 location: 2,
@@ -252,7 +248,6 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 
 //----------------------------------------------------------------------------------------------------------------------
 //Dlg process column
-            $scope.dlgData = {};
             $scope.processColumn = function (item) {
                 var modalInstance = $uibModal.open({
                     animation: true,
@@ -267,14 +262,14 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 });
                 modalInstance.result.then(function (data) {
                     if (data.id == undefined) {
-                        ResourceColumn.create({}, data, function(data){
+                        ResourceColumnFactory.create({}, data, function(data){
                             Notification.success("Create column success");
                             $scope.getResourceColumns();
                         }, function (error) {
                             Notification.error("Server error");
                         });
                     } else {
-                        ResourceColumn.update({id: data.id}, data, function(data){
+                        ResourceColumnFactory.update({id: data.id}, data, function(data){
                             Notification.success("Update column success");
                             $scope.getResourceColumns();
                         }, function (error) {
@@ -298,7 +293,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     }
                 });
                 modalInstance.result.then(function (data) {
-                    ResourceColumn.delete({id: data.id}, function() {
+                    ResourceColumnFactory.delete({id: data.id}, function() {
                         $scope.getResourceColumns();
                         Notification.success("Delete column success");
                     }, function () {
@@ -309,7 +304,6 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 
 //----------------------------------------------------------------------------------------------------------------------
 //Dlg add member
-            $scope.dlgData = {};
             $scope.addMember = function () {
 
                 UsersFactory.query({}, function(users){
@@ -338,6 +332,40 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                         // });
                     }, function () {});
                 });
+            };
+
+//----------------------------------------------------------------------------------------------------------------------
+//Dlg add experience
+            $scope.addExperience = function () {
+                var count = $scope.technologies.length;
+                var result = [];
+                for (var index = 0; index < count; index++) {
+                    var flag = _.findWhere($scope.currentMember.experiencies, {id: $scope.technologies[index].id});
+                    if (flag === undefined) {
+                        result.push($scope.technologies[index]);
+                    }
+                }
+
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: 'views/resource_management/dlg/dlg_add_experience.html',
+                    controller: 'DlgAddExperienceCtrl',
+                    resolve: {
+                        dlgData: function () {
+                            return {
+                                technologies: result
+                            };
+                        }
+                    }
+                });
+                modalInstance.result.then(function (data) {
+                    MemberFactory.create({id: $scope.currentMember.id, relation: "technologies"}, data, function(data){
+                        Notification.success("Add new technologies");
+                        $scope.getResourceColumns();
+                    }, function (error) {
+                        Notification.error("Server error");
+                    });
+                }, function () {});
             };
 
         }
@@ -385,6 +413,23 @@ jiraPluginApp.controller('DlgAddMemberCtrl',
 
             $scope.ok = function () {
                 if($scope.addMemberForm.$valid) {
+                    $uibModalInstance.close($scope.model);
+                }
+            };
+
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+        }
+    ]);
+
+jiraPluginApp.controller('DlgAddExperienceCtrl',
+    ['$scope', '$uibModalInstance', 'dlgData',
+        function ($scope, $uibModalInstance, dlgData) {
+            $scope.technologies = dlgData.technologies;
+
+            $scope.ok = function () {
+                if($scope.addExperienceForm.$valid) {
                     $uibModalInstance.close($scope.model);
                 }
             };
