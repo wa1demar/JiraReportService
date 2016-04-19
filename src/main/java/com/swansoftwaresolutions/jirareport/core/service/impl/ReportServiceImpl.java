@@ -643,7 +643,7 @@ public class ReportServiceImpl implements ReportService {
 
     private boolean isQAT(SprintDeveloperDto dev, Report report, JiraIssueDto issu) {
         for (JiraUser jiraUser : report.getAdmins()) {
-            if (jiraUser.getLogin().equals(issu.getCreatorName()));
+            if (!jiraUser.getLogin().equals(issu.getCreatorName()));
                 return true;
         }
         return false;
@@ -782,7 +782,7 @@ public class ReportServiceImpl implements ReportService {
                     if (sprint.isShowUat()) {
                         isShowUat = true;
                     }
-                    if (!sprint.isNotCountTarget() && sprint.getState() != null && (sprint.getState().equals("Closed") || sprint.getState().equals("closed"))) {
+                    if (!sprint.isNotCountTarget() && sprint.getState() != null && (sprint.getState().equalsIgnoreCase("closed"))) {
                         prRep.setTargetPoints(helpM.isNullFloat(prRep.getTargetPoints()) + helpM.isNullFloat(sprint.getTargetPoints()));
                         prRep.setTargetHours(helpM.isNull(prRep.getTargetHours()) + helpM.isNull(sprint.getTargetHours()));
                         prRep.setTargetQatDefectHours(helpM.isNull(prRep.getTargetQatDefectHours()) + helpM.isNull(sprint.getTargetQatDefectHours()));
@@ -939,7 +939,8 @@ public class ReportServiceImpl implements ReportService {
         if (sprintDto.getCompleteDate() == null){
             completeDate.setTime(sprintDto.getEndDate());
         } else {
-            completeDate.setTime(sprintDto.getCompleteDate());
+//            completeDate.setTime(sprintDto.getCompleteDate());
+            completeDate.setTime(sprintDto.getEndDate());
         }
 
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
