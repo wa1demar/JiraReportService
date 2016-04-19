@@ -64,7 +64,7 @@ public class ResourceBordRepositoryImpl implements ResourceBordRepository {
     public void moveUsersToDefaultColumn(List<JiraUser> users) {
         List<String> logins = users.stream().map(u -> u.getLogin()).collect(Collectors.toList());
         if (logins.size() > 0) {
-            Query query = sessionFactory.getCurrentSession().createQuery("update JiraUser  u set u.column = (from ResourceColumn c where c.id = 1) where u.login in (:logins)").setParameter("logins", logins);
+            Query query = sessionFactory.getCurrentSession().createQuery("update JiraUser  u set u.column = (from ResourceColumn c where c.id = 1) where u.login in (:logins)").setParameterList("logins", logins);
             query.executeUpdate();
         }
     }
