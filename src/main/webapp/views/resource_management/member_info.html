@@ -53,7 +53,7 @@
     <div class="member-info-divider"></div>
     <div class="row margin-0">
         <span class="member-info-block-content-subtitle">
-            Attachments: <span class="glyphicon glyphicon-download-alt cursor-pointer control-icon-right" title="Upload attach"></span>
+            Attachments: <span ng-click="uploadAttach()" class="glyphicon glyphicon-download-alt cursor-pointer control-icon-right" title="Upload attach"></span>
         </span>
         <ul ng-if="currentMember.attachments.length > 0" class="member-info-ul without-list-style-type">
             <li ng-repeat="value in currentMember.attachments">
