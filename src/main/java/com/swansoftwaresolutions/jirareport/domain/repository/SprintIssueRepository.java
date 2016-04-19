@@ -14,8 +14,6 @@ public interface SprintIssueRepository {
 
     List<SprintIssue> findBySprintIdAndAssignee(final Long sprintId, final String assignee);
 
-    List<SprintIssue> findBySprintIdAndAssigneeAndIssueDate(final Long sprintId, final String assignee, final String issueDate);
-
     SprintIssue findById(final Long id);
 
     SprintIssue add(final SprintIssue sprintIssue);
@@ -28,7 +26,4 @@ public interface SprintIssueRepository {
 
     void delete(Long id) throws NoSuchEntityException;
 
-    void deleteBySprintId(Long sprintId) throws NoSuchEntityException;
-
-    void deleteBySprintIdAndAssignee(final Long sprintId, final String assignee) throws NoSuchEntityException;
 }

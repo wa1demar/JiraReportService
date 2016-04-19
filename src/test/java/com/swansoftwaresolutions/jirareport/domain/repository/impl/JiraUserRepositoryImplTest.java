@@ -63,7 +63,7 @@ public class JiraUserRepositoryImplTest extends AbstractDbTest {
         user.setFullName("New User");
         user.setJiraUserId(10006L);
 
-        JiraUser updatedUser = userRepository.update(user);
+        JiraUser updatedUser = userRepository.merge(user);
     }
 
     @Test

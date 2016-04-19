@@ -1,0 +1,51 @@
+<div class="modal-header">
+  <h3 class="modal-title">Add member</h3>
+</div>
+<form name="addMemberForm" ng-submit="submit()" novalidate>
+  <div class="modal-body">
+      <div class="form-group" ng-class="{ 'has-error': addMemberForm.$submitted || addMemberForm.userLogin.$touched && addMemberForm.userLogin.$invalid }">
+          <label for="userLogin">Name:</label>
+          <select ui-select2 ng-model="model.userLogin" data-placeholder="Select member" id="userLogin" name="userLogin" style="width: 100%;" required>
+              <option value=""></option>
+              <option ng-repeat="value in members" value="{{value.login}}">{{value.fullName}}</option>
+          </select>
+          <div class="help-block" ng-messages="addMemberForm.userLogin.$error" ng-if="addMemberForm.userLogin.$touched || addMemberForm.$submitted">
+              <p ng-message="required">Member is required</p>
+          </div>
+      </div>
+
+      <div class="form-group" ng-class="{ 'has-error': addMemberForm.$submitted || addMemberForm.location.$touched && addMemberForm.location.$invalid }">
+          <label for="location">Location</label>
+          <select class="form-control" style="width: 100%;" ng-model="model.location" data-placeholder="Select location" id="location" name="location" required>
+              <option value="">Select location</option>
+              <option ng-repeat="value in locations" value="{{value.id}}">{{value.name}}</option>
+          </select>
+          <div class="help-block" ng-messages="addMemberForm.location.$error" ng-if="addMemberForm.location.$touched || addMemberForm.$submitted">
+              <p ng-message="required">Location is required</p>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label for="technology">Technology</label>
+          <select ui-select2 multiple style="width: 100%;" ng-model="model.technologies" data-placeholder="Select technologies" id="technology" name="technology">
+              <option ng-repeat="value in technologies" value="{{value.id}}">{{value.name}}</option>
+          </select>
+      </div>
+
+      <div class="form-group">
+          <label for="level">EL</label>
+          <select class="form-control" style="width: 100%;" ng-init="model.level = 1" ng-model="model.level" data-placeholder="Select level" id="level" name="level" convert-to-number>
+            <option ng-repeat="value in [1, 2, 3, 4]" value="{{value}}">EL - {{value}}</option>
+          </select>
+      </div>
+
+      <div class="form-group">
+          <label for="description">Description</label>
+          <textarea ng-model="model.description" class="form-control" id="description" name="description" data-placeholder="Select administrators" id="" cols="30" rows="5"></textarea>
+      </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="submit" ng-click="ok()">Save</button>
+    <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+  </div>
+</form>

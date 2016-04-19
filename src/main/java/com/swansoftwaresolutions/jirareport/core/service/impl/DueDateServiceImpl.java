@@ -6,8 +6,10 @@ import com.swansoftwaresolutions.jirareport.core.mapper.JiraIssueMapper;
 import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
 import com.swansoftwaresolutions.jirareport.core.service.DueDateService;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraIssue;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraProject;
 import com.swansoftwaresolutions.jirareport.domain.model.Paged;
 import com.swansoftwaresolutions.jirareport.domain.repository.DueDateRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,9 @@ public class DueDateServiceImpl implements DueDateService {
 
     @Autowired
     DueDateRepository dueDateRepository;
+
+    @Autowired
+    ProjectRepository projectRepository;
 
     @Autowired
     JiraIssueMapper jiraIssueMapper;
@@ -39,6 +44,8 @@ public class DueDateServiceImpl implements DueDateService {
             agileDoneNames.add(dateString);
         }
 
+        Map<String, String> projects = projectRepository.findAll().stream().collect(Collectors.toMap(JiraProject::getKey, p -> p.getName()));
+
         Paged paged = dueDateRepository.retrieveAllDueDatas(agileDoneNames, page);
 
         List<JiraIssue> datas = paged.getList();
@@ -49,15 +56,7 @@ public class DueDateServiceImpl implements DueDateService {
             List<Date> dds = issue.getDueDates().stream().map(r -> r.getDueDate()).collect(Collectors.toList());
             Date [] datesArray = new Date[dds.size()];
 
-            Collections.sort(dds, new Comparator<Date>() {
-                @Override
-                public int compare(Date o1, Date o2) {
-                    return o2.compareTo(o1);
-                }
-            });
-
-//            List<String> descs = issue.getDueDates().stream().map(r -> r.getDescription()).collect(Collectors.toList());
-//            String [] descsArray = new String[descs.size()];
+            Collections.sort(dds, (o1, o2) -> o2.compareTo(o1));
 
             DueDateDto dateDto = new DueDateDto();
             dateDto.setId(issue.getId());
@@ -65,7 +64,7 @@ public class DueDateServiceImpl implements DueDateService {
             dateDto.setKey(issue.getKey());
             dateDto.setDueDate(dds.toArray(datesArray));
             dateDto.setDescription(issue.getDescription());
-            dateDto.setProject(issue.getProjectKey());
+            dateDto.setProject(projects.get(issue.getProjectKey()));
             dateDto.setStatus(issue.getStatusName());
             dateDto.setSummary(issue.getSummary());
 

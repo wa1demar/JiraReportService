@@ -1,5 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.service;
 
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.NewResourceUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
@@ -27,4 +29,10 @@ public interface JiraUserService {
     JiraUser findByLogin(String login) throws NoSuchEntityException;
 
     JiraUsersDto retrieveFilteredUsers();
+
+    ResourceUserDto addUserToBoard(NewResourceUserDto resourceUserDto) throws NoSuchEntityException;
+
+    ResourceUserDto removeUserFromBoard(String login) throws NoSuchEntityException;
+
+    ResourceUserDto removeUserFromBoardFully(String login) throws NoSuchEntityException;
 }

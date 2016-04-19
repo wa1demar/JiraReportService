@@ -1,0 +1,22 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="1460645494764" author="Vladimir Martynyuk">
+
+       <createTable tableName="resource-columns">
+           <column name="id" type="bigint" autoIncrement="true">
+               <constraints nullable="false "/>
+           </column>
+           <column name="name" type="varchar" >
+               <constraints nullable="true" />
+           </column>
+           <column name="color" type="varchar" >
+               <constraints nullable="true" />
+           </column>
+           <column name="fixed" type="boolean" defaultValueBoolean="false">
+               <constraints nullable="false"/>
+           </column>
+       </createTable>
+
+    </changeSet>
+</databaseChangeLog>

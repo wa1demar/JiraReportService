@@ -45,11 +45,11 @@ jiraPluginApp.controller("PortfolioCtrl", ['$scope', 'PortfoliosFactory', '$time
             var chart = {
                 labels: chartData.label,
                 data: [
-                    chartData.actual,
-                    chartData.target
+                    chartData.target,
+                    chartData.actual
                 ],
-                series: ['Actual', 'Target'],
-                colours: [actualChartColor, '#000000'],
+                series: ['Target', 'Actual'],
+                colours: ['#000000', actualChartColor],
                 options: {
                     datasetFill : false
                 }

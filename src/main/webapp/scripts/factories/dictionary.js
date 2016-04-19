@@ -1,7 +1,7 @@
 'use strict';
 
 jiraPluginApp.factory('DictionaryFactory', ['$resource', 'CONFIG', function ($resource, CONFIG) {
-    return $resource(CONFIG.API_PATH + '/:name/:page', {name: "@name", page: "@page"}, {
+    return $resource(CONFIG.API_PATH + '/:name/:id', {name: "@name", id: "@id"}, {
         query:  { method: 'GET' },
         get:    { method: 'GET', isArray: false },
         create: { method: 'POST' },

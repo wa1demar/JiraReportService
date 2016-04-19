@@ -143,11 +143,4 @@ public class JiraSprintRepositoryImpl implements JiraSprintRepository {
             session.close();
         }
     }
-
-    @Override
-    public List<JiraSprint> findByJiraBoardId(Long id) {
-        Query query = sessionFactory.getCurrentSession().createQuery("from JiraSprint s where s.boardId = :id");
-        query.setParameter("id", id);
-        return query.list();
-    }
 }

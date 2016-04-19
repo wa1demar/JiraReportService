@@ -1,11 +1,10 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
-import com.swansoftwaresolutions.jirareport.core.dto.ImportedBardsDto;
 import com.swansoftwaresolutions.jirareport.core.dto.ImportedJiraBoardDto;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraBoardDto;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraBoardInfoDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraBoardMapper;
-import com.swansoftwaresolutions.jirareport.core.mapper.mappings.ImportedJiraBoardDtoMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.ImportedJiraBoardDtoMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraProject;
 import org.modelmapper.ModelMapper;

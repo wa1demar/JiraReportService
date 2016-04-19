@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.core.mapper.mappings;
+package com.swansoftwaresolutions.jirareport.core.mapper.propertymap;
 
 import com.swansoftwaresolutions.jirareport.core.dto.report.NewReportDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.Report;

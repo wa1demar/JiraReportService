@@ -81,14 +81,14 @@ public class CacheProjectTotalRepositoryImpl implements CacheProjectTotalReposit
 
     @Override
     public List<CacheProjectTotal> findAll() {
-        Query query = sessionFactory.getCurrentSession().createQuery("FROM CacheProjectTotal d WHERE d.report.isClosed != true ORDER BY d.id DESC");
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM CacheProjectTotal d WHERE d.report.isClosed != true ORDER BY d.report.title ASC");
 
         return query.list();
     }
 
     @Override
     public Paged findAllPaged(int page) {
-        Query query = sessionFactory.getCurrentSession().createQuery("FROM CacheProjectTotal d WHERE d.report.isClosed != true ORDER BY d.id DESC");
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM CacheProjectTotal d WHERE d.report.isClosed != true ORDER BY d.report.title ASC");
         Query count = sessionFactory.getCurrentSession().createQuery("select count(d.id) FROM CacheProjectTotal d WHERE d.report.isClosed != true");
 
         Paged paged = new Paged();

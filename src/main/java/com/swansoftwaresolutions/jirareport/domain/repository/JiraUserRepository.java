@@ -19,6 +19,8 @@ public interface JiraUserRepository {
 
     JiraUser findByLogin(String login) throws NoSuchEntityException;
 
+    JiraUser merge(JiraUser user) throws NoSuchEntityException;
+
     JiraUser update(JiraUser user) throws NoSuchEntityException;
 
     List<JiraUser> findAll();
@@ -28,4 +30,6 @@ public interface JiraUserRepository {
     void saveAll(List<JiraUser> jiraUsers, JiraGroup group);
 
     List<JiraUser> findByGroups(String[] groups);
+
+    JiraUser deleteUserFromColumn(String login) throws NoSuchEntityException;
 }

@@ -104,13 +104,13 @@ public class ReportRepositoryImpl implements ReportRepository{
 
     @Override
     public List<Report> findAllClosed() {
-        Query query = sessionFactory.getCurrentSession().createQuery("FROM Report r WHERE r.isClosed = true");
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM Report r WHERE r.isClosed = true ORDER BY r.title ASC");
         return query.list();
     }
 
     @Override
     public Paged findAllClosedPaginated(int page) {
-        Query query = sessionFactory.getCurrentSession().createQuery("FROM Report r WHERE r.isClosed = true");
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM Report r WHERE r.isClosed = true ORDER BY r.title ASC");
         Query count = sessionFactory.getCurrentSession().createQuery("select count(r.id) FROM Report r WHERE r.isClosed = true");
         Paged paged = new Paged();
         paged.setPage(page);
@@ -121,7 +121,7 @@ public class ReportRepositoryImpl implements ReportRepository{
 
     @Override
     public List<Report> findAllOpened() {
-        Query query = sessionFactory.getCurrentSession().createQuery("FROM Report r WHERE r.isClosed = false ");
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM Report r WHERE r.isClosed = false  ORDER BY r.title ASC");
         return query.list();
     }
 
@@ -131,7 +131,7 @@ public class ReportRepositoryImpl implements ReportRepository{
         Paged paged = new Paged();
 
         try {
-            Query query = session.createQuery("FROM Report r WHERE r.isClosed = false ");
+            Query query = session.createQuery("FROM Report r WHERE r.isClosed = false  ORDER BY r.title ASC ");
             Query count = session.createQuery("select count(r.id) FROM Report r WHERE r.isClosed = false ");
             paged.setPage(page);
             paged.setTotal((int) ((long) count.uniqueResult()));

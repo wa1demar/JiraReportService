@@ -5,6 +5,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "due_dates")
-public class DueDate {
+public class DueDate implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

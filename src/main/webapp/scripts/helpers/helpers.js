@@ -14,3 +14,7 @@ var getDatesArrayWithoutWeekends = function (startDate, endDate) {
 
     return result;
 };
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}

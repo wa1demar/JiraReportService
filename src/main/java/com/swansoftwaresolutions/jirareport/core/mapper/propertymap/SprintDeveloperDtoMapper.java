@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.core.mapper.mappings;
+package com.swansoftwaresolutions.jirareport.core.mapper.propertymap;
 
 import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDeveloperDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.SprintDeveloper;

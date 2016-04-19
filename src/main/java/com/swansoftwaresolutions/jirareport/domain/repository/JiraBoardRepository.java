@@ -27,5 +27,4 @@ public interface JiraBoardRepository {
 
     void add(List<JiraBoard> jiraBoards, String key);
 
-    List<JiraBoard> findAllWithReports();
 }

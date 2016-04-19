@@ -7,13 +7,14 @@ import org.hibernate.annotations.CascadeType;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * @author Vladimir Martynyuk
  */
 @Entity
 @Table(name = "cache_projects_total")
-public class CacheProjectTotal {
+public class CacheProjectTotal implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

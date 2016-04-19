@@ -1,4 +1,4 @@
-package com.swansoftwaresolutions.jirareport.core.mapper.mappings;
+package com.swansoftwaresolutions.jirareport.core.mapper.propertymap;
 
 import com.swansoftwaresolutions.jirareport.core.dto.CommentDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.Comment;

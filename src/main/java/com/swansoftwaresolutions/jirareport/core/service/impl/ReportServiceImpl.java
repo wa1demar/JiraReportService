@@ -335,7 +335,7 @@ public class ReportServiceImpl implements ReportService {
             }
 
         } catch (NoSuchEntityException e) {
-
+            e.printStackTrace();
         }
 
         return projectDashboardDto;
@@ -606,12 +606,7 @@ public class ReportServiceImpl implements ReportService {
             e.printStackTrace();
         }
 
-        sprints.sort(new Comparator<SprintProjectReportDto>() {
-            @Override
-            public int compare(SprintProjectReportDto o1, SprintProjectReportDto o2) {
-                return o1.getStartDate().compareTo(o2.getStartDate());
-            }
-        });
+        sprints.sort((o1, o2) -> o1.getStartDate().compareTo(o2.getStartDate()));
 
         return sprints;
     }
@@ -987,7 +982,9 @@ public class ReportServiceImpl implements ReportService {
                 }
             }
 
-            ii.add((int) tar);
+            if (currentDate.before(new Date())) {
+                ii.add((int) tar);
+            }
             startDate.add(Calendar.DATE, 1);
         }
 
@@ -1019,7 +1016,9 @@ public class ReportServiceImpl implements ReportService {
                         }
                     }
 
-                    ii.add((int) tar);
+                    if (currentDate.before(new Date())) {
+                        ii.add((int) tar);
+                    }
 
                     addDate.add(Calendar.DATE, 1);
                 }

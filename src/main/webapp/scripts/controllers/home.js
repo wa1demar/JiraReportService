@@ -74,8 +74,8 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', '$location', 'AuthenticationFact
 
 //----------------------------------------------------------------------------------------------------------------------
 //Order reports
-        $scope.predicate = 'closedDate';
-        $scope.reverse = true;
+        $scope.predicate = 'title';
+        $scope.reverse = false;
         $scope.order = function(predicate) {
             $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
             $scope.predicate = predicate;
