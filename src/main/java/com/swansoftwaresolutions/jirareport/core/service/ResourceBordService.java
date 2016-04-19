@@ -16,4 +16,6 @@ public interface ResourceBordService {
     ResourceColumnDto update(ResourceColumnDto columnDto);
 
     FullResourceColumnDtoList getColumns();
+
+    void deleteColumn(Long id);
 }

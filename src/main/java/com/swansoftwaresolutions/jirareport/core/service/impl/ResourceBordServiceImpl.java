@@ -63,4 +63,12 @@ public class ResourceBordServiceImpl implements ResourceBordService {
 
         return fullResourceColumnDtoList;
     }
+
+    @Override
+    public void deleteColumn(Long id) {
+        List<JiraUser> users = resourceBordRepository.findUsersByColumnId(id);
+        resourceBordRepository.removeColumn(id);
+
+        resourceBordRepository.moveUsersToDefaultColumn(users);
+    }
 }

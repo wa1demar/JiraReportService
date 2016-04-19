@@ -47,4 +47,13 @@ public class ResourceBoardController {
 
         return new ResponseEntity<>(fullResourceColumnDtoList, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/rest/v1/resource_columns/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<FullResourceColumnDtoList> deleteColumn(@PathVariable("id") Long id) throws NoSuchEntityException {
+
+        resourceBordService.deleteColumn(id);
+
+        return new ResponseEntity<>(new FullResourceColumnDtoList(), HttpStatus.OK);
+    }
 }

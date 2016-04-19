@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository;
 
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
 
 import java.util.List;
@@ -15,4 +16,10 @@ public interface ResourceBordRepository {
     ResourceColumn findDefaultColumn();
 
     List<ResourceColumn> findAll();
+
+    List<JiraUser> findUsersByColumnId(Long id);
+
+    void removeColumn(Long id);
+
+    void moveUsersToDefaultColumn(List<JiraUser> users);
 }
