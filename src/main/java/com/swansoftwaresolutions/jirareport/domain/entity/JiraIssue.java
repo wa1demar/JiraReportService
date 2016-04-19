@@ -99,8 +99,6 @@ public class JiraIssue  implements Serializable {
     private String summary;
 
     @OneToMany(cascade={CascadeType.ALL}, mappedBy="issue", fetch = FetchType.LAZY)
-    @Fetch(FetchMode.JOIN)
-    @BatchSize(size = 10)
     @OrderBy("updatedAt desc")
     private List<DueDate> dueDates = new ArrayList<>();
 

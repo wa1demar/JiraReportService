@@ -33,8 +33,6 @@ public class DueDate implements Serializable {
     private Date dueDate;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Fetch(FetchMode.JOIN)
-    @BatchSize(size = 10)
     @JoinColumn(name="issue_id")
     private JiraIssue issue;
 

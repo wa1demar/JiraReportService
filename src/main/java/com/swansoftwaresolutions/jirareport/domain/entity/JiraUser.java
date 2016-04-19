@@ -78,8 +78,6 @@ public class JiraUser implements Serializable {
     }
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.MERGE)
-    @Fetch(FetchMode.JOIN)
-    @BatchSize(size = 10)
     public List<JiraGroup> getGroups() {
         return groups;
     }

@@ -1,9 +1,5 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -67,4 +63,5 @@ public class ResourceColumn implements Serializable {
     public void setUsers(List<JiraUser> users) {
         this.users = users;
     }
+
 }

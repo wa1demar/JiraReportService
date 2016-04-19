@@ -30,6 +30,9 @@ public class ResourceBordRepositoryImpl implements ResourceBordRepository {
 
     @Override
     public ResourceColumn update(ResourceColumn resourceColumn) {
+        if (resourceColumn.getId().equals(1L)) {
+            resourceColumn.setFixed(true);
+        }
         sessionFactory.getCurrentSession().update(resourceColumn);
         return resourceColumn;
     }
@@ -42,7 +45,7 @@ public class ResourceBordRepositoryImpl implements ResourceBordRepository {
 
     @Override
     public List<ResourceColumn> findAll() {
-        Query query = sessionFactory.getCurrentSession().createQuery("from ResourceColumn c");
+        Query query = sessionFactory.getCurrentSession().createQuery("from ResourceColumn c order by c.id ASC");
         return query.list();
     }
 

@@ -10,7 +10,7 @@ import java.util.List;
  * @author Vladimir Martynyuk
  */
 public interface ResourceBordMapper {
-    ResourceColumn fromResourceColumnDtoToresourceColumn(ResourceColumnDto columnDto);
+    ResourceColumn fromResourceColumnDtoToResourceColumn(ResourceColumnDto columnDto);
 
     ResourceColumnDto fromResourceColumnToResourceColumnDto(ResourceColumn resourceColumn);
 

@@ -83,8 +83,6 @@ public class CacheProjectTotal implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @Cascade(CascadeType.ALL)
-    @Fetch(FetchMode.JOIN)
-    @BatchSize(size = 10)
     @JoinColumn(name="report_id")
     private Report report;
 

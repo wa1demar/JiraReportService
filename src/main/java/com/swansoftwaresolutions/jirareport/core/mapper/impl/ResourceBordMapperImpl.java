@@ -31,7 +31,7 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
     }
 
     @Override
-    public ResourceColumn fromResourceColumnDtoToresourceColumn(ResourceColumnDto columnDto) {
+    public ResourceColumn fromResourceColumnDtoToResourceColumn(ResourceColumnDto columnDto) {
         return modelMapper.map(columnDto, ResourceColumn.class);
     }
 
