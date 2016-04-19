@@ -6,7 +6,7 @@
       <div class="form-group">
           <label for="engineerLevel">EL</label>
           <select class="form-control" style="width: 100%;" ng-model="model.engineerLevel" data-placeholder="Select level" id="engineerLevel" name="engineerLevel" convert-to-number>
-              <option ng-repeat="value in [1, 2, 3, 4]" value="{{value}}">EL - {{value}}</option>
+              <option ng-repeat="value in engineerLevelDictionary" value="{{value}}">EL - {{value}}</option>
           </select>
       </div>
   </div>
