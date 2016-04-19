@@ -546,6 +546,34 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 }, function () {});
             };
 
+//----------------------------------------------------------------------------------------------------------------------
+//Dlg upload files
+            $scope.uploadAttach = function () {
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: 'views/resource_management/dlg/dlg_upload_attach.html',
+                    controller: 'DlgUploadAttachCtrl',
+                    resolve: {
+                        dlgData: function () {
+                            return {
+                                currentMember:              $scope.currentMember,
+                                engineerLevelDictionary:    $scope.engineerLevelDictionary
+                            };
+                        }
+                    }
+                });
+                modalInstance.result.then(function (data) {
+                    console.log(data);
+                    // MemberFactory.update({login: data.login}, data, function(data){
+                    //     Notification.success("Change level success");
+                    //     //get member info
+                    //     // $scope.getResourceColumns();
+                    // }, function (error) {
+                    //     Notification.error("Server error");
+                    // });
+                }, function () {});
+            };
+
         }
 ]);
 
@@ -686,6 +714,22 @@ jiraPluginApp.controller('DlgChangeLevelCtrl',
         function ($scope, $uibModalInstance, dlgData) {
             $scope.model = dlgData.currentMember;
             $scope.engineerLevelDictionary = dlgData.engineerLevelDictionary;
+
+            $scope.ok = function () {
+                $uibModalInstance.close($scope.model);
+            };
+
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+        }
+    ]);
+
+jiraPluginApp.controller('DlgUploadAttachCtrl',
+    ['$scope', '$uibModalInstance', 'dlgData',
+        function ($scope, $uibModalInstance, dlgData) {
+            // $scope.model = dlgData.currentMember;
+            // $scope.engineerLevelDictionary = dlgData.engineerLevelDictionary;
 
             $scope.ok = function () {
                 $uibModalInstance.close($scope.model);
