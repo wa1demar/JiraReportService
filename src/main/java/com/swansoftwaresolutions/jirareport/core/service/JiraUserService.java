@@ -18,15 +18,11 @@ public interface JiraUserService {
 
     JiraUser save(JiraUser jiraUser);
 
-    List<JiraUserDto> saveAll(List<JiraUserAutoDto> jiraUserAutoDtoList) throws NoSuchEntityException;
-
     JiraUsersDto retrieveAllUsers();
 
     void delete(JiraUser jiraUser) throws NoSuchEntityException;
 
     List<JiraUserDto> findAll();
-
-    JiraUser findByLogin(String login) throws NoSuchEntityException;
 
     JiraUsersDto retrieveFilteredUsers();
 

@@ -52,17 +52,6 @@ public class JiraUserServiceImpl implements JiraUserService {
     }
 
     @Override
-    public List<JiraUserDto> saveAll(List<JiraUserAutoDto> jiraUserAutoDtoList) throws NoSuchEntityException {
-        jiraUserAutoDtoList.removeAll(jiraUserMapper.toAutoDtos(jiraUserRepository.findAll()));
-
-        List<JiraUserDto> newJiraUser = new ArrayList<>();
-        for (JiraUserAutoDto jiraUserAuto : jiraUserAutoDtoList) {
-            newJiraUser.add(jiraUserMapper.toDto(jiraUserRepository.add(jiraUserMapper.fromAutoDto(jiraUserAuto))));
-        }
-        return newJiraUser;
-    }
-
-    @Override
     public JiraUsersDto retrieveAllUsers() {
         List<JiraUserDto> userDtoList = jiraUserMapper.toDtos(jiraUserRepository.findAll());
         JiraUsersDto usersDto = new JiraUsersDto();
@@ -78,11 +67,6 @@ public class JiraUserServiceImpl implements JiraUserService {
     @Override
     public void delete(JiraUser jiraUser) throws NoSuchEntityException {
         jiraUserRepository.delete(jiraUser);
-    }
-
-    @Override
-    public JiraUser findByLogin(String login) throws NoSuchEntityException{
-        return jiraUserRepository.findByLogin(login);
     }
 
     @Override
