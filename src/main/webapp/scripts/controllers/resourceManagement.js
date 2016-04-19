@@ -255,6 +255,13 @@ jiraPluginApp.controller('ResourceManagementCtrl',
             };
 
 //----------------------------------------------------------------------------------------------------------------------
+//Update member location or assignmentType
+            $scope.chnageMemberInfoData = function (type) {
+                console.log(type);
+                console.log($scope.currentMember.location.id);
+            };
+
+//----------------------------------------------------------------------------------------------------------------------
 //Dlg process column
             $scope.processColumn = function (item) {
                 var modalInstance = $uibModal.open({
@@ -316,6 +323,21 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 
                 UsersFactory.query({}, function(users){
                     var members = users.users;
+
+                    //delete duplicate members
+                    var count = $scope.columns.length;
+                    for (var index = 0; index < count; index++) {
+                        var countUser = $scope.columns[index].users.length;
+                        var indexForDelete = null;
+                        for (var indexUser = 0; indexUser < countUser; indexUser++) {
+                            indexForDelete = members.indexOf(_.findWhere(members, {login: $scope.columns[index].users[indexUser].login}));
+                            if (indexForDelete !== null) {
+                                members.splice(indexForDelete, 1);
+                                break;
+                            }
+                        }
+                    }
+
 
                     var modalInstance = $uibModal.open({
                         animation: true,

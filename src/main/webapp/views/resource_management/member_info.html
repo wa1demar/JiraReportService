@@ -36,7 +36,7 @@
     <div class="row margin-0">
         <span class="member-info-block-content-subtitle">Location:</span>
         <div class="form-group">
-            <select class="form-control" ng-model="currentMember.location.id" id="member-location" name="member-location" convert-to-number>
+            <select ng-change="chnageMemberInfoData('location')" class="form-control" ng-model="currentMember.location.id" id="member-location" name="member-location" convert-to-number>
                 <option ng-repeat="value in locations" value="{{value.id}}">{{value.name}}</option>
             </select>
         </div>
@@ -45,7 +45,7 @@
     <div class="row margin-0">
         <span class="member-info-block-content-subtitle">Assignment type:</span>
         <div class="form-group">
-            <select class="form-control" ng-model="currentMember.assignmentType" id="member-assignment-type" name="member-assignment-type" convert-to-number>
+            <select ng-change="chnageMemberInfoData('assignmentType')" class="form-control" ng-model="currentMember.assignmentType.id" id="member-assignment-type" name="member-assignment-type" convert-to-number>
                 <option ng-repeat="value in assignmentTypes" value="{{value.id}}">{{value.name}}</option>
             </select>
         </div>
