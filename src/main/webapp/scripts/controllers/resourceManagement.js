@@ -332,13 +332,12 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                         for (var indexUser = 0; indexUser < countUser; indexUser++) {
                             indexForDelete = members.indexOf(_.findWhere(members, {login: $scope.columns[index].users[indexUser].login}));
                             if (indexForDelete !== null) {
-                                console.log($scope.columns[index].users[indexUser]);
                                 members.splice(indexForDelete, 1);
                                 continue;
                             }
                         }
                     }
-                    
+
                     var modalInstance = $uibModal.open({
                         animation: true,
                         templateUrl: 'views/resource_management/dlg/dlg_add_member.html',
