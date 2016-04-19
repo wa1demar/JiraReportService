@@ -5,6 +5,8 @@ jiraPluginApp.controller('TaskCtrl',
         function($scope, $routeParams, $uibModal, TaskFactory, Notification ,$interval) {
             var self = this;
             $scope.loaderShow = true;
+            $scope.hasInProgress = true;
+            $scope.indexInProgressData = null;
 //----------------------------------------------------------------------------------------------------------------------
 //Initiate the Timer object.
             $scope.timer = null;
@@ -18,11 +20,15 @@ jiraPluginApp.controller('TaskCtrl',
                     TaskFactory.query({}, function (data) {
                         newData = data.tasks;
                         var inProgressData = _.findWhere(newData, {status: "IN_PROGRESS"});
+                        $scope.indexInProgressData = newData.indexOf(_.findWhere(newData, {status: "IN_PROGRESS"}));
                         console.log(inProgressData);
                         $scope.data = newData;
 
                         if (inProgressData === undefined) {
+                            $scope.hasInProgress = false;
                             $scope.stopTimer();
+                        } else {
+                            $scope.hasInProgress = true;
                         }
                     }, function (error) {
                         Notification.error("Server error");
@@ -56,6 +62,10 @@ jiraPluginApp.controller('TaskCtrl',
                 $scope.data = [];
                 TaskFactory.query({}, function (data) {
                     $scope.data = data.tasks;
+                    $scope.indexInProgressData = $scope.data.indexOf(_.findWhere($scope.data, {status: "IN_PROGRESS"}));
+                    if ($scope.indexInProgressData === -1) {
+                        $scope.hasInProgress = false;
+                    }
                 }, function (error) {
                    Notification.error("Server error");
                 });
