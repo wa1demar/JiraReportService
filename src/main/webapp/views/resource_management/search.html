@@ -16,12 +16,16 @@
             <option ng-repeat="value in projects" value="{{value.id}}">{{value.name}}</option>
         </select>
     </div>
-    <!--<div class="form-group">-->
-        <!--<label for="el">EL</label>-->
-        <!--<select ui-select2 multiple style="width: 100%;" ng-model="model.el" data-placeholder="Select administrators" id="el" name="el" convert-to-number>-->
-            <!--<option ng-repeat="value in [1, 2, 3, 4]" value="{{value}}">EL - {{value}}</option>-->
-        <!--</select>-->
-    <!--</div>-->
+    <div class="form-group">
+        <label for="engineerLevel">EL</label>
+        <select ui-select2 multiple style="width: 100%;"
+                ng-model="search.engineerLevel"
+                data-placeholder="Select EL"
+                id="engineerLevel"
+                name="engineerLevel">
+            <option ng-repeat="value in engineerLevelDictionary" value="{{value}}">EL - {{value}}</option>
+        </select>
+    </div>
     <div class="form-group">
         <label for="location">Locations</label>
         <select ui-select2 multiple style="width: 100%;" ng-model="search.location" data-placeholder="Select locations" id="location" name="location">

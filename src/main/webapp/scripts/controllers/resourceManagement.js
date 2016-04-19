@@ -1,25 +1,34 @@
 'use strict';
 
 jiraPluginApp.controller('ResourceManagementCtrl',
-    ['$scope', '$uibModal', '$filter', 'ResourceColumnFactory', 'UsersFactory', 'DictionaryFactory', 'MemberFactory', 'Notification',
-        function($scope, $uibModal, $filter, ResourceColumnFactory, UsersFactory, DictionaryFactory, MemberFactory, Notification) {
+    ['$scope', '$uibModal', '$filter', '$window', 'ResourceColumnFactory', 'UsersFactory', 'DictionaryFactory', 'MemberFactory', 'Notification',
+        function($scope, $uibModal, $filter, $window, ResourceColumnFactory, UsersFactory, DictionaryFactory, MemberFactory, Notification) {
             var self = this;
             $scope.loaderShow = true;
             $scope.showSearch = true;
             $scope.showMemberInfo = false;
+            //TODO need get from db
+            $scope.engineerLevelDictionary = [1, 2, 3, 4];
 
-            $scope.search = {
-                technology: [],
-                project: [],
-                location: [],
-                name: null
-            };
+//----------------------------------------------------------------------------------------------------------------------
+//prepare search params
+            if ($window.localStorage.rm_search) {
+                $scope.search = JSON.parse($window.localStorage.rm_search);
+            } else {
+                $scope.search = {
+                    technology: [],
+                    project: [],
+                    engineerLevel: [],
+                    location: [],
+                    name: null
+                };
+            }
 
 //----------------------------------------------------------------------------------------------------------------------
 //Get all data for Resource Board
             $scope.columns = [];
             $scope.getResourceColumns = function () {
-                ResourceColumnFactory.query({}, function (result) {
+                ResourceColumnFactory.query($scope.search, function (result) {
                     $scope.columns = result.columns;
                     $scope.loaderShow = false;
                 }, function (error) {
@@ -171,7 +180,9 @@ jiraPluginApp.controller('ResourceManagementCtrl',
             // };
 
             $scope.$watch('search', function() {
-                console.log($scope.search);
+                console.log(" ---- new search");
+                $window.localStorage.rm_search = JSON.stringify($scope.search);
+                $scope.getResourceColumns();
             }, true);
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -258,7 +269,12 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 //Update member location or assignmentType
             $scope.chnageMemberInfoData = function (type) {
                 console.log(type);
-                console.log($scope.currentMember.location.id);
+
+                if (type === 'location') {
+                    console.log($scope.currentMember.location.id);
+                } else {
+                    console.log($scope.currentMember.assignmentType.id);
+                }
             };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -345,9 +361,10 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                         resolve: {
                             dlgData: function () {
                                 return {
-                                    members:        members,
-                                    locations:      $scope.locations,
-                                    technologies:   $scope.technologies
+                                    members:                    members,
+                                    locations:                  $scope.locations,
+                                    technologies:               $scope.technologies,
+                                    engineerLevelDictionary:    $scope.engineerLevelDictionary
                                 };
                             }
                         }
@@ -511,7 +528,10 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     controller: 'DlgChangeLevelCtrl',
                     resolve: {
                         dlgData: function () {
-                            return $scope.currentMember;
+                            return {
+                                currentMember:              $scope.currentMember,
+                                engineerLevelDictionary:    $scope.engineerLevelDictionary
+                            };
                         }
                     }
                 });
@@ -568,6 +588,7 @@ jiraPluginApp.controller('DlgAddMemberCtrl',
             $scope.members = dlgData.members;
             $scope.locations = dlgData.locations;
             $scope.technologies = dlgData.technologies;
+            $scope.engineerLevelDictionary = dlgData.engineerLevelDictionary;
 
             $scope.ok = function () {
                 if($scope.addMemberForm.$valid) {
@@ -663,7 +684,8 @@ jiraPluginApp.controller('DlgDeleteProjectCtrl',
 jiraPluginApp.controller('DlgChangeLevelCtrl',
     ['$scope', '$uibModalInstance', 'dlgData',
         function ($scope, $uibModalInstance, dlgData) {
-            $scope.model = dlgData;
+            $scope.model = dlgData.currentMember;
+            $scope.engineerLevelDictionary = dlgData.engineerLevelDictionary;
 
             $scope.ok = function () {
                 $uibModalInstance.close($scope.model);
