@@ -138,7 +138,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
             $scope.getTechnologies();
 
 //----------------------------------------------------------------------------------------------------------------------
-//Get projects
+//TODO Get projects
             $scope.projects = [];
             $scope.getProjects = function () {
                 $scope.projects = [
@@ -164,7 +164,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
             $scope.getLocations();
 
 //----------------------------------------------------------------------------------------------------------------------
-//Get assignment type
+//TODO Get assignment type
             $scope.assignmentTypes = [];
             $scope.getAssignmentTypes = function () {
                 $scope.assignmentTypes = [
@@ -217,6 +217,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 //TODO save new member position
                 //change member assignment type
                 $scope.columns[index].users[indexElementInColumn].assignmentType = column.id;
+                console.log("column id: " + column.id + " ---- position: " + indexElementInColumn);
                 // $scope.getResourceColumns();
             };
 
