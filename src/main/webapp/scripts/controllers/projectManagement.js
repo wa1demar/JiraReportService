@@ -6,7 +6,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
             var self = this;
             $scope.loaderShow = true;
             $scope.showSearch = true;
-            $scope.showMemberInfo = false;
+            $scope.showProjectInfo = false;
             //TODO need get from db
             $scope.engineerLevelDictionary = [1, 2, 3, 4];
 
@@ -44,70 +44,58 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                 // }, function (error) {
                 //     Notification.error("Server error");
                 // });
+                
+                $scope.lightColor = function (hex, lum) {
+                    return colorLuminance(hex, lum);
+                };
 
                 $scope.columns = [
                     {
                         id: 1,
-                        name: "Project name",
+                        name: "Project 1",
+                        description: "Description",
                         users: [
                             {
                                 id: 1,
                                 name: "Full Name 1",
                                 engineerLevel: 1,
-                                experiencies: [
-                                    {id: 31, name: 'JS'},
-                                    {id: 41, name: 'HTML'},
-                                    {id: 51, name: 'CSS'},
-                                    {id: 61, name: 'Angular'}
-                                ],
-                                projects: [
-                                    {id: 1, name: "project 1"}
-                                ],
-                                location: 2,
-                                assignmentType: 1,
-                                attachments: [
-                                    {id: 1, name: "attach 1", url: "http://google.com"}
-                                ],
-                                description: "description"
+                                assignmentType: {id: 1, name: "PM"},
+                                color: "#4086E7"
                             },
                             {
                                 id: 2,
                                 name: "Full Name 2",
                                 engineerLevel: 3,
-                                experiencies: [
-                                    {id: 13, name: 'JS'},
-                                    {id: 14, name: 'HTML'},
-                                    {id: 16, name: 'Angular'}
-                                ],
-                                projects: [],
-                                location: 2,
-                                assignmentType: 1,
-                                attachments: [
-                                    {id: 1, name: "attach 1", url: "http://google.com"},
-                                    {id: 2, name: "attach 2", url: "http://google.com"}
-                                ],
-                                description: "description 2"
+                                assignmentType: {id: 2, name: "Dev"},
+                                color: "#179f1c"
+                            },
+                            {
+                                id: 3,
+                                name: "Full Name 3",
+                                engineerLevel: 2,
+                                assignmentType: {id: 2, name: "Dev"},
+                                color: "#179f1c"
+                            },
+                            {
+                                id: 3,
+                                name: "Full Name 5",
+                                engineerLevel: 2,
+                                assignmentType: {id: 3, name: "QA"},
+                                color: "#F4D520"
                             }
                         ]
                     },
                     {
                         id: 2,
-                        name: "Project name",
+                        name: "Project 2",
+                        description: "Description",
                         users: [
                             {
                                 id: 3,
                                 name: "Full Name 2",
                                 engineerLevel: 3,
-                                experiencies: [
-                                    {id: 111, name: 'Scrum'}
-                                ],
-                                projects: [],
-                                location: 2,
-                                assignmentType: 2,
-                                attachments: [
-                                    {id: 1, name: "attach 1", url: "http://google.com"}
-                                ],
-                                description: "description"
+                                assignmentType: {id: 1, name: "PM"},
+                                color: "#4086E7"
                             }
                         ]
                     }
@@ -119,7 +107,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
             $scope.getProjectColumns();
 
 
-            $scope.currentMember = {};
+            $scope.currentProject = {};
 
 //----------------------------------------------------------------------------------------------------------------------
 //Get technologies
@@ -225,24 +213,24 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                     $scope.columns.selected = null;
 
                     $scope.showSearch = true;
-                    $scope.showMemberInfo = false;
+                    $scope.showProjectInfo = false;
 
                     $scope.showSearchFilters();
                 } else {
                     $scope.columns.selected = item;
 
                     $scope.showSearch = false;
-                    $scope.showMemberInfo = true;
+                    $scope.showProjectInfo = true;
 
-                    $scope.showMemberInfoData(item);
+                    $scope.showProjectInfoData(item);
                 }
             };
 
 //----------------------------------------------------------------------------------------------------------------------
 //Show member info in right part
-            $scope.showMemberInfoData = function(item) {
-                console.log('showMemberInfoData');
-                $scope.currentMember = item;
+            $scope.showProjectInfoData = function(item) {
+                console.log('showProjectInfoData');
+                $scope.currentProject = item;
             };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -407,7 +395,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
 
                         $scope.columns.selected = null;
                         $scope.showSearch = true;
-                        $scope.showMemberInfo = false;
+                        $scope.showProjectInfo = false;
                         $scope.showSearchFilters();
 
                         $scope.getProjectColumns();

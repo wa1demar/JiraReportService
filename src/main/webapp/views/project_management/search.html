@@ -1,0 +1,29 @@
+<div class="search-block-title">Quick filters:</div>
+<div class="search-block-content">
+    <div class="form-group">
+        <label for="technology">Technology</label>
+        <select ui-select2 multiple style="width: 100%;"
+                ng-model="search.technology"
+                data-placeholder="Select technologies"
+                id="technology"
+                name="technology">
+            <option ng-repeat="value in technologies" value="{{value.id}}">{{value.name}}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="engineerLevel">EL</label>
+        <select ui-select2 multiple style="width: 100%;"
+                ng-model="search.engineerLevel"
+                data-placeholder="Select EL"
+                id="engineerLevel"
+                name="engineerLevel">
+            <option ng-repeat="value in engineerLevelDictionary" value="{{value}}">EL - {{value}}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="project">Project</label>
+        <select ui-select2 multiple style="width: 100%;" ng-model="search.project" data-placeholder="Select projects" id="project" name="project">
+            <option ng-repeat="value in projects" value="{{value.id}}">{{value.name}}</option>
+        </select>
+    </div>
+</div>

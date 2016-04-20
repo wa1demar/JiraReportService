@@ -1,30 +1,24 @@
-<ul dnd-list="column.users" class="item">
+<ul dnd-list="column.users" class="item projects">
     <li ng-repeat="item in column.users"
         dnd-draggable="item"
         dnd-moved="column.users.splice($index, 1)"
         dnd-effect-allowed="move"
-        dnd-selected="selectElement(item)"
+        dnd-selected="selectElement(column)"
         dnd-dragend="dragendElement(item)"
-        ng-class="{'selected': columns.selected === item}">
+        ng-class="{'selected': columns.selected === column}"
+        ng-style="{background: lightColor(item.color, 0.4), border: '2px solid {{item.color}}'}">
 
-        <div class="members-item-box" style="border-left: 8px solid {{column.color}}">
+        <div class="projects-item-box">
             <div class="row margin-0">
-                <div class="col-md-3 avatar">
+                <div class="col-md-2 avatar">
                     <span class="glyphicon glyphicon-user"></span>
                 </div>
-                <div class="col-md-9">
-                    <div class="name-label">{{item.name}}</div>
-                    <div class="engineer-lvl-label">EL - {{item.engineerLevel}}</div>
-                </div>
-            </div>
-
-            <div class="row margin-0">
-                <div class="technologies-label">
-                    <span ng-repeat="value in item.technologies track by $index">{{value.name}}{{$last ? '' : ', '}}</span>
+                <div class="col-md-10">
+                    <div class="name-label">{{item.name}} EL - {{item.engineerLevel}}</div>
                 </div>
             </div>
         </div>
 
     </li>
-    <p ng-if="column.users.length === 0" class="column-empty">Column is empty</p>
+    <p ng-if="column.users.length === 0" class="column-empty">Project is empty</p>
 </ul>
