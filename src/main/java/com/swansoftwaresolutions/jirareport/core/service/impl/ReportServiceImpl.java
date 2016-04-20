@@ -548,10 +548,10 @@ public class ReportServiceImpl implements ReportService {
 
                         dev.setTargetHours(Math.round(dev.getParticipationLevel() * dev.getDaysInSprint()) * 8);
 
-                        dev.setDefectTargetHours((long) Math.round(help.isNull(dev.getDefectHours()) / 3600));
+                        dev.setDefectTargetHours((long) Math.round(help.isNull(dev.getDefectHours())));
                         dev.setDefectActualHours((long) Math.round(help.isNull(dev.getDefectActualHours()) / 3600));
 
-                        dev.setUatDefectTargetHours((long) Math.round(help.isNull(dev.getUatDefectTargetHours()) / 3600));
+                        dev.setUatDefectTargetHours((long) Math.round(help.isNull(dev.getUatDefectTargetHours())));
                         dev.setUatDefectActualHours((long) Math.round(help.isNull(dev.getUatDefectActualHours()) / 3600));
                         dev.setUatDefectActual(help.isNull(dev.getUatDefectActual()));
                         dev.setUatDefectHours((long) Math.round(help.isNull(dev.getUatDefectHours()) / 3600));
