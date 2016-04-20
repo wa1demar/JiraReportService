@@ -28,7 +28,17 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 //Get all data for Resource Board
             $scope.columns = [];
             $scope.getResourceColumns = function () {
-                ResourceColumnFactory.query($scope.search, function (result) {
+
+                //set data to search query
+                var searchQuery = {
+                    "technology[]": $scope.search.technology,
+                    "project[]": $scope.search.project,
+                    "engineerLevel[]": $scope.search.engineerLevel,
+                    "location[]": $scope.search.location,
+                    name: $scope.search.name
+                };
+
+                ResourceColumnFactory.query(searchQuery, function (result) {
                     $scope.columns = result.columns;
                     $scope.loaderShow = false;
                 }, function (error) {
@@ -731,7 +741,7 @@ jiraPluginApp.controller('DlgUploadAttachCtrl',
         function ($scope, $uibModalInstance, dlgData, FileUploader) {
             // $scope.model = dlgData.currentMember;
             // $scope.engineerLevelDictionary = dlgData.engineerLevelDictionary;
-            
+
 //----------------------------------------------------------------------------------------------------------------------
 //test upload
             var uploader = $scope.uploader = new FileUploader({
