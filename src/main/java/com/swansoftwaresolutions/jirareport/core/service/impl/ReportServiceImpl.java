@@ -935,14 +935,6 @@ public class ReportServiceImpl implements ReportService {
         Calendar endDate = Calendar.getInstance();
         endDate.setTime(sprintDto.getEndDate());
 
-        Calendar completeDate = Calendar.getInstance();
-        if (sprintDto.getCompleteDate() == null){
-            completeDate.setTime(sprintDto.getEndDate());
-        } else {
-//            completeDate.setTime(sprintDto.getCompleteDate());
-            completeDate.setTime(sprintDto.getEndDate());
-        }
-
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         String nonWorkingDaysString = configService.retrieveConfig().getNonWorkingDays();
         List<Date> nonWorkingDays = new ArrayList<>();
@@ -962,7 +954,7 @@ public class ReportServiceImpl implements ReportService {
 
         String endDateStr = formatter.format(sprintDto.getEndDate());
 
-        while (completeDate.after(startDate) || help.isSameDate(startDate.getTime(), completeDate.getTime())) {
+        while (endDate.after(startDate) || help.isSameDate(startDate.getTime(), endDate.getTime())) {
             Date currentDate = startDate.getTime();
 
             if (help.isWeekend(currentDate) || nonWorkingDays.contains(currentDate)) {
