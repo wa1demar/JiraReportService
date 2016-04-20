@@ -1,0 +1,30 @@
+<ul dnd-list="column.users" class="item">
+    <li ng-repeat="item in column.users"
+        dnd-draggable="item"
+        dnd-moved="column.users.splice($index, 1)"
+        dnd-effect-allowed="move"
+        dnd-selected="selectElement(item)"
+        dnd-dragend="dragendElement(item)"
+        ng-class="{'selected': columns.selected === item}">
+
+        <div class="members-item-box" style="border-left: 8px solid {{column.color}}">
+            <div class="row margin-0">
+                <div class="col-md-3 avatar">
+                    <span class="glyphicon glyphicon-user"></span>
+                </div>
+                <div class="col-md-9">
+                    <div class="name-label">{{item.name}}</div>
+                    <div class="engineer-lvl-label">EL - {{item.engineerLevel}}</div>
+                </div>
+            </div>
+
+            <div class="row margin-0">
+                <div class="technologies-label">
+                    <span ng-repeat="value in item.technologies track by $index">{{value.name}}{{$last ? '' : ', '}}</span>
+                </div>
+            </div>
+        </div>
+
+    </li>
+    <p ng-if="column.users.length === 0" class="column-empty">Column is empty</p>
+</ul>

@@ -96,6 +96,12 @@ jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
             access: {
                 requiredLogin: true
             }
+        }).when('/project_management', {
+            templateUrl: 'views/project_management/main.html',
+            controller: 'ProjectManagementCtrl',
+            access: {
+                requiredLogin: true
+            }
         }).when('/dictionary/:name', {
             templateUrl: 'views/dictionary/main.html',
             controller: 'DictionaryCtrl',

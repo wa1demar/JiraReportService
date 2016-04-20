@@ -1,0 +1,42 @@
+<header id="ghx-header" class="aui-page-header">
+    <title>Project Board</title>
+    <div class="aui-page-header-inner">
+        <div class="aui-page-header-main">
+            <h2>Project Board</h2>
+        </div>
+        <div class="aui-page-header-actions">
+            <button class="btn btn-primary" type="submit" ng-click="processProject()">Add project</button>
+        </div>
+    </div>
+</header>
+<div class="aui-page-panel" id="manage-boards-page">
+    <div class="res">
+        <div class="res-left">
+            <!--<div class="res-left-head">add column</div>-->
+            <div class="res-left-content">
+                <div class="res-left-content-top">
+                    <ul class="main">
+                        <li ng-repeat="column in columns" class="main">
+                            <h4>
+                                {{column.name}} <!--<span class="count-users">(count: {{column.users.length}})</span>-->
+                                <span ng-if="!column.fixed" ng-click="delProject(column)" class="glyphicon glyphicon-remove control-icon" title="Delete"></span>
+                                <span ng-click="processProject(column)" class="glyphicon glyphicon-pencil control-icon" title="Edit"></span>
+                            </h4>
+                        </li>
+                    </ul>
+                </div>
+                <div class="res-left-content-center">
+                    <ul class="main">
+                        <li ng-repeat="column in columns" class="main grey">
+                            <div style="height: 100%;" ng-include="'views/project_management/projects.html'"></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="res-right">
+            <div class="search-block" ng-if="showSearch" ng-include="'views/project_management/search.html'"></div>
+            <div class="member-info-block" ng-if="showProjectInfo" ng-include="'views/project_management/member_info.html'"></div>
+        </div>
+    </div>
+</div>
