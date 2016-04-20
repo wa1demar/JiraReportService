@@ -31,6 +31,12 @@
 
 }
 
+.res-left-content-top .count-users {
+    font-size: 12px;
+    font-style: italic;
+    color: #424242;
+}
+
 .res-left-content-center {
     width: 100%;
     height: calc(100% - 60px);
