@@ -136,4 +136,10 @@ public class JiraUserServiceImpl implements JiraUserService {
         }
         return null;
     }
+
+    @Override
+    public ResourceUserDto findinfoByLogin(String login) throws NoSuchEntityException {
+        JiraUser user = jiraUserRepository.findByLogin(login);
+        return jiraUserMapper.fromJiraUserToResourceUserDto(user);
+    }
 }
