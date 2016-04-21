@@ -35,5 +35,5 @@ public interface JiraUserService {
 
     ResourceUserDto addAttachment(String login, MultipartFile file);
 
-    ResourceUserDto findinfoByLogin(String login) throws NoSuchEntityException;
+    ResourceUserDto findInfoByLogin(String login) throws NoSuchEntityException;
 }

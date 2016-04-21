@@ -4,16 +4,15 @@ import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.NewResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
+import com.swansoftwaresolutions.jirareport.domain.entity.Attachment;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
-import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
-import com.swansoftwaresolutions.jirareport.domain.repository.LocationRepository;
-import com.swansoftwaresolutions.jirareport.domain.repository.ResourceBordRepository;
-import com.swansoftwaresolutions.jirareport.domain.repository.TechnologyRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.*;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUsersDto;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
@@ -42,6 +41,9 @@ public class JiraUserServiceImpl implements JiraUserService {
 
     @Autowired
     ResourceBordRepository resourceBordRepository;
+
+    @Autowired
+    AttachmentRepository attachmentRepository;
 
     @Autowired
     JiraUserMapper jiraUserMapper;
@@ -125,10 +127,18 @@ public class JiraUserServiceImpl implements JiraUserService {
     public ResourceUserDto addAttachment(String login, MultipartFile file) {
         if (!file.isEmpty()) {
             try {
-                BufferedOutputStream stream = new BufferedOutputStream(
-                        new FileOutputStream(new File("/attachments/" + file)));
+                String rootPath = System.getProperty("catalina.home");
+                File dir = new File(rootPath + File.separator + "uploads" + File.separator + login);
+                if (!dir.exists())
+                    dir.mkdirs();
+
+                File attachmentFile = new File(dir.getAbsolutePath() + File.separator + new Date().getTime() + "." + FilenameUtils.getExtension(file.getOriginalFilename()));
+
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(attachmentFile));
                 FileCopyUtils.copy(file.getInputStream(), stream);
                 stream.close();
+
+                addAttachmentToUser(FilenameUtils.removeExtension(file.getOriginalFilename()), attachmentFile, login);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -137,8 +147,20 @@ public class JiraUserServiceImpl implements JiraUserService {
         return null;
     }
 
+    private void addAttachmentToUser(String name, File file, String login) throws NoSuchEntityException {
+        JiraUser user = jiraUserRepository.findByLogin(login);
+
+        Attachment attachment = new Attachment();
+        attachment.setJiraUser(user);
+        attachment.setTitle(name);
+        attachment.setExtension(FilenameUtils.getExtension(file.getAbsolutePath()));
+        attachment.setUrl(file.getAbsolutePath());
+
+        attachmentRepository.save(attachment);
+    }
+
     @Override
-    public ResourceUserDto findinfoByLogin(String login) throws NoSuchEntityException {
+    public ResourceUserDto findInfoByLogin(String login) throws NoSuchEntityException {
         JiraUser user = jiraUserRepository.findByLogin(login);
         return jiraUserMapper.fromJiraUserToResourceUserDto(user);
     }

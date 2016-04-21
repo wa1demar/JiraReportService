@@ -3,6 +3,7 @@ package com.swansoftwaresolutions.jirareport.core.dto.jira_users;
 import com.swansoftwaresolutions.jirareport.core.dto.locations.LocationDto;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologyDto;
+import com.swansoftwaresolutions.jirareport.domain.entity.Attachment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ public class FullResourceUserDto {
     private LocationDto location;
     private String description;
     private String avatar;
+    private List<AttachmentDto> attachments = new ArrayList<>();
     private ResourceColumnDto column;
 
     public String getLogin() {
@@ -82,5 +84,13 @@ public class FullResourceUserDto {
 
     public void setColumn(ResourceColumnDto column) {
         this.column = column;
+    }
+
+    public List<AttachmentDto> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<AttachmentDto> attachments) {
+        this.attachments = attachments;
     }
 }

@@ -57,7 +57,7 @@ public class JiraUsersController {
     @ResponseBody
     public ResponseEntity<ResourceUserDto> getuserInfo(@PathVariable("login") String login) throws NoSuchEntityException {
 
-        ResourceUserDto newNewResourceUserDto = jiraUserService.findinfoByLogin(login);
+        ResourceUserDto newNewResourceUserDto = jiraUserService.findInfoByLogin(login);
 
         return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
     }
