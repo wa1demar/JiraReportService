@@ -69,6 +69,12 @@ body {
   margin-top: 28px;
 }
 
+.navbar-header .logo{
+  float: left;
+  width: 40px;
+  margin: 0.3em 0.5em;
+}
+
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
   .container {
