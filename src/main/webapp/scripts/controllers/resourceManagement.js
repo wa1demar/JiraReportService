@@ -164,16 +164,26 @@ jiraPluginApp.controller('ResourceManagementCtrl',
             $scope.getLocations();
 
 //----------------------------------------------------------------------------------------------------------------------
-//TODO Get assignment type
+//Get assignment type
             $scope.assignmentTypes = [];
             $scope.getAssignmentTypes = function () {
-                $scope.assignmentTypes = [
-                    {id: 1, name: "Bench"},
-                    {id: 2, name: "PM"},
-                    {id: 3, name: "QA"}
-                ];
+                ResourceColumnFactory.query({id: 'list'}, function(result){
+                    $scope.assignmentTypes = result.columns;
+                }, function (error) {
+                    Notification.error("Server error: get assignment type");
+                });
             };
             $scope.getAssignmentTypes();
+
+//----------------------------------------------------------------------------------------------------------------------
+//Get member by login
+            $scope.getMemberByLogin = function (login) {
+                MemberFactory.get({login: login}, function(result){
+                    $scope.currentMember = result;
+                }, function (error) {
+                    Notification.error("Server error: get member by login");
+                });
+            };
 
             // Model to JSON for demo purpose
             $scope.$watch('models', function(model) {
