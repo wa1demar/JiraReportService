@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.dto.jira_users;
 
 import com.swansoftwaresolutions.jirareport.core.dto.locations.LocationDto;
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologyDto;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class FullResourceUserDto {
     private LocationDto location;
     private String description;
     private String avatar;
+    private ResourceColumnDto column;
 
     public String getLogin() {
         return login;
@@ -72,5 +74,13 @@ public class FullResourceUserDto {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public ResourceColumnDto getColumn() {
+        return column;
+    }
+
+    public void setColumn(ResourceColumnDto column) {
+        this.column = column;
     }
 }
