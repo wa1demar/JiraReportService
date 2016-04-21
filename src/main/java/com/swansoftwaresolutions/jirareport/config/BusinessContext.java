@@ -1,7 +1,5 @@
 package com.swansoftwaresolutions.jirareport.config;
 
-import com.swansoftwaresolutions.jirareport.rest.client.RestClient;
-import com.swansoftwaresolutions.jirareport.rest.client.RestClientImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

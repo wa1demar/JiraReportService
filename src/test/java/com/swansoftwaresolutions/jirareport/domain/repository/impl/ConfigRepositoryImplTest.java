@@ -3,17 +3,15 @@ package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
-import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.swansoftwaresolutions.jirareport.domain.entity.Config;
+import com.swansoftwaresolutions.jirareport.domain.repository.AbstractDbTest;
 import com.swansoftwaresolutions.jirareport.domain.repository.ConfigRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * @author Vladimir Martynyuk

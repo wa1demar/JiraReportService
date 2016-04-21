@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraProject;
+import com.swansoftwaresolutions.jirareport.domain.repository.AbstractDbTest;
 import com.swansoftwaresolutions.jirareport.domain.repository.ProjectRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.junit.Test;

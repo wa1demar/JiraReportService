@@ -148,57 +148,98 @@ public class TaskServiceImpl implements TaskService {
     }
 
     private void startImportGroups() {
-        System.out.println("Start task for groups at " + new Date());
-        taskRepository.setStarted(GROUPS_TASK);
-        groupImporterService.importGroupsFromJira();
-        taskRepository.setStopped(GROUPS_TASK);
-        System.out.println("Stop task for groups at " + new Date());
+        try {
+            System.out.println("Start task for groups at " + new Date());
+            taskRepository.setStarted(GROUPS_TASK);
+            groupImporterService.importGroupsFromJira();
+            taskRepository.setStopped(GROUPS_TASK);
+            System.out.println("Stop task for groups at " + new Date());
+        } catch (Exception e) {
+            taskRepository.setErrored(GROUPS_TASK);
+            System.out.println("Error task for groups at " + new Date());
+            e.printStackTrace();
+        }
     }
 
     private void startImportUsers() {
-        System.out.println("Start task for users at " + new Date());
-        taskRepository.setStarted(USERS_TASK);
-        userImporterService.importUsersFromJira();
-        taskRepository.setStopped(USERS_TASK);
-        System.out.println("Stop task for users at " + new Date());
+        try {
+            System.out.println("Start task for users at " + new Date());
+            taskRepository.setStarted(USERS_TASK);
+            userImporterService.importUsersFromJira();
+            taskRepository.setStopped(USERS_TASK);
+            System.out.println("Stop task for users at " + new Date());
+        } catch (Exception e) {
+            taskRepository.setErrored(USERS_TASK);
+            System.out.println("Error task for users at " + new Date());
+            e.printStackTrace();
+        }
     }
 
     private void startImportProjects() {
-        System.out.println("Start task for projects at " + new Date());
-        taskRepository.setStarted(PROJECTS_TASK);
-        projectImporterService.importProjectsFromJira();
-        taskRepository.setStopped(PROJECTS_TASK);
-        System.out.println("Stop task for projects at " + new Date());
+        try {
+            System.out.println("Start task for projects at " + new Date());
+            taskRepository.setStarted(PROJECTS_TASK);
+            projectImporterService.importProjectsFromJira();
+            taskRepository.setStopped(PROJECTS_TASK);
+            System.out.println("Stop task for projects at " + new Date());
+        } catch (Exception e) {
+            taskRepository.setErrored(PROJECTS_TASK);
+            System.out.println("Error task for projects at " + new Date());
+            e.printStackTrace();
+        }
     }
 
     private void startImportBoards() {
-        System.out.println("Start task for boards at " + new Date());
-        taskRepository.setStarted(BOARDS_TASK);
-        boardImporterService.importBoardsFromJira();
-        taskRepository.setStopped(BOARDS_TASK);
-        System.out.println("Stop task for boards at " + new Date());
+        try {
+            System.out.println("Start task for boards at " + new Date());
+            taskRepository.setStarted(BOARDS_TASK);
+            boardImporterService.importBoardsFromJira();
+            taskRepository.setStopped(BOARDS_TASK);
+            System.out.println("Stop task for boards at " + new Date());
+        } catch (Exception e) {
+            taskRepository.setErrored(BOARDS_TASK);
+            System.out.println("Error task for boards at " + new Date());
+            e.printStackTrace();
+        }
     }
 
     private void startImportSprints() {
-        System.out.println("Start task for sprints at " + new Date());
-        taskRepository.setStarted(SPRINTS_TASK);
-        sprintImporterService.loadSprintsFromJiraByBoard();
-        sprintImporterService.addNewSprintsToExitingProjects();
-        taskRepository.setStopped(SPRINTS_TASK);
-        System.out.println("Stop task for sprints at " + new Date());
+        try {
+            System.out.println("Start task for sprints at " + new Date());
+            taskRepository.setStarted(SPRINTS_TASK);
+            sprintImporterService.loadSprintsFromJiraByBoard();
+            sprintImporterService.addNewSprintsToExitingProjects();
+            taskRepository.setStopped(SPRINTS_TASK);
+            System.out.println("Stop task for sprints at " + new Date());
+        } catch (Exception e) {
+            taskRepository.setErrored(SPRINTS_TASK);
+            System.out.println("Error task for sprints at " + new Date());
+            e.printStackTrace();
+        }
     }
 
     private void startImportIssues() {
-        System.out.println("Start task for issues at " + new Date());
-        taskRepository.setStarted(ISSUES_TASK);
-        issueImporterService.importIssueFromJira();
-        taskRepository.setStopped(ISSUES_TASK);
-        System.out.println("Stop task for issues at " + new Date());
+        try {
+            System.out.println("Start task for issues at " + new Date());
+            taskRepository.setStarted(ISSUES_TASK);
+            issueImporterService.importIssueFromJira();
+            taskRepository.setStopped(ISSUES_TASK);
+            System.out.println("Stop task for issues at " + new Date());
+        } catch (Exception e) {
+            taskRepository.setErrored(ISSUES_TASK);
+            System.out.println("Error task for issues at " + new Date());
+            e.printStackTrace();
+        }
     }
 
     private void startImportDueDate() {
-        System.out.println("Start task for dueDates at " + new Date());
-        dueDateImporterService.importDueDate();
-        System.out.println("Stop task for dueDates at " + new Date());
+        try {
+            System.out.println("Start task for dueDates at " + new Date());
+            dueDateImporterService.importDueDate();
+            System.out.println("Stop task for dueDates at " + new Date());
+        } catch (Exception e) {
+            System.out.println("Error task for dueDates at " + new Date());
+           e.printStackTrace();
+        }
     }
 }

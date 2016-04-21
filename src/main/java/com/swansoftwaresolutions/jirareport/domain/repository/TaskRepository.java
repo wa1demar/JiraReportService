@@ -15,4 +15,6 @@ public interface TaskRepository {
     void setStarted(String name);
 
     Task setStopped(String name);
+
+    void setErrored(String groupsTask);
 }

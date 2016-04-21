@@ -8,6 +8,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUsersDto;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserAutoDto;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -31,4 +32,6 @@ public interface JiraUserService {
     ResourceUserDto removeUserFromBoard(String login) throws NoSuchEntityException;
 
     ResourceUserDto removeUserFromBoardFully(String login) throws NoSuchEntityException;
+
+    ResourceUserDto addAttachment(String login, MultipartFile file);
 }

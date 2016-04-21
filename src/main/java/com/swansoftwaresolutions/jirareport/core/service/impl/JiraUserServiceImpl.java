@@ -6,7 +6,6 @@ import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
-import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.LocationRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.ResourceBordRepository;
@@ -15,10 +14,14 @@ import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEn
 import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUsersDto;
-import com.swansoftwaresolutions.jirareport.core.dto.JiraUserAutoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.*;
 
 /**
@@ -45,7 +48,6 @@ public class JiraUserServiceImpl implements JiraUserService {
 
     @Autowired
     ConfigService configService;
-
     @Override
     public JiraUser save(JiraUser jiraUser) {
         return jiraUserRepository.add(jiraUser);
@@ -117,5 +119,21 @@ public class JiraUserServiceImpl implements JiraUserService {
         user.setColumn(null);
 
         return jiraUserMapper.fromJiraUserToResourceUserDto(jiraUserRepository.merge(user));
+    }
+
+    @Override
+    public ResourceUserDto addAttachment(String login, MultipartFile file) {
+        if (!file.isEmpty()) {
+            try {
+                BufferedOutputStream stream = new BufferedOutputStream(
+                        new FileOutputStream(new File("/attachments/" + file)));
+                FileCopyUtils.copy(file.getInputStream(), stream);
+                stream.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }

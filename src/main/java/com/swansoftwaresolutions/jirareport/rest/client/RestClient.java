@@ -15,7 +15,6 @@ import java.util.List;
  * @author Vitaliy Holovko
  */
 public interface RestClient {
-    void loadData(); //TODO: change
 
     JiraGroupsDto loadAllGroups();
 

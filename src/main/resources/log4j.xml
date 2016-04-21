@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration debug="true"
+                     xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+    <appender name="ErrorEmailAppender" class="org.apache.log4j.net.SMTPAppender">
+        <param name="SMTPHost" value="smtp.gmail.com"/>
+        <param name="SMTPUsername" value="petmode.test@gmail.com"/>
+        <param name="SMTPPassword" value="petmodepassword"/>
+        <param name="From" value="admin@swanjira.com"/>
+        <param name="To" value="zehelloworld@gmail.com"/>
+        <param name="Subject" value="Log of messages"/>
+        <param name="BufferSize" value="1"/>
+        <param name="EvaluatorClass" value="TriggerLogEvent"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%t %m%n"/>
+        </layout>
+    </appender>
+
+    <logger name="com.foo.mailer">
+        <level value="ERROR"/>
+        <appender-ref ref="ErrorEmailAppender"/>
+    </logger>
+
+</log4j:configuration>

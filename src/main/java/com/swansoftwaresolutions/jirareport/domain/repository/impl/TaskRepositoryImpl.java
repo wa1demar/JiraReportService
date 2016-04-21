@@ -52,4 +52,11 @@ public class TaskRepositoryImpl implements TaskRepository {
 
         return task;
     }
+
+    @Override
+    public void setErrored(String name) {
+        Task task = findByName(name);
+        task.setStatus(TaskStatus.ERROR);
+        sessionFactory.getCurrentSession().update(task);
+    }
 }

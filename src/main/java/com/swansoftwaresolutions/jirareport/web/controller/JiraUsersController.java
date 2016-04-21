@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -57,6 +58,15 @@ public class JiraUsersController {
     public ResponseEntity<ResourceUserDto> removeUserFromBoardFully(@PathVariable("login") String login) throws NoSuchEntityException {
 
         ResourceUserDto newNewResourceUserDto = jiraUserService.removeUserFromBoardFully(login);
+
+        return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/v1/members/{login}/attachment", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResourceUserDto> addAttachmentToUser(@PathVariable("login") String login, @RequestParam("file") MultipartFile file) throws NoSuchEntityException {
+
+        ResourceUserDto newNewResourceUserDto = jiraUserService.addAttachment(login, file);
 
         return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
     }
