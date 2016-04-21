@@ -18,7 +18,8 @@ var jiraPluginApp = angular.module('jiraPluginApp', [
     'dndLists',
     'xeditable',
     'colorpicker.module',
-    'angularFileUpload'
+    'angularFileUpload',
+    'ui.bootstrap.contextMenu'
 ]);
 
 jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {

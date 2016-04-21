@@ -36,7 +36,8 @@
     "angular-drag-and-drop-lists": "^1.4.0",
     "angular-xeditable": "^0.1.11",
     "angular-bootstrap-colorpicker": "^3.0.25",
-    "angular-file-upload": "^2.2.0"
+    "angular-file-upload": "^2.2.0",
+    "angular-bootstrap-contextmenu": "^0.9.7"
   },
   "resolutions": {
     "angular": "1.4.x"
