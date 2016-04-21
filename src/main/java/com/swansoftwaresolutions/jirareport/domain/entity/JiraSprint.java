@@ -38,6 +38,9 @@ public class JiraSprint implements Serializable {
     @Column(name = "sprint_id")
     private Long sprintId;
 
+    @Column(name = "deleted")
+    private boolean deleted;
+
     public Long getId() {
         return id;
     }
@@ -101,6 +104,14 @@ public class JiraSprint implements Serializable {
 
     public void setSprintId(Long sprintId) {
         this.sprintId = sprintId;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
 }

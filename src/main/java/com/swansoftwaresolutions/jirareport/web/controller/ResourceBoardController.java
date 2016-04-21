@@ -2,6 +2,7 @@ package com.swansoftwaresolutions.jirareport.web.controller;
 
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDtoList;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDtos;
 import com.swansoftwaresolutions.jirareport.core.service.ResourceBordService;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author Vladimir Martynyuk
@@ -46,6 +48,18 @@ public class ResourceBoardController {
         FullResourceColumnDtoList fullResourceColumnDtoList = resourceBordService.getColumns();
 
         return new ResponseEntity<>(fullResourceColumnDtoList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/rest/v1/resource_columns/list", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<ResourceColumnDtos> getColumns() throws NoSuchEntityException {
+
+        List<ResourceColumnDto> columns = resourceBordService.getColumnsList();
+
+        ResourceColumnDtos columnDtos = new ResourceColumnDtos();
+        columnDtos.setColumns(columns);
+
+        return new ResponseEntity<>(columnDtos, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/rest/v1/resource_columns/{id}", method = RequestMethod.DELETE)

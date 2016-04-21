@@ -3,6 +3,7 @@ package com.swansoftwaresolutions.jirareport.core.service.impl;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDtoList;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDtos;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.ResourceBordMapper;
 import com.swansoftwaresolutions.jirareport.core.service.ResourceBordService;
@@ -66,5 +67,10 @@ public class ResourceBordServiceImpl implements ResourceBordService {
         List<JiraUser> users = resourceBordRepository.findUsersByColumnId(id);
         resourceBordRepository.moveUsersToDefaultColumn(users);
         resourceBordRepository.removeColumn(id);
+    }
+
+    @Override
+    public List<ResourceColumnDto> getColumnsList() {
+        return resourceBordMapper.fromResourceColumnsToResourceColumnDtos(resourceBordRepository.findAll());
     }
 }
