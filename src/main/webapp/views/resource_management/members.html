@@ -11,7 +11,7 @@
         <div class="members-item-box" style="border-left: 8px solid {{column.color}}">
             <div class="row margin-0">
                 <div class="col-md-3 avatar">
-                    <img ng-if="item.avatar !== undefined && item.avatar !== '' && item.avatar !== null" src="{{item.avatar}}" alt="{{item.name}}">
+                    <img ng-if="item.avatar !== undefined && item.avatar !== '' && item.avatar !== null" ng-src="{{item.avatar}}" alt="{{item.name}}" class="avatar">
                     <span ng-if="item.avatar === undefined || item.avatar === '' || item.avatar === null" class="glyphicon glyphicon-user"></span>
                 </div>
                 <div class="col-md-9">

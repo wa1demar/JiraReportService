@@ -104,7 +104,13 @@
 .avatar {
     text-align: center;
     font-size: 25px;
-    margin: 10px 0;
+    margin: 5px 0;
+}
+
+.avatar img.avatar {
+    width: 40px;
+    margin: 0;
+    border-radius: 20px;
 }
 
 .name-label {
