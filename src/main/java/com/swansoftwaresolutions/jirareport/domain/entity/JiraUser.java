@@ -30,6 +30,7 @@ public class JiraUser implements Serializable {
     private List<Technology> technologies = new ArrayList<>();
     private List<Attachment> attachments = new ArrayList<>();
     private ResourceColumn column;
+    private String avatar;
 
     @Column(name = "email")
     public String getEmail() {
@@ -140,5 +141,14 @@ public class JiraUser implements Serializable {
 
     public void setColumn(ResourceColumn column) {
         this.column = column;
+    }
+
+    @Column(name = "avatar")
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

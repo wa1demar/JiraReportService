@@ -29,14 +29,16 @@ public class JiraSprintRepositoryImpl implements JiraSprintRepository {
     private SessionFactory sessionFactory;
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<JiraSprint> findAll() {
-        return sessionFactory.getCurrentSession().createCriteria(JiraSprint.class)
-                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+        Query query = sessionFactory.getCurrentSession().createQuery("from JiraSprint s WHERE s.deleted != true");
+        return query.list();
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<JiraSprint> findByBoardId(Long boardId) {
-        Query query = sessionFactory.getCurrentSession().createQuery("from JiraSprint s where s.boardId = :boardId");
+        Query query = sessionFactory.getCurrentSession().createQuery("from JiraSprint s where s.boardId = :boardId and s.deleted = false");
         query.setParameter("boardId", boardId);
         return query.list();
     }
@@ -142,5 +144,16 @@ public class JiraSprintRepositoryImpl implements JiraSprintRepository {
         } finally {
             session.close();
         }
+    }
+
+    @Override
+    public void setDeleted(Long sprintId) {
+        Query query = sessionFactory.getCurrentSession().createQuery("UPDATE JiraSprint s set s.deleted = true where s.id = :id");
+        query.setParameter("id", sprintId);
+        query.executeUpdate();
+
+        Query query1 = sessionFactory.getCurrentSession().createQuery("DELETE Sprint s where s.jiraSprint.id = :id");
+        query1.setParameter("id", sprintId);
+        query1.executeUpdate();
     }
 }

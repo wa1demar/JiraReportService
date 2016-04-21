@@ -16,6 +16,7 @@ public class FullResourceUserDto {
     private List<TechnologyDto> technologies = new ArrayList<>();
     private LocationDto location;
     private String description;
+    private String avatar;
 
     public String getLogin() {
         return login;
@@ -65,4 +66,11 @@ public class FullResourceUserDto {
         this.description = description;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 }

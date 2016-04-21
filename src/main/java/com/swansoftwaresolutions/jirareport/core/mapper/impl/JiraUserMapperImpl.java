@@ -5,8 +5,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUser
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.TechnologyMapper;
-import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.ImportedJiraUsersMapper;
-import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.JiraUserToResourceUserDtoMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.ImportedJiraUserDtoToJiraUserMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserAutoDto;
 import org.modelmapper.ModelMapper;
@@ -31,7 +30,7 @@ public class JiraUserMapperImpl implements JiraUserMapper {
     public JiraUserMapperImpl(ModelMapper modelMapper, TechnologyMapper technologyMapper) {
         this.modelMapper = modelMapper;
         this.technologyMapper = technologyMapper;
-        modelMapper.addMappings(new ImportedJiraUsersMapper());
+        modelMapper.addMappings(new ImportedJiraUserDtoToJiraUserMapper());
     }
 
     @Override

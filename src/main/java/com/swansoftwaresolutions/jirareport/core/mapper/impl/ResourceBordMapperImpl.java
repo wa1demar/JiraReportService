@@ -2,6 +2,7 @@ package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDtos;
 import com.swansoftwaresolutions.jirareport.core.mapper.ResourceBordMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.JiraUserToFullResourceUserDtoMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.JiraUserToResourceUserDtoMapper;
@@ -43,6 +44,12 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
     @Override
     public List<FullResourceColumnDto> fromResourceColumnsToFullResourceColumnDtos(List<ResourceColumn> columns) {
         Type targetistType = new TypeToken<List<FullResourceColumnDto>>(){}.getType();
+        return modelMapper.map(columns, targetistType);
+    }
+
+    @Override
+    public List<ResourceColumnDto> fromResourceColumnsToResourceColumnDtos(List<ResourceColumn> columns) {
+        Type targetistType = new TypeToken<List<ResourceColumnDto>>(){}.getType();
         return modelMapper.map(columns, targetistType);
     }
 }

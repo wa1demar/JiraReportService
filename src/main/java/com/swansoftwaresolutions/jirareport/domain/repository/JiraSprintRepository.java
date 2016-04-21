@@ -28,4 +28,5 @@ public interface JiraSprintRepository {
 
     void add(List<JiraSprint> sprints, JiraBoard board);
 
+    void setDeleted(Long sprintId);
 }

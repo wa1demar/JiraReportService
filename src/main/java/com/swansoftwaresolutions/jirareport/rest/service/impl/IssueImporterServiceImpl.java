@@ -14,6 +14,7 @@ import com.swansoftwaresolutions.jirareport.sheduller.dto.JiraIssueDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +48,10 @@ public class IssueImporterServiceImpl implements IssueImporterService {
                 IssuesDto issues = null;
                 try {
                     issues = restClient.loadAllIssues(String.valueOf(sprint.getSprintId()));
+                } catch (HttpClientErrorException e) {
+                    sprintRepository.setDeleted(sprint.getId());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                     e.printStackTrace();
                 }
 
                 if (issues != null) {

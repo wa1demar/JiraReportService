@@ -7,10 +7,11 @@ import org.modelmapper.PropertyMap;
 /**
  * @author Vladimir Martynyuk
  */
-public class ImportedJiraUsersMapper extends PropertyMap<ImportedJiraUserDto, JiraUser> {
+public class ImportedJiraUserDtoToJiraUserMapper extends PropertyMap<ImportedJiraUserDto, JiraUser> {
     @Override
     protected void configure() {
         map().setLogin(source.getName());
         map().setFullName(source.getDisplayName());
+        map().setAvatar(source.getAvatarUrl());
     }
 }

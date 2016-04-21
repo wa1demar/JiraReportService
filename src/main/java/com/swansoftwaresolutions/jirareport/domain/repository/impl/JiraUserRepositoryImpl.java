@@ -108,6 +108,7 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
             } else {
                 existed.setEmail(user.getEmail());
                 existed.setFullName(user.getFullName());
+                existed.setAvatar(user.getAvatar());
 
                 Set<JiraGroup> groups = new HashSet<>(existed.getGroups());
                 List<JiraUser> existedusers = group.getUsers();
