@@ -804,7 +804,7 @@ jiraPluginApp.controller('DlgUploadAttachCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //test upload
             var uploader = $scope.uploader = new FileUploader({
-                url: 'members/'+dlgData.currentMember.login+'/attachment'
+                url: 'rest/v1/members/'+dlgData.currentMember.login+'/attachment'
             });
 
             // FILTERS
