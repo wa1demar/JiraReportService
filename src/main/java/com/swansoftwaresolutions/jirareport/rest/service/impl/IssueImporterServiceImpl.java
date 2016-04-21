@@ -44,19 +44,26 @@ public class IssueImporterServiceImpl implements IssueImporterService {
             List<JiraSprint> sprints = sprintRepository.findAll();
 
             for (JiraSprint sprint :sprints) {
-                IssuesDto issues = restClient.loadAllIssues(String.valueOf(sprint.getSprintId()));
-
-                List<JiraIssueDto> list = new ArrayList<>();
-                for (IssueDto issueDto : issues.issues) {
-                    JiraIssueDto jiraIssueDto = hm.convertIssueDtoToJiraIssueDto(issueDto, sprint.getBoardId());
-                    jiraIssueDto.setBoardId(sprint.getBoardId());
-                    jiraIssueDto.setSprintId(sprint.getId());
-                    list.add(jiraIssueDto);
+                IssuesDto issues = null;
+                try {
+                    issues = restClient.loadAllIssues(String.valueOf(sprint.getSprintId()));
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
-                issueRepository.saveAll(issueMapper.fromDtos(list));
+                if (issues != null) {
+                    List<JiraIssueDto> list = new ArrayList<>();
+                    for (IssueDto issueDto : issues.issues) {
+                        JiraIssueDto jiraIssueDto = hm.convertIssueDtoToJiraIssueDto(issueDto, sprint.getBoardId());
+                        jiraIssueDto.setBoardId(sprint.getBoardId());
+                        jiraIssueDto.setSprintId(sprint.getId());
+                        list.add(jiraIssueDto);
+                    }
+
+                    issueRepository.saveAll(issueMapper.fromDtos(list));
+                }
             }
-        } catch (NoSuchEntityException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

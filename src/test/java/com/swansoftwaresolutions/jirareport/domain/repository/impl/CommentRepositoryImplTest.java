@@ -3,6 +3,7 @@ package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
 import com.github.springtestdbunit.annotation.*;
 import com.swansoftwaresolutions.jirareport.domain.entity.Comment;
+import com.swansoftwaresolutions.jirareport.domain.repository.AbstractDbTest;
 import com.swansoftwaresolutions.jirareport.domain.repository.CommentRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.junit.Test;

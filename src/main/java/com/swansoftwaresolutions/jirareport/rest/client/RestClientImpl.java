@@ -85,6 +85,7 @@ public class RestClientImpl extends AbstractRestClient implements RestClient {
         params.put("sprint_id", sprintId);
         ConfigDto configDto = configService.retrieveConfig();
         HttpEntity<String> request = new HttpEntity<>(getHeaders(configDto.getJiraUser(), configDto.getJiraPass()));
+        System.out.println("GET " + jiraUrl + jiraIssue.replace("{sprint_id}", sprintId));
         return restTemplate.exchange(jiraUrl + jiraIssue, HttpMethod.GET, request, IssuesDto.class, params).getBody();
     }
     @Override
@@ -95,6 +96,7 @@ public class RestClientImpl extends AbstractRestClient implements RestClient {
 
         ConfigDto configDto = configService.retrieveConfig();
         HttpEntity<String> request = new HttpEntity<>(getHeaders(configDto.getJiraUser(), configDto.getJiraPass()));
+        System.out.println("GET " + jiraUrl + jiraBoards.replace("{project_key}", key));
         return restTemplate.exchange(jiraUrl + jiraBoards, HttpMethod.GET, request, ImportedBardsDto.class, params).getBody();
 
     }
@@ -106,13 +108,8 @@ public class RestClientImpl extends AbstractRestClient implements RestClient {
 
         ConfigDto configDto = configService.retrieveConfig();
         HttpEntity<String> request = new HttpEntity<>(getHeaders(configDto.getJiraUser(), configDto.getJiraPass()));
-
+        System.out.println("GET " + jiraUrl + jiraSprints.replace("{board_id}",  String.valueOf(board.getBoardId())));
         return restTemplate.exchange(jiraUrl + jiraSprints, HttpMethod.GET, request, ImportedSprintsDto.class, params).getBody();
     }
 
-
-    @Override
-    public void loadData() {
-        // TODO: going to remove
-    }
 }

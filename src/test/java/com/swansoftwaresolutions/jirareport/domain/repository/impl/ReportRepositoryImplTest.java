@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
 import com.swansoftwaresolutions.jirareport.domain.entity.Report;
+import com.swansoftwaresolutions.jirareport.domain.repository.AbstractDbTest;
 import com.swansoftwaresolutions.jirareport.domain.repository.ReportRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

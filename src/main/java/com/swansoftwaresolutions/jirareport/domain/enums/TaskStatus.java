@@ -6,5 +6,6 @@ package com.swansoftwaresolutions.jirareport.domain.enums;
 public enum TaskStatus {
     NEW,
     IN_PROGRESS,
-    DONE;
+    DONE,
+    ERROR;
 }
