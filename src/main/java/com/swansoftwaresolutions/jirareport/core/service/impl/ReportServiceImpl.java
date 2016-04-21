@@ -536,12 +536,12 @@ public class ReportServiceImpl implements ReportService {
                                             dev.setDefectActualHours(help.isNull(dev.getDefectActualHours()) + issue.getTimeSpent());
                                             dev.setActualHours(help.isNull(dev.getActualHours()) + issue.getTimeSpent());
                                         } else {
-                                            dev.setUatDefectHours(help.isNull(dev.getUatDefectHours()) + issue.getTimeSpent());
                                             dev.setUatDefectActualHours(help.isNull(dev.getUatDefectActualHours()) + issue.getTimeSpent());
                                             dev.setUatDefectActual(help.isNull(dev.getUatDefectActual()) + 1);
                                             dev.setActualHours(help.isNull(dev.getActualHours()) + issue.getTimeSpent());
                                         }
                                     }
+                                    dev.setUatDefectHours(help.isNull(dev.getUatDefectHours()));
                                 }
                             }
                         }
@@ -554,7 +554,7 @@ public class ReportServiceImpl implements ReportService {
                         dev.setUatDefectTargetHours((long) Math.round(help.isNull(dev.getUatDefectTargetHours())));
                         dev.setUatDefectActualHours((long) Math.round(help.isNull(dev.getUatDefectActualHours()) / 3600));
                         dev.setUatDefectActual(help.isNull(dev.getUatDefectActual()));
-                        dev.setUatDefectHours((long) Math.round(help.isNull(dev.getUatDefectHours()) / 3600));
+                        dev.setUatDefectHours((long) Math.round(help.isNull(dev.getUatDefectHours())));
                         dev.setActualHours((long) Math.round(help.isNull(dev.getActualHours()) / 3600));
 
                         sprintDevelopers.add(dev);
@@ -643,8 +643,9 @@ public class ReportServiceImpl implements ReportService {
 
     private boolean isQAT(SprintDeveloperDto dev, Report report, JiraIssueDto issu) {
         for (JiraUser jiraUser : report.getAdmins()) {
-            if (!jiraUser.getLogin().equals(issu.getCreatorName()));
+            if (!jiraUser.getLogin().equals(issu.getCreatorName())) {
                 return true;
+            }
         }
         return false;
     }
@@ -675,7 +676,7 @@ public class ReportServiceImpl implements ReportService {
 
         if (sprints != null) {
             for (SprintProjectReportDto sprint : sprints) {
-                if (sprint.getState() == null || sprint.getState().equalsIgnoreCase("future") || sprint.getSprintTeam() == null || sprint.getSprintTeam().size() == 0) {
+                if (sprint.getState() == null || sprint.getState().equalsIgnoreCase("future") || sprint.getSprintTeam() == null || sprint.getSprintTeam().size() == 0 || !sprint.getState().equalsIgnoreCase("closed")) {
                     continue;
                 }
 

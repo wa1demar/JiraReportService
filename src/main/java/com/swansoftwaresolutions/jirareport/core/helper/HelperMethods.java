@@ -94,6 +94,9 @@ public class HelperMethods {
 
         float targetPoints = 0;
         for (SprintProjectReportDto sprintProjectReportDto : sprints){
+            if (!sprintProjectReportDto.getState().equalsIgnoreCase("closed")) {
+                continue;
+            }
             targetPoints+=sprintProjectReportDto.getTargetPoints();
         }
 
@@ -109,6 +112,9 @@ public class HelperMethods {
         int i = 1;
         int j = 1;
         for (SprintProjectReportDto sprint : sprints) {
+            if (!sprint.getState().equalsIgnoreCase("closed")) {
+                continue;
+            }
             if (!sprint.isNotCountTarget()){
                 actual[j] = actual[j - 1] - (int) sprint.getActualPoints();
                 list.add(actual[j - 1] - (int) sprint.getActualPoints());
