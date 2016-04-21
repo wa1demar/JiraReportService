@@ -3,7 +3,7 @@
     <div class="row margin-0">
         <ul ng-if="currentProject.users.length > 0" class="member-info-ul">
             <li ng-repeat="value in currentProject.users">
-                {{value.name}} <span ng-click="delUser(value)" class="glyphicon glyphicon-trash control-icon-right cursor-pointer" title="Delete"></span>
+                {{value.name}} <span ng-click="delProjectMember(value)" class="glyphicon glyphicon-trash control-icon-right cursor-pointer" title="Delete"></span>
             </li>
         </ul>
         <p class="empty-items" ng-if="currentProject.users === undefined || currentProject.users.length === 0">Empty</p>

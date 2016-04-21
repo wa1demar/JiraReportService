@@ -11,7 +11,8 @@
         <div class="projects-item-box">
             <div class="row margin-0">
                 <div class="col-md-2 avatar">
-                    <span class="glyphicon glyphicon-user"></span>
+                    <img ng-if="item.avatar !== undefined && item.avatar !== '' && item.avatar !== null" ng-src="{{item.avatar}}" alt="{{item.name}}" class="avatar">
+                    <span ng-if="item.avatar === undefined || item.avatar === '' || item.avatar === null" class="glyphicon glyphicon-user"></span>
                 </div>
                 <div class="col-md-10">
                     <div class="name-label">{{item.name}} EL - {{item.engineerLevel}}</div>

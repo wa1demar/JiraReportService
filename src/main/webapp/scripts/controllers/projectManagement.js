@@ -7,6 +7,8 @@ jiraPluginApp.controller('ProjectManagementCtrl',
             $scope.loaderShow = true;
             $scope.showSearch = true;
             $scope.showProjectInfo = false;
+            //TODO need get from db
+            $scope.engineerLevelDictionary = [1, 2, 3, 4];
 
 // ----------------------------------------------------------------------------------------------------------------------
 //prepare search params
@@ -56,7 +58,8 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                                 name: "Full Name 1",
                                 engineerLevel: 1,
                                 assignmentType: {id: 1, name: "PM"},
-                                color: "#4086E7"
+                                color: "#4086E7",
+                                avatar: "https://swansoftwaresolutions.atlassian.net/secure/useravatar?ownerId=slevchenko&avatarId=13706"
                             },
                             {
                                 id: 2,
@@ -244,6 +247,8 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                             Notification.error("Server error");
                         });
                     } else {
+                        //TODO need fix
+                        // delete data.users;
                         ProjectFactory.update({id: data.id}, data, function(data){
                             Notification.success("Update project success");
                             $scope.getProjectColumns();
@@ -278,6 +283,31 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                 }, function () {});
             };
 
+//----------------------------------------------------------------------------------------------------------------------
+//Dlg delete project member
+            $scope.delProjectMember = function (item) {
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: 'views/dlg/dlg_delete_element.html',
+                    controller: 'DlgDeleteProjectMemberCtrl',
+                    resolve: {
+                        dlgData: function () {
+                            return item;
+                        }
+                    }
+                });
+                modalInstance.result.then(function (data) {
+                    console.log(data);
+                    // ProjectFactory.delete({id: $scope.currentMember.id}, function() {
+                    //     Notification.success("Delete project success");
+                    //     //get projects
+                    //     $scope.getProjectColumns();
+                    // }, function () {
+                    //     Notification.error("Server error");
+                    // });
+                }, function () {});
+            };
+
         }
 ]);
 
@@ -299,6 +329,21 @@ jiraPluginApp.controller('DlgProcessProjectCtrl',
     ]);
 
 jiraPluginApp.controller('DlgDeleteProjectCtrl',
+    ['$scope', '$uibModalInstance', 'dlgData',
+        function ($scope, $uibModalInstance, dlgData) {
+            $scope.dlgData = dlgData;
+
+            $scope.ok = function () {
+                $uibModalInstance.close($scope.dlgData);
+            };
+
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+        }
+    ]);
+
+jiraPluginApp.controller('DlgDeleteProjectMemberCtrl',
     ['$scope', '$uibModalInstance', 'dlgData',
         function ($scope, $uibModalInstance, dlgData) {
             $scope.dlgData = dlgData;

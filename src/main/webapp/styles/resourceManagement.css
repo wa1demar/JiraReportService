@@ -113,6 +113,10 @@
     border-radius: 20px;
 }
 
+ul.item.projects .avatar img.avatar {
+    width: 25px;
+}
+
 .name-label {
     text-align: left;
     margin-top: 5px;
