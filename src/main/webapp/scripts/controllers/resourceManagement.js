@@ -540,11 +540,11 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 
 //----------------------------------------------------------------------------------------------------------------------
 //Dlg add project
-            $scope.addProject = function () {
+            $scope.addMemberProject = function () {
                 var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'views/resource_management/dlg/dlg_add_project.html',
-                    controller: 'DlgAddProjectCtrl',
+                    controller: 'DlgAddMemberProjectCtrl',
                     resolve: {
                         dlgData: function () {
                             return {
@@ -566,11 +566,11 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 
 //----------------------------------------------------------------------------------------------------------------------
 //Dlg delete project
-            $scope.delProject = function (item) {
+            $scope.delMemberProject = function (item) {
                 var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'views/dlg/dlg_delete_element.html',
-                    controller: 'DlgDeleteProjectCtrl',
+                    controller: 'DlgDeleteMemberProjectCtrl',
                     resolve: {
                         dlgData: function () {
                             return item;
@@ -747,13 +747,13 @@ jiraPluginApp.controller('DlgDeleteExperienceCtrl',
         }
     ]);
 
-jiraPluginApp.controller('DlgAddProjectCtrl',
+jiraPluginApp.controller('DlgAddMemberProjectCtrl',
     ['$scope', '$uibModalInstance', 'dlgData',
         function ($scope, $uibModalInstance, dlgData) {
             $scope.projects = dlgData.projects;
 
             $scope.ok = function () {
-                if($scope.addProjectForm.$valid) {
+                if($scope.addMemberProjectForm.$valid) {
                     $uibModalInstance.close($scope.model);
                 }
             };
@@ -764,7 +764,7 @@ jiraPluginApp.controller('DlgAddProjectCtrl',
         }
     ]);
 
-jiraPluginApp.controller('DlgDeleteProjectCtrl',
+jiraPluginApp.controller('DlgDeleteMemberProjectCtrl',
     ['$scope', '$uibModalInstance', 'dlgData',
         function ($scope, $uibModalInstance, dlgData) {
             $scope.dlgData = dlgData;

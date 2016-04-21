@@ -23,11 +23,11 @@
     <div class="member-info-divider"></div>
     <div class="row margin-0">
         <span class="member-info-block-content-subtitle">
-            Project:  <span ng-click="addProject()" class="glyphicon glyphicon-plus cursor-pointer control-icon-right" title="Add"></span>
+            Project:  <span ng-click="addMemberProject()" class="glyphicon glyphicon-plus cursor-pointer control-icon-right" title="Add"></span>
         </span>
         <ul ng-if="currentMember.projects.length > 0" class="member-info-ul">
             <li ng-repeat="value in currentMember.projects">
-                {{value.name}} <span ng-click="delProject(value)" class="glyphicon glyphicon-trash control-icon-right cursor-pointer" title="Delete"></span>
+                {{value.name}} <span ng-click="delMemberProject(value)" class="glyphicon glyphicon-trash control-icon-right cursor-pointer" title="Delete"></span>
             </li>
         </ul>
         <p class="empty-items" ng-if="currentMember.projects === undefined || currentMember.projects.length === 0">Empty</p>
