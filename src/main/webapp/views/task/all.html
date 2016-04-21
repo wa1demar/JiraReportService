@@ -17,7 +17,7 @@
         <tr ng-repeat="value in filtered = (data | filter:query | orderBy:predicate:reverse)">
             <td>{{value.label}}</td>
             <td>
-                {{statusStyle = value.status === "DONE" ? "aui-lozenge-success" : value.status === "IN_PROGRESS" ? "aui-lozenge-current" : "aui-lozenge-complete"; ""}}
+                {{statusStyle = value.status === "DONE" ? "aui-lozenge-success" : value.status === "IN_PROGRESS" ? "aui-lozenge-current" : value.status === "ERROR" ? "aui-lozenge-error" : "aui-lozenge-complete"; ""}}
                 <span class="aui-lozenge aui-lozenge-subtle {{statusStyle}}">{{value.status}}</span>
             </td>
             <td>
