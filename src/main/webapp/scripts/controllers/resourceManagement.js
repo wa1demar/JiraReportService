@@ -169,7 +169,8 @@ jiraPluginApp.controller('ResourceManagementCtrl',
             $scope.getAssignmentTypes = function () {
                 $scope.assignmentTypes = [
                     {id: 1, name: "Bench"},
-                    {id: 2, name: "PM"}
+                    {id: 2, name: "PM"},
+                    {id: 3, name: "QA"}
                 ];
             };
             $scope.getAssignmentTypes();
@@ -286,6 +287,63 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 } else {
                     console.log($scope.currentMember.assignmentType.id);
                 }
+            };
+
+//----------------------------------------------------------------------------------------------------------------------
+//Contextmenu
+            var customItem = {
+                html: '<a><b>Send to</b></a>',
+                enabled: function() {return false}
+            };
+
+            var hideContextMenu = true;
+            $scope.memberMenuOptions = function (column, item) {
+                if (hideContextMenu) { return []; }
+
+                $scope.columns.selected = null;
+                $scope.selectElement(item);
+
+                var menu = [];
+                menu.push(customItem);
+                for (var index = 0; index < $scope.assignmentTypes.length; index++) {
+                    //TODO check column (by name or byy id)
+                    if (column.name != $scope.assignmentTypes[index].name) {
+                        menu.push(
+                            {
+                                html: '<a tabindex="-1" href="#" class="context-menu-item" data-id-assignment-type="'+$scope.assignmentTypes[index].id+'">'+$scope.assignmentTypes[index].name+'</a>',
+                                enabled: function() {return true},
+                                click: function ($itemScope, $event, value, xz1) {
+                                    console.log($itemScope.item);
+                                }
+                            }
+                        );
+                    }
+                }
+                menu.push(
+                    null,
+                    {
+                        html: '<a tabindex="-1" href="#" class="context-menu-item">Top of the column</a>',
+                        enabled: function($itemScope) {
+                            return $itemScope.item.name.match(/Rostyslav/) == null;
+                        },
+                        click: function ($itemScope, $event, value) {
+                            console.log('Top of the column');
+                            console.log($itemScope.item);
+                        }
+                    },
+                    {
+                        html: '<a tabindex="-1" href="#" class="context-menu-item">Bottom of the column</a>',
+                        enabled: function($itemScope) {
+                            return $itemScope.item.name.match(/Rostyslav/) == null;
+                        },
+                        click: function ($itemScope, $event, value) {
+                            console.log('Bottom of the column');
+                            console.log(column.users.length);
+                        }
+                    }
+                );
+
+                return menu;
             };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -746,7 +804,7 @@ jiraPluginApp.controller('DlgUploadAttachCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //test upload
             var uploader = $scope.uploader = new FileUploader({
-                url: 'upload'
+                url: 'members/'+dlgData.currentMember.login+'/attachment'
             });
 
             // FILTERS

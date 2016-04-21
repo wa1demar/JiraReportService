@@ -5,7 +5,8 @@
         dnd-effect-allowed="move"
         dnd-selected="selectElement(item)"
         dnd-dragend="dragendElement(item)"
-        ng-class="{'selected': columns.selected === item}">
+        ng-class="{'selected': columns.selected === item}"
+        context-menu="memberMenuOptions(column, item)">
 
         <div class="members-item-box" style="border-left: 8px solid {{column.color}}">
             <div class="row margin-0">
