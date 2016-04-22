@@ -316,8 +316,8 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 var menu = [];
                 menu.push(customItem);
                 for (var index = 0; index < $scope.assignmentTypes.length; index++) {
-                    //TODO check column (by name or byy id)
-                    if (column.name != $scope.assignmentTypes[index].name) {
+                    //check column by id
+                    if (column.id != $scope.assignmentTypes[index].id) {
                         menu.push(
                             {
                                 html: '<a tabindex="-1" href="#" class="context-menu-item" data-id-assignment-type="'+$scope.assignmentTypes[index].id+'">'+$scope.assignmentTypes[index].name+'</a>',
@@ -334,6 +334,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     {
                         html: '<a tabindex="-1" href="#" class="context-menu-item">Top of the column</a>',
                         enabled: function($itemScope) {
+                            //TODO check position
                             return $itemScope.item.name.match(/Rostyslav/) == null;
                         },
                         click: function ($itemScope, $event, value) {
@@ -344,6 +345,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     {
                         html: '<a tabindex="-1" href="#" class="context-menu-item">Bottom of the column</a>',
                         enabled: function($itemScope) {
+                            //TODO check position
                             return $itemScope.item.name.match(/Rostyslav/) == null;
                         },
                         click: function ($itemScope, $event, value) {
