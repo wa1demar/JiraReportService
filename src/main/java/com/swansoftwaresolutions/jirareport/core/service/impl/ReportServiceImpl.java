@@ -653,6 +653,8 @@ public class ReportServiceImpl implements ReportService {
     private ProjectReportDto buildAutomaticProjectReport(Report report, List<SprintProjectReportDto> sprints) {
         ProjectReportDto prRep = new ProjectReportDto();
 
+        List<SprintProjectReportDto> targetSprints = new ArrayList<>();
+
         HelperMethods helpM = new HelperMethods();
 
         ReportDto reportDto = reportMapper.toDto(report);
@@ -679,6 +681,8 @@ public class ReportServiceImpl implements ReportService {
                 if (sprint.getState() == null || sprint.getState().equalsIgnoreCase("future") || sprint.getSprintTeam() == null || sprint.getSprintTeam().size() == 0 || !sprint.getState().equalsIgnoreCase("closed")) {
                     continue;
                 }
+
+                targetSprints.add(sprint);
 
                 if (sprint.isShowUat()) {
                     isShowUat = true;
@@ -720,7 +724,7 @@ public class ReportServiceImpl implements ReportService {
             prRep.setActualUatDefectPoints(0);
         }
 
-        prRep.setChart(helpM.generateReportChart(sprints));
+        prRep.setChart(helpM.generateReportChart(targetSprints));
 
         final boolean finalIsShowUat = isShowUat;
         final long finalClosedCount = closedCount;
