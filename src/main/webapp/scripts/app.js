@@ -73,6 +73,12 @@ jiraPluginApp.config(function($routeProvider, $httpProvider, CONFIG) {
             access: {
                 requiredLogin: true
             }
+        }).when('/system_at_priority', {
+            templateUrl: 'views/system_at_priority/main.html',
+            controller: 'SystemAtPriorityCtrl',
+            access: {
+                requiredLogin: true
+            }
         }).when('/task', {
             templateUrl: 'views/task/main.html',
             controller: 'TaskCtrl',
