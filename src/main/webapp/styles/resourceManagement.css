@@ -148,6 +148,14 @@
     border-radius: 20px;
 }
 
+.avatar-member-info {
+    width: 48px;
+    border-radius: 0;
+    border: 2px solid #CCCCCC;
+    padding: 2px;
+    box-sizing: content-box;
+}
+
 ul.item.projects .avatar img.avatar {
     width: 25px;
 }
