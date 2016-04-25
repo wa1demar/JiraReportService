@@ -16,6 +16,7 @@ public class ResourceColumn implements Serializable {
     private String name;
     private String color;
     private boolean fixed;
+    private int priority;
     private List<JiraUser> users = new ArrayList<>();
 
     @Id
@@ -64,4 +65,12 @@ public class ResourceColumn implements Serializable {
         this.users = users;
     }
 
+    @Column(name = "priority")
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
 }

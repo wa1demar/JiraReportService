@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository;
 
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnPriority;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
 
@@ -22,4 +23,6 @@ public interface ResourceBordRepository {
     void removeColumn(Long id);
 
     void moveUsersToDefaultColumn(List<JiraUser> users);
+
+    void updatePriorities(ResourceColumnPriority[] columnPriorities);
 }

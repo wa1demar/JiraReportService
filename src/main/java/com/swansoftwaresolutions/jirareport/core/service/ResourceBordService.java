@@ -2,10 +2,7 @@ package com.swansoftwaresolutions.jirareport.core.service;
 
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.NewResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
-import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDto;
-import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDtoList;
-import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
-import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDtos;
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.*;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 
 import java.util.List;
@@ -24,4 +21,5 @@ public interface ResourceBordService {
 
     List<ResourceColumnDto> getColumnsList();
 
+    List<ResourceColumnDto> updatePriority(ResourceColumnPriority[] columnPriorities);
 }

@@ -14,6 +14,7 @@ public class FullResourceColumnDto {
     private String name;
     private String color;
     private boolean fixed;
+    private int priority;
     private List<FullResourceUserDto> users = new ArrayList<>();
 
     public Long getId() {
@@ -54,5 +55,13 @@ public class FullResourceColumnDto {
 
     public void setFixed(boolean fixed) {
         this.fixed = fixed;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }

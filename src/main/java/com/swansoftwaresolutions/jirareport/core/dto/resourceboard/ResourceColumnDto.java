@@ -7,6 +7,7 @@ public class ResourceColumnDto {
     private Long id;
     private String name;
     private String color;
+    private int priority;
 
     public Long getId() {
         return id;
@@ -30,5 +31,13 @@ public class ResourceColumnDto {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }
