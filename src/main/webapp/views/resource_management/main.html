@@ -15,21 +15,27 @@
         <div class="res-left">
             <!--<div class="res-left-head">add column</div>-->
             <div class="res-left-content">
-                <div class="res-left-content-top">
+                <!--<div class="res-left-content-top">-->
+                    <!--<ul class="main">-->
+                        <!--<li ng-repeat="column in columns" class="main">-->
+                            <!--<h4>-->
+                                <!--&lt;!&ndash;<a href="#" editable-text="listName">{{ listName || 'empty' }}</a>&ndash;&gt;-->
+                                <!--{{column.name}} &lt;!&ndash;<span class="count-users">(count: {{column.users.length}})</span>&ndash;&gt;-->
+                                <!--<span ng-if="!column.fixed" ng-click="delColumn(column)" class="glyphicon glyphicon-remove control-icon" title="Delete"></span>-->
+                                <!--<span ng-click="processColumn(column)" class="glyphicon glyphicon-pencil control-icon" title="Edit"></span>-->
+                            <!--</h4>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+                <div class="res-left-content-center">
                     <ul class="main">
-                        <li ng-repeat="column in columns" class="main">
+                        <li ng-repeat="column in columns" class="main grey">
                             <h4>
                                 <!--<a href="#" editable-text="listName">{{ listName || 'empty' }}</a>-->
                                 {{column.name}} <!--<span class="count-users">(count: {{column.users.length}})</span>-->
                                 <span ng-if="!column.fixed" ng-click="delColumn(column)" class="glyphicon glyphicon-remove control-icon" title="Delete"></span>
                                 <span ng-click="processColumn(column)" class="glyphicon glyphicon-pencil control-icon" title="Edit"></span>
                             </h4>
-                        </li>
-                    </ul>
-                </div>
-                <div class="res-left-content-center">
-                    <ul class="main">
-                        <li ng-repeat="column in columns" class="main grey">
                             <div style="height: 100%;" ng-include="'views/resource_management/members.html'"></div>
                         </li>
                     </ul>
