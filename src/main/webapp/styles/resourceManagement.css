@@ -54,6 +54,11 @@
     background: #EEEEEE;
 }
 
+.res-left-content li.main.grey.project-box.selected{
+    /*color: #3c763d;*/
+    background-color: #dff0d8;
+}
+
 .res-left-content li.main {
     /*height: 100%;*/
     display: inline-block;
@@ -126,7 +131,7 @@
     background-color: #FFFFFF;
 }
 
-.res-left-content ul.item li.selected {
+.res-left-content ul.item li.resource-box.selected {
     color: #3c763d;
     background-color: #dff0d8;
 }
@@ -141,6 +146,14 @@
     width: 40px;
     margin: 0;
     border-radius: 20px;
+}
+
+.avatar-member-info {
+    width: 48px;
+    border-radius: 0;
+    border: 2px solid #CCCCCC;
+    padding: 2px;
+    box-sizing: content-box;
 }
 
 ul.item.projects .avatar img.avatar {

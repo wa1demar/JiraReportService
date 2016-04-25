@@ -2,7 +2,11 @@
 <div class="member-info-block-content">
     <div class="row margin-0">
         <div class="col-md-3 avatar">
-            <span class="glyphicon glyphicon-user" style="font-size: 45px;"></span>
+
+            <img ng-if="currentMember.avatar !== undefined && currentMember.avatar !== '' && currentMember.avatar !== null" ng-src="{{currentMember.avatar}}" alt="{{currentMember.name}}" class="avatar-member-info">
+            <span ng-if="currentMember.avatar === undefined || currentMember.avatar === '' || currentMember.avatar === null" class="glyphicon glyphicon-user" style="font-size: 45px;"></span>
+
+            <!--<span class="glyphicon glyphicon-user" style="font-size: 45px;"></span>-->
         </div>
         <div class="col-md-9" style="padding: 25px; font-weight: bold;">
             <div>{{currentMember.name}}</div>

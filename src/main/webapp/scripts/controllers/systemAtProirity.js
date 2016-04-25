@@ -37,10 +37,10 @@ jiraPluginApp.controller('SystemAtPriorityCtrl',
                 console.log(dataAfterMove);
 
                 ResourceColumnFactory.update({id: 'update_priority'}, dataAfterMove, function(result){
-                    Notification.error("Change priority success");
+                    Notification.error("Update priority success");
                     $scope.loaderShow = false;
                 }, function (error) {
-                    Notification.error("Server error: get assignment type");
+                    Notification.error("Server error: update priority");
                     $scope.loaderShow = false;
                 });
             };
