@@ -57,7 +57,7 @@ public class TechnologyRepositoryImpl implements TechnologyRepository {
     @Override
     @SuppressWarnings("unchecked")
     public List<Technology> findAllByIds(Long[] technologies) {
-        if (technologies.length == 0) {
+        if (technologies == null || technologies.length == 0) {
             return new ArrayList<>();
         }
         Query query = sessionFactory.getCurrentSession().createQuery("FROM Technology t WHERE t.id in (:ids)");
