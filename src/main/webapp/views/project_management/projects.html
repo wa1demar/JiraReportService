@@ -1,8 +1,12 @@
-<ul dnd-list="column.users" class="item projects">
+<ul dnd-list="column.users"
+    dnd-allowed-types="['user']"
+    class="item projects">
     <li ng-repeat="item in column.users"
         dnd-draggable="item"
         dnd-moved="column.users.splice($index, 1)"
         dnd-effect-allowed="move"
+        dnd-type="'user'"
+        dnd-external-sources="true"
         dnd-selected="selectElement(column)"
         dnd-dragend="dragendElement(item)"
         ng-class="{'selected': columns.selected === column}"
