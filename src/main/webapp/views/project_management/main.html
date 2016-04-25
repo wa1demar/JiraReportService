@@ -42,11 +42,12 @@
                         dnd-horizontal-list="true"
                         dnd-external-sources="true">
                         <li ng-repeat="column in columns"
-                            class="main grey"
+                            class="main grey project-box"
                             dnd-draggable="column"
                             dnd-type="'column'"
                             dnd-effect-allowed="copyMove"
-                            dnd-moved="columns.splice($index, 1)">
+                            dnd-moved="columns.splice($index, 1)"
+                            ng-class="{'selected': columns.selected === column}">
 
                             <h4 class="column-h4">
                                 {{column.name}} <!--<span class="count-users">(count: {{column.users.length}})</span>-->
