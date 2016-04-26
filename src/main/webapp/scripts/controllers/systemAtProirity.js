@@ -28,14 +28,13 @@ jiraPluginApp.controller('SystemAtPriorityCtrl',
                 var count = $scope.assignmentTypes.length;
                 for (var index = 0; index < count; index++) {
                     dataAfterMove.push({
-                        id:         $scope.assignmentTypes[index].id,
-                        priority:   index + 1
+                        columnId:       $scope.assignmentTypes[index].id,
+                        columnPriority: index + 1
                     });
                 }
 
-                console.log(dataAfterMove);
-
                 ResourceColumnFactory.update({id: 'update_priority'}, dataAfterMove, function(result){
+                    $scope.assignmentTypes = result.columns;
                     Notification.success("Update priority success");
                     $scope.loaderShow = false;
                 }, function (error) {

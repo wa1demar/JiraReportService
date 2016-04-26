@@ -35,7 +35,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     "project[]": $scope.search.project,
                     "engineerLevel[]": $scope.search.engineerLevel,
                     "location[]": $scope.search.location,
-                    name: $scope.search.name
+                    name: $scope.search.name === '' ? null : $scope.search.name
                 };
 
                 ResourceColumnFactory.query(searchQuery, function (result) {
@@ -229,6 +229,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 //change member assignment type
                 $scope.columns[index].users[indexElementInColumn].assignmentType = column.id;
                 console.log("column id: " + column.id + " ---- position: " + indexElementInColumn);
+                console.log(column.users);
                 // $scope.getResourceColumns();
             };
 
