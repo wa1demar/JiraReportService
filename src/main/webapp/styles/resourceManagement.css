@@ -62,7 +62,7 @@
 .res-left-content li.main {
     /*height: 100%;*/
     display: inline-block;
-    float: left;
+    /*float: left;*/
     vertical-align: top;
     width: 220px;
     margin: 0 10px;
