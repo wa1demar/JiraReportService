@@ -48,7 +48,7 @@ public class ResourceBordRepositoryImpl implements ResourceBordRepository {
 
     @Override
     public List<ResourceColumn> findAll() {
-        Query query = sessionFactory.getCurrentSession().createQuery("from ResourceColumn c order by c.id ASC");
+        Query query = sessionFactory.getCurrentSession().createQuery("from ResourceColumn c order by c.priority ASC");
         return query.list();
     }
 
