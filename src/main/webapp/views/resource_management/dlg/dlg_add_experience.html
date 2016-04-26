@@ -3,13 +3,13 @@
 </div>
 <form name="addExperienceForm" ng-submit="submit()" novalidate>
   <div class="modal-body">
-      <div class="form-group" ng-class="{ 'has-error': addExperienceForm.$submitted || addExperienceForm.idTechnology.$touched && addExperienceForm.idTechnology.$invalid }">
-          <label for="idTechnology">Name:</label>
-          <select ui-select2 ng-model="model.idTechnology" data-placeholder="Select member" id="idTechnology" name="idTechnology" style="width: 100%;" required>
+      <div class="form-group" ng-class="{ 'has-error': addExperienceForm.$submitted || addExperienceForm.technologyId.$touched && addExperienceForm.idTechnology.$invalid }">
+          <label for="technologyId">Name:</label>
+          <select ui-select2 ng-model="model.technologyId" data-placeholder="Select member" id="technologyId" name="technologyId" style="width: 100%;" required>
               <option value=""></option>
               <option ng-repeat="value in technologies" value="{{value.id}}">{{value.name}}</option>
           </select>
-          <div class="help-block" ng-messages="addExperienceForm.idTechnology.$error" ng-if="addExperienceForm.idTechnology.$touched || addExperienceForm.$submitted">
+          <div class="help-block" ng-messages="addExperienceForm.technologyId.$error" ng-if="addExperienceForm.technologyId.$touched || addExperienceForm.$submitted">
               <p ng-message="required">Experience is required</p>
           </div>
       </div>

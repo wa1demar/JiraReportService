@@ -279,8 +279,17 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 console.log('updateMemberDescription:');
                 console.log(data);
                 $scope.currentMember.description = data;
-                MemberFactory.update({login: $scope.currentMember.login}, $scope.currentMember, function(data){
+
+                var memberForUpdate = {
+                    engineerLevel:      $scope.currentMember.engineerLevel,
+                    description:        data,
+                    locationId:         $scope.currentMember.location.id,
+                    assignmentTypeId:   $scope.currentMember.column.id
+                };
+
+                MemberFactory.update({login: $scope.currentMember.login}, memberForUpdate, function(data){
                     Notification.success("Update description success");
+                    $scope.currentMember = data;
                     //get member info
                     // $scope.getResourceColumns();
                 }, function (error) {
@@ -296,8 +305,25 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 if (type === 'location') {
                     console.log($scope.currentMember.location.id);
                 } else {
-                    console.log($scope.currentMember.assignmentType.id);
+                    console.log($scope.currentMember.column.id);
+                    $scope.currentMember.column.id;
                 }
+
+                var memberForUpdate = {
+                    engineerLevel:      $scope.currentMember.engineerLevel,
+                    description:        $scope.currentMember.description,
+                    locationId:         $scope.currentMember.location.id,
+                    assignmentTypeId:   $scope.currentMember.column.id
+                };
+
+                MemberFactory.update({login: $scope.currentMember.login}, memberForUpdate, function(data){
+                    Notification.success("Update member info success");
+                    $scope.currentMember = data;
+                    //get member info
+                    // $scope.getResourceColumns();
+                }, function (error) {
+                    Notification.error("Server error: update member info");
+                });
             };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -498,7 +524,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 var count = $scope.technologies.length;
                 var result = [];
                 for (var index = 0; index < count; index++) {
-                    var flag = _.findWhere($scope.currentMember.experiencies, {name: $scope.technologies[index].name});
+                    var flag = _.findWhere($scope.currentMember.technologies, {name: $scope.technologies[index].name});
                     if (flag === undefined) {
                         result.push($scope.technologies[index]);
                     }
@@ -618,8 +644,15 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     }
                 });
                 modalInstance.result.then(function (data) {
-                    MemberFactory.update({login: data.login}, data, function(data){
+                    var memberForUpdate = {
+                        engineerLevel:      data.engineerLevel,
+                        description:        data.description,
+                        locationId:         data.location.id,
+                        assignmentTypeId:   data.column.id
+                    };
+                    MemberFactory.update({login: data.login}, memberForUpdate, function(data){
                         Notification.success("Change level success");
+                        $scope.currentMember = data;
                         //get member info
                         // $scope.getResourceColumns();
                     }, function (error) {

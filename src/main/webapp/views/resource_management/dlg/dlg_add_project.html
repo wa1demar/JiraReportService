@@ -3,13 +3,13 @@
 </div>
 <form name="addMemberProjectForm" ng-submit="submit()" novalidate>
   <div class="modal-body">
-      <div class="form-group" ng-class="{ 'has-error': addMemberProjectForm.$submitted || addMemberProjectForm.idProject.$touched && addMemberProjectForm.idProject.$invalid }">
-          <label for="idProject">Name:</label>
-          <select ui-select2 ng-model="model.idProject" data-placeholder="Select member" id="idProject" name="idProject" style="width: 100%;" required>
+      <div class="form-group" ng-class="{ 'has-error': addMemberProjectForm.$submitted || addMemberProjectForm.projectId.$touched && addMemberProjectForm.projectId.$invalid }">
+          <label for="projectId">Name:</label>
+          <select ui-select2 ng-model="model.projectId" data-placeholder="Select member" id="projectId" name="projectId" style="width: 100%;" required>
               <option value=""></option>
               <option ng-repeat="value in projects" value="{{value.id}}">{{value.name}}</option>
           </select>
-          <div class="help-block" ng-messages="addMemberProjectForm.idProject.$error" ng-if="addMemberProjectForm.idProject.$touched || addMemberProjectForm.$submitted">
+          <div class="help-block" ng-messages="addMemberProjectForm.projectId.$error" ng-if="addMemberProjectForm.projectId.$touched || addMemberProjectForm.$submitted">
               <p ng-message="required">Project is required</p>
           </div>
       </div>
