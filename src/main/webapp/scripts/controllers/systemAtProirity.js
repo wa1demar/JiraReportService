@@ -29,8 +29,7 @@ jiraPluginApp.controller('SystemAtPriorityCtrl',
                 for (var index = 0; index < count; index++) {
                     dataAfterMove.push({
                         id:         $scope.assignmentTypes[index].id,
-                        name:       $scope.assignmentTypes[index].name,
-                        priority:   $scope.assignmentTypes[index].priority
+                        priority:   index + 1
                     });
                 }
 
