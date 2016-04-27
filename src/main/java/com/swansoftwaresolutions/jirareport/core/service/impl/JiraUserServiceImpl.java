@@ -4,10 +4,13 @@ import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.NewResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologyId;
+import com.swansoftwaresolutions.jirareport.core.mapper.TechnologyMapper;
 import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
 import com.swansoftwaresolutions.jirareport.domain.entity.Attachment;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
+import com.swansoftwaresolutions.jirareport.domain.entity.Technology;
 import com.swansoftwaresolutions.jirareport.domain.repository.*;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
@@ -23,6 +26,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Vitaliy Holovko
@@ -48,6 +52,9 @@ public class JiraUserServiceImpl implements JiraUserService {
 
     @Autowired
     JiraUserMapper jiraUserMapper;
+
+    @Autowired
+    TechnologyMapper technologyMapper;
 
     @Autowired
     ConfigService configService;
@@ -170,5 +177,18 @@ public class JiraUserServiceImpl implements JiraUserService {
     public ResourceUserDto updateMemberInfo(String login, MemberDto memberDto) throws NoSuchEntityException {
         JiraUser user = jiraUserRepository.updateJiraUserInfo(login, memberDto);
         return jiraUserMapper.fromJiraUserToResourceUserDto(user);
+    }
+
+    @Override
+    public ResourceUserDto addTechnologies(String login, TechnologyId technologyId) throws NoSuchEntityException {
+        JiraUser user = jiraUserRepository.findByLogin(login);
+
+        Set<Technology> technologies = new HashSet<>(user.getTechnologies());
+
+        technologies.add(technologyRepository.findById(technologyId.getTechnologyId()));
+
+        user.setTechnologies(new ArrayList<>(technologies));
+
+        return jiraUserMapper.fromJiraUserToResourceUserDto(jiraUserRepository.update(user));
     }
 }

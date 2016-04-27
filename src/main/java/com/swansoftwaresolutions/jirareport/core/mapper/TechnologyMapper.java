@@ -14,4 +14,6 @@ public interface TechnologyMapper {
     Technology fromTechnologyDtoToTechnology(TechnologyDto technologyDto);
 
     TechnologyDto fromtechnologyToTechnologyDto(Technology technology);
+
+    Technology fromTechnologiesDtoToTechnologies(List<TechnologyDto> technologiesDto);
 }

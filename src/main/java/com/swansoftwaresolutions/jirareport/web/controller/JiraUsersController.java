@@ -4,6 +4,8 @@ import com.swansoftwaresolutions.jirareport.core.dto.JiraUsersDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.NewResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologiesDto;
+import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologyId;
 import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +88,15 @@ public class JiraUsersController {
     public ResponseEntity<ResourceUserDto> addAttachmentToUser(@PathVariable("login") String login, @RequestParam("file") MultipartFile file) throws NoSuchEntityException {
 
         ResourceUserDto newNewResourceUserDto = jiraUserService.addAttachment(login, file);
+
+        return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/v1/members/{login:.+}/technologies", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResourceUserDto> addTechnologiesToUser(@PathVariable("login") String login, @Valid @RequestBody TechnologyId technologyId) throws NoSuchEntityException {
+
+        ResourceUserDto newNewResourceUserDto = jiraUserService.addTechnologies(login, technologyId);
 
         return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
     }

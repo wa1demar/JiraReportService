@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
+import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologiesDto;
 import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologyDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.TechnologyMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.Technology;
@@ -34,5 +35,11 @@ public class TechnologyMapperImpl implements TechnologyMapper {
     @Override
     public TechnologyDto fromtechnologyToTechnologyDto(Technology technology) {
         return modelMapper.map(technology, TechnologyDto.class);
+    }
+
+    @Override
+    public Technology fromTechnologiesDtoToTechnologies(List<TechnologyDto> technologiesDto) {
+        Type targetistType = new TypeToken<List<Technology>>() {}.getType();
+        return modelMapper.map(technologiesDto, targetistType);
     }
 }

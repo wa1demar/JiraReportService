@@ -64,4 +64,15 @@ public class TechnologyRepositoryImpl implements TechnologyRepository {
         query.setParameterList("ids", technologies);
         return query.list();
     }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public  List<Technology> findAllByIds(List<Long> ids) {
+        if (ids == null || ids.size() == 0) {
+            return new ArrayList<>();
+        }
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM Technology t WHERE t.id in (:ids)");
+        query.setParameterList("ids", ids);
+        return query.list();
+    }
 }

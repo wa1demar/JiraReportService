@@ -3,12 +3,11 @@ package com.swansoftwaresolutions.jirareport.core.service;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.NewResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologyId;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUsersDto;
-import com.swansoftwaresolutions.jirareport.core.dto.JiraUserAutoDto;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -39,4 +38,6 @@ public interface JiraUserService {
     ResourceUserDto findInfoByLogin(String login) throws NoSuchEntityException;
 
     ResourceUserDto updateMemberInfo(String login, MemberDto memberDto) throws NoSuchEntityException;
+
+    ResourceUserDto addTechnologies(String login, TechnologyId technologyIds) throws NoSuchEntityException;
 }
