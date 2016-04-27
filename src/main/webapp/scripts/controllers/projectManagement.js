@@ -97,6 +97,34 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                                 color: "#4086E7"
                             }
                         ]
+                    },
+                    {
+                        id: 3,
+                        name: "Project 3",
+                        description: "Description",
+                        users: [
+                            {
+                                id: 4,
+                                name: "Full Name 3",
+                                engineerLevel: 2,
+                                assignmentType: {id: 1, name: "PM"},
+                                color: "#4086E7"
+                            }
+                        ]
+                    },
+                    {
+                        id: 4,
+                        name: "Project 4",
+                        description: "Description",
+                        users: [
+                            {
+                                id: 5,
+                                name: "Full Name 4",
+                                engineerLevel: 2,
+                                assignmentType: {id: 1, name: "PM"},
+                                color: "#4086E7"
+                            }
+                        ]
                     }
                 ];
 

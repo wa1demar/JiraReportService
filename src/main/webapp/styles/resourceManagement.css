@@ -121,6 +121,10 @@
     min-height: 75px;
 }
 
+.res-left-content ul.item li:last-child {
+    margin: 0;
+}
+
 .res-left-content ul.item li.dndDragging {
     opacity: 0.8;
 }
