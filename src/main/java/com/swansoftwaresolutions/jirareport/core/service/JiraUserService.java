@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.service;
 
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.NewResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
@@ -36,4 +37,6 @@ public interface JiraUserService {
     ResourceUserDto addAttachment(String login, MultipartFile file);
 
     ResourceUserDto findInfoByLogin(String login) throws NoSuchEntityException;
+
+    ResourceUserDto updateMemberInfo(String login, MemberDto memberDto) throws NoSuchEntityException;
 }

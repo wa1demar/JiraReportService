@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.domain.repository;
 
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraGroup;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -32,4 +33,6 @@ public interface JiraUserRepository {
     List<JiraUser> findByGroups(String[] groups);
 
     JiraUser deleteUserFromColumn(String login) throws NoSuchEntityException;
+
+    JiraUser updateJiraUserInfo(String login, MemberDto memberDto) throws NoSuchEntityException;
 }

@@ -2,6 +2,7 @@ package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
 import com.sun.mail.util.QEncoderStream;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraGroup;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
@@ -136,6 +137,19 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
     public JiraUser deleteUserFromColumn(String login) throws NoSuchEntityException {
         Query query = sessionFactory.getCurrentSession().createQuery("update JiraUser u set u.column = (from ResourceColumn r WHERE r.fixed = true) where u.login = :login");
         query.setParameter("login", login);
+        query.executeUpdate();
+        return findByLogin(login);
+    }
+
+    @Override
+    public JiraUser updateJiraUserInfo(String login, MemberDto memberDto) throws NoSuchEntityException {
+        Query query = sessionFactory.getCurrentSession().createQuery("update JiraUser u set u.level = :engineerLevel, u.description = :description, " +
+                "u.location = (from Location l where l.id = :locationId), u.column = (from ResourceColumn c where c.id = :columnId)  where u.login = :login");
+        query.setParameter("login", login);
+        query.setParameter("engineerLevel", memberDto.getEngineerLevel());
+        query.setParameter("description", memberDto.getDescription());
+        query.setParameter("locationId", memberDto.getLocationId());
+        query.setParameter("columnId", memberDto.getAssignmentTypeId());
         query.executeUpdate();
         return findByLogin(login);
     }

@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
 import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.NewResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
@@ -162,6 +163,12 @@ public class JiraUserServiceImpl implements JiraUserService {
     @Override
     public ResourceUserDto findInfoByLogin(String login) throws NoSuchEntityException {
         JiraUser user = jiraUserRepository.findByLogin(login);
+        return jiraUserMapper.fromJiraUserToResourceUserDto(user);
+    }
+
+    @Override
+    public ResourceUserDto updateMemberInfo(String login, MemberDto memberDto) throws NoSuchEntityException {
+        JiraUser user = jiraUserRepository.updateJiraUserInfo(login, memberDto);
         return jiraUserMapper.fromJiraUserToResourceUserDto(user);
     }
 }

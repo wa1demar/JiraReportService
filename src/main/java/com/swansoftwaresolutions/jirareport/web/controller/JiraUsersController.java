@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUsersDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.NewResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
@@ -44,7 +45,7 @@ public class JiraUsersController {
         return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/v1/members/{login}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/v1/members/{login:.+}", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<ResourceUserDto> removeUserFromBoard(@PathVariable("login") String login) throws NoSuchEntityException {
 
@@ -53,7 +54,7 @@ public class JiraUsersController {
         return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/v1/members/{login}", method = RequestMethod.GET)
+    @RequestMapping(value = "/v1/members/{login:.+}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<ResourceUserDto> getuserInfo(@PathVariable("login") String login) throws NoSuchEntityException {
 
@@ -62,7 +63,16 @@ public class JiraUsersController {
         return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/v1/members/{login}/full_delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/v1/members/{login:.+}", method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseEntity<ResourceUserDto> updateMemberInfo(@PathVariable("login") String login, @Valid @RequestBody MemberDto memberDto) throws NoSuchEntityException {
+
+        ResourceUserDto newNewResourceUserDto = jiraUserService.updateMemberInfo(login, memberDto);
+
+        return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/v1/members/{login:.+}/full_delete", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<ResourceUserDto> removeUserFromBoardFully(@PathVariable("login") String login) throws NoSuchEntityException {
 
@@ -71,7 +81,7 @@ public class JiraUsersController {
         return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/v1/members/{login}/attachment", method = RequestMethod.POST)
+    @RequestMapping(value = "/v1/members/{login:.+}/attachment", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResourceUserDto> addAttachmentToUser(@PathVariable("login") String login, @RequestParam("file") MultipartFile file) throws NoSuchEntityException {
 
