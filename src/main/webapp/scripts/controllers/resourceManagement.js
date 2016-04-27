@@ -28,7 +28,6 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 //Get all data for Resource Board
             $scope.columns = [];
             $scope.getResourceColumns = function () {
-
                 //set data to search query
                 var searchQuery = {
                     "technology[]": $scope.search.technology,
@@ -40,6 +39,22 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 
                 ResourceColumnFactory.query(searchQuery, function (result) {
                     $scope.columns = result.columns;
+
+                    //TODO need more tests
+                    //Find user for check selected
+                    if ($scope.currentMember != null) {
+                        var result = undefined;
+                        var count = $scope.columns.length;
+                        for (var index = 0; index < count; index++) {
+                            result = _.findWhere($scope.columns[index].users, {login: $scope.currentMember.login});
+                            if (result !== undefined) {
+                                //save selected member
+                                $scope.columns.selected = result;
+                                break;
+                            }
+                        }
+                    }
+
                     $scope.loaderShow = false;
                 }, function (error) {
                     Notification.error("Server error");
@@ -120,7 +135,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 // console.log($scope.columns);
 
             };
-            $scope.getResourceColumns();
+            // $scope.getResourceColumns();
 
 
             $scope.currentMember = {};
@@ -300,14 +315,6 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //Update member location or assignmentType
             $scope.chnageMemberInfoData = function (type) {
-                console.log(type);
-
-                if (type === 'location') {
-                    console.log($scope.currentMember.location.id);
-                } else {
-                    console.log($scope.currentMember.column.id);
-                    $scope.currentMember.column.id;
-                }
 
                 var memberForUpdate = {
                     engineerLevel:      $scope.currentMember.engineerLevel,
@@ -318,9 +325,9 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 
                 MemberFactory.update({login: $scope.currentMember.login}, memberForUpdate, function(data){
                     Notification.success("Update member info success");
-                    $scope.currentMember = data;
                     //get member info
-                    // $scope.getResourceColumns();
+                    $scope.currentMember = data;
+                    $scope.getResourceColumns();
                 }, function (error) {
                     Notification.error("Server error: update member info");
                 });
@@ -546,7 +553,8 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     MemberFactory.create({login: $scope.currentMember.login, relation: "technologies"}, data, function(data){
                         Notification.success("Add new technology success");
                         //get member info
-                        // $scope.getResourceColumns();
+                        $scope.currentMember = data;
+                        $scope.getResourceColumns();
                     }, function (error) {
                         Notification.error("Server error");
                     });
@@ -567,10 +575,11 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     }
                 });
                 modalInstance.result.then(function (data) {
-                    MemberFactory.delete({login: $scope.currentMember.login, relation: "technologies", idRelation: data.id}, function() {
+                    MemberFactory.delete({login: $scope.currentMember.login, relation: "technologies", idRelation: data.id}, function(data) {
                         Notification.success("Delete technology success");
                         //get member info
-                        // $scope.getResourceColumns();
+                        $scope.currentMember = data;
+                        $scope.getResourceColumns();
                     }, function () {
                         Notification.error("Server error");
                     });
@@ -596,7 +605,8 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     MemberFactory.create({login: $scope.currentMember.login, relation: "projects"}, data, function(data){
                         Notification.success("Add new project success");
                         //get member info
-                        // $scope.getResourceColumns();
+                        $scope.currentMember = data;
+                        $scope.getResourceColumns();
                     }, function (error) {
                         Notification.error("Server error");
                     });
@@ -620,7 +630,8 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     MemberFactory.delete({login: $scope.currentMember.login, relation: "projects", idRelation: data.id}, function() {
                         Notification.success("Delete project success");
                         //get member info
-                        // $scope.getResourceColumns();
+                        $scope.currentMember = data;
+                        $scope.getResourceColumns();
                     }, function () {
                         Notification.error("Server error");
                     });
@@ -652,9 +663,9 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     };
                     MemberFactory.update({login: data.login}, memberForUpdate, function(data){
                         Notification.success("Change level success");
-                        $scope.currentMember = data;
                         //get member info
-                        // $scope.getResourceColumns();
+                        $scope.currentMember = data;
+                        $scope.getResourceColumns();
                     }, function (error) {
                         Notification.error("Server error");
                     });
