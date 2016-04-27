@@ -627,7 +627,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     }
                 });
                 modalInstance.result.then(function (data) {
-                    MemberFactory.delete({login: $scope.currentMember.login, relation: "projects", idRelation: data.id}, function() {
+                    MemberFactory.delete({login: $scope.currentMember.login, relation: "projects", idRelation: data.id}, function(data) {
                         Notification.success("Delete project success");
                         //get member info
                         $scope.currentMember = data;
