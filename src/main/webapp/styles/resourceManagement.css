@@ -181,6 +181,7 @@ ul.item.projects .avatar img.avatar {
     margin-left: 10px;
     overflow: hidden;
     text-overflow: ellipsis;
+    min-height: 20px;
 }
 
 .column-empty {
