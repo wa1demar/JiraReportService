@@ -100,4 +100,13 @@ public class JiraUsersController {
 
         return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/v1/members/{login:.+}/technologies/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<ResourceUserDto> addTechnologiesToUser(@PathVariable("login") String login, @PathVariable("id") Long technologyId) throws NoSuchEntityException {
+
+        ResourceUserDto newNewResourceUserDto = jiraUserService.deleteTechnology2(login, technologyId);
+
+        return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
+    }
 }

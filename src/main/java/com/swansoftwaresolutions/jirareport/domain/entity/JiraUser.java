@@ -1,16 +1,12 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.hibernate.annotations.CascadeType.*;
 
 /**
  * @author Vladimir Martynyuk
@@ -78,7 +74,8 @@ public class JiraUser implements Serializable {
         this.reports = reports;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users")
+    @Cascade(CascadeType.MERGE)
     public List<JiraGroup> getGroups() {
         return groups;
     }
@@ -97,7 +94,8 @@ public class JiraUser implements Serializable {
         this.location = location;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users")
+    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
     public List<Technology> getTechnologies() {
         return technologies;
     }

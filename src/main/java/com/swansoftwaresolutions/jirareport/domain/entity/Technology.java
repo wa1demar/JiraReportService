@@ -1,10 +1,11 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import org.hibernate.annotations.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,12 +39,11 @@ public class Technology implements Serializable {
         this.name = name;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "jira_users_technologies", joinColumns = {
             @JoinColumn(name = "technology_id")},
             inverseJoinColumns = {@JoinColumn(name = "jira_user_login")})
-    @Fetch(FetchMode.SELECT)
-    @BatchSize(size = 10)
+    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.DETACH})
     public List<JiraUser> getUsers() {
         return users;
     }

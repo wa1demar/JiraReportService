@@ -191,4 +191,27 @@ public class JiraUserServiceImpl implements JiraUserService {
 
         return jiraUserMapper.fromJiraUserToResourceUserDto(jiraUserRepository.update(user));
     }
+
+    @Override
+    public ResourceUserDto deleteTechnology(String login, Long technologyId) throws NoSuchEntityException {
+        JiraUser user = jiraUserRepository.findByLogin(login);
+
+        List<Technology> technologies = user.getTechnologies();
+
+        user.setTechnologies(technologies.parallelStream().filter(i -> !i.getId().equals(technologyId)).collect(Collectors.toList()));
+
+        return jiraUserMapper.fromJiraUserToResourceUserDto(jiraUserRepository.update(user));
+    }
+
+    @Override
+    public ResourceUserDto deleteTechnology2(String login, Long technologyId) throws NoSuchEntityException {
+        Technology technology = technologyRepository.findById(technologyId);
+
+        List<JiraUser> users = technology.getUsers();
+
+        technology.setUsers(users.parallelStream().filter(i -> !i.getLogin().equals(login)).collect(Collectors.toList()));
+        technologyRepository.update(technology);
+
+        return jiraUserMapper.fromJiraUserToResourceUserDto(jiraUserRepository.findByLogin(login));
+    }
 }

@@ -40,4 +40,8 @@ public interface JiraUserService {
     ResourceUserDto updateMemberInfo(String login, MemberDto memberDto) throws NoSuchEntityException;
 
     ResourceUserDto addTechnologies(String login, TechnologyId technologyIds) throws NoSuchEntityException;
+
+    ResourceUserDto deleteTechnology(String login, Long technologyId) throws NoSuchEntityException;
+
+    ResourceUserDto deleteTechnology2(String login, Long technologyId) throws NoSuchEntityException;
 }
