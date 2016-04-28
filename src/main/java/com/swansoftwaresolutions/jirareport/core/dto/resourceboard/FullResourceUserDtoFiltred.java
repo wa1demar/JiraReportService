@@ -1,9 +1,8 @@
-package com.swansoftwaresolutions.jirareport.core.dto.jira_users;
+package com.swansoftwaresolutions.jirareport.core.dto.resourceboard;
 
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.AttachmentDto;
 import com.swansoftwaresolutions.jirareport.core.dto.locations.LocationDto;
-import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologyDto;
-import com.swansoftwaresolutions.jirareport.domain.entity.Attachment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +10,8 @@ import java.util.List;
 /**
  * @author Vladimir Martynyuk
  */
-public class FullResourceUserDto {
+public class FullResourceUserDtoFiltred {
+
     private String login;
     private String name;
     private Integer engineerLevel;

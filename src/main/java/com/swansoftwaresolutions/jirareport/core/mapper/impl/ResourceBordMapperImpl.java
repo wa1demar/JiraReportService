@@ -1,18 +1,19 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.FullResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
-import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDtos;
 import com.swansoftwaresolutions.jirareport.core.mapper.ResourceBordMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.JiraUserToFullResourceUserDtoMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.JiraUserToResourceUserDtoMapper;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
+import org.modelmapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +28,7 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
     public ResourceBordMapperImpl(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
 
-        modelMapper.addMappings(new JiraUserToResourceUserDtoMapper());
+//        modelMapper.addMappings(new JiraUserToResourceUserDtoMapper());
         modelMapper.addMappings(new JiraUserToFullResourceUserDtoMapper());
     }
 
@@ -43,13 +44,32 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
 
     @Override
     public List<FullResourceColumnDto> fromResourceColumnsToFullResourceColumnDtos(List<ResourceColumn> columns) {
-        Type targetistType = new TypeToken<List<FullResourceColumnDto>>(){}.getType();
-        return modelMapper.map(columns, targetistType);
+        List<FullResourceColumnDto> columnDtos = new ArrayList<>();
+        for (ResourceColumn c : columns) {
+            FullResourceColumnDto fullResourceColumnDto = modelMapper.map(c, FullResourceColumnDto.class);
+            if (c.getUsers() != null && c.getUsers().size() > 0) {
+                List<FullResourceUserDto> fullResourceUserDtos = new ArrayList<>();
+                for (JiraUser user : c.getUsers()) {
+                    FullResourceUserDto userDto = modelMapper.map(user, FullResourceUserDto.class);
+                    if (user.getColumns() != null) {
+                        ResourceColumn column = user.getColumns().get(0);
+                        userDto.setColumn(modelMapper.map(column, ResourceColumnDto.class));
+                    }
+                    fullResourceUserDtos.add(userDto);
+
+                }
+                fullResourceColumnDto.setUsers(fullResourceUserDtos);
+            }
+            columnDtos.add(fullResourceColumnDto);
+        }
+        return columnDtos;
     }
 
     @Override
     public List<ResourceColumnDto> fromResourceColumnsToResourceColumnDtos(List<ResourceColumn> columns) {
-        Type targetistType = new TypeToken<List<ResourceColumnDto>>(){}.getType();
+        Type targetistType = new TypeToken<List<ResourceColumnDto>>() {
+        }.getType();
         return modelMapper.map(columns, targetistType);
     }
+
 }

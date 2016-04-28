@@ -7,7 +7,7 @@ import java.util.List;
  * @author Vladimir Martynyuk
  */
 public class FullResourceColumnDtoList {
-    private List<FullResourceColumnDto> columns = new ArrayList<>();
+    private List<FullResourceColumnDto> columns = new ArrayList<FullResourceColumnDto>();
 
     public List<FullResourceColumnDto> getColumns() {
         return columns;
