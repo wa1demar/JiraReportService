@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -44,24 +45,32 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
 
     @Override
     public List<FullResourceColumnDto> fromResourceColumnsToFullResourceColumnDtos(List<ResourceColumn> columns) {
+        Collections.sort(columns, (o1, o2) -> o1.getPriority() - o2.getPriority());
         List<FullResourceColumnDto> columnDtos = new ArrayList<>();
+        List<FullResourceUserDto> allUsersFiltered = new ArrayList<>();
         for (ResourceColumn c : columns) {
             FullResourceColumnDto fullResourceColumnDto = modelMapper.map(c, FullResourceColumnDto.class);
             if (c.getUsers() != null && c.getUsers().size() > 0) {
                 List<FullResourceUserDto> fullResourceUserDtos = new ArrayList<>();
                 for (JiraUser user : c.getUsers()) {
                     FullResourceUserDto userDto = modelMapper.map(user, FullResourceUserDto.class);
-                    if (user.getColumns() != null) {
-                        ResourceColumn column = user.getColumns().get(0);
-                        userDto.setColumn(modelMapper.map(column, ResourceColumnDto.class));
+                    if (!allUsersFiltered.contains(userDto)) {
+                        if (user.getColumns() != null) {
+                            ResourceColumn column = user.getColumns().get(0);
+                            userDto.setColumn(modelMapper.map(column, ResourceColumnDto.class));
+                        }
+
+                        fullResourceUserDtos.add(userDto);
+                        allUsersFiltered.add(userDto);
                     }
-                    fullResourceUserDtos.add(userDto);
 
                 }
                 fullResourceColumnDto.setUsers(fullResourceUserDtos);
             }
             columnDtos.add(fullResourceColumnDto);
         }
+        Collections.sort(columnDtos, (o1, o2) -> o1.getId().compareTo(o2.getId()));
+
         return columnDtos;
     }
 
