@@ -20,6 +20,7 @@ public class ResourceUserDto {
     private LocationDto location;
     private ResourceColumnDto column;
     private String description;
+    private String avatar;
 
     public String getLogin() {
         return login;
@@ -75,5 +76,13 @@ public class ResourceUserDto {
 
     public void setColumn(ResourceColumnDto column) {
         this.column = column;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }
