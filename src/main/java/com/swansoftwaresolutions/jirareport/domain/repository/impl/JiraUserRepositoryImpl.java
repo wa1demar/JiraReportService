@@ -1,7 +1,5 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
-import com.sun.mail.util.QEncoderStream;
-import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraGroup;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
@@ -9,17 +7,12 @@ import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
 import com.swansoftwaresolutions.jirareport.domain.entity.Technology;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
-import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Example;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
 /**
@@ -56,11 +49,11 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
         }
         user.setTechnologies(new ArrayList<>(technologies));
 
-        ResourceColumn column = user.getColumn();
-        Set<JiraUser> users = new HashSet<>(column.getUsers());
-        users.add(user);
-        column.setUsers(new ArrayList<>(users));
-        user.setColumn(column);
+//        List<ResourceColumn> columns = user.getColumns();
+//        Set<JiraUser> users = new HashSet<>(columns.getUsers());
+//        users.add(user);
+//        column.setUsers(new ArrayList<>(users));
+//        user.setColumn(column);
 
         sessionFactory.getCurrentSession().update(user);
         return user;

@@ -47,12 +47,20 @@ public class ResourceBordRepositoryImpl implements ResourceBordRepository {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<ResourceColumn> findAll() {
         Query query = sessionFactory.getCurrentSession().createQuery("from ResourceColumn c order by c.priority ASC");
         return query.list();
     }
 
+    @SuppressWarnings("unchecked")
+    public List<ResourceColumn> findAllFiltered() {
+        Query query = sessionFactory.getCurrentSession().createQuery("from JiraUser u where u.columns");
+        return query.list();
+    }
+
     @Override
+    @SuppressWarnings("unchecked")
     public List<JiraUser> findUsersByColumnId(Long id) {
         Query query = sessionFactory.getCurrentSession().createQuery("from JiraUser u where u.column.id = :id");
         query.setParameter("id", id);

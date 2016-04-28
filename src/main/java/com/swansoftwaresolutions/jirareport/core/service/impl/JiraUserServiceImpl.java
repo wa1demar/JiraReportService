@@ -10,6 +10,7 @@ import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
 import com.swansoftwaresolutions.jirareport.domain.entity.Attachment;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
+import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
 import com.swansoftwaresolutions.jirareport.domain.entity.Technology;
 import com.swansoftwaresolutions.jirareport.domain.repository.*;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -58,6 +59,7 @@ public class JiraUserServiceImpl implements JiraUserService {
 
     @Autowired
     ConfigService configService;
+
     @Override
     public JiraUser save(JiraUser jiraUser) {
         return jiraUserRepository.add(jiraUser);
@@ -107,7 +109,10 @@ public class JiraUserServiceImpl implements JiraUserService {
         jiraUser.setLevel(newResourceUserDto.getLevel());
         jiraUser.setTechnologies(technologyRepository.findAllByIds(newResourceUserDto.getTechnologies()));
 
-        jiraUser.setColumn(resourceBordRepository.findDefaultColumn());
+        ResourceColumn defaultColumn = resourceBordRepository.findDefaultColumn();
+        jiraUser.setColumns(new ArrayList<ResourceColumn>() {{
+            add(defaultColumn);
+        }});
 
         jiraUser.setLocation(locationRepository.findById(newResourceUserDto.getLocation()));
 
@@ -126,7 +131,7 @@ public class JiraUserServiceImpl implements JiraUserService {
     @Override
     public ResourceUserDto removeUserFromBoardFully(String login) throws NoSuchEntityException {
         JiraUser user = jiraUserRepository.findByLogin(login);
-        user.setColumn(null);
+        user.setColumns(null);
 
         return jiraUserMapper.fromJiraUserToResourceUserDto(jiraUserRepository.merge(user));
     }
