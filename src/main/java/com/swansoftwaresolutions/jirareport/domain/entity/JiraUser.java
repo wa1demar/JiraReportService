@@ -25,7 +25,7 @@ public class JiraUser implements Serializable {
     private Location location;
     private List<Technology> technologies = new ArrayList<>();
     private List<Attachment> attachments = new ArrayList<>();
-    private ResourceColumn column;
+    private List<ResourceColumn> columns = new ArrayList<>();
     private String avatar;
 
     @Column(name = "email")
@@ -131,16 +131,6 @@ public class JiraUser implements Serializable {
         this.level = level;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "resource_column_id", nullable = false)
-    public ResourceColumn getColumn() {
-        return column;
-    }
-
-    public void setColumn(ResourceColumn column) {
-        this.column = column;
-    }
-
     @Column(name = "avatar")
     public String getAvatar() {
         return avatar;
@@ -148,5 +138,19 @@ public class JiraUser implements Serializable {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "jira_users_resource_columns", joinColumns = {
+            @JoinColumn(name = "jira_user_login")},
+            inverseJoinColumns = {@JoinColumn(name = "resource_column_id")})
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DETACH})
+    @OrderBy()
+    public List<ResourceColumn> getColumns() {
+        return columns;
+    }
+
+    public void setColumns(List<ResourceColumn> columns) {
+        this.columns = columns;
     }
 }

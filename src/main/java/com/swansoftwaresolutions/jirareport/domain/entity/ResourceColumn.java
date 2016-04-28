@@ -1,6 +1,11 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
+import org.hibernate.annotations.*;
+
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +61,8 @@ public class ResourceColumn implements Serializable {
         this.fixed = fixed;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "column")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "columns")
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
     public List<JiraUser> getUsers() {
         return users;
     }

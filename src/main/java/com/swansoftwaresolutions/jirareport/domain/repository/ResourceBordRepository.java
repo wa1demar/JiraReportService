@@ -25,4 +25,6 @@ public interface ResourceBordRepository {
     void moveUsersToDefaultColumn(List<JiraUser> users);
 
     void updatePriorities(ResourceColumnPriority[] columnPriorities);
+
+    List<ResourceColumn> findAllFiltered();
 }
