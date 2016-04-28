@@ -145,7 +145,7 @@ public class JiraUser implements Serializable {
             @JoinColumn(name = "jira_user_login")},
             inverseJoinColumns = {@JoinColumn(name = "resource_column_id")})
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DETACH})
-    @OrderBy()
+    @OrderBy("priority")
     public List<ResourceColumn> getColumns() {
         return columns;
     }

@@ -17,12 +17,6 @@ public interface JiraUserMapper {
     JiraUser fromDto(JiraUserDto jiraUserDto);
     List<JiraUser> fromDtos(JiraUserDto jiraUserDto);
 
-
-    JiraUserAutoDto toAutoDto(JiraUser jiraUser);
-    List<JiraUserAutoDto> toAutoDtos(List<JiraUser> jiraUser);
-    JiraUser fromAutoDto(JiraUserAutoDto jiraUserAutoDto);
-    List<JiraUser> fromAutoDtos(List<JiraUserAutoDto> jiraUserAutoDtoList);
-
     List<JiraUser> fromDtos(List<ImportedJiraUserDto> usersList);
 
     ResourceUserDto fromJiraUserToResourceUserDto(JiraUser jiraUser);

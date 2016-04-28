@@ -3,6 +3,7 @@ package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.TechnologyMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.ImportedJiraUserDtoToJiraUserMapper;
@@ -58,30 +59,6 @@ public class JiraUserMapperImpl implements JiraUserMapper {
     }
 
     @Override
-    public JiraUserAutoDto toAutoDto(JiraUser jiraUser) {
-        return modelMapper.map(jiraUser, JiraUserAutoDto.class);
-    }
-
-    @Override
-    public List<JiraUserAutoDto> toAutoDtos(List<JiraUser> jiraUser) {
-        Type targetistType = new TypeToken<List<JiraUserAutoDto>>() {
-        }.getType();
-        return modelMapper.map(jiraUser, targetistType);
-    }
-
-    @Override
-    public JiraUser fromAutoDto(JiraUserAutoDto jiraUserAutoDto) {
-        return modelMapper.map(jiraUserAutoDto, JiraUser.class);
-    }
-
-    @Override
-    public List<JiraUser> fromAutoDtos(List<JiraUserAutoDto> jiraUserAutoDtoList) {
-        Type targetistType = new TypeToken<List<JiraUser>>() {
-        }.getType();
-        return modelMapper.map(jiraUserAutoDtoList, targetistType);
-    }
-
-    @Override
     public List<JiraUser> fromDtos(List<ImportedJiraUserDto> usersList) {
         Type targetistType = new TypeToken<List<JiraUser>>() {
         }.getType();
@@ -92,6 +69,7 @@ public class JiraUserMapperImpl implements JiraUserMapper {
     public ResourceUserDto fromJiraUserToResourceUserDto(JiraUser jiraUser) {
         ResourceUserDto userDto = modelMapper.map(jiraUser, ResourceUserDto.class);
         userDto.setTechnologies(technologyMapper.fromTechnologiesToTechnologiesDto(jiraUser.getTechnologies()));
+        userDto.setColumn(modelMapper.map(jiraUser.getColumns().get(0), ResourceColumnDto.class));
         return userDto;
     }
 
