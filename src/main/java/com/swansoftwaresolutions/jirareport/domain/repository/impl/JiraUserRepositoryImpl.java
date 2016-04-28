@@ -137,12 +137,11 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
     @Override
     public JiraUser updateJiraUserInfo(String login, MemberDto memberDto) throws NoSuchEntityException {
         Query query = sessionFactory.getCurrentSession().createQuery("update JiraUser u set u.level = :engineerLevel, u.description = :description, " +
-                "u.location = (from Location l where l.id = :locationId), u.column = (from ResourceColumn c where c.id = :columnId)  where u.login = :login");
+                "u.location = (from Location l where l.id = :locationId)  where u.login = :login");
         query.setParameter("login", login);
         query.setParameter("engineerLevel", memberDto.getEngineerLevel());
         query.setParameter("description", memberDto.getDescription());
         query.setParameter("locationId", memberDto.getLocationId());
-        query.setParameter("columnId", memberDto.getAssignmentTypeId());
         query.executeUpdate();
         return findByLogin(login);
     }

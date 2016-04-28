@@ -29,7 +29,7 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
     public ResourceBordMapperImpl(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
 
-//        modelMapper.addMappings(new JiraUserToResourceUserDtoMapper());
+        modelMapper.addMappings(new JiraUserToResourceUserDtoMapper());
         modelMapper.addMappings(new JiraUserToFullResourceUserDtoMapper());
     }
 
