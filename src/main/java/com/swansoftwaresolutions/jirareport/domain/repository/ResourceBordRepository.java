@@ -26,5 +26,5 @@ public interface ResourceBordRepository {
 
     void updatePriorities(ResourceColumnPriority[] columnPriorities);
 
-    List<ResourceColumn> findAllFiltered();
+    ResourceColumn findById(Long toAssignmentTypeId);
 }

@@ -105,4 +105,11 @@ public class ResourceBordRepositoryImpl implements ResourceBordRepository {
         }
 
     }
+
+    @Override
+    public ResourceColumn findById(Long toAssignmentTypeId) {
+        Query query = sessionFactory.getCurrentSession().createQuery("from ResourceColumn c where c.id = :id");
+        query.setParameter("id", toAssignmentTypeId);
+        return (ResourceColumn) query.uniqueResult();
+    }
 }

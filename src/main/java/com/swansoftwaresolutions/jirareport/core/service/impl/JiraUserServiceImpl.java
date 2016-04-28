@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
 import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.AssignmentType;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.NewResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
@@ -27,6 +28,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -181,6 +183,17 @@ public class JiraUserServiceImpl implements JiraUserService {
     @Override
     public ResourceUserDto updateMemberInfo(String login, MemberDto memberDto) throws NoSuchEntityException {
         JiraUser user = jiraUserRepository.updateJiraUserInfo(login, memberDto);
+
+        AssignmentType assignmentType = memberDto.getAssignmentType();
+        if (memberDto.getAssignmentType() != null) {
+            Set<ResourceColumn> columns = new HashSet<>(user.getColumns());
+            columns.removeIf(resourceColumn -> resourceColumn.getId().equals(assignmentType.getFromAssignmentTypeId()));
+
+            columns.add(resourceBordRepository.findById(assignmentType.getToAssignmentTypeId()));
+            user.setColumns(new ArrayList<>(columns));
+
+            user = jiraUserRepository.update(user);
+        }
         return jiraUserMapper.fromJiraUserToResourceUserDto(user);
     }
 

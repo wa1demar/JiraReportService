@@ -8,7 +8,7 @@ public class MemberDto {
     private int engineerLevel;
     private String description;
     private Long locationId;
-//    private Long assignmentTypeId;
+    private AssignmentType assignmentType;
 
     public int getEngineerLevel() {
         return engineerLevel;
@@ -34,11 +34,11 @@ public class MemberDto {
         this.locationId = locationId;
     }
 
-//    public Long getAssignmentTypeId() {
-//        return assignmentTypeId;
-//    }
-//
-//    public void setAssignmentTypeId(Long assignmentTypeId) {
-//        this.assignmentTypeId = assignmentTypeId;
-//    }
+    public AssignmentType getAssignmentType() {
+        return assignmentType;
+    }
+
+    public void setAssignmentType(AssignmentType assignmentType) {
+        this.assignmentType = assignmentType;
+    }
 }

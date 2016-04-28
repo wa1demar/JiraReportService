@@ -145,4 +145,10 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
         query.executeUpdate();
         return findByLogin(login);
     }
+
+    @Override
+    public JiraUser moveUserToNewAssignmentType(Long fromAssignmentTypeId, Long toAssignmentTypeId) {
+
+        return null;
+    }
 }
