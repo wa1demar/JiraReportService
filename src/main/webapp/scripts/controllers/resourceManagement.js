@@ -10,6 +10,11 @@ jiraPluginApp.controller('ResourceManagementCtrl',
             //TODO need get from db
             $scope.engineerLevelDictionary = [1, 2, 3, 4];
 
+            //For change assignment type in sselect box
+            $scope.model = {
+                memberAssignmentTypeId: null
+            };
+
 // ----------------------------------------------------------------------------------------------------------------------
 //prepare search params
             if ($window.localStorage.rm_search) {
@@ -306,10 +311,13 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 $scope.currentMember.description = data;
 
                 var memberForUpdate = {
-                    engineerLevel:      $scope.currentMember.engineerLevel,
-                    description:        data,
-                    locationId:         $scope.currentMember.location.id,
-                    assignmentTypeId:   $scope.currentMember.column.id
+                    engineerLevel:          $scope.currentMember.engineerLevel,
+                    description:            data,
+                    locationId:             $scope.currentMember.location.id,
+                    assignmentType: {
+                        fromAssignmentTypeId:   $scope.currentMember.column.id,
+                        toAssignmentTypeId:     $scope.currentMember.column.id
+                    }
                 };
 
                 MemberFactory.update({login: $scope.currentMember.login}, memberForUpdate, function(data){
@@ -327,10 +335,13 @@ jiraPluginApp.controller('ResourceManagementCtrl',
             $scope.chnageMemberInfoData = function (type) {
 
                 var memberForUpdate = {
-                    engineerLevel:      $scope.currentMember.engineerLevel,
-                    description:        $scope.currentMember.description,
-                    locationId:         $scope.currentMember.location.id,
-                    assignmentTypeId:   $scope.currentMember.column.id
+                    engineerLevel:          $scope.currentMember.engineerLevel,
+                    description:            $scope.currentMember.description,
+                    locationId:             $scope.currentMember.location.id,
+                    assignmentType: {
+                        fromAssignmentTypeId:   $scope.currentMember.column.id,
+                        toAssignmentTypeId:     $scope.model.memberAssignmentTypeId
+                    }
                 };
 
                 MemberFactory.update({login: $scope.currentMember.login}, memberForUpdate, function(data){
@@ -699,10 +710,13 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 });
                 modalInstance.result.then(function (data) {
                     var memberForUpdate = {
-                        engineerLevel:      data.engineerLevel,
-                        description:        data.description,
-                        locationId:         data.location.id,
-                        assignmentTypeId:   data.column.id
+                        engineerLevel:          data.engineerLevel,
+                        description:            data.description,
+                        locationId:             data.location.id,
+                        assignmentType: {
+                            fromAssignmentTypeId:   data.column.id,
+                            toAssignmentTypeId:     data.column.id
+                        }
                     };
                     MemberFactory.update({login: data.login}, memberForUpdate, function(data){
                         Notification.success("Change level success");

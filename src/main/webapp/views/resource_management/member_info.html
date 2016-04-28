@@ -49,7 +49,7 @@
     <div class="row margin-0">
         <span class="member-info-block-content-subtitle">Assignment type:</span>
         <div class="form-group">
-            <select ng-change="chnageMemberInfoData('assignmentType')" class="form-control" ng-model="currentMember.column.id" id="member-assignment-type" name="member-assignment-type" convert-to-number>
+            <select ng-change="chnageMemberInfoData('assignmentType')" class="form-control" ng-init="model.memberAssignmentTypeId = currentMember.column.id" ng-model="model.memberAssignmentTypeId" id="member-assignment-type" name="member-assignment-type" convert-to-number>
                 <option ng-repeat="value in assignmentTypes" value="{{value.id}}">{{value.name}}</option>
             </select>
         </div>
