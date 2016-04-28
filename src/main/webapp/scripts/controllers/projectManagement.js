@@ -1,8 +1,8 @@
 'use strict';
 
 jiraPluginApp.controller('ProjectManagementCtrl',
-    ['$scope', '$uibModal', '$filter', '$window', 'ProjectFactory', 'UsersFactory', 'DictionaryFactory', 'MemberFactory', 'Notification',
-        function($scope, $uibModal, $filter, $window, ProjectFactory, UsersFactory, DictionaryFactory, MemberFactory, Notification) {
+    ['$scope', '$uibModal', '$filter', '$window', 'ProjectFactory', 'UsersFactory', 'DictionaryFactory', 'MemberFactory', 'ResourceColumnFactory', 'Notification',
+        function($scope, $uibModal, $filter, $window, ProjectFactory, UsersFactory, DictionaryFactory, MemberFactory, ResourceColumnFactory, Notification) {
             var self = this;
             $scope.loaderShow = true;
             $scope.showSearch = true;
@@ -59,28 +59,32 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                                 engineerLevel: 1,
                                 assignmentType: {id: 1, name: "PM"},
                                 color: "#4086E7",
-                                avatar: "https://swansoftwaresolutions.atlassian.net/secure/useravatar?ownerId=slevchenko&avatarId=13706"
+                                avatar: "https://swansoftwaresolutions.atlassian.net/secure/useravatar?ownerId=slevchenko&avatarId=13706",
+                                column: {id: 1}
                             },
                             {
                                 id: 2,
                                 name: "Full Name 2",
                                 engineerLevel: 3,
                                 assignmentType: {id: 2, name: "Dev"},
-                                color: "#179f1c"
+                                color: "#179f1c",
+                                column: {id: 1}
                             },
                             {
                                 id: 3,
                                 name: "Full Name 3",
                                 engineerLevel: 2,
                                 assignmentType: {id: 2, name: "Dev"},
-                                color: "#179f1c"
+                                color: "#179f1c",
+                                column: {id: 1}
                             },
                             {
                                 id: 3,
                                 name: "Full Name 5",
                                 engineerLevel: 2,
                                 assignmentType: {id: 3, name: "QA"},
-                                color: "#F4D520"
+                                color: "#F4D520",
+                                column: {id: 1}
                             }
                         ]
                     },
@@ -94,7 +98,8 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                                 name: "Full Name 2",
                                 engineerLevel: 3,
                                 assignmentType: {id: 1, name: "PM"},
-                                color: "#4086E7"
+                                color: "#4086E7",
+                                column: {id: 2}
                             }
                         ]
                     },
@@ -108,7 +113,8 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                                 name: "Full Name 3",
                                 engineerLevel: 2,
                                 assignmentType: {id: 1, name: "PM"},
-                                color: "#4086E7"
+                                color: "#4086E7",
+                                column: {id: 3}
                             }
                         ]
                     },
@@ -122,7 +128,8 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                                 name: "Full Name 4",
                                 engineerLevel: 2,
                                 assignmentType: {id: 1, name: "PM"},
-                                color: "#4086E7"
+                                color: "#4086E7",
+                                column: {id: 4}
                             }
                         ]
                     }
@@ -148,6 +155,18 @@ jiraPluginApp.controller('ProjectManagementCtrl',
             $scope.getTechnologies();
 
 //----------------------------------------------------------------------------------------------------------------------
+//Get assignment type
+            $scope.assignmentTypes = [];
+            $scope.getAssignmentTypes = function () {
+                ResourceColumnFactory.query({id: 'list'}, function(result){
+                    $scope.assignmentTypes = result.columns;
+                }, function (error) {
+                    Notification.error("Server error: get assignment type");
+                });
+            };
+            $scope.getAssignmentTypes();
+
+//----------------------------------------------------------------------------------------------------------------------
 //TODO Get projects
             $scope.projects = [];
             $scope.getProjects = function () {
@@ -171,9 +190,66 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                 $scope.getProjectColumns();
             }, true);
 
+
+            // $scope.test1 = function (){
+            //     return false;
+            // };
+
 //----------------------------------------------------------------------------------------------------------------------
 //Get dragend member
-            $scope.dragendElement = function(item) {
+            $scope.dragendElement = function(item, projectIndex, memberIndex) {
+
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: 'views/project_management/dlg/dlg_member_change_project.html',
+                    controller: 'DlgMemberChangeProject',
+                    size: 'md',
+                    resolve: {
+                        dlgData: function () {
+                            return {
+                                item: item,
+                                projectIndex: projectIndex,
+                                memberIndex: memberIndex,
+                                assignmentTypes: $scope.assignmentTypes
+                            };
+                        }
+                    }
+                });
+                modalInstance.result.then(function (data) {
+                    if (data.moveType === 'move') {
+                        $scope.columns[projectIndex].users.splice(memberIndex, 1);
+                    }
+
+                    // console.log(projectIndex + " ---- " + memberIndex);
+                    // console.log(item);
+                    // console.log(data);
+
+                    Notification.success("Update projects success");
+                }, function (error) {
+                    console.log($scope.columns);
+                    return false;
+
+                    console.log(11111111);
+                    Notification.error("Server error");
+
+                    var indexElementInColumn = null;
+                    var count = $scope.columns.length;
+                    for (var index = 0; index < count; index++) {
+                        result = _.findWhere($scope.columns[index].users, {login: item.login});
+                        if (result !== undefined) {
+                            //save column data
+                            column = $scope.columns[index];
+                            //find index new position in column
+                            indexElementInColumn = $scope.columns[index].users.indexOf(result);
+                            break;
+                        }
+                    }
+                });
+
+                // console.log(projectIndex);
+                return true;
+
+                
                 //Find column when drag
                 var column = undefined;
                 var result = undefined;
@@ -378,6 +454,21 @@ jiraPluginApp.controller('DlgDeleteProjectMemberCtrl',
 
             $scope.ok = function () {
                 $uibModalInstance.close($scope.dlgData);
+            };
+
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+        }
+    ]);
+
+jiraPluginApp.controller('DlgMemberChangeProject',
+    ['$scope', '$uibModalInstance', 'dlgData',
+        function ($scope, $uibModalInstance, dlgData) {
+            $scope.dlgData = dlgData;
+
+            $scope.ok = function () {
+                $uibModalInstance.close($scope.model);
             };
 
             $scope.cancel = function () {
