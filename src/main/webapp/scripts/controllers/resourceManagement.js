@@ -223,9 +223,9 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 
 //----------------------------------------------------------------------------------------------------------------------
 //Get dragend member
-            $scope.dragendElement = function(item) {
+            $scope.dragendElement = function(item, columnFrom) {
                 //Find column when drag
-                var column = undefined;
+                var columnTo = undefined;
                 var result = undefined;
                 var indexElementInColumn = null;
                 var count = $scope.columns.length;
@@ -233,7 +233,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     result = _.findWhere($scope.columns[index].users, {login: item.login});
                     if (result !== undefined) {
                         //save column data
-                        column = $scope.columns[index];
+                        columnTo = $scope.columns[index];
                         //find index new position in column
                         indexElementInColumn = $scope.columns[index].users.indexOf(result);
                         break;
@@ -242,9 +242,19 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 
                 //TODO save new member position
                 //change member assignment type
-                $scope.columns[index].users[indexElementInColumn].assignmentType = column.id;
-                console.log("column id: " + column.id + " ---- position: " + indexElementInColumn);
-                console.log(column.users);
+                $scope.columns[index].users[indexElementInColumn].assignmentType = columnTo.id;
+
+                console.log("From column id: " + columnFrom.id);
+                console.log("To column id: " + columnTo.id + " ---- position: " + indexElementInColumn);
+
+                var dataForUpdate = {
+                    columnFromId:   columnFrom.id,
+                    columnToId:     columnTo.id,
+                    columnToUsers:  columnTo.users
+                };
+                console.log(dataForUpdate);
+
+                //TODO need add request for save new data
                 // $scope.getResourceColumns();
             };
 
@@ -354,10 +364,25 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     if (column.id != $scope.assignmentTypes[index].id) {
                         menu.push(
                             {
-                                html: '<a tabindex="-1" href="#" class="context-menu-item" data-id-assignment-type="'+$scope.assignmentTypes[index].id+'">'+$scope.assignmentTypes[index].name+'</a>',
+                                html: '<a tabindex="-1" href="#" class="context-menu-item" data-id-assignment-type-index="'+index+'">'+$scope.assignmentTypes[index].name+'</a>',
                                 enabled: function() {return true},
-                                click: function ($itemScope, $event, value, xz1) {
-                                    console.log($itemScope.item);
+                                click: function ($itemScope, $event, value, html) {
+
+                                    var columnFromIndex = $itemScope.$parent.$index,
+                                        columnToIndex   = $(html).data("idAssignmentTypeIndex");
+
+                                    //change assignment type
+                                    $scope.columns[columnFromIndex].users.splice($itemScope.$index, 1);
+                                    $scope.columns[columnToIndex].users.push($itemScope.item);
+
+                                    var dataForUpdate = {
+                                        columnFromId:   $scope.columns[columnFromIndex].id,
+                                        columnToId:     $scope.columns[columnToIndex].id,
+                                        columnToUsers:  $scope.columns[columnToIndex].users
+                                    };
+
+                                    //TODO need add request for save new data
+                                    console.log(dataForUpdate);
                                 }
                             }
                         );
@@ -368,23 +393,41 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     {
                         html: '<a tabindex="-1" href="#" class="context-menu-item">Top of the column</a>',
                         enabled: function($itemScope) {
-                            //TODO check position
-                            return $itemScope.item.name.match(/Rostyslav/) == null;
+                            //check position for enabled button
+                            return $itemScope.$index !== 0;
                         },
                         click: function ($itemScope, $event, value) {
                             console.log('Top of the column');
-                            console.log($itemScope.item);
+                            $scope.columns[$itemScope.$parent.$index].users.splice($itemScope.$index, 1);
+                            $scope.columns[$itemScope.$parent.$index].users.unshift($itemScope.item);
+
+                            var dataForUpdate = {
+                                columnFromId:   $scope.columns[$itemScope.$parent.$index].id,
+                                columnToId:     $scope.columns[$itemScope.$parent.$index].id,
+                                columnToUsers:  $scope.columns[$itemScope.$parent.$index].users
+                            };
+
+                            console.log(dataForUpdate);
                         }
                     },
                     {
                         html: '<a tabindex="-1" href="#" class="context-menu-item">Bottom of the column</a>',
                         enabled: function($itemScope) {
-                            //TODO check position
-                            return $itemScope.item.name.match(/Rostyslav/) == null;
+                            //check position for enabled button
+                            return $itemScope.$index !== $scope.columns[$itemScope.$parent.$index].users.length - 1;
                         },
                         click: function ($itemScope, $event, value) {
                             console.log('Bottom of the column');
-                            console.log(column.users.length);
+                            $scope.columns[$itemScope.$parent.$index].users.splice($itemScope.$index, 1);
+                            $scope.columns[$itemScope.$parent.$index].users.push($itemScope.item);
+
+                            var dataForUpdate = {
+                                columnFromId:   $scope.columns[$itemScope.$parent.$index].id,
+                                columnToId:     $scope.columns[$itemScope.$parent.$index].id,
+                                columnToUsers:  $scope.columns[$itemScope.$parent.$index].users
+                            };
+
+                            console.log(dataForUpdate);
                         }
                     }
                 );
