@@ -55,6 +55,7 @@ public class DueDateServiceImpl implements DueDateService {
         for (JiraIssue issue : datas) {
             List<Date> dds = issue.getDueDates().stream().map(r -> r.getDueDate()).collect(Collectors.toList());
             Date [] datesArray = new Date[dds.size()];
+            Date [] datesArray2 = {issue.getDueDate()};
 
             Collections.sort(dds, (o1, o2) -> o2.compareTo(o1));
 
@@ -62,7 +63,7 @@ public class DueDateServiceImpl implements DueDateService {
             dateDto.setId(issue.getId());
             dateDto.setAssignee(issue.getAssignedFullName());
             dateDto.setKey(issue.getKey());
-            dateDto.setDueDate(dds.toArray(datesArray));
+            dateDto.setDueDate(dds.toArray(datesArray).length > 0 ? dds.toArray(datesArray) : datesArray2);
             dateDto.setDescription(issue.getDescription());
             dateDto.setProject(projects.get(issue.getProjectKey()));
             dateDto.setStatus(issue.getStatusName());

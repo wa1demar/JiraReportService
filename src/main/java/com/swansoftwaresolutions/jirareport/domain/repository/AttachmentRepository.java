@@ -7,4 +7,8 @@ import com.swansoftwaresolutions.jirareport.domain.entity.Attachment;
  */
 public interface AttachmentRepository {
     Attachment save(Attachment attachment);
+
+    Attachment findById(Long id);
+
+    void delete(Attachment attachment);
 }

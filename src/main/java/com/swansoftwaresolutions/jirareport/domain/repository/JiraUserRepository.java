@@ -35,5 +35,5 @@ public interface JiraUserRepository {
 
     JiraUser updateJiraUserInfo(String login, MemberDto memberDto) throws NoSuchEntityException;
 
-    JiraUser moveUserToNewAssignmentType(Long fromAssignmentTypeId, Long toAssignmentTypeId);
+    void updateAll(List<JiraUser> users);
 }

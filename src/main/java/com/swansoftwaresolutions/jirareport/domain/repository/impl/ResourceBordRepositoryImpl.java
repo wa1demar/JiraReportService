@@ -53,16 +53,10 @@ public class ResourceBordRepositoryImpl implements ResourceBordRepository {
         return query.list();
     }
 
-    @SuppressWarnings("unchecked")
-    public List<ResourceColumn> findAllFiltered() {
-        Query query = sessionFactory.getCurrentSession().createQuery("from JiraUser u where u.columns");
-        return query.list();
-    }
-
     @Override
     @SuppressWarnings("unchecked")
     public List<JiraUser> findUsersByColumnId(Long id) {
-        Query query = sessionFactory.getCurrentSession().createQuery("from JiraUser u where u.column.id = :id");
+        Query query = sessionFactory.getCurrentSession().createQuery("select u from JiraUser u join u.columns c where c.id = :id");
         query.setParameter("id", id);
         return query.list();
     }
@@ -78,13 +72,13 @@ public class ResourceBordRepositoryImpl implements ResourceBordRepository {
     public void moveUsersToDefaultColumn(List<JiraUser> users) {
         List<String> logins = users.stream().map(u -> u.getLogin()).collect(Collectors.toList());
         if (logins.size() > 0) {
-            Query query = sessionFactory.getCurrentSession().createQuery("update JiraUser  u set u.column = (from ResourceColumn c where c.id = 1) where u.login in (:logins)").setParameterList("logins", logins);
+            Query query = sessionFactory.getCurrentSession().createQuery("update JiraUser u set u.columns = (from ResourceColumn c where c.id = 1) where u.login in (:logins)").setParameterList("logins", logins);
             query.executeUpdate();
         }
     }
 
     @Override
-    public  void updatePriorities(ResourceColumnPriority[] columnPriorities) {
+    public void updatePriorities(ResourceColumnPriority[] columnPriorities) {
 
         if (columnPriorities != null && columnPriorities.length > 0) {
             Session session = sessionFactory.openSession();

@@ -69,7 +69,11 @@ public class JiraUserMapperImpl implements JiraUserMapper {
     public ResourceUserDto fromJiraUserToResourceUserDto(JiraUser jiraUser) {
         ResourceUserDto userDto = modelMapper.map(jiraUser, ResourceUserDto.class);
         userDto.setTechnologies(technologyMapper.fromTechnologiesToTechnologiesDto(jiraUser.getTechnologies()));
-        userDto.setColumn(modelMapper.map(jiraUser.getColumns().get(0), ResourceColumnDto.class));
+        if (jiraUser.getColumns() != null && jiraUser.getColumns().size() > 0) {
+            userDto.setColumn(modelMapper.map(jiraUser.getColumns().get(0), ResourceColumnDto.class));
+        } else {
+            userDto.setColumn(null);
+        }
         return userDto;
     }
 

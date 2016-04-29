@@ -33,7 +33,7 @@ public interface JiraUserService {
 
     ResourceUserDto removeUserFromBoardFully(String login) throws NoSuchEntityException;
 
-    ResourceUserDto addAttachment(String login, MultipartFile file);
+    ResourceUserDto addAttachment(String login, MultipartFile file) throws NoSuchEntityException;
 
     ResourceUserDto findInfoByLogin(String login) throws NoSuchEntityException;
 
@@ -41,7 +41,7 @@ public interface JiraUserService {
 
     ResourceUserDto addTechnologies(String login, TechnologyId technologyIds) throws NoSuchEntityException;
 
-    ResourceUserDto deleteTechnology(String login, Long technologyId) throws NoSuchEntityException;
-
     ResourceUserDto deleteTechnology2(String login, Long technologyId) throws NoSuchEntityException;
+
+    void deleteAttachment(Long id);
 }

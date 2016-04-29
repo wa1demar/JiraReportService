@@ -12,6 +12,7 @@ import com.swansoftwaresolutions.jirareport.domain.repository.TechnologyReposito
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,7 +63,11 @@ public class ResourceBordServiceImpl implements ResourceBordService {
     @Override
     public void deleteColumn(Long id) {
         List<JiraUser> users = resourceBordRepository.findUsersByColumnId(id);
-        resourceBordRepository.moveUsersToDefaultColumn(users);
+        ResourceColumn defaultColumn = resourceBordRepository.findDefaultColumn();
+        for (JiraUser u : users) {
+            u.setColumns(new ArrayList<ResourceColumn>() {{ add(defaultColumn); }});
+        }
+        jiraUserRepository.updateAll(users);
         resourceBordRepository.removeColumn(id);
     }
 

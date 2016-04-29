@@ -139,7 +139,7 @@ public class JiraUserServiceImpl implements JiraUserService {
     }
 
     @Override
-    public ResourceUserDto addAttachment(String login, MultipartFile file) {
+    public ResourceUserDto addAttachment(String login, MultipartFile file) throws NoSuchEntityException {
         if (!file.isEmpty()) {
             try {
                 String rootPath = System.getProperty("catalina.home");
@@ -159,7 +159,7 @@ public class JiraUserServiceImpl implements JiraUserService {
                 e.printStackTrace();
             }
         }
-        return null;
+        return findInfoByLogin(login);
     }
 
     private void addAttachmentToUser(String name, File file, String login) throws NoSuchEntityException {
@@ -211,17 +211,6 @@ public class JiraUserServiceImpl implements JiraUserService {
     }
 
     @Override
-    public ResourceUserDto deleteTechnology(String login, Long technologyId) throws NoSuchEntityException {
-        JiraUser user = jiraUserRepository.findByLogin(login);
-
-        List<Technology> technologies = user.getTechnologies();
-
-        user.setTechnologies(technologies.parallelStream().filter(i -> !i.getId().equals(technologyId)).collect(Collectors.toList()));
-
-        return jiraUserMapper.fromJiraUserToResourceUserDto(jiraUserRepository.update(user));
-    }
-
-    @Override
     public ResourceUserDto deleteTechnology2(String login, Long technologyId) throws NoSuchEntityException {
         Technology technology = technologyRepository.findById(technologyId);
 
@@ -231,5 +220,16 @@ public class JiraUserServiceImpl implements JiraUserService {
         technologyRepository.update(technology);
 
         return jiraUserMapper.fromJiraUserToResourceUserDto(jiraUserRepository.findByLogin(login));
+    }
+
+    @Override
+    public void deleteAttachment(Long id) {
+        Attachment attachment = attachmentRepository.findById(id);
+
+        File file = new File(attachment.getUrl());
+        file.delete();
+
+        attachmentRepository.delete(attachment);
+
     }
 }

@@ -8,6 +8,7 @@ import com.swansoftwaresolutions.jirareport.domain.entity.Technology;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -147,8 +148,13 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
     }
 
     @Override
-    public JiraUser moveUserToNewAssignmentType(Long fromAssignmentTypeId, Long toAssignmentTypeId) {
+    public void updateAll(List<JiraUser> users) {
 
-        return null;
+        for (JiraUser user : users) {
+            sessionFactory.getCurrentSession().update(user);
+        }
+
+
     }
+
 }
