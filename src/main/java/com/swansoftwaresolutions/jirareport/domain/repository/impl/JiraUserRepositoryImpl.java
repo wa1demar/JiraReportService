@@ -50,12 +50,6 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
         }
         user.setTechnologies(new ArrayList<>(technologies));
 
-//        List<ResourceColumn> columns = user.getColumns();
-//        Set<JiraUser> users = new HashSet<>(columns.getUsers());
-//        users.add(user);
-//        column.setUsers(new ArrayList<>(users));
-//        user.setColumn(column);
-
         sessionFactory.getCurrentSession().update(user);
         return user;
     }
@@ -68,6 +62,7 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<JiraUser> findAll() {
         Query query = sessionFactory.getCurrentSession().createQuery("FROM JiraUser u");
         return query.list();
@@ -79,6 +74,7 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<JiraUser> findByLogins(String[] admins) {
         Query query = sessionFactory.getCurrentSession().createQuery("FROM JiraUser u WHERE u.login in :admins");
         query.setParameterList("admins", admins);
@@ -120,6 +116,7 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<JiraUser> findByGroups(String[] groups) {
         Query query = sessionFactory.getCurrentSession().createQuery("SELECT u FROM JiraUser u INNER JOIN u.groups g WHERE g.name IN :groups");
         query.setParameterList("groups", Arrays.asList(groups));
