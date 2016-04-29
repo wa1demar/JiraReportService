@@ -305,9 +305,9 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 
                 MemberFactory.update({login: $scope.currentMember.login}, memberForUpdate, function(data){
                     Notification.success("Update description success");
-                    $scope.currentMember = data;
                     //get member info
-                    // $scope.getResourceColumns();
+                    $scope.currentMember = data;
+                    $scope.getResourceColumns();
                 }, function (error) {
                     Notification.error("Server error");
                 });
