@@ -966,8 +966,11 @@ jiraPluginApp.controller('DlgUploadAttachCtrl',
             uploader.onCompleteItem = function(fileItem, response, status, headers) {
                 console.info('onCompleteItem', fileItem, response, status, headers);
             };
-            uploader.onCompleteAll = function() {
+            uploader.onCompleteAll = function(data) {
                 console.info('onCompleteAll');
+                console.info('-----------------------------------');
+                console.info(data);
+                console.info('-----------------------------------');
                 Notification.success("Upload attachments success");
                 $scope.getResourceColumns();
             };
