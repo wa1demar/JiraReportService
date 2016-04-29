@@ -728,6 +728,8 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     }
                 });
                 modalInstance.result.then(function (data) {
+                    Notification.success("Upload attachments success");
+                    $scope.getResourceColumns();
                     // MemberFactory.update({login: data.login}, data, function(data){
                     //     Notification.success("Change level success");
                     //     //get member info
@@ -916,8 +918,8 @@ jiraPluginApp.controller('DlgChangeLevelCtrl',
     ]);
 
 jiraPluginApp.controller('DlgUploadAttachCtrl',
-    ['$scope', '$uibModalInstance', 'dlgData', 'FileUploader', 'Notification',
-        function ($scope, $uibModalInstance, dlgData, FileUploader, Notification) {
+    ['$scope', '$uibModalInstance', 'dlgData', 'FileUploader',
+        function ($scope, $uibModalInstance, dlgData, FileUploader) {
             // $scope.model = dlgData.currentMember;
             // $scope.engineerLevelDictionary = dlgData.engineerLevelDictionary;
 
@@ -968,18 +970,17 @@ jiraPluginApp.controller('DlgUploadAttachCtrl',
             };
             uploader.onCompleteAll = function(data) {
                 console.info('onCompleteAll');
-                console.info('-----------------------------------');
+                console.info('---------------------------');
                 console.info(data);
-                console.info('-----------------------------------');
-                Notification.success("Upload attachments success");
-                $scope.getResourceColumns();
+                console.info('---------------------------');
+                $uibModalInstance.close($scope.model);
             };
 
             console.info('uploader', uploader);
 
-            $scope.ok = function () {
-                $uibModalInstance.close($scope.model);
-            };
+            // $scope.ok = function () {
+            //
+            // };
 
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
