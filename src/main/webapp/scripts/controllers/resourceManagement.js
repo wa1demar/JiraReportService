@@ -728,14 +728,39 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     }
                 });
                 modalInstance.result.then(function (data) {
-                    console.log(data);
                     // MemberFactory.update({login: data.login}, data, function(data){
                     //     Notification.success("Change level success");
                     //     //get member info
-                    //     // $scope.getResourceColumns();
+                    //     $scope.currentMember = data;
+                    //     $scope.getResourceColumns();
                     // }, function (error) {
                     //     Notification.error("Server error");
                     // });
+                }, function () {});
+            };
+
+//----------------------------------------------------------------------------------------------------------------------
+//Dlg delete attach
+            $scope.delAttach = function (item) {
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: 'views/dlg/dlg_delete_element.html',
+                    controller: 'DlgDeleteAttachCtrl',
+                    resolve: {
+                        dlgData: function () {
+                            return item;
+                        }
+                    }
+                });
+                modalInstance.result.then(function (data) {
+                    MemberFactory.delete({login: $scope.currentMember.login, relation: "attachment", idRelation: data.id}, function(data) {
+                        Notification.success("Delete attach success");
+                        //get member info
+                        $scope.currentMember = data;
+                        $scope.getResourceColumns();
+                    }, function () {
+                        Notification.error("Server error");
+                    });
                 }, function () {});
             };
 
@@ -891,8 +916,8 @@ jiraPluginApp.controller('DlgChangeLevelCtrl',
     ]);
 
 jiraPluginApp.controller('DlgUploadAttachCtrl',
-    ['$scope', '$uibModalInstance', 'dlgData', 'FileUploader',
-        function ($scope, $uibModalInstance, dlgData, FileUploader) {
+    ['$scope', '$uibModalInstance', 'dlgData', 'FileUploader', 'Notification',
+        function ($scope, $uibModalInstance, dlgData, FileUploader, Notification) {
             // $scope.model = dlgData.currentMember;
             // $scope.engineerLevelDictionary = dlgData.engineerLevelDictionary;
 
@@ -943,12 +968,28 @@ jiraPluginApp.controller('DlgUploadAttachCtrl',
             };
             uploader.onCompleteAll = function() {
                 console.info('onCompleteAll');
+                Notification.success("Upload attachments success");
             };
 
             console.info('uploader', uploader);
 
             $scope.ok = function () {
                 $uibModalInstance.close($scope.model);
+            };
+
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+        }
+    ]);
+
+jiraPluginApp.controller('DlgDeleteMemberProjectCtrl',
+    ['$scope', '$uibModalInstance', 'dlgData',
+        function ($scope, $uibModalInstance, dlgData) {
+            $scope.dlgData = dlgData;
+
+            $scope.ok = function () {
+                $uibModalInstance.close($scope.dlgData);
             };
 
             $scope.cancel = function () {

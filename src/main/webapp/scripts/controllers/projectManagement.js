@@ -196,6 +196,12 @@ jiraPluginApp.controller('ProjectManagementCtrl',
             // };
 
 //----------------------------------------------------------------------------------------------------------------------
+//Get dragend project
+            $scope.dragendProject = function () {
+                console.log($scope.columns);
+            };
+
+//----------------------------------------------------------------------------------------------------------------------
 //Get dragend member
             $scope.dragendElement = function(item, projectIndex, memberIndex) {
 

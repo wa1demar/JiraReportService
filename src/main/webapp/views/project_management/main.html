@@ -47,6 +47,7 @@
                             dnd-type="'column'"
                             dnd-effect-allowed="copyMove"
                             dnd-moved="columns.splice($index, 1)"
+                            dnd-dragend="dragendProject()"
                             ng-class="{'selected': columns.selected === column}">
 
                             <h4 class="column-h4">

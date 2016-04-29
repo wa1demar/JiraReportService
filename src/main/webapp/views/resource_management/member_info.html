@@ -62,7 +62,7 @@
         </span>
         <ul ng-if="currentMember.attachments.length > 0" class="member-info-ul without-list-style-type">
             <li ng-repeat="value in currentMember.attachments">
-                <span class="glyphicon glyphicon-file"></span> <a ng-href="{{value.url}}">{{value.name}}</a> <span ng-click="delAttach(value)" class="glyphicon glyphicon-trash control-icon-right cursor-pointer" title="Delete"></span>
+                <span class="glyphicon glyphicon-file"></span> <a ng-href="{{value.url}}">{{value.title}}</a> <span ng-click="delAttach(value)" class="glyphicon glyphicon-trash control-icon-right cursor-pointer" title="Delete"></span>
             </li>
         </ul>
         <p class="empty-items" ng-if="currentMember.attachments === undefined || currentMember.attachments.length === 0">Empty</p>
