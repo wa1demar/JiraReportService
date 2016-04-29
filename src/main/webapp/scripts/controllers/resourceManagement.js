@@ -205,21 +205,6 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 });
             };
 
-            // Model to JSON for demo purpose
-            $scope.$watch('models', function(model) {
-                $scope.modelAsJson = angular.toJson(model, true);
-            }, true);
-
-            $scope.logEvent = function(message, event) {
-                console.log(message, '(triggered by the following', event.type, 'event)');
-                console.log(event);
-                console.log($scope.columns);
-            };
-
-            // $scope.changeSearch = function() {
-            //     // console.log($scope.search);
-            // };
-
             $scope.$watch('search', function() {
                 console.log(" ---- new search");
                 $window.localStorage.rm_search = JSON.stringify($scope.search);
@@ -306,8 +291,6 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //Update member description
             $scope.updateMemberDescription = function(data) {
-                console.log('updateMemberDescription:');
-                console.log(data);
                 $scope.currentMember.description = data;
 
                 var memberForUpdate = {
@@ -333,13 +316,6 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //Update member location or assignmentType
             $scope.chnageMemberInfoData = function (fromAssignmentTypeId, type) {
-
-                // var fromAssignmentTypeId = $(obj).data("memberAssignmentTypeId");
-
-                // console.log(fromAssignmentTypeId);
-                // return false;
-
-
                 var memberForUpdate = {
                     engineerLevel:          $scope.currentMember.engineerLevel,
                     description:            $scope.currentMember.description,
@@ -545,7 +521,6 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                         }
                     });
                     modalInstance.result.then(function (data) {
-                        console.log(data);
                         MemberFactory.create({}, data, function(data){
                             Notification.success("Add member success");
                             $scope.getResourceColumns();
