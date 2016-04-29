@@ -478,6 +478,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 modalInstance.result.then(function (data) {
                     ResourceColumnFactory.delete({id: data.id}, function() {
                         $scope.getResourceColumns();
+                        $scope.getAssignmentTypes();
                         Notification.success("Delete column success");
                     }, function () {
                         Notification.error("Server error");
