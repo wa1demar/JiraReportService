@@ -21,6 +21,7 @@ public class ResourceUserDto {
     private ResourceColumnDto column;
     private String description;
     private String avatar;
+    private List<AttachmentDto> attachments = new ArrayList<>();
 
     public String getLogin() {
         return login;
@@ -84,5 +85,13 @@ public class ResourceUserDto {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public List<AttachmentDto> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<AttachmentDto> attachments) {
+        this.attachments = attachments;
     }
 }
