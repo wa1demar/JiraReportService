@@ -969,6 +969,7 @@ jiraPluginApp.controller('DlgUploadAttachCtrl',
             uploader.onCompleteAll = function() {
                 console.info('onCompleteAll');
                 Notification.success("Upload attachments success");
+                $scope.getResourceColumns();
             };
 
             console.info('uploader', uploader);
@@ -983,7 +984,7 @@ jiraPluginApp.controller('DlgUploadAttachCtrl',
         }
     ]);
 
-jiraPluginApp.controller('DlgDeleteMemberProjectCtrl',
+jiraPluginApp.controller('DlgDeleteAttachCtrl',
     ['$scope', '$uibModalInstance', 'dlgData',
         function ($scope, $uibModalInstance, dlgData) {
             $scope.dlgData = dlgData;
