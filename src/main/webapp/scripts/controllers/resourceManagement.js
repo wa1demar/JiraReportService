@@ -447,6 +447,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                         ResourceColumnFactory.create({}, data, function(data){
                             Notification.success("Create column success");
                             $scope.getResourceColumns();
+                            $scope.getAssignmentTypes();
                         }, function (error) {
                             Notification.error("Server error");
                         });
