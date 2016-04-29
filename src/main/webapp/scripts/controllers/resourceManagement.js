@@ -729,15 +729,8 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 });
                 modalInstance.result.then(function (data) {
                     Notification.success("Upload attachments success");
+                    $scope.currentMember = data;
                     $scope.getResourceColumns();
-                    // MemberFactory.update({login: data.login}, data, function(data){
-                    //     Notification.success("Change level success");
-                    //     //get member info
-                    //     $scope.currentMember = data;
-                    //     $scope.getResourceColumns();
-                    // }, function (error) {
-                    //     Notification.error("Server error");
-                    // });
                 }, function () {});
             };
 
@@ -923,6 +916,8 @@ jiraPluginApp.controller('DlgUploadAttachCtrl',
             // $scope.model = dlgData.currentMember;
             // $scope.engineerLevelDictionary = dlgData.engineerLevelDictionary;
 
+            var result = {};
+
 //----------------------------------------------------------------------------------------------------------------------
 //test upload
             var uploader = $scope.uploader = new FileUploader({
@@ -967,13 +962,11 @@ jiraPluginApp.controller('DlgUploadAttachCtrl',
             };
             uploader.onCompleteItem = function(fileItem, response, status, headers) {
                 console.info('onCompleteItem', fileItem, response, status, headers);
+                result = response;
             };
             uploader.onCompleteAll = function(data) {
                 console.info('onCompleteAll');
-                console.info('---------------------------');
-                console.info(data);
-                console.info('---------------------------');
-                $uibModalInstance.close($scope.model);
+                $uibModalInstance.close(result);
             };
 
             console.info('uploader', uploader);
