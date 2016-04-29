@@ -332,15 +332,21 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 
 //----------------------------------------------------------------------------------------------------------------------
 //Update member location or assignmentType
-            $scope.chnageMemberInfoData = function (type) {
+            $scope.chnageMemberInfoData = function (fromAssignmentTypeId, type) {
+
+                // var fromAssignmentTypeId = $(obj).data("memberAssignmentTypeId");
+
+                // console.log(fromAssignmentTypeId);
+                // return false;
+
 
                 var memberForUpdate = {
                     engineerLevel:          $scope.currentMember.engineerLevel,
                     description:            $scope.currentMember.description,
                     locationId:             $scope.currentMember.location.id,
                     assignmentType: {
-                        fromAssignmentTypeId:   $scope.currentMember.column.id,
-                        toAssignmentTypeId:     $scope.model.memberAssignmentTypeId
+                        fromAssignmentTypeId:   fromAssignmentTypeId,
+                        toAssignmentTypeId:     $scope.currentMember.column.id
                     }
                 };
 
