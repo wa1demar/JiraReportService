@@ -532,7 +532,8 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                                     members:                    members,
                                     locations:                  $scope.locations,
                                     technologies:               $scope.technologies,
-                                    engineerLevelDictionary:    $scope.engineerLevelDictionary
+                                    engineerLevelDictionary:    $scope.engineerLevelDictionary,
+                                    assignmentTypes:            $scope.assignmentTypes
                                 };
                             }
                         }
@@ -819,6 +820,7 @@ jiraPluginApp.controller('DlgAddMemberCtrl',
             $scope.locations = dlgData.locations;
             $scope.technologies = dlgData.technologies;
             $scope.engineerLevelDictionary = dlgData.engineerLevelDictionary;
+            $scope.assignmentTypes = dlgData.assignmentTypes;
 
             $scope.ok = function () {
                 if($scope.addMemberForm.$valid) {
