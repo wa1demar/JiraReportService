@@ -1,9 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.mapper;
 
-import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDto;
-import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDtoFiltered;
-import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
-import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDtos;
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.*;
 import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
 
 import java.util.List;
@@ -20,4 +17,5 @@ public interface ResourceBordMapper {
 
     List<ResourceColumnDto> fromResourceColumnsToResourceColumnDtos(List<ResourceColumn> columns);
 
+    List<FullResourceColumnDto> fromResourceColumnsToFullResourceColumnDtos(List<ResourceColumn> columns, ResourceFilterData filterData);
 }

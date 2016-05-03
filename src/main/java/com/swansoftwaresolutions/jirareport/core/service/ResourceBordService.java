@@ -22,4 +22,6 @@ public interface ResourceBordService {
     List<ResourceColumnDto> getColumnsList();
 
     List<ResourceColumnDto> updatePriority(ResourceColumnPriority[] columnPriorities);
+
+    FullResourceColumnDtoList getColumns(ResourceFilterData filterData);
 }

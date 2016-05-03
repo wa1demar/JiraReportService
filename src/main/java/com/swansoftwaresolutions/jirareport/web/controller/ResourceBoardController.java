@@ -1,9 +1,6 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
-import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDtoList;
-import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
-import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDtos;
-import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnPriority;
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.*;
 import com.swansoftwaresolutions.jirareport.core.service.ResourceBordService;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,11 +39,31 @@ public class ResourceBoardController {
         return new ResponseEntity<>(newLocationDto, HttpStatus.OK);
     }
 
+//    @RequestMapping(value = "/rest/v1/resource_columns", method = RequestMethod.GET)
+//    @ResponseBody
+//    public ResponseEntity<FullResourceColumnDtoList> getColumnsWithUsers() throws NoSuchEntityException {
+//
+//        FullResourceColumnDtoList fullResourceColumnDtoList = resourceBordService.getColumns();
+//
+//        return new ResponseEntity<>(fullResourceColumnDtoList, HttpStatus.OK);
+//    }
+
     @RequestMapping(value = "/rest/v1/resource_columns", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<FullResourceColumnDtoList> getColumnsWithUsers() throws NoSuchEntityException {
+    public ResponseEntity<FullResourceColumnDtoList> getColumnsWithUsersFiltered(@RequestParam(value = "technology", required = false) String[] technologies,
+                                                                                 @RequestParam(value = "project", required = false) String[] projects,
+                                                                                 @RequestParam(value = "engineerLevel", required = false) String[] engineerLevels,
+                                                                                 @RequestParam(value = "location", required = false) String[] locations,
+                                                                                 @RequestParam(value = "name", required = false) String name) throws NoSuchEntityException {
 
-        FullResourceColumnDtoList fullResourceColumnDtoList = resourceBordService.getColumns();
+        ResourceFilterData filterData = new ResourceFilterData();
+        filterData.setTechnologies(arrToLong(technologies));
+        filterData.setProjects(projects);
+        filterData.setEngineerLevels(arrToInteger(engineerLevels));
+        filterData.setLocations(arrToLong(locations));
+        filterData.setName(name);
+
+        FullResourceColumnDtoList fullResourceColumnDtoList = resourceBordService.getColumns(filterData);
 
         return new ResponseEntity<>(fullResourceColumnDtoList, HttpStatus.OK);
     }
@@ -82,5 +99,27 @@ public class ResourceBoardController {
         resourceBordService.deleteColumn(id);
 
         return new ResponseEntity<>(new FullResourceColumnDtoList(), HttpStatus.OK);
+    }
+
+    private Integer[] arrToInteger(String[] arr) {
+        if (arr == null) {
+            return null;
+        }
+        Integer[] data = new Integer[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            data[i] = Integer.parseInt(arr[i]);
+        }
+        return data;
+    }
+
+    private Long[] arrToLong(String[] arr) {
+        if (arr == null) {
+            return null;
+        }
+        Long[] data = new Long[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            data[i] = Long.parseLong(arr[i]);
+        }
+        return data;
     }
 }
