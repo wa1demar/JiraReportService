@@ -28,7 +28,7 @@
                     <!--</ul>-->
                 <!--</div>-->
                 <div class="res-left-content-center">
-                    <ul class="main">
+                    <ul ng-if="!loaderShow" class="main">
                         <li ng-repeat="column in columns" class="main grey">
                             <h4>
                                 <!--<a href="#" editable-text="listName">{{ listName || 'empty' }}</a>-->
@@ -39,6 +39,8 @@
                             <div style="height: 100%;" ng-include="'views/resource_management/members.html'"></div>
                         </li>
                     </ul>
+
+                    <div ng-show="loaderShow" class="text-center"><span class="aui-icon aui-icon-wait">Loading...</span></div>
                 </div>
             </div>
         </div>

@@ -48,6 +48,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 //Get all data for Resource Board
             $scope.columns = [];
             $scope.getResourceColumns = function () {
+                $scope.loaderShow = true;
                 //set data to search query
                 var searchQuery = {
                     "technology": $scope.search.technology,
