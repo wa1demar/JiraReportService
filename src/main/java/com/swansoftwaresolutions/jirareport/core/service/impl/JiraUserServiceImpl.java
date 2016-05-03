@@ -111,7 +111,7 @@ public class JiraUserServiceImpl implements JiraUserService {
         jiraUser.setLevel(newResourceUserDto.getLevel());
         jiraUser.setTechnologies(technologyRepository.findAllByIds(newResourceUserDto.getTechnologies()));
 
-        ResourceColumn defaultColumn = resourceBordRepository.findDefaultColumn();
+        ResourceColumn defaultColumn = resourceBordRepository.findById(newResourceUserDto.getAssignmentTypeId());
         jiraUser.setColumns(new ArrayList<ResourceColumn>() {{
             add(defaultColumn);
         }});

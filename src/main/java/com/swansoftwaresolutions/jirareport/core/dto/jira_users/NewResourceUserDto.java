@@ -8,6 +8,7 @@ public class NewResourceUserDto {
     private String userLogin;
     private Integer level;
     private Long location;
+    private Long assignmentTypeId;
     private Long[] technologies;
     private String description;
 
@@ -49,5 +50,13 @@ public class NewResourceUserDto {
 
     public void setLocation(Long location) {
         this.location = location;
+    }
+
+    public Long getAssignmentTypeId() {
+        return assignmentTypeId;
+    }
+
+    public void setAssignmentTypeId(Long assignmentTypeId) {
+        this.assignmentTypeId = assignmentTypeId;
     }
 }
