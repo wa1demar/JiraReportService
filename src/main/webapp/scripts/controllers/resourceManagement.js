@@ -48,6 +48,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 //Get all data for Resource Board
             $scope.columns = [];
             $scope.getResourceColumns = function () {
+                $scope.loaderShow = true;
                 //set data to search query
                 var searchQuery = {
                     "technology": $scope.search.technology,
@@ -532,7 +533,8 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                                     members:                    members,
                                     locations:                  $scope.locations,
                                     technologies:               $scope.technologies,
-                                    engineerLevelDictionary:    $scope.engineerLevelDictionary
+                                    engineerLevelDictionary:    $scope.engineerLevelDictionary,
+                                    assignmentTypes:            $scope.assignmentTypes
                                 };
                             }
                         }
@@ -819,6 +821,7 @@ jiraPluginApp.controller('DlgAddMemberCtrl',
             $scope.locations = dlgData.locations;
             $scope.technologies = dlgData.technologies;
             $scope.engineerLevelDictionary = dlgData.engineerLevelDictionary;
+            $scope.assignmentTypes = dlgData.assignmentTypes;
 
             $scope.ok = function () {
                 if($scope.addMemberForm.$valid) {

@@ -42,6 +42,10 @@
     height: calc(100% - 60px);
 }
 
+.res-left-content-center .aui-icon.aui-icon-wait {
+    margin-top: 25px;
+}
+
 .res-left-content ul.main {
     height: 100%;
     min-width: 100%;
