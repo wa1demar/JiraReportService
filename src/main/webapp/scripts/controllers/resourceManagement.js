@@ -15,6 +15,21 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 memberAssignmentTypeId: null
             };
 
+            // $scope.filterFunction = function(element) {
+            //
+            //     var searchFlag = true;
+            //
+            //     console.log($scope.search.name);
+            //
+            //     if ($scope.search.name !== '' && !element.name.match('/^'+$scope.search.name+'/')) {
+            //         searchFlag = false;
+            //     }
+            //
+            //     return searchFlag;
+            //
+            //     // return element.name.match(/^Dima/) ? true : false;
+            // };
+
 // ----------------------------------------------------------------------------------------------------------------------
 //prepare search params
             if ($window.localStorage.rm_search) {
@@ -35,10 +50,10 @@ jiraPluginApp.controller('ResourceManagementCtrl',
             $scope.getResourceColumns = function () {
                 //set data to search query
                 var searchQuery = {
-                    "technology[]": $scope.search.technology,
-                    "project[]": $scope.search.project,
-                    "engineerLevel[]": $scope.search.engineerLevel,
-                    "location[]": $scope.search.location,
+                    "technology": $scope.search.technology,
+                    "project": $scope.search.project,
+                    "engineerLevel": $scope.search.engineerLevel,
+                    "location": $scope.search.location,
                     name: $scope.search.name === '' ? null : $scope.search.name
                 };
 
