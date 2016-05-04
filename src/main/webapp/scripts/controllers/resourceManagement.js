@@ -224,6 +224,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
             $scope.$watch('search', function() {
                 console.log(" ---- new search");
                 $window.localStorage.rm_search = JSON.stringify($scope.search);
+                $scope.currentMember = null;
                 $scope.getResourceColumns();
             }, true);
 
