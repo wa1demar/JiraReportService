@@ -15,27 +15,48 @@
         <div class="res-left">
             <!--<div class="res-left-head">add column</div>-->
             <div class="res-left-content">
-                <!--<div class="res-left-content-top">-->
-                    <!--<ul class="main">-->
-                        <!--<li ng-repeat="column in columns" class="main">-->
+
+                <!--<div class="res-left-content-center">-->
+                    <!--<ul ng-if="!loaderShow" class="main">-->
+                        <!--<li ng-repeat="column in columns" class="main grey">-->
                             <!--<h4>-->
                                 <!--&lt;!&ndash;<a href="#" editable-text="listName">{{ listName || 'empty' }}</a>&ndash;&gt;-->
                                 <!--{{column.name}} &lt;!&ndash;<span class="count-users">(count: {{column.users.length}})</span>&ndash;&gt;-->
                                 <!--<span ng-if="!column.fixed" ng-click="delColumn(column)" class="glyphicon glyphicon-remove control-icon" title="Delete"></span>-->
                                 <!--<span ng-click="processColumn(column)" class="glyphicon glyphicon-pencil control-icon" title="Edit"></span>-->
                             <!--</h4>-->
+                            <!--<div style="height: 100%;" ng-include="'views/resource_management/members.html'"></div>-->
                         <!--</li>-->
                     <!--</ul>-->
+
+                    <!--<div ng-show="loaderShow" class="text-center"><span class="aui-icon aui-icon-wait">Loading...</span></div>-->
                 <!--</div>-->
+
+
+
+
                 <div class="res-left-content-center">
-                    <ul ng-if="!loaderShow" class="main">
-                        <li ng-repeat="column in columns" class="main grey">
-                            <h4>
+                    <ul ng-if="!loaderShow" class="main"
+                        dnd-list="columns"
+                        dnd-allowed-types="['column']"
+                        dnd-horizontal-list="true"
+                        dnd-external-sources="true">
+                        <li ng-repeat="column in columns"
+                            class="main grey"
+                            dnd-draggable="column"
+                            dnd-type="'column'"
+                            dnd-effect-allowed="copyMove"
+                            dnd-moved="columns.splice($index, 1)"
+                            dnd-dragend="dragendAssignmentType()"
+                            ng-class="{'selected': columns.selected === column}">
+
+                            <h4 class="column-h4">
                                 <!--<a href="#" editable-text="listName">{{ listName || 'empty' }}</a>-->
                                 {{column.name}} <!--<span class="count-users">(count: {{column.users.length}})</span>-->
                                 <span ng-if="!column.fixed" ng-click="delColumn(column)" class="glyphicon glyphicon-remove control-icon" title="Delete"></span>
                                 <span ng-click="processColumn(column)" class="glyphicon glyphicon-pencil control-icon" title="Edit"></span>
                             </h4>
+
                             <div style="height: 100%;" ng-include="'views/resource_management/members.html'"></div>
                         </li>
                     </ul>

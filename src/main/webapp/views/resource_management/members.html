@@ -1,6 +1,9 @@
-<ul dnd-list="column.users" class="item">
+<ul dnd-list="column.users"
+    dnd-allowed-types="['user']"
+    class="item">
     <li ng-repeat="item in column.users"
         dnd-draggable="item"
+        dnd-type="'user'"
         dnd-moved="column.users.splice($index, 1)"
         dnd-effect-allowed="move"
         dnd-selected="selectElement(item)"

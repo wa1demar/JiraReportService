@@ -228,9 +228,31 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 $scope.getResourceColumns();
             }, true);
 
+
+//----------------------------------------------------------------------------------------------------------------------
+//Get dragend AssignmentType
+            $scope.dragendAssignmentType = function() {
+                var dataForUpdate = $scope.columns.map(function(value, index) {
+                    return {
+                        id: value.id,
+                        index: index
+                    };
+                });
+                console.log(dataForUpdate);
+
+                //TODO need add request for save new data
+                // ResourceColumnFactory.query({id: 'sort_columns'}, dataForUpdate, function(result){
+                //     $scope.columns = result.columns;
+                // }, function (error) {
+                //     Notification.error("Server error: get assignment type");
+                // });
+            };
+
 //----------------------------------------------------------------------------------------------------------------------
 //Get dragend member
             $scope.dragendElement = function(item, columnFrom) {
+                $scope.currentMember = item;
+
                 //Find column when drag
                 var columnTo = undefined;
                 var result = undefined;
@@ -255,14 +277,20 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 console.log("To column id: " + columnTo.id + " ---- position: " + indexElementInColumn);
 
                 var dataForUpdate = {
-                    columnFromId:   columnFrom.id,
-                    columnToId:     columnTo.id,
-                    columnToUsers:  columnTo.users
+                    assignmentType: {
+                        fromAssignmentTypeId:   columnFrom.id,
+                        toAssignmentTypeId:     columnTo.id
+                    },
+                    users: columnTo.users.map(function(value, index) {
+                        return {
+                            login: value.login,
+                            index: index
+                        };
+                    })
                 };
-                console.log(dataForUpdate);
 
                 //TODO need add request for save new data
-                // $scope.getResourceColumns();
+                // $scope.moveMember(dataForUpdate);
             };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -303,6 +331,21 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 //Change some search filter
             $scope.searchFiltersChange = function() {
                 console.log('searchFiltersChange');
+            };
+
+//----------------------------------------------------------------------------------------------------------------------
+//Clear some search filter
+            $scope.clearSearch = function() {
+                $scope.search = {
+                    technology: [],
+                    project: [],
+                    engineerLevel: [],
+                    location: [],
+                    name: null
+                };
+
+                $window.localStorage.rm_search = JSON.stringify($scope.search);
+                $scope.currentMember = null;
             };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -386,13 +429,21 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                                     $scope.columns[columnToIndex].users.push($itemScope.item);
 
                                     var dataForUpdate = {
-                                        columnFromId:   $scope.columns[columnFromIndex].id,
-                                        columnToId:     $scope.columns[columnToIndex].id,
-                                        columnToUsers:  $scope.columns[columnToIndex].users
+                                        assignmentType: {
+                                            fromAssignmentTypeId:   $scope.columns[columnFromIndex].id,
+                                            toAssignmentTypeId:     $scope.columns[columnToIndex].id
+                                        },
+                                        users: $scope.columns[columnToIndex].users.map(function(value, index) {
+                                            return {
+                                                login: value.login,
+                                                index: index
+                                            };
+                                        })
                                     };
 
                                     //TODO need add request for save new data
                                     console.log(dataForUpdate);
+                                    // $scope.moveMember(dataForUpdate);
                                 }
                             }
                         );
@@ -412,12 +463,21 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                             $scope.columns[$itemScope.$parent.$index].users.unshift($itemScope.item);
 
                             var dataForUpdate = {
-                                columnFromId:   $scope.columns[$itemScope.$parent.$index].id,
-                                columnToId:     $scope.columns[$itemScope.$parent.$index].id,
-                                columnToUsers:  $scope.columns[$itemScope.$parent.$index].users
+                                assignmentType: {
+                                    fromAssignmentTypeId:   $scope.columns[$itemScope.$parent.$index].id,
+                                    toAssignmentTypeId:     $scope.columns[$itemScope.$parent.$index].id
+                                },
+                                users: $scope.columns[$itemScope.$parent.$index].users.map(function(value, index) {
+                                    return {
+                                        login: value.login,
+                                        index: index
+                                    };
+                                })
                             };
 
+                            //TODO need add request for save new data
                             console.log(dataForUpdate);
+                            // $scope.moveMember(dataForUpdate);
                         }
                     },
                     {
@@ -432,17 +492,37 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                             $scope.columns[$itemScope.$parent.$index].users.push($itemScope.item);
 
                             var dataForUpdate = {
-                                columnFromId:   $scope.columns[$itemScope.$parent.$index].id,
-                                columnToId:     $scope.columns[$itemScope.$parent.$index].id,
-                                columnToUsers:  $scope.columns[$itemScope.$parent.$index].users
+                                assignmentType: {
+                                    fromAssignmentTypeId:   $scope.columns[$itemScope.$parent.$index].id,
+                                    toAssignmentTypeId:     $scope.columns[$itemScope.$parent.$index].id
+                                },
+                                users: $scope.columns[$itemScope.$parent.$index].users.map(function(value, index) {
+                                    return {
+                                        login: value.login,
+                                        index: index
+                                    };
+                                })
                             };
 
+                            //TODO need add request for save new data
                             console.log(dataForUpdate);
+                            // $scope.moveMember(dataForUpdate);
                         }
                     }
                 );
 
                 return menu;
+            };
+
+//----------------------------------------------------------------------------------------------------------------------
+//Save data after member move
+            $scope.moveMember = function (dataForUpdate) {
+                console.log(dataForUpdate);
+                MemberFactory.update({login: $scope.currentMember.login, relation: "move"}, dataForUpdate, function(result){
+                    $scope.columns = result.columns;
+                }, function (error) {
+                    Notification.error("Server error: get assignment type");
+                });
             };
 
 //----------------------------------------------------------------------------------------------------------------------

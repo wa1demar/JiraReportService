@@ -1,4 +1,6 @@
-<div class="search-block-title">Quick filters:</div>
+<div class="search-block-title">Quick filters:
+    <!--<span ng-click="clearSearch()" class="glyphicon glyphicon-trash control-icon-right cursor-pointer" title="Clear filter"></span>-->
+</div>
 <div class="search-block-content">
     <div class="form-group">
         <label for="technology">Technology</label>
@@ -19,6 +21,7 @@
     <div class="form-group">
         <label for="engineerLevel">EL</label>
         <select ui-select2 multiple style="width: 100%;"
+                allow-clear="true"
                 ng-model="search.engineerLevel"
                 data-placeholder="Select EL"
                 id="engineerLevel"
