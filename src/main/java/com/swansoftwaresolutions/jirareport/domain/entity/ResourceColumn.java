@@ -3,7 +3,6 @@ package com.swansoftwaresolutions.jirareport.domain.entity;
 import org.hibernate.annotations.*;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -22,6 +21,7 @@ public class ResourceColumn implements Serializable {
     private String color;
     private boolean fixed;
     private int priority;
+    private int sortPosition;
     private List<JiraUser> users = new ArrayList<>();
 
     @Id
@@ -78,5 +78,14 @@ public class ResourceColumn implements Serializable {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    @Column(name = "sort_position")
+    public int getSortPosition() {
+        return sortPosition;
+    }
+
+    public void setSortPosition(int sortPosition) {
+        this.sortPosition = sortPosition;
     }
 }

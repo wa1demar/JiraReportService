@@ -52,7 +52,7 @@ public class ResourceBordServiceImpl implements ResourceBordService {
 
     @Override
     public FullResourceColumnDtoList getColumns() {
-        List<ResourceColumn> columns = resourceBordRepository.findAll();
+        List<ResourceColumn> columns = resourceBordRepository.findAll(false);
         List<FullResourceColumnDto> columnDtos = resourceBordMapper.fromResourceColumnsToFullResourceColumnDtos(columns);
         FullResourceColumnDtoList fullResourceColumnDtoList = new FullResourceColumnDtoList();
         fullResourceColumnDtoList.setColumns(columnDtos);
@@ -72,24 +72,31 @@ public class ResourceBordServiceImpl implements ResourceBordService {
     }
 
     @Override
-    public List<ResourceColumnDto> getColumnsList() {
-        return resourceBordMapper.fromResourceColumnsToResourceColumnDtos(resourceBordRepository.findAll());
+    public List<ResourceColumnDto> getColumnsList(boolean sorted) {
+        return resourceBordMapper.fromResourceColumnsToResourceColumnDtos(resourceBordRepository.findAll(sorted));
     }
 
     @Override
     public List<ResourceColumnDto> updatePriority(ResourceColumnPriority[] columnPriorities) {
         resourceBordRepository.updatePriorities(columnPriorities);
 
-        return getColumnsList();
+        return getColumnsList(true);
     }
 
     @Override
     public FullResourceColumnDtoList getColumns(ResourceFilterData filterData) {
-        List<ResourceColumn> columns = resourceBordRepository.findAll();
+        List<ResourceColumn> columns = resourceBordRepository.findAll(true);
         List<FullResourceColumnDto> columnDtos = resourceBordMapper.fromResourceColumnsToFullResourceColumnDtos(columns, filterData);
         FullResourceColumnDtoList fullResourceColumnDtoList = new FullResourceColumnDtoList();
         fullResourceColumnDtoList.setColumns(columnDtos);
 
         return fullResourceColumnDtoList;
+    }
+
+    @Override
+    public List<ResourceColumnDto> sort(ResourceColumnPriority[] columnPriorities) {
+        resourceBordRepository.sort(columnPriorities);
+
+        return getColumnsList(true);
     }
 }

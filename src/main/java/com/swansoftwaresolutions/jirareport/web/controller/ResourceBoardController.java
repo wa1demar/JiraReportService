@@ -39,15 +39,6 @@ public class ResourceBoardController {
         return new ResponseEntity<>(newLocationDto, HttpStatus.OK);
     }
 
-//    @RequestMapping(value = "/rest/v1/resource_columns", method = RequestMethod.GET)
-//    @ResponseBody
-//    public ResponseEntity<FullResourceColumnDtoList> getColumnsWithUsers() throws NoSuchEntityException {
-//
-//        FullResourceColumnDtoList fullResourceColumnDtoList = resourceBordService.getColumns();
-//
-//        return new ResponseEntity<>(fullResourceColumnDtoList, HttpStatus.OK);
-//    }
-
     @RequestMapping(value = "/rest/v1/resource_columns", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<FullResourceColumnDtoList> getColumnsWithUsersFiltered(@RequestParam(value = "technology", required = false) String[] technologies,
@@ -84,7 +75,31 @@ public class ResourceBoardController {
     @ResponseBody
     public ResponseEntity<ResourceColumnDtos> getColumns() throws NoSuchEntityException {
 
-        List<ResourceColumnDto> columns = resourceBordService.getColumnsList();
+        List<ResourceColumnDto> columns = resourceBordService.getColumnsList(false);
+
+        ResourceColumnDtos columnDtos = new ResourceColumnDtos();
+        columnDtos.setColumns(columns);
+
+        return new ResponseEntity<>(columnDtos, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/rest/v1/resource_columns/sort", method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseEntity<ResourceColumnDtos> sortColumns(@RequestBody ResourceColumnPriority[] columnPriorities) throws NoSuchEntityException {
+
+        List<ResourceColumnDto> columns = resourceBordService.sort(columnPriorities);
+
+        ResourceColumnDtos columnDtos = new ResourceColumnDtos();
+        columnDtos.setColumns(columns);
+
+        return new ResponseEntity<>(columnDtos, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/rest/v1/resource_columns/sorted_list", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<ResourceColumnDtos> getSortedColumns() throws NoSuchEntityException {
+
+        List<ResourceColumnDto> columns = resourceBordService.getColumnsList(true);
 
         ResourceColumnDtos columnDtos = new ResourceColumnDtos();
         columnDtos.setColumns(columns);
