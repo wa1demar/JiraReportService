@@ -85,7 +85,7 @@ public class ResourceBordServiceImpl implements ResourceBordService {
 
     @Override
     public FullResourceColumnDtoList getColumns(ResourceFilterData filterData) {
-        List<ResourceColumn> columns = resourceBordRepository.findAll(false);
+        List<ResourceColumn> columns = resourceBordRepository.findAll(true);
         List<FullResourceColumnDto> columnDtos = resourceBordMapper.fromResourceColumnsToFullResourceColumnDtos(columns, filterData);
         FullResourceColumnDtoList fullResourceColumnDtoList = new FullResourceColumnDtoList();
         fullResourceColumnDtoList.setColumns(columnDtos);
