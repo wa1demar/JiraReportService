@@ -1,7 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository;
 
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnPriority;
-import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceFilterData;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
 
@@ -17,7 +16,7 @@ public interface ResourceBordRepository {
 
     ResourceColumn findDefaultColumn();
 
-    List<ResourceColumn> findAll();
+    List<ResourceColumn> findAll(boolean sorted);
 
     List<JiraUser> findUsersByColumnId(Long id);
 
@@ -27,4 +26,5 @@ public interface ResourceBordRepository {
 
     ResourceColumn findById(Long toAssignmentTypeId);
 
+    void sort(ResourceColumnPriority[] columnPriorities);
 }
