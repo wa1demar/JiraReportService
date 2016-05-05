@@ -47,8 +47,12 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //Get all data for Resource Board
             $scope.columns = [];
-            $scope.getResourceColumns = function () {
-                $scope.loaderShow = true;
+            $scope.getResourceColumns = function (showLoader) {
+                var showLoader = showLoader !== undefined ? showLoader : false;
+                if (!!showLoader) {
+                    $scope.loaderShow = true;
+                }
+
                 //set data to search query
                 var searchQuery = {
                     "technology": $scope.search.technology,
@@ -203,7 +207,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 //Get assignment type
             $scope.assignmentTypes = [];
             $scope.getAssignmentTypes = function () {
-                ResourceColumnFactory.query({id: 'list'}, function(result){
+                ResourceColumnFactory.query({id: 'sorted_list'}, function(result){
                     $scope.assignmentTypes = result.columns;
                 }, function (error) {
                     Notification.error("Server error: get assignment type");
@@ -225,7 +229,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 console.log(" ---- new search");
                 $window.localStorage.rm_search = JSON.stringify($scope.search);
                 $scope.currentMember = null;
-                $scope.getResourceColumns();
+                $scope.getResourceColumns(true);
             }, true);
 
 
@@ -249,6 +253,12 @@ jiraPluginApp.controller('ResourceManagementCtrl',
             };
 
 //----------------------------------------------------------------------------------------------------------------------
+//Get dragstart member
+            $scope.dragStart = function () {
+
+            };
+
+//----------------------------------------------------------------------------------------------------------------------
 //Get dragend member
             $scope.dragendElement = function(item, columnFrom) {
                 $scope.selectElement(item);
@@ -269,6 +279,12 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                         indexElementInColumn = $scope.columns[index].users.indexOf(result);
                         break;
                     }
+                }
+
+                //if not change position
+                if (columnFrom.id === columnTo.id && item.resourceOrder === indexElementInColumn) {
+                    console.info("Not change position");
+                    return true;
                 }
 
                 var dataForUpdate = {
@@ -312,14 +328,14 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //Show member info in right part
             $scope.showMemberInfoData = function(item) {
-                console.log('showMemberInfoData');
+                // console.log('showMemberInfoData');
                 $scope.currentMember = item;
             };
 
 //----------------------------------------------------------------------------------------------------------------------
 //Show search in right part
             $scope.showSearchFilters = function() {
-                console.log('showSearchFilters');
+                // console.log('showSearchFilters');
             };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -509,13 +525,20 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //Save data after member move
             $scope.moveMember = function (dataForUpdate, indexColumn, indexElementInColumn) {
-                console.log(dataForUpdate);
                 MemberFactory.update({login: $scope.currentMember.login, relation: "move"}, dataForUpdate, function(data){
                     // $scope.columns = result.columns;
                     // $scope.getResourceColumns();
 
+                    //update member info without getResourceColumns
                     $scope.columns[indexColumn].users[indexElementInColumn] = data;
+                    //reindexing resourceOrder
+                    $scope.columns[indexColumn].users.map(function(value, index) {
+                        value.resourceOrder = index;
+                        
+                        return value;
+                    });
                     $scope.selectElement(data);
+                    
                     Notification.success("Save changes success");
                 }, function (error) {
                     Notification.error("Server error: get assignment type");
