@@ -256,6 +256,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 //Find column when drag
                 var columnTo = undefined;
                 var result = undefined;
+                var indexColumn = null;
                 var indexElementInColumn = null;
                 var count = $scope.columns.length;
                 for (var index = 0; index < count; index++) {
@@ -263,18 +264,12 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     if (result !== undefined) {
                         //save column data
                         columnTo = $scope.columns[index];
+                        indexColumn = index;
                         //find index new position in column
                         indexElementInColumn = $scope.columns[index].users.indexOf(result);
                         break;
                     }
                 }
-
-                //TODO save new member position
-                //change member assignment type
-                $scope.columns[index].users[indexElementInColumn].assignmentType = columnTo.id;
-
-                console.log("From column id: " + columnFrom.id);
-                console.log("To column id: " + columnTo.id + " ---- position: " + indexElementInColumn);
 
                 var dataForUpdate = {
                     assignmentType: {
@@ -289,8 +284,8 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                     })
                 };
 
-                //TODO need add request for save new data
-                // $scope.moveMember(dataForUpdate);
+                //add request for save new data
+                $scope.moveMember(dataForUpdate, indexColumn, indexElementInColumn);
             };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -441,9 +436,8 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                                         })
                                     };
 
-                                    //TODO need add request for save new data
-                                    console.log(dataForUpdate);
-                                    // $scope.moveMember(dataForUpdate);
+                                    //add request for save new data
+                                    $scope.moveMember(dataForUpdate, columnToIndex, $scope.columns[columnToIndex].users.length - 1);
                                 }
                             }
                         );
@@ -475,9 +469,8 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                                 })
                             };
 
-                            //TODO need add request for save new data
-                            console.log(dataForUpdate);
-                            // $scope.moveMember(dataForUpdate);
+                            //add request for save new data
+                            $scope.moveMember(dataForUpdate, $itemScope.$parent.$index, 0);
                         }
                     },
                     {
@@ -504,9 +497,8 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                                 })
                             };
 
-                            //TODO need add request for save new data
-                            console.log(dataForUpdate);
-                            // $scope.moveMember(dataForUpdate);
+                            //add request for save new data
+                            $scope.moveMember(dataForUpdate, $itemScope.$parent.$index, $scope.columns[$itemScope.$parent.$index].users.length - 1);
                         }
                     }
                 );
@@ -516,10 +508,15 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 
 //----------------------------------------------------------------------------------------------------------------------
 //Save data after member move
-            $scope.moveMember = function (dataForUpdate) {
+            $scope.moveMember = function (dataForUpdate, indexColumn, indexElementInColumn) {
                 console.log(dataForUpdate);
-                MemberFactory.update({login: $scope.currentMember.login, relation: "move"}, dataForUpdate, function(result){
-                    $scope.columns = result.columns;
+                MemberFactory.update({login: $scope.currentMember.login, relation: "move"}, dataForUpdate, function(data){
+                    // $scope.columns = result.columns;
+                    // $scope.getResourceColumns();
+
+                    $scope.columns[indexColumn].users[indexElementInColumn] = data;
+                    $scope.selectElement(data);
+                    Notification.success("Save changes success");
                 }, function (error) {
                     Notification.error("Server error: get assignment type");
                 });
