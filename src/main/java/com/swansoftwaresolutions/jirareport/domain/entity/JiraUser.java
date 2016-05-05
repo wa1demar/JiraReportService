@@ -27,6 +27,7 @@ public class JiraUser implements Serializable {
     private List<Attachment> attachments = new ArrayList<>();
     private List<ResourceColumn> columns = new ArrayList<>();
     private String avatar;
+    private int resourceOrder;
 
     @Column(name = "email")
     public String getEmail() {
@@ -152,5 +153,14 @@ public class JiraUser implements Serializable {
 
     public void setColumns(List<ResourceColumn> columns) {
         this.columns = columns;
+    }
+
+    @Column(name = "resource_order")
+    public int getResourceOrder() {
+        return resourceOrder;
+    }
+
+    public void setResourceOrder(int resourceOrder) {
+        this.resourceOrder = resourceOrder;
     }
 }

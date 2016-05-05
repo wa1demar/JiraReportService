@@ -2,6 +2,7 @@ package com.swansoftwaresolutions.jirareport.web.controller;
 
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUsersDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MoveMemberDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.NewResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologiesDto;
@@ -67,7 +68,7 @@ public class JiraUsersController {
 
     @RequestMapping(value = "/v1/members/{login:.+}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<ResourceUserDto> getuserInfo(@PathVariable("login") String login) throws NoSuchEntityException {
+    public ResponseEntity<ResourceUserDto> getUserInfo(@PathVariable("login") String login) throws NoSuchEntityException {
 
         ResourceUserDto newNewResourceUserDto = jiraUserService.findInfoByLogin(login);
 
@@ -79,6 +80,15 @@ public class JiraUsersController {
     public ResponseEntity<ResourceUserDto> updateMemberInfo(@PathVariable("login") String login, @Valid @RequestBody MemberDto memberDto) throws NoSuchEntityException {
 
         ResourceUserDto newNewResourceUserDto = jiraUserService.updateMemberInfo(login, memberDto);
+
+        return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/v1/members/{login:.+}/move", method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseEntity<ResourceUserDto> moveMember(@PathVariable("login") String login, @Valid @RequestBody MoveMemberDto memberDto) throws NoSuchEntityException {
+
+        ResourceUserDto newNewResourceUserDto = jiraUserService.moveMember(login, memberDto);
 
         return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
     }
@@ -103,7 +113,7 @@ public class JiraUsersController {
 
     @RequestMapping(value = "/v1/members/{login:.+}/attachment/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<ResourceUserDto> addAttachmentToUser(@PathVariable("id") Long id, @PathVariable("login") String login) throws NoSuchEntityException {
+    public ResponseEntity<ResourceUserDto> deleteAttachmentFromUser(@PathVariable("id") Long id, @PathVariable("login") String login) throws NoSuchEntityException {
 
         jiraUserService.deleteAttachment(id);
 

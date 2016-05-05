@@ -1,10 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
 import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDto;
-import com.swansoftwaresolutions.jirareport.core.dto.jira_users.AssignmentType;
-import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberDto;
-import com.swansoftwaresolutions.jirareport.core.dto.jira_users.NewResourceUserDto;
-import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.*;
 import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologyId;
 import com.swansoftwaresolutions.jirareport.core.mapper.TechnologyMapper;
 import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
@@ -231,5 +228,24 @@ public class JiraUserServiceImpl implements JiraUserService {
 
         attachmentRepository.delete(attachment);
 
+    }
+
+    @Override
+    public ResourceUserDto moveMember(String login, MoveMemberDto memberDto) throws NoSuchEntityException {
+        JiraUser jiraUser = jiraUserRepository.findByLogin(login);
+        AssignmentType assignmentType = memberDto.getAssignmentType();
+
+        if (memberDto.getAssignmentType() != null) {
+            Set<ResourceColumn> columns = new HashSet<>(jiraUser.getColumns());
+            columns.removeIf(resourceColumn -> resourceColumn.getId().equals(assignmentType.getFromAssignmentTypeId()));
+
+            columns.add(resourceBordRepository.findById(assignmentType.getToAssignmentTypeId()));
+            jiraUser.setColumns(new ArrayList<>(columns));
+
+            jiraUser = jiraUserRepository.update(jiraUser);
+        }
+
+        jiraUserRepository.sortMembers(memberDto.getUsers());
+        return jiraUserMapper.fromJiraUserToResourceUserDto(jiraUser);
     }
 }

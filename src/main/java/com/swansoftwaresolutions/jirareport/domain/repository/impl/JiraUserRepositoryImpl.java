@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberPositionDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraGroup;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
@@ -151,6 +152,24 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
             sessionFactory.getCurrentSession().update(user);
         }
 
+
+    }
+
+    @Override
+    public void sortMembers(List<MemberPositionDto> users) {
+        Session session = sessionFactory.openSession();
+        for (MemberPositionDto dto : users) {
+            try {
+                Query query = session.createQuery("update JiraUser u set u.resourceOrder = :position where u.login = :login");
+                query.setParameter("position", dto.getIndex());
+                query.setParameter("login", dto.getLogin());
+                query.executeUpdate();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        session.flush();
+        session.close();
 
     }
 

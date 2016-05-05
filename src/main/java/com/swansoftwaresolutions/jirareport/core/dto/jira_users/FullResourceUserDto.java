@@ -21,6 +21,7 @@ public class FullResourceUserDto {
     private String avatar;
     private List<AttachmentDto> attachments = new ArrayList<>();
     private ResourceColumnDto column;
+    private int resourceOrder;
 
     public String getLogin() {
         return login;
@@ -118,5 +119,13 @@ public class FullResourceUserDto {
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (avatar != null ? avatar.hashCode() : 0);
         return result;
+    }
+
+    public int getResourceOrder() {
+        return resourceOrder;
+    }
+
+    public void setResourceOrder(int resourceOrder) {
+        this.resourceOrder = resourceOrder;
     }
 }

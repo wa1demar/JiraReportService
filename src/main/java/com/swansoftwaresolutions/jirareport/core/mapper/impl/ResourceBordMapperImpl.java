@@ -17,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -114,6 +111,7 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
                     }
 
                 }
+                Collections.sort(fullResourceUserDtos, (o1, o2) -> o1.getResourceOrder() - o2.getResourceOrder());
                 fullResourceColumnDto.setUsers(fullResourceUserDtos);
             }
             columnDtos.add(fullResourceColumnDto);
