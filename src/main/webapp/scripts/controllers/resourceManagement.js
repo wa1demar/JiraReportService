@@ -238,18 +238,18 @@ jiraPluginApp.controller('ResourceManagementCtrl',
             $scope.dragendAssignmentType = function() {
                 var dataForUpdate = $scope.columns.map(function(value, index) {
                     return {
-                        id: value.id,
-                        index: index
+                        columnId: value.id,
+                        columnPriority: index
                     };
                 });
                 console.log(dataForUpdate);
 
                 //TODO need add request for save new data
-                // ResourceColumnFactory.query({id: 'sort_columns'}, dataForUpdate, function(result){
-                //     $scope.columns = result.columns;
-                // }, function (error) {
-                //     Notification.error("Server error: get assignment type");
-                // });
+                ResourceColumnFactory.update({id: 'sort'}, {filters: $scope.search, items: dataForUpdate}, function(result){
+                    $scope.columns = result.columns;
+                }, function (error) {
+                    Notification.error("Server error: save assignment type");
+                });
             };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -525,6 +525,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //Save data after member move
             $scope.moveMember = function (dataForUpdate, indexColumn, indexElementInColumn) {
+                dataForUpdate["filters"] = $scope.search;
                 MemberFactory.update({login: $scope.currentMember.login, relation: "move"}, dataForUpdate, function(data){
                     // $scope.columns = result.columns;
                     // $scope.getResourceColumns();
