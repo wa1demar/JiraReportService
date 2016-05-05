@@ -9,7 +9,7 @@
         dnd-selected="selectElement(item)"
         dnd-dragend="dragendElement(item, column)"
         class="resource-box"
-        ng-class="{'selected': columns.selected === item}"
+        ng-class="{'selected': columns.selected.login === item.login}"
         context-menu="memberMenuOptions(column, item)">
 
         <div class="members-item-box" style="border-left: 8px solid {{column.color}}">

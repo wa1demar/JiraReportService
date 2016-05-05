@@ -251,7 +251,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //Get dragend member
             $scope.dragendElement = function(item, columnFrom) {
-                $scope.currentMember = item;
+                $scope.selectElement(item);
 
                 //Find column when drag
                 var columnTo = undefined;
