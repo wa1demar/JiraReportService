@@ -4,26 +4,26 @@ package com.swansoftwaresolutions.jirareport.core.dto.resourceboard;
  * @author Vladimir Martynyuk
  */
 public class ResourceFilterData {
-    private Long[] technologies;
-    private String[] projects;
-    private Integer[] engineerLevels;
-    private Long[] locations;
+    private Long[] technology;
+    private String[] project;
+    private Integer[] engineerLevel;
+    private Long[] location;
     private String name;
 
-    public Integer[] getEngineerLevels() {
-        return engineerLevels;
+    public Integer[] getEngineerLevel() {
+        return engineerLevel;
     }
 
-    public void setEngineerLevels(Integer[] engineerLevels) {
-        this.engineerLevels = engineerLevels;
+    public void setEngineerLevel(Integer[] engineerLevel) {
+        this.engineerLevel = engineerLevel;
     }
 
-    public Long[] getLocations() {
-        return locations;
+    public Long[] getLocation() {
+        return location;
     }
 
-    public void setLocations(Long[] locations) {
-        this.locations = locations;
+    public void setLocation(Long[] location) {
+        this.location = location;
     }
 
     public String getName() {
@@ -34,19 +34,19 @@ public class ResourceFilterData {
         this.name = name;
     }
 
-    public String[] getProjects() {
-        return projects;
+    public String[] getProject() {
+        return project;
     }
 
-    public void setProjects(String[] projects) {
-        this.projects = projects;
+    public void setProject(String[] project) {
+        this.project = project;
     }
 
-    public Long[] getTechnologies() {
-        return technologies;
+    public Long[] getTechnology() {
+        return technology;
     }
 
-    public void setTechnologies(Long[] technologies) {
-        this.technologies = technologies;
+    public void setTechnology(Long[] technology) {
+        this.technology = technology;
     }
 }

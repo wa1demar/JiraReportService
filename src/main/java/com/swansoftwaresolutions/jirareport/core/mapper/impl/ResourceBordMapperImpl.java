@@ -98,9 +98,9 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
                 for (JiraUser user : c.getUsers()) {
                     FullResourceUserDto userDto = modelMapper.map(user, FullResourceUserDto.class);
                     if (!allUsersFiltered.contains(userDto) && filterName(userDto, filterData.getName())
-                            && filterTechnologies(userDto, filterData.getTechnologies())
-                            && filterLevel(userDto, filterData.getEngineerLevels())
-                            && filterLocations(userDto, filterData.getLocations())) {
+                            && filterTechnologies(userDto, filterData.getTechnology())
+                            && filterLevel(userDto, filterData.getEngineerLevel())
+                            && filterLocations(userDto, filterData.getLocation())) {
                         if (user.getColumns() != null) {
                             ResourceColumn column = user.getColumns().get(0);
                             userDto.setColumn(modelMapper.map(column, ResourceColumnDto.class));
@@ -116,7 +116,7 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
             }
             columnDtos.add(fullResourceColumnDto);
         }
-        Collections.sort(columnDtos, (o1, o2) -> o1.getId().compareTo(o2.getId()));
+        Collections.sort(columnDtos, (o1, o2) -> o1.getSortPosition() - o2.getSortPosition());
 
         return columnDtos;
     }

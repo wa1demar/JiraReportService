@@ -15,6 +15,7 @@ public class FullResourceColumnDto {
     private String color;
     private boolean fixed;
     private int priority;
+    private int sortPosition;
     private List<FullResourceUserDto> users = new ArrayList<>();
 
     public Long getId() {
@@ -63,5 +64,13 @@ public class FullResourceColumnDto {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public int getSortPosition() {
+        return sortPosition;
+    }
+
+    public void setSortPosition(int sortPosition) {
+        this.sortPosition = sortPosition;
     }
 }
