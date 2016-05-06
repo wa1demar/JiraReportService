@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -65,6 +66,7 @@ public class ResourceBoardController {
 
         List<ResourceColumnDto> columns = resourceBordService.updatePriority(columnPriorities);
 
+        Collections.sort(columns, (o1, o2) -> o1.getPriority() - o2.getPriority());
         ResourceColumnDtos columnDtos = new ResourceColumnDtos();
         columnDtos.setColumns(columns);
 
