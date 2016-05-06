@@ -50,7 +50,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                 $scope.lightColor = function (hex, lum) {
                     return colorLuminance(hex, lum);
                 };
-
+                
                 $scope.columns = [
                     {
                         id: 1,
@@ -61,7 +61,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                                 id: 1,
                                 name: "Full Name 1",
                                 engineerLevel: 1,
-                                assignmentTypes: [{id: 1, name: "PM", color: "#4086E7"}],
+                                assignmentTypes: [{id: 3, name: "PM", color: "#4086E7"}],
                                 avatar: "https://swansoftwaresolutions.atlassian.net/secure/useravatar?ownerId=slevchenko&avatarId=13706",
                                 column: {id: 1, name: "Project 1"}
                             },
@@ -70,23 +70,23 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                                 name: "Full Name 2",
                                 engineerLevel: 3,
                                 assignmentTypes: [
-                                    {id: 2, name: "Dev", color: "#179f1c"},
-                                    {id: 3, name: "Shadow", color: "#424242"}
+                                    {id: 11, name: "Dev", color: "#179f1c"},
+                                    {id: 12, name: "Shadow", color: "#424242"}
                                 ],
                                 column: {id: 1, name: "Project 1"}
                             },
                             {
-                                id: 3,
+                                id: 11,
                                 name: "Full Name 3",
                                 engineerLevel: 2,
-                                assignmentTypes: [{id: 2, name: "Dev", color: "#179f1c"}],
+                                assignmentTypes: [{id: 11, name: "Dev", color: "#179f1c"}],
                                 column: {id: 1, name: "Project 1"}
                             },
                             {
-                                id: 3,
+                                id: 12,
                                 name: "Full Name 5",
                                 engineerLevel: 2,
-                                assignmentTypes: [{id: 3, name: "QA", color: "#F4D520"}],
+                                assignmentTypes: [{id: 5, name: "QA", color: "#F4D520"}],
                                 column: {id: 1, name: "Project 1"}
                             }
                         ]
@@ -100,7 +100,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                                 id: 3,
                                 name: "Full Name 2",
                                 engineerLevel: 3,
-                                assignmentTypes: [{id: 1, name: "PM", color: "#4086E7"}],
+                                assignmentTypes: [{id: 3, name: "PM", color: "#4086E7"}],
                                 column: {id: 2, name: "Project 2"}
                             }
                         ]
@@ -114,7 +114,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                                 id: 4,
                                 name: "Full Name 3",
                                 engineerLevel: 2,
-                                assignmentTypes: [{id: 1, name: "PM", color: "#4086E7"}],
+                                assignmentTypes: [{id: 3, name: "PM", color: "#4086E7"}],
                                 column: {id: 3, name: "Project 3"}
                             },
                             {
@@ -122,8 +122,8 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                                 name: "Full Name 2",
                                 engineerLevel: 3,
                                 assignmentTypes: [
-                                    {id: 3, name: "Shadow", color: "#424242"},
-                                    {id: 2, name: "Dev", color: "#179f1c"}
+                                    {id: 12, name: "Shadow", color: "#424242"},
+                                    {id: 11, name: "Dev", color: "#179f1c"}
                                 ],
                                 column: {id: 1, name: "Project 1"}
                             }
@@ -138,7 +138,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                                 id: 5,
                                 name: "Full Name 4",
                                 engineerLevel: 2,
-                                assignmentTypes: [{id: 1, name: "PM", color: "#4086E7"}],
+                                assignmentTypes: [{id: 3, name: "PM", color: "#4086E7"}],
                                 column: {id: 4, name: "Project 4"}
                             }
                         ]
@@ -147,7 +147,6 @@ jiraPluginApp.controller('ProjectManagementCtrl',
 
                 console.log($scope.columns);
             };
-            $scope.getProjectColumns();
 
             $scope.currentProject = {};
 
@@ -167,7 +166,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
 //Get assignment type
             $scope.assignmentTypes = [];
             $scope.getAssignmentTypes = function () {
-                ResourceColumnFactory.query({id: 'list'}, function(result){
+                ResourceColumnFactory.query({id: 'sorted_list'}, function(result){
                     $scope.assignmentTypes = result.columns;
                 }, function (error) {
                     Notification.error("Server error: get assignment type");
@@ -189,29 +188,33 @@ jiraPluginApp.controller('ProjectManagementCtrl',
             };
             $scope.getProjects();
 
-            // $scope.changeSearch = function() {
-            //     // console.log($scope.search);
-            // };
-
             $scope.$watch('search', function() {
                 console.log(" ---- new search");
                 $window.localStorage.pm_search = JSON.stringify($scope.search);
-                $scope.getProjectColumns();
+                $scope.getProjectColumns(true);
             }, true);
 
-
-            // $scope.test1 = function (){
-            //     return false;
-            // };
-
 //----------------------------------------------------------------------------------------------------------------------
-//Get dragend project
+//Dragend project
             $scope.dragendProject = function () {
-                console.log($scope.columns);
+                var dataForUpdate = $scope.columns.map(function(value, index) {
+                    return {
+                        columnId: value.id,
+                        columnPriority: index
+                    };
+                });
+                console.log(dataForUpdate);
+
+                //TODO need add request for save new data
+                // ProjectFactory.update({id: 'sort'}, {filters: $scope.search, items: dataForUpdate}, function(result){
+                //     $scope.columns = result.columns;
+                // }, function (error) {
+                //     Notification.error("Server error: save assignment type");
+                // });
             };
 
 //----------------------------------------------------------------------------------------------------------------------
-//Get dragend member
+//Dragend member
             $scope.dragendElement = function(item, projectIndex, memberIndex) {
 
                 var modalInstance = $uibModal.open({
@@ -312,20 +315,14 @@ jiraPluginApp.controller('ProjectManagementCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //Show member info in right part
             $scope.showProjectInfoData = function(item) {
-                console.log('showProjectInfoData');
+                // console.log('showProjectInfoData');
                 $scope.currentProject = item;
             };
 
 //----------------------------------------------------------------------------------------------------------------------
 //Show search in right part
             $scope.showSearchFilters = function() {
-                console.log('showSearchFilters');
-            };
-
-//----------------------------------------------------------------------------------------------------------------------
-//Change some search filter
-            $scope.searchFiltersChange = function() {
-                console.log('searchFiltersChange');
+                // console.log('showSearchFilters');
             };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -384,7 +381,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                 var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'views/dlg/dlg_delete_element.html',
-                    controller: 'DlgDeleteProjectCtrl',
+                    controller: 'DlgDeleteCtrl',
                     resolve: {
                         dlgData: function () {
                             return item;
@@ -392,7 +389,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                     }
                 });
                 modalInstance.result.then(function (data) {
-                    ProjectFactory.delete({id: $scope.currentMember.id}, function() {
+                    ProjectFactory.delete({id: data.id}, function() {
                         Notification.success("Delete project success");
                         //get projects
                         $scope.getProjectColumns();
@@ -408,7 +405,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                 var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'views/dlg/dlg_delete_element.html',
-                    controller: 'DlgDeleteProjectMemberCtrl',
+                    controller: 'DlgDeleteCtrl',
                     resolve: {
                         dlgData: function () {
                             return item;
@@ -445,37 +442,8 @@ jiraPluginApp.controller('DlgProcessProjectCtrl',
                 $uibModalInstance.dismiss('cancel');
             };
         }
-    ]);
-
-jiraPluginApp.controller('DlgDeleteProjectCtrl',
-    ['$scope', '$uibModalInstance', 'dlgData',
-        function ($scope, $uibModalInstance, dlgData) {
-            $scope.dlgData = dlgData;
-
-            $scope.ok = function () {
-                $uibModalInstance.close($scope.dlgData);
-            };
-
-            $scope.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
-            };
-        }
-    ]);
-
-jiraPluginApp.controller('DlgDeleteProjectMemberCtrl',
-    ['$scope', '$uibModalInstance', 'dlgData',
-        function ($scope, $uibModalInstance, dlgData) {
-            $scope.dlgData = dlgData;
-
-            $scope.ok = function () {
-                $uibModalInstance.close($scope.dlgData);
-            };
-
-            $scope.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
-            };
-        }
-    ]);
+    ]
+);
 
 jiraPluginApp.controller('DlgMemberChangeProject',
     ['$scope', '$uibModalInstance', 'dlgData',
@@ -490,4 +458,5 @@ jiraPluginApp.controller('DlgMemberChangeProject',
                 $uibModalInstance.dismiss('cancel');
             };
         }
-    ]);
+    ]
+);

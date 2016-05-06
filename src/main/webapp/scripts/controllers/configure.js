@@ -471,7 +471,7 @@ jiraPluginApp.controller('ConfigureSprintTeamCtrl',
             var modalInstance = $uibModal.open({
                 animation: true,
                 templateUrl: 'views/dlg/dlg_delete_element.html',
-                controller: 'DlgDeleteSprintCtrl',
+                controller: 'DlgDeleteCtrl',
                 resolve: {
                     dlgData: function () {
                         return item;
@@ -574,20 +574,6 @@ jiraPluginApp.controller('DlgProcessSprintCtrl',
             if($scope.processSprintForm.$valid) {
                 $uibModalInstance.close(result);
             }
-        };
-
-        $scope.cancel = function () {
-            $uibModalInstance.dismiss('cancel');
-        };
-    }
-]);
-
-jiraPluginApp.controller('DlgDeleteSprintCtrl', ['$scope', '$uibModalInstance', 'dlgData',
-    function ($scope, $uibModalInstance, dlgData) {
-        $scope.dlgData = dlgData;
-
-        $scope.ok = function () {
-            $uibModalInstance.close($scope.dlgData);
         };
 
         $scope.cancel = function () {
@@ -699,7 +685,7 @@ jiraPluginApp.controller('DlgSprintTeamActivityCtrl', ['$scope', '$uibModal', '$
             var modalInstance = $uibModal.open({
                 animation: true,
                 templateUrl: 'views/dlg/dlg_delete_element.html',
-                controller: 'DlgDeleteIssueCtrl',
+                controller: 'DlgDeleteCtrl',
                 size: 'sm',
                 resolve: {
                     dlgData: function () {
@@ -736,20 +722,6 @@ jiraPluginApp.controller('DlgProcessIssueCtrl', ['$scope', '$uibModalInstance', 
 
         $scope.ok = function () {
             $uibModalInstance.close($scope.issue);
-        };
-
-        $scope.cancel = function () {
-            $uibModalInstance.dismiss('cancel');
-        };
-    }
-]);
-
-jiraPluginApp.controller('DlgDeleteIssueCtrl', ['$scope', '$uibModalInstance', 'dlgData',
-    function ($scope, $uibModalInstance, dlgData) {
-        $scope.dlgData = dlgData;
-
-        $scope.ok = function () {
-            $uibModalInstance.close($scope.dlgData);
         };
 
         $scope.cancel = function () {

@@ -85,7 +85,7 @@ jiraPluginApp.controller('DictionaryCtrl',
                 var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'views/dlg/dlg_delete_element.html',
-                    controller: 'DlgDeleteDictionaryCtrl',
+                    controller: 'DlgDeleteCtrl',
                     resolve: {
                         dlgData: function () {
                             return item;
@@ -122,17 +122,3 @@ jiraPluginApp.controller('DlgProcessDictionaryCtrl',
             };
         }
     ]);
-
-jiraPluginApp.controller('DlgDeleteDictionaryCtrl', ['$scope', '$uibModalInstance', 'dlgData',
-    function ($scope, $uibModalInstance, dlgData) {
-        $scope.dlgData = dlgData;
-
-        $scope.ok = function () {
-            $uibModalInstance.close($scope.dlgData);
-        };
-
-        $scope.cancel = function () {
-            $uibModalInstance.dismiss('cancel');
-        };
-    }
-]);

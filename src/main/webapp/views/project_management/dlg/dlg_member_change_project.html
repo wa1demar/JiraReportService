@@ -14,7 +14,7 @@
       </div>
       <div class="form-group">
           <label for="member-assignment-type">Assignment type</label>
-          <select class="form-control" ng-init="model.assignmentType = dlgData.item.assignmentType.id" ng-model="model.assignmentType" id="member-assignment-type" name="member-assignment-type" convert-to-number>
+          <select class="form-control" ng-init="model.assignmentType = dlgData.item.assignmentTypes[0].id" ng-model="model.assignmentType" id="member-assignment-type" name="member-assignment-type" convert-to-number>
               <option ng-repeat="value in dlgData.assignmentTypes" value="{{value.id}}">{{value.name}}</option>
           </select>
       </div>

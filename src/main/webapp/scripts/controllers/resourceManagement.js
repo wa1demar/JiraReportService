@@ -339,12 +339,6 @@ jiraPluginApp.controller('ResourceManagementCtrl',
             };
 
 //----------------------------------------------------------------------------------------------------------------------
-//Change some search filter
-            $scope.searchFiltersChange = function() {
-                console.log('searchFiltersChange');
-            };
-
-//----------------------------------------------------------------------------------------------------------------------
 //Clear some search filter
             $scope.clearSearch = function() {
                 $scope.search = {
@@ -586,7 +580,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'views/dlg/dlg_delete_element.html',
-                    controller: 'DlgDeleteColumnCtrl',
+                    controller: 'DlgDeleteCtrl',
                     resolve: {
                         dlgData: function () {
                             return item;
@@ -658,7 +652,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'views/dlg/dlg_delete_element.html',
-                    controller: 'DlgDeleteMemberCtrl',
+                    controller: 'DlgDeleteCtrl',
                     resolve: {
                         dlgData: function () {
                             return $scope.currentMember;
@@ -723,7 +717,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'views/dlg/dlg_delete_element.html',
-                    controller: 'DlgDeleteExperienceCtrl',
+                    controller: 'DlgDeleteCtrl',
                     resolve: {
                         dlgData: function () {
                             return item;
@@ -775,7 +769,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'views/dlg/dlg_delete_element.html',
-                    controller: 'DlgDeleteMemberProjectCtrl',
+                    controller: 'DlgDeleteCtrl',
                     resolve: {
                         dlgData: function () {
                             return item;
@@ -861,7 +855,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'views/dlg/dlg_delete_element.html',
-                    controller: 'DlgDeleteAttachCtrl',
+                    controller: 'DlgDeleteCtrl',
                     resolve: {
                         dlgData: function () {
                             return item;
@@ -900,21 +894,6 @@ jiraPluginApp.controller('DlgProcessColumnCtrl',
         }
     ]);
 
-jiraPluginApp.controller('DlgDeleteColumnCtrl',
-    ['$scope', '$uibModalInstance', 'dlgData',
-        function ($scope, $uibModalInstance, dlgData) {
-            $scope.dlgData = dlgData;
-
-            $scope.ok = function () {
-                $uibModalInstance.close($scope.dlgData);
-            };
-
-            $scope.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
-            };
-        }
-]);
-
 jiraPluginApp.controller('DlgAddMemberCtrl',
     ['$scope', '$uibModalInstance', 'dlgData',
         function ($scope, $uibModalInstance, dlgData) {
@@ -929,21 +908,6 @@ jiraPluginApp.controller('DlgAddMemberCtrl',
                 if($scope.addMemberForm.$valid) {
                     $uibModalInstance.close($scope.model);
                 }
-            };
-
-            $scope.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
-            };
-        }
-    ]);
-
-jiraPluginApp.controller('DlgDeleteMemberCtrl',
-    ['$scope', '$uibModalInstance', 'dlgData',
-        function ($scope, $uibModalInstance, dlgData) {
-            $scope.dlgData = dlgData;
-
-            $scope.ok = function () {
-                $uibModalInstance.close($scope.dlgData);
             };
 
             $scope.cancel = function () {
@@ -969,21 +933,6 @@ jiraPluginApp.controller('DlgAddExperienceCtrl',
         }
     ]);
 
-jiraPluginApp.controller('DlgDeleteExperienceCtrl',
-    ['$scope', '$uibModalInstance', 'dlgData',
-        function ($scope, $uibModalInstance, dlgData) {
-            $scope.dlgData = dlgData;
-
-            $scope.ok = function () {
-                $uibModalInstance.close($scope.dlgData);
-            };
-
-            $scope.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
-            };
-        }
-    ]);
-
 jiraPluginApp.controller('DlgAddMemberProjectCtrl',
     ['$scope', '$uibModalInstance', 'dlgData',
         function ($scope, $uibModalInstance, dlgData) {
@@ -993,21 +942,6 @@ jiraPluginApp.controller('DlgAddMemberProjectCtrl',
                 if($scope.addMemberProjectForm.$valid) {
                     $uibModalInstance.close($scope.model);
                 }
-            };
-
-            $scope.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
-            };
-        }
-    ]);
-
-jiraPluginApp.controller('DlgDeleteMemberProjectCtrl',
-    ['$scope', '$uibModalInstance', 'dlgData',
-        function ($scope, $uibModalInstance, dlgData) {
-            $scope.dlgData = dlgData;
-
-            $scope.ok = function () {
-                $uibModalInstance.close($scope.dlgData);
             };
 
             $scope.cancel = function () {
@@ -1096,21 +1030,6 @@ jiraPluginApp.controller('DlgUploadAttachCtrl',
             // $scope.ok = function () {
             //
             // };
-
-            $scope.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
-            };
-        }
-    ]);
-
-jiraPluginApp.controller('DlgDeleteAttachCtrl',
-    ['$scope', '$uibModalInstance', 'dlgData',
-        function ($scope, $uibModalInstance, dlgData) {
-            $scope.dlgData = dlgData;
-
-            $scope.ok = function () {
-                $uibModalInstance.close($scope.dlgData);
-            };
 
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
