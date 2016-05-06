@@ -247,6 +247,10 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 //TODO need add request for save new data
                 ResourceColumnFactory.update({id: 'sort'}, {filters: $scope.search, items: dataForUpdate}, function(result){
                     $scope.columns = result.columns;
+                    if ($scope.currentMember !== null) {
+                        $scope.selectElement($scope.currentMember);
+                    }
+                    Notification.success("Save changes success");
                 }, function (error) {
                     Notification.error("Server error: save assignment type");
                 });
@@ -521,8 +525,12 @@ jiraPluginApp.controller('ResourceManagementCtrl',
             $scope.moveMember = function (dataForUpdate, indexColumn, indexElementInColumn) {
                 dataForUpdate["filters"] = $scope.search;
                 MemberFactory.update({login: $scope.currentMember.login, relation: "move"}, dataForUpdate, function(data){
+                    //update member info from backend
                     // $scope.columns = result.columns;
-                    // $scope.getResourceColumns();
+                    // if ($scope.currentMember !== null) {
+                    //     $scope.selectElement($scope.currentMember);
+                    // }
+                    // Notification.success("Save changes success");
 
                     //update member info without getResourceColumns
                     $scope.columns[indexColumn].users[indexElementInColumn] = data;
