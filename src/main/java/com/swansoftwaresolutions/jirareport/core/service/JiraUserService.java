@@ -4,6 +4,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MoveMemberDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.NewResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDtoList;
 import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologyId;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -47,4 +48,6 @@ public interface JiraUserService {
     void deleteAttachment(Long id);
 
     ResourceUserDto moveMember(String login, MoveMemberDto memberDto) throws NoSuchEntityException;
+
+    FullResourceColumnDtoList moveMemberFull(String login, MoveMemberDto memberDto) throws NoSuchEntityException;
 }

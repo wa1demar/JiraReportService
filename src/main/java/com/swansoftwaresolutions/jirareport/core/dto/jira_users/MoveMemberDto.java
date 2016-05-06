@@ -1,5 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.dto.jira_users;
 
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceFilterData;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +11,7 @@ import java.util.List;
 public class MoveMemberDto {
     private AssignmentType assignmentType;
     private List<MemberPositionDto> users = new ArrayList<>();
+    private ResourceFilterData filters;
 
     public AssignmentType getAssignmentType() {
         return assignmentType;
@@ -24,5 +27,13 @@ public class MoveMemberDto {
 
     public void setUsers(List<MemberPositionDto> users) {
         this.users = users;
+    }
+
+    public ResourceFilterData getFilters() {
+        return filters;
+    }
+
+    public void setFilters(ResourceFilterData filters) {
+        this.filters = filters;
     }
 }

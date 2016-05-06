@@ -2,9 +2,11 @@ package com.swansoftwaresolutions.jirareport.core.service.impl;
 
 import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.*;
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDtoList;
 import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologyId;
 import com.swansoftwaresolutions.jirareport.core.mapper.TechnologyMapper;
 import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
+import com.swansoftwaresolutions.jirareport.core.service.ResourceBordService;
 import com.swansoftwaresolutions.jirareport.domain.entity.Attachment;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
@@ -49,6 +51,9 @@ public class JiraUserServiceImpl implements JiraUserService {
 
     @Autowired
     AttachmentRepository attachmentRepository;
+
+    @Autowired
+    ResourceBordService resourceBordService;
 
     @Autowired
     JiraUserMapper jiraUserMapper;
@@ -247,5 +252,25 @@ public class JiraUserServiceImpl implements JiraUserService {
 
         jiraUserRepository.sortMembers(memberDto.getUsers());
         return jiraUserMapper.fromJiraUserToResourceUserDto(jiraUser);
+    }
+
+    @Override
+    public FullResourceColumnDtoList moveMemberFull(String login, MoveMemberDto memberDto) throws NoSuchEntityException {
+        JiraUser jiraUser = jiraUserRepository.findByLogin(login);
+        AssignmentType assignmentType = memberDto.getAssignmentType();
+
+        if (memberDto.getAssignmentType() != null) {
+            Set<ResourceColumn> columns = new HashSet<>(jiraUser.getColumns());
+            columns.removeIf(resourceColumn -> resourceColumn.getId().equals(assignmentType.getFromAssignmentTypeId()));
+
+            columns.add(resourceBordRepository.findById(assignmentType.getToAssignmentTypeId()));
+            jiraUser.setColumns(new ArrayList<>(columns));
+
+            jiraUser = jiraUserRepository.update(jiraUser);
+        }
+
+        jiraUserRepository.sortMembers(memberDto.getUsers());
+
+        return resourceBordService.getColumns(memberDto.getFilters());
     }
 }
