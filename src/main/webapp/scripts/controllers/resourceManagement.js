@@ -253,13 +253,13 @@ jiraPluginApp.controller('ResourceManagementCtrl',
             };
 
 //----------------------------------------------------------------------------------------------------------------------
-//Get dragstart member
+//Dragstart member
             $scope.dragStart = function () {
 
             };
 
 //----------------------------------------------------------------------------------------------------------------------
-//Get dragend member
+//Dragend member
             $scope.dragendElement = function(item, columnFrom) {
                 $scope.selectElement(item);
 

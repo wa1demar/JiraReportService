@@ -40,7 +40,8 @@
                         dnd-list="columns"
                         dnd-allowed-types="['column']"
                         dnd-horizontal-list="true"
-                        dnd-external-sources="true">
+                        dnd-external-sources="true"
+                        ng-style="{width: columns.length*240}">
                         <li ng-repeat="column in columns"
                             class="main grey"
                             dnd-draggable="column"
