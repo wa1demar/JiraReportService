@@ -98,9 +98,9 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
                 for (JiraUser user : c.getUsers()) {
                     FullResourceUserDto userDto = modelMapper.map(user, FullResourceUserDto.class);
                     if (!allUsersFiltered.contains(userDto) && filterName(userDto, filterData.getName())
-                            && filterTechnologies(userDto, filterData.getTechnologies())
-                            && filterLevel(userDto, filterData.getEngineerLevels())
-                            && filterLocations(userDto, filterData.getLocations())) {
+                            && filterTechnologies(userDto, filterData.getTechnology())
+                            && filterLevel(userDto, filterData.getEngineerLevel())
+                            && filterLocations(userDto, filterData.getLocation())) {
                         if (user.getColumns() != null) {
                             ResourceColumn column = user.getColumns().get(0);
                             userDto.setColumn(modelMapper.map(column, ResourceColumnDto.class));

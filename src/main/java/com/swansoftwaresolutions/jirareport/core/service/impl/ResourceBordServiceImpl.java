@@ -94,9 +94,9 @@ public class ResourceBordServiceImpl implements ResourceBordService {
     }
 
     @Override
-    public List<ResourceColumnDto> sort(ResourceColumnPriority[] columnPriorities) {
-        resourceBordRepository.sort(columnPriorities);
+    public FullResourceColumnDtoList sort(SortingColumnsObject columnPriorities) {
+        resourceBordRepository.sort(columnPriorities.getItems());
 
-        return getColumnsList(true);
+        return getColumns(columnPriorities.getFilters());
     }
 }

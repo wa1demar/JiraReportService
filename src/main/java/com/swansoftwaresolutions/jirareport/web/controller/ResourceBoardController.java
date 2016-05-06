@@ -48,10 +48,10 @@ public class ResourceBoardController {
                                                                                  @RequestParam(value = "name", required = false) String name) throws NoSuchEntityException {
 
         ResourceFilterData filterData = new ResourceFilterData();
-        filterData.setTechnologies(arrToLong(technologies));
-        filterData.setProjects(projects);
-        filterData.setEngineerLevels(arrToInteger(engineerLevels));
-        filterData.setLocations(arrToLong(locations));
+        filterData.setTechnology(arrToLong(technologies));
+        filterData.setProject(projects);
+        filterData.setEngineerLevel(arrToInteger(engineerLevels));
+        filterData.setLocation(arrToLong(locations));
         filterData.setName(name);
 
         FullResourceColumnDtoList fullResourceColumnDtoList = resourceBordService.getColumns(filterData);
@@ -85,14 +85,11 @@ public class ResourceBoardController {
 
     @RequestMapping(value = "/rest/v1/resource_columns/sort", method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseEntity<ResourceColumnDtos> sortColumns(@RequestBody ResourceColumnPriority[] columnPriorities) throws NoSuchEntityException {
+    public ResponseEntity<FullResourceColumnDtoList> sortColumns(@RequestBody SortingColumnsObject columnPriorities) throws NoSuchEntityException {
 
-        List<ResourceColumnDto> columns = resourceBordService.sort(columnPriorities);
+        FullResourceColumnDtoList columns = resourceBordService.sort(columnPriorities);
 
-        ResourceColumnDtos columnDtos = new ResourceColumnDtos();
-        columnDtos.setColumns(columns);
-
-        return new ResponseEntity<>(columnDtos, HttpStatus.OK);
+        return new ResponseEntity<>(columns, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/rest/v1/resource_columns/sorted_list", method = RequestMethod.GET)
