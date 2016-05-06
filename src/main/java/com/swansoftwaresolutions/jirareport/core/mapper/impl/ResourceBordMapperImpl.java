@@ -122,7 +122,7 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
     }
 
     private boolean filterLocations(FullResourceUserDto userDto, Long[] locations) {
-        if (locations == null) {
+        if (locations == null || locations.length == 0) {
             return true;
         }
 
@@ -139,7 +139,7 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
     }
 
     private boolean filterTechnologies(FullResourceUserDto userDto, Long[] technologies) {
-        if (technologies == null) {
+        if (technologies == null || technologies.length == 0) {
             return true;
         }
 
@@ -156,7 +156,7 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
     }
 
     private boolean filterName(FullResourceUserDto userDto, String name) {
-        if (name == null) {
+        if (name == null || name.equals("")) {
             return true;
         }
         String[] names = userDto.getName().split(" ");
@@ -168,7 +168,7 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
     }
 
     private boolean filterLevel(FullResourceUserDto userDto, Integer[] level) {
-        if (level == null) {
+        if (level == null || level.length == 0) {
             return true;
         }
         for (int i = 0; i < level.length; i++) {
