@@ -124,7 +124,7 @@ jiraPluginApp.controller('SystemUserCtrl',
                 var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'views/dlg/dlg_delete_element.html',
-                    controller: 'DlgDeleteSystemUserCtrl',
+                    controller: 'DlgDeleteCtrl',
                     size: 'sm',
                     resolve: {
                         dlgData: function () {
@@ -223,20 +223,6 @@ jiraPluginApp.controller('DlgResetPasswordSystemUserCtrl', ['$scope', '$uibModal
                 $scope.dlgLoaderShow = false;
                 $uibModalInstance.close($scope.item);
             });
-        };
-
-        $scope.cancel = function () {
-            $uibModalInstance.dismiss('cancel');
-        };
-    }
-]);
-
-jiraPluginApp.controller('DlgDeleteSystemUserCtrl', ['$scope', '$uibModalInstance', 'dlgData',
-    function ($scope, $uibModalInstance, dlgData) {
-        $scope.dlgData = dlgData;
-
-        $scope.ok = function () {
-            $uibModalInstance.close($scope.dlgData);
         };
 
         $scope.cancel = function () {

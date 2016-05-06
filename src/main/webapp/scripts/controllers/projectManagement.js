@@ -147,7 +147,6 @@ jiraPluginApp.controller('ProjectManagementCtrl',
 
                 console.log($scope.columns);
             };
-            $scope.getProjectColumns();
 
             $scope.currentProject = {};
 
@@ -167,7 +166,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
 //Get assignment type
             $scope.assignmentTypes = [];
             $scope.getAssignmentTypes = function () {
-                ResourceColumnFactory.query({id: 'list'}, function(result){
+                ResourceColumnFactory.query({id: 'sorted_list'}, function(result){
                     $scope.assignmentTypes = result.columns;
                 }, function (error) {
                     Notification.error("Server error: get assignment type");
@@ -189,29 +188,20 @@ jiraPluginApp.controller('ProjectManagementCtrl',
             };
             $scope.getProjects();
 
-            // $scope.changeSearch = function() {
-            //     // console.log($scope.search);
-            // };
-
             $scope.$watch('search', function() {
                 console.log(" ---- new search");
                 $window.localStorage.pm_search = JSON.stringify($scope.search);
-                $scope.getProjectColumns();
+                $scope.getProjectColumns(true);
             }, true);
 
-
-            // $scope.test1 = function (){
-            //     return false;
-            // };
-
 //----------------------------------------------------------------------------------------------------------------------
-//Get dragend project
+//Dragend project
             $scope.dragendProject = function () {
                 console.log($scope.columns);
             };
 
 //----------------------------------------------------------------------------------------------------------------------
-//Get dragend member
+//Dragend member
             $scope.dragendElement = function(item, projectIndex, memberIndex) {
 
                 var modalInstance = $uibModal.open({
@@ -312,20 +302,14 @@ jiraPluginApp.controller('ProjectManagementCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //Show member info in right part
             $scope.showProjectInfoData = function(item) {
-                console.log('showProjectInfoData');
+                // console.log('showProjectInfoData');
                 $scope.currentProject = item;
             };
 
 //----------------------------------------------------------------------------------------------------------------------
 //Show search in right part
             $scope.showSearchFilters = function() {
-                console.log('showSearchFilters');
-            };
-
-//----------------------------------------------------------------------------------------------------------------------
-//Change some search filter
-            $scope.searchFiltersChange = function() {
-                console.log('searchFiltersChange');
+                // console.log('showSearchFilters');
             };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -384,7 +368,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                 var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'views/dlg/dlg_delete_element.html',
-                    controller: 'DlgDeleteProjectCtrl',
+                    controller: 'DlgDeleteCtrl',
                     resolve: {
                         dlgData: function () {
                             return item;
@@ -392,7 +376,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                     }
                 });
                 modalInstance.result.then(function (data) {
-                    ProjectFactory.delete({id: $scope.currentMember.id}, function() {
+                    ProjectFactory.delete({id: data.id}, function() {
                         Notification.success("Delete project success");
                         //get projects
                         $scope.getProjectColumns();
@@ -408,7 +392,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                 var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'views/dlg/dlg_delete_element.html',
-                    controller: 'DlgDeleteProjectMemberCtrl',
+                    controller: 'DlgDeleteCtrl',
                     resolve: {
                         dlgData: function () {
                             return item;
@@ -445,37 +429,8 @@ jiraPluginApp.controller('DlgProcessProjectCtrl',
                 $uibModalInstance.dismiss('cancel');
             };
         }
-    ]);
-
-jiraPluginApp.controller('DlgDeleteProjectCtrl',
-    ['$scope', '$uibModalInstance', 'dlgData',
-        function ($scope, $uibModalInstance, dlgData) {
-            $scope.dlgData = dlgData;
-
-            $scope.ok = function () {
-                $uibModalInstance.close($scope.dlgData);
-            };
-
-            $scope.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
-            };
-        }
-    ]);
-
-jiraPluginApp.controller('DlgDeleteProjectMemberCtrl',
-    ['$scope', '$uibModalInstance', 'dlgData',
-        function ($scope, $uibModalInstance, dlgData) {
-            $scope.dlgData = dlgData;
-
-            $scope.ok = function () {
-                $uibModalInstance.close($scope.dlgData);
-            };
-
-            $scope.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
-            };
-        }
-    ]);
+    ]
+);
 
 jiraPluginApp.controller('DlgMemberChangeProject',
     ['$scope', '$uibModalInstance', 'dlgData',
@@ -490,4 +445,5 @@ jiraPluginApp.controller('DlgMemberChangeProject',
                 $uibModalInstance.dismiss('cancel');
             };
         }
-    ]);
+    ]
+);

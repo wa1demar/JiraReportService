@@ -116,7 +116,7 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', '$location', 'AuthenticationFact
             var modalInstance = $uibModal.open({
                 animation: true,
                 templateUrl: 'views/dlg/dlg_delete_element.html',
-                controller: 'DlgDeleteReportCtrl',
+                controller: 'DlgDeleteCtrl',
                 resolve: {
                     dlgData: function () {
                         return item;
@@ -188,20 +188,6 @@ jiraPluginApp.controller('DlgProcessReportCtrl',
             };
         }
     ]);
-
-jiraPluginApp.controller('DlgDeleteReportCtrl', ['$scope', '$uibModalInstance', 'dlgData',
-    function ($scope, $uibModalInstance, dlgData) {
-        $scope.dlgData = dlgData;
-
-        $scope.ok = function () {
-            $uibModalInstance.close($scope.dlgData);
-        };
-
-        $scope.cancel = function () {
-            $uibModalInstance.dismiss('cancel');
-        };
-    }
-]);
 
 jiraPluginApp.controller('DlgCopyReportCtrl', ['$scope', '$uibModalInstance', 'dlgData',
     function ($scope, $uibModalInstance, dlgData) {
