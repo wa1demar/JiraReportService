@@ -5,6 +5,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MoveMemberDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.NewResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDtoList;
 import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologiesDto;
 import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologyId;
 import com.swansoftwaresolutions.jirareport.core.service.AttachmentService;
@@ -89,6 +90,15 @@ public class JiraUsersController {
     public ResponseEntity<ResourceUserDto> moveMember(@PathVariable("login") String login, @Valid @RequestBody MoveMemberDto memberDto) throws NoSuchEntityException {
 
         ResourceUserDto newNewResourceUserDto = jiraUserService.moveMember(login, memberDto);
+
+        return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/v1/members/{login:.+}/move2", method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseEntity<FullResourceColumnDtoList> move2Member(@PathVariable("login") String login, @Valid @RequestBody MoveMemberDto memberDto) throws NoSuchEntityException {
+
+        FullResourceColumnDtoList newNewResourceUserDto = jiraUserService.moveMemberFull(login, memberDto);
 
         return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
     }
