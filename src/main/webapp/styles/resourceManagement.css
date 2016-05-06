@@ -310,9 +310,41 @@ ul.item.projects .avatar img.avatar {
 
 }
 
+.projects-item-box .avatar,
+.projects-item-box .name-box,
+.projects-item-box .circle-box {
+    margin: 0 5px;
+}
+
 .projects-item-box .avatar {
+    float: left;
     font-size: 20px;
-    margin: 0;
+}
+
+.projects-item-box .avatar img.avatar {
+    margin: 3px 0 2px 0;
+}
+
+.projects-item-box .no-avatar {
+    margin: 3px;
+}
+
+.projects-item-box .name-box {
+    overflow: hidden;
+}
+
+.projects-item-box .circle-box {
+    float: right;
+}
+
+.projects-item-box .circle-box .circle-item{
+    width: 20px;
+    height: 20px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    margin-top: 5px;
+    display: inline-block;
 }
 
 

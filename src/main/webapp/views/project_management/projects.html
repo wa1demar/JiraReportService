@@ -1,3 +1,25 @@
+<!--<ul dnd-list="column.users"-->
+    <!--dnd-allowed-types="['user']"-->
+    <!--class="item projects">-->
+    <!--<li ng-repeat="item in column.users"-->
+        <!--ng-class="{'selected': columns.selected === column}"-->
+        <!--ng-style="{background: lightColor(item.color, 0.4), border: '2px solid {{item.color}}'}">-->
+
+        <!--<div class="projects-item-box">-->
+            <!--<div class="row margin-0">-->
+                <!--<div class="col-md-2 avatar">-->
+                    <!--<img ng-if="item.avatar !== undefined && item.avatar !== '' && item.avatar !== null" ng-src="{{item.avatar}}" alt="{{item.name}}" class="avatar">-->
+                    <!--<span ng-if="item.avatar === undefined || item.avatar === '' || item.avatar === null" class="glyphicon glyphicon-user"></span>-->
+                <!--</div>-->
+                <!--<div class="col-md-10">-->
+                    <!--<div class="name-label">{{item.name}} EL - {{item.engineerLevel}}</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</li>-->
+    <!--<p ng-if="column.users.length === 0" class="column-empty">Project is empty</p>-->
+<!--</ul>-->
+
 <ul dnd-list="column.users"
     dnd-allowed-types="['user']"
     class="item projects">
@@ -9,20 +31,44 @@
         dnd-selected="selectElement(column)"
         dnd-dragend="dragendElement(item, $parent.$index, $index)"
         ng-class="{'selected': columns.selected === column}"
-        ng-style="{background: lightColor(item.color, 0.4), border: '2px solid {{item.color}}'}">
+        ng-style="{background: lightColor(item.assignmentTypes[0].color, 0.4), border: '2px solid {{item.assignmentTypes[0].color}}'}">
 
         <div class="projects-item-box">
             <div class="row margin-0">
-                <div class="col-md-2 avatar">
-                    <img ng-if="item.avatar !== undefined && item.avatar !== '' && item.avatar !== null" ng-src="{{item.avatar}}" alt="{{item.name}}" class="avatar">
-                    <span ng-if="item.avatar === undefined || item.avatar === '' || item.avatar === null" class="glyphicon glyphicon-user"></span>
+                <!--<div class="col-md-2 avatar">-->
+                    <!--<img ng-if="item.avatar !== undefined && item.avatar !== '' && item.avatar !== null" ng-src="{{item.avatar}}" alt="{{item.name}}" class="avatar">-->
+                    <!--<span ng-if="item.avatar === undefined || item.avatar === '' || item.avatar === null" class="glyphicon glyphicon-user no-avatar"></span>-->
+                <!--</div>-->
+                <!--<div class="col-md-10 name-box">-->
+                    <!--<div style="display: inline-block;">-->
+                        <!--<div class="name-label">{{item.name}} EL - {{item.engineerLevel}}</div>-->
+                    <!--</div>-->
+                    <!--<div class="circle-box" style="float: right;">-->
+                        <!--<span style="width: 20px; height: 20px; -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; background: red; display: inline-block;"></span>-->
+                        <!--<span style="width: 20px; height: 20px; -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; background: red; display: inline-block;"></span>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+
+                <div>
+                    <div class="avatar">
+                        <img ng-if="item.avatar !== undefined && item.avatar !== '' && item.avatar !== null" ng-src="{{item.avatar}}" alt="{{item.name}}" class="avatar">
+                        <span ng-if="item.avatar === undefined || item.avatar === '' || item.avatar === null" class="glyphicon glyphicon-user no-avatar"></span>
+                    </div>
+                    <div class="circle-box">
+                        <div ng-if="item.assignmentTypes.length > 1">
+                            <span ng-repeat="assignmentType in item.assignmentTypes" ng-if="$index >= 1"
+                                  class="circle-item"
+                                  ng-style="{background: lightColor(assignmentType.color, 0.4), border: '2px solid {{assignmentType.color}}'}"></span>
+                        </div>
+                    </div>
+                    <div class="name-box">
+                        <div class="name-label">{{item.name}} EL - {{item.engineerLevel}}</div>
+                    </div>
                 </div>
-                <div class="col-md-10">
-                    <div class="name-label">{{item.name}} EL - {{item.engineerLevel}}</div>
-                </div>
+
             </div>
         </div>
-
     </li>
     <p ng-if="column.users.length === 0" class="column-empty">Project is empty</p>
 </ul>

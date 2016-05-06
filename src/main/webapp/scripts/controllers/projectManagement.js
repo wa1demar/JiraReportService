@@ -26,17 +26,21 @@ jiraPluginApp.controller('ProjectManagementCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //Get all data for Resource Board
             $scope.columns = [];
-            $scope.getProjectColumns = function () {
+            $scope.getProjectColumns = function (showLoader) {
+                var showLoader = showLoader !== undefined ? showLoader : false;
+                if (!!showLoader) {
+                    $scope.loaderShow = true;
+                }
 
                 //set data to search query
-                // var searchQuery = {
-                //     "technology[]": $scope.search.technology,
-                //     "engineerLevel[]": $scope.search.engineerLevel,
-                //     "pm[]": $scope.search.pm,
-                //     "project[]": $scope.search.project
-                // };
-                //
-                // ResourceColumnFactory.query(searchQuery, function (result) {
+                var searchQuery = {
+                    "technology": $scope.search.technology,
+                    "engineerLevel": $scope.search.engineerLevel,
+                    "pm": $scope.search.pm,
+                    "project": $scope.search.project
+                };
+
+                // ProjectFactory.query(searchQuery, function (result) {
                 //     $scope.columns = result.columns;
                 //     $scope.loaderShow = false;
                 // }, function (error) {
@@ -57,34 +61,33 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                                 id: 1,
                                 name: "Full Name 1",
                                 engineerLevel: 1,
-                                assignmentType: {id: 1, name: "PM"},
-                                color: "#4086E7",
+                                assignmentTypes: [{id: 1, name: "PM", color: "#4086E7"}],
                                 avatar: "https://swansoftwaresolutions.atlassian.net/secure/useravatar?ownerId=slevchenko&avatarId=13706",
-                                column: {id: 1}
+                                column: {id: 1, name: "Project 1"}
                             },
                             {
                                 id: 2,
                                 name: "Full Name 2",
                                 engineerLevel: 3,
-                                assignmentType: {id: 2, name: "Dev"},
-                                color: "#179f1c",
-                                column: {id: 1}
+                                assignmentTypes: [
+                                    {id: 2, name: "Dev", color: "#179f1c"},
+                                    {id: 3, name: "Shadow", color: "#424242"}
+                                ],
+                                column: {id: 1, name: "Project 1"}
                             },
                             {
                                 id: 3,
                                 name: "Full Name 3",
                                 engineerLevel: 2,
-                                assignmentType: {id: 2, name: "Dev"},
-                                color: "#179f1c",
-                                column: {id: 1}
+                                assignmentTypes: [{id: 2, name: "Dev", color: "#179f1c"}],
+                                column: {id: 1, name: "Project 1"}
                             },
                             {
                                 id: 3,
                                 name: "Full Name 5",
                                 engineerLevel: 2,
-                                assignmentType: {id: 3, name: "QA"},
-                                color: "#F4D520",
-                                column: {id: 1}
+                                assignmentTypes: [{id: 3, name: "QA", color: "#F4D520"}],
+                                column: {id: 1, name: "Project 1"}
                             }
                         ]
                     },
@@ -97,9 +100,8 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                                 id: 3,
                                 name: "Full Name 2",
                                 engineerLevel: 3,
-                                assignmentType: {id: 1, name: "PM"},
-                                color: "#4086E7",
-                                column: {id: 2}
+                                assignmentTypes: [{id: 1, name: "PM", color: "#4086E7"}],
+                                column: {id: 2, name: "Project 2"}
                             }
                         ]
                     },
@@ -112,9 +114,18 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                                 id: 4,
                                 name: "Full Name 3",
                                 engineerLevel: 2,
-                                assignmentType: {id: 1, name: "PM"},
-                                color: "#4086E7",
-                                column: {id: 3}
+                                assignmentTypes: [{id: 1, name: "PM", color: "#4086E7"}],
+                                column: {id: 3, name: "Project 3"}
+                            },
+                            {
+                                id: 2,
+                                name: "Full Name 2",
+                                engineerLevel: 3,
+                                assignmentTypes: [
+                                    {id: 3, name: "Shadow", color: "#424242"},
+                                    {id: 2, name: "Dev", color: "#179f1c"}
+                                ],
+                                column: {id: 1, name: "Project 1"}
                             }
                         ]
                     },
@@ -127,16 +138,14 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                                 id: 5,
                                 name: "Full Name 4",
                                 engineerLevel: 2,
-                                assignmentType: {id: 1, name: "PM"},
-                                color: "#4086E7",
-                                column: {id: 4}
+                                assignmentTypes: [{id: 1, name: "PM", color: "#4086E7"}],
+                                column: {id: 4, name: "Project 4"}
                             }
                         ]
                     }
                 ];
 
                 console.log($scope.columns);
-
             };
             $scope.getProjectColumns();
 

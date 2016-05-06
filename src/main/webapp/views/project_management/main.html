@@ -14,33 +14,36 @@
         <div class="res-left">
             <!--<div class="res-left-head">add column</div>-->
             <div class="res-left-content">
-                <!--<div class="res-left-content-top">-->
-                    <!--<ul class="main">-->
-                        <!--<li ng-repeat="column in columns" class="main">-->
-                            <!--<h4>-->
-                                <!--{{column.name}} &lt;!&ndash;<span class="count-users">(count: {{column.users.length}})</span>&ndash;&gt;-->
-                                <!--<span ng-if="!column.fixed" ng-click="delProject(column)" class="glyphicon glyphicon-remove control-icon" title="Delete"></span>-->
-                                <!--<span ng-click="processProject(column)" class="glyphicon glyphicon-pencil control-icon" title="Edit"></span>-->
-                            <!--</h4>-->
-                        <!--</li>-->
-                    <!--</ul>-->
-                <!--</div>-->
+
                 <!--<div class="res-left-content-center">-->
-                    <!--<ul class="main">-->
-                        <!--<li ng-repeat="column in columns" class="main grey">-->
+                    <!--<ul class="main"-->
+                        <!--dnd-list="columns"-->
+                        <!--dnd-allowed-types="['column']"-->
+                        <!--dnd-horizontal-list="true"-->
+                        <!--dnd-external-sources="true"-->
+                        <!--ng-style="{width: columns.length*240}">-->
+                        <!--<li ng-repeat="column in columns"-->
+                            <!--class="main grey project-box"-->
+                            <!--ng-class="{'selected': columns.selected === column}">-->
+
+                            <!--<h4 class="column-h4">-->
+                                <!--{{column.name}} &lt;!&ndash;<span class="count-users">(count: {{column.users.length}})</span>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<span ng-if="!column.fixed" ng-click="delProject(column)" class="glyphicon glyphicon-remove control-icon" title="Delete"></span>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<span ng-click="processProject(column)" class="glyphicon glyphicon-pencil control-icon" title="Edit"></span>&ndash;&gt;-->
+                            <!--</h4>-->
+
                             <!--<div style="height: 100%;" ng-include="'views/project_management/projects.html'"></div>-->
                         <!--</li>-->
                     <!--</ul>-->
                 <!--</div>-->
-
-
 
                 <div class="res-left-content-center">
                     <ul class="main"
                         dnd-list="columns"
                         dnd-allowed-types="['column']"
                         dnd-horizontal-list="true"
-                        dnd-external-sources="true">
+                        dnd-external-sources="true"
+                        ng-style="{width: columns.length*240}">
                         <li ng-repeat="column in columns"
                             class="main grey project-box"
                             dnd-draggable="column"
