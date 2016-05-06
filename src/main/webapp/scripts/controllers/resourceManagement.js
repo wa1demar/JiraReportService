@@ -526,18 +526,18 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 dataForUpdate["filters"] = $scope.search;
                 MemberFactory.update({login: $scope.currentMember.login, relation: "move"}, dataForUpdate, function(data){
                     //update member info from backend
-                    // $scope.columns = result.columns;
+                    // $scope.columns = data.columns;
+
                     // if ($scope.currentMember !== null) {
                     //     $scope.selectElement($scope.currentMember);
                     // }
-                    // Notification.success("Save changes success");
 
                     //update member info without getResourceColumns
                     $scope.columns[indexColumn].users[indexElementInColumn] = data;
                     //reindexing resourceOrder
                     $scope.columns[indexColumn].users.map(function(value, index) {
                         value.resourceOrder = index;
-                        
+
                         return value;
                     });
                     $scope.selectElement(data);
