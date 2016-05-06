@@ -50,7 +50,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                 $scope.lightColor = function (hex, lum) {
                     return colorLuminance(hex, lum);
                 };
-
+                
                 $scope.columns = [
                     {
                         id: 1,
@@ -61,7 +61,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                                 id: 1,
                                 name: "Full Name 1",
                                 engineerLevel: 1,
-                                assignmentTypes: [{id: 1, name: "PM", color: "#4086E7"}],
+                                assignmentTypes: [{id: 3, name: "PM", color: "#4086E7"}],
                                 avatar: "https://swansoftwaresolutions.atlassian.net/secure/useravatar?ownerId=slevchenko&avatarId=13706",
                                 column: {id: 1, name: "Project 1"}
                             },
@@ -70,23 +70,23 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                                 name: "Full Name 2",
                                 engineerLevel: 3,
                                 assignmentTypes: [
-                                    {id: 2, name: "Dev", color: "#179f1c"},
-                                    {id: 3, name: "Shadow", color: "#424242"}
+                                    {id: 11, name: "Dev", color: "#179f1c"},
+                                    {id: 12, name: "Shadow", color: "#424242"}
                                 ],
                                 column: {id: 1, name: "Project 1"}
                             },
                             {
-                                id: 3,
+                                id: 11,
                                 name: "Full Name 3",
                                 engineerLevel: 2,
-                                assignmentTypes: [{id: 2, name: "Dev", color: "#179f1c"}],
+                                assignmentTypes: [{id: 11, name: "Dev", color: "#179f1c"}],
                                 column: {id: 1, name: "Project 1"}
                             },
                             {
-                                id: 3,
+                                id: 12,
                                 name: "Full Name 5",
                                 engineerLevel: 2,
-                                assignmentTypes: [{id: 3, name: "QA", color: "#F4D520"}],
+                                assignmentTypes: [{id: 5, name: "QA", color: "#F4D520"}],
                                 column: {id: 1, name: "Project 1"}
                             }
                         ]
@@ -100,7 +100,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                                 id: 3,
                                 name: "Full Name 2",
                                 engineerLevel: 3,
-                                assignmentTypes: [{id: 1, name: "PM", color: "#4086E7"}],
+                                assignmentTypes: [{id: 3, name: "PM", color: "#4086E7"}],
                                 column: {id: 2, name: "Project 2"}
                             }
                         ]
@@ -114,7 +114,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                                 id: 4,
                                 name: "Full Name 3",
                                 engineerLevel: 2,
-                                assignmentTypes: [{id: 1, name: "PM", color: "#4086E7"}],
+                                assignmentTypes: [{id: 3, name: "PM", color: "#4086E7"}],
                                 column: {id: 3, name: "Project 3"}
                             },
                             {
@@ -122,8 +122,8 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                                 name: "Full Name 2",
                                 engineerLevel: 3,
                                 assignmentTypes: [
-                                    {id: 3, name: "Shadow", color: "#424242"},
-                                    {id: 2, name: "Dev", color: "#179f1c"}
+                                    {id: 12, name: "Shadow", color: "#424242"},
+                                    {id: 11, name: "Dev", color: "#179f1c"}
                                 ],
                                 column: {id: 1, name: "Project 1"}
                             }
@@ -138,7 +138,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                                 id: 5,
                                 name: "Full Name 4",
                                 engineerLevel: 2,
-                                assignmentTypes: [{id: 1, name: "PM", color: "#4086E7"}],
+                                assignmentTypes: [{id: 3, name: "PM", color: "#4086E7"}],
                                 column: {id: 4, name: "Project 4"}
                             }
                         ]
@@ -197,7 +197,20 @@ jiraPluginApp.controller('ProjectManagementCtrl',
 //----------------------------------------------------------------------------------------------------------------------
 //Dragend project
             $scope.dragendProject = function () {
-                console.log($scope.columns);
+                var dataForUpdate = $scope.columns.map(function(value, index) {
+                    return {
+                        columnId: value.id,
+                        columnPriority: index
+                    };
+                });
+                console.log(dataForUpdate);
+
+                //TODO need add request for save new data
+                // ProjectFactory.update({id: 'sort'}, {filters: $scope.search, items: dataForUpdate}, function(result){
+                //     $scope.columns = result.columns;
+                // }, function (error) {
+                //     Notification.error("Server error: save assignment type");
+                // });
             };
 
 //----------------------------------------------------------------------------------------------------------------------
