@@ -97,6 +97,7 @@ public class JiraUser implements Serializable {
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users")
     @Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
+    @OrderBy("id")
     public List<Technology> getTechnologies() {
         return technologies;
     }
