@@ -116,7 +116,7 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
             }
             columnDtos.add(fullResourceColumnDto);
         }
-        Collections.sort(columnDtos, (o1, o2) -> o1.getId().compareTo(o2.getId()));
+        Collections.sort(columnDtos, (o1, o2) -> o1.getSortPosition() - o2.getSortPosition());
 
         return columnDtos;
     }
