@@ -1,9 +1,9 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
-import com.swansoftwaresolutions.jirareport.core.dto.jira_project.ImportedProjectDto;
+import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDto;
+import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDtos;
 import com.swansoftwaresolutions.jirareport.core.mapper.ProjectMapper;
-import com.swansoftwaresolutions.jirareport.domain.entity.JiraProject;
-import com.swansoftwaresolutions.jirareport.sheduller.dto.ProjectDto;
+import com.swansoftwaresolutions.jirareport.domain.entity.Project;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,43 +13,27 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 /**
- * @author Vitaliy Hollovko
+ * @author Vladimir Martynyuk
  */
-
 @Component
 public class ProjectMapperImpl implements ProjectMapper {
 
     @Autowired
-    private ModelMapper modelMapper;
+    ModelMapper modelMapper;
 
     @Override
-    public ProjectDto toDto(JiraProject jiraProjectEntity) {
-        return modelMapper.map(jiraProjectEntity, ProjectDto.class);
+    public Project fromProjectDtoToProject(ProjectDto projectDto) {
+        return modelMapper.map(projectDto, Project.class);
     }
 
     @Override
-    public List<ProjectDto> toDtos(List<JiraProject> jiraProjectEntities) {
-        Type targetistType = new TypeToken<List<ProjectDto>>() {
-        }.getType();
-        return modelMapper.map(jiraProjectEntities, targetistType);
+    public ProjectDto fromProjectToProjectDto(Project project) {
+        return modelMapper.map(project, ProjectDto.class);
     }
 
     @Override
-    public JiraProject fromDto(ProjectDto projectDto) {
-        return modelMapper.map(projectDto, JiraProject.class);
-    }
-
-    @Override
-    public List<JiraProject> fromDtos(ProjectDto projectDto) {
-        Type targetistType = new TypeToken<List<JiraProject>>() {
-        }.getType();
-        return modelMapper.map(projectDto, targetistType);
-    }
-
-    @Override
-    public List<JiraProject> fromDtos(List<ImportedProjectDto> importedProjectsDtos) {
-        Type targetistType = new TypeToken<List<JiraProject>>() {
-        }.getType();
-        return modelMapper.map(importedProjectsDtos, targetistType);
+    public List<ProjectDto> fromProjectsToProjectDtos(List<Project> projects) {
+        Type targetistType = new TypeToken<List<ProjectDto>>(){}.getType();
+        return modelMapper.map(projects, targetistType);
     }
 }

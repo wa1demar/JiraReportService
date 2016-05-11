@@ -39,7 +39,7 @@ public class ReportServiceImpl implements ReportService {
     private ReportRepository reportRepository;
 
     @Autowired
-    ProjectRepository projectRepository;
+    JiraProjectRepository jiraProjectRepository;
 
     @Autowired
     JiraSprintRepository jiraSprintRepository;

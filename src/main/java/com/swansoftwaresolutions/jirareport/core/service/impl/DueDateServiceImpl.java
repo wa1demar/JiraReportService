@@ -9,7 +9,7 @@ import com.swansoftwaresolutions.jirareport.domain.entity.JiraIssue;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraProject;
 import com.swansoftwaresolutions.jirareport.domain.model.Paged;
 import com.swansoftwaresolutions.jirareport.domain.repository.DueDateRepository;
-import com.swansoftwaresolutions.jirareport.domain.repository.ProjectRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.JiraProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +26,7 @@ public class DueDateServiceImpl implements DueDateService {
     DueDateRepository dueDateRepository;
 
     @Autowired
-    ProjectRepository projectRepository;
+    JiraProjectRepository jiraProjectRepository;
 
     @Autowired
     JiraIssueMapper jiraIssueMapper;
@@ -44,7 +44,7 @@ public class DueDateServiceImpl implements DueDateService {
             agileDoneNames.add(dateString);
         }
 
-        Map<String, String> projects = projectRepository.findAll().stream().collect(Collectors.toMap(JiraProject::getKey, p -> p.getName()));
+        Map<String, String> projects = jiraProjectRepository.findAll().stream().collect(Collectors.toMap(JiraProject::getKey, p -> p.getName()));
 
         Paged paged = dueDateRepository.retrieveAllDueDatas(agileDoneNames, page);
 

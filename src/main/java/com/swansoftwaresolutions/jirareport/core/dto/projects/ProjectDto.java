@@ -1,20 +1,13 @@
-package com.swansoftwaresolutions.jirareport.domain.entity;
-
-import javax.persistence.*;
+package com.swansoftwaresolutions.jirareport.core.dto.projects;
 
 /**
  * @author Vladimir Martynyuk
  */
-@Entity
-@Table(name = "projects")
-public class Project {
-
+public class ProjectDto {
     private Long id;
     private String title;
     private int sortPosition;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -23,7 +16,6 @@ public class Project {
         this.id = id;
     }
 
-    @Column(name = "title")
     public String getTitle() {
         return title;
     }
@@ -32,7 +24,6 @@ public class Project {
         this.title = title;
     }
 
-    @Column(name = "sort_position")
     public int getSortPosition() {
         return sortPosition;
     }

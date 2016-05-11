@@ -1,9 +1,9 @@
 package com.swansoftwaresolutions.jirareport.rest.service.impl;
 
 import com.swansoftwaresolutions.jirareport.core.dto.jira_project.ImportedProjectDto;
-import com.swansoftwaresolutions.jirareport.core.mapper.ProjectMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.JiraProjectMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraProject;
-import com.swansoftwaresolutions.jirareport.domain.repository.ProjectRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.JiraProjectRepository;
 import com.swansoftwaresolutions.jirareport.rest.client.RestClient;
 import com.swansoftwaresolutions.jirareport.rest.service.ProjectImporterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +24,15 @@ public class ProjectImporterServiceImpl implements ProjectImporterService {
     RestClient restClient;
 
     @Autowired
-    ProjectMapper jiraProjectMapper;
+    JiraProjectMapper jiraJiraProjectMapper;
 
     @Autowired
-    ProjectRepository projectRepository;
+    JiraProjectRepository jiraProjectRepository;
 
     @Override
     public void importProjectsFromJira() {
         List<ImportedProjectDto> importedProjectsDtos = Arrays.asList(restClient.loadAllProjects());
-        List<JiraProject> projects = jiraProjectMapper.fromDtos(importedProjectsDtos);
-        projectRepository.save(projects);
+        List<JiraProject> projects = jiraJiraProjectMapper.fromDtos(importedProjectsDtos);
+        jiraProjectRepository.save(projects);
     }
 }

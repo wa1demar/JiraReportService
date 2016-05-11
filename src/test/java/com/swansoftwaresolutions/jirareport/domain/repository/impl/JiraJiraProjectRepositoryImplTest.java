@@ -2,7 +2,7 @@ package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraProject;
 import com.swansoftwaresolutions.jirareport.domain.repository.AbstractDbTest;
-import com.swansoftwaresolutions.jirareport.domain.repository.ProjectRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.JiraProjectRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +18,10 @@ import java.util.List;
         @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:sql/project_before.sql"),
         @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:sql/project_after.sql")
 })
-public class JiraProjectRepositoryImplTest extends AbstractDbTest {
+public class JiraJiraProjectRepositoryImplTest extends AbstractDbTest {
 
     @Autowired
-    ProjectRepository projectRepository;
+    JiraProjectRepository jiraProjectRepository;
 
     @Test
     public void testAddNewProject() throws Exception {
@@ -29,7 +29,7 @@ public class JiraProjectRepositoryImplTest extends AbstractDbTest {
         jiraProject.setKey("BAM");
         jiraProject.setName("BAMDashboard");
 
-        JiraProject newJiraProject = projectRepository.add(jiraProject);
+        JiraProject newJiraProject = jiraProjectRepository.add(jiraProject);
 
         assertNotNull(newJiraProject.getId());
         assertEquals("BAM", newJiraProject.getKey());
@@ -39,11 +39,11 @@ public class JiraProjectRepositoryImplTest extends AbstractDbTest {
 
     @Test
     public void testUpdateProject() throws Exception {
-        JiraProject jiraProject = projectRepository.findById(1L);
+        JiraProject jiraProject = jiraProjectRepository.findById(1L);
         jiraProject.setKey("BAM");
         jiraProject.setName("BAMDashboard");
 
-        JiraProject updatedJiraProject = projectRepository.update(jiraProject);
+        JiraProject updatedJiraProject = jiraProjectRepository.update(jiraProject);
         assertNotNull(updatedJiraProject.getId());
         assertEquals("BAM", updatedJiraProject.getKey());
         assertEquals("BAMDashboard", updatedJiraProject.getName());
@@ -56,19 +56,19 @@ public class JiraProjectRepositoryImplTest extends AbstractDbTest {
         jiraProject.setKey("BAM");
         jiraProject.setName("BAMDashboard");
 
-        JiraProject updatedJiraProject = projectRepository.update(jiraProject);
+        JiraProject updatedJiraProject = jiraProjectRepository.update(jiraProject);
     }
 
     @Test
     public void testGetAllProjects() throws Exception {
-        List<JiraProject> jiraProjects = projectRepository.findAll();
+        List<JiraProject> jiraProjects = jiraProjectRepository.findAll();
         assertNotNull(jiraProjects);
         assertEquals(5, jiraProjects.size());
     }
 
     @Test
     public void testFindProjectById() throws Exception {
-        JiraProject jiraProject = projectRepository.findById(1L);
+        JiraProject jiraProject = jiraProjectRepository.findById(1L);
 
         assertNotNull(jiraProject);
         assertEquals("CAS", jiraProject.getKey());
@@ -78,36 +78,36 @@ public class JiraProjectRepositoryImplTest extends AbstractDbTest {
 
     @Test
     public void testFindProjectByWrongId() throws Exception {
-        JiraProject jiraProject = projectRepository.findById(10L);
+        JiraProject jiraProject = jiraProjectRepository.findById(10L);
         assertNull(jiraProject);
 
     }
 
     @Test
     public void testDeleteProjectById() throws Exception {
-        JiraProject jiraProject = projectRepository.findById(1L);
+        JiraProject jiraProject = jiraProjectRepository.findById(1L);
         assertNotNull(jiraProject);
 
-        projectRepository.delete(jiraProject.getId());
-        assertNull(projectRepository.findById(1L));
-        assertEquals(4, projectRepository.findAll().size());
+        jiraProjectRepository.delete(jiraProject.getId());
+        assertNull(jiraProjectRepository.findById(1L));
+        assertEquals(4, jiraProjectRepository.findAll().size());
 
     }
 
     @Test(expected = NoSuchEntityException.class)
     public void testDeleteProjectByWrongId() throws Exception {
-        projectRepository.delete(10L);
+        jiraProjectRepository.delete(10L);
 
     }
 
     @Test
     public void testDeleteProject() throws Exception {
-        JiraProject jiraProject = projectRepository.findById(1L);
+        JiraProject jiraProject = jiraProjectRepository.findById(1L);
         assertNotNull(jiraProject);
 
-        projectRepository.delete(jiraProject);
-        assertNull(projectRepository.findById(1L));
-        assertEquals(4, projectRepository.findAll().size());
+        jiraProjectRepository.delete(jiraProject);
+        assertNull(jiraProjectRepository.findById(1L));
+        assertEquals(4, jiraProjectRepository.findAll().size());
     }
 
     @Test(expected = NoSuchEntityException.class)
@@ -116,7 +116,7 @@ public class JiraProjectRepositoryImplTest extends AbstractDbTest {
         jiraProject.setKey("BAM");
         jiraProject.setName("BAMDashboard");
 
-        projectRepository.delete(jiraProject);
+        jiraProjectRepository.delete(jiraProject);
 
     }
 }

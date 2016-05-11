@@ -1,41 +1,43 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
-import com.swansoftwaresolutions.jirareport.domain.entity.JiraProject;
-import com.swansoftwaresolutions.jirareport.domain.repository.ProjectRepository;
-import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
+import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDto;
+import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDtos;
+import com.swansoftwaresolutions.jirareport.core.mapper.ProjectMapper;
 import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
+import com.swansoftwaresolutions.jirareport.domain.entity.Project;
+import com.swansoftwaresolutions.jirareport.domain.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
- * @author Vitaliy Holovko
+ * @author Vladimir Martynyuk
  */
-
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     ProjectRepository projectRepository;
 
+    @Autowired
+    ProjectMapper projectMapper;
+
     @Override
-    public JiraProject save(JiraProject jiraProject) {
-        return projectRepository.add(jiraProject);
+    public ProjectDto add(ProjectDto projectDto) {
+        Project project = projectMapper.fromProjectDtoToProject(projectDto);
+        Project newProject = projectRepository.save(project);
+        return projectMapper.fromProjectToProjectDto(newProject);
     }
 
     @Override
-    public JiraProject findByKey(String key) throws NoSuchEntityException {
-        return projectRepository.findByKey(key);
-    }
+    public ProjectDtos findAll() {
+        List<Project> projects = projectRepository.findAll();
+        List<ProjectDto> projectDtoList = projectMapper.fromProjectsToProjectDtos(projects);
 
-    @Override
-    public List<JiraProject> findAll() {
-        return projectRepository.findAll();
-    }
+        ProjectDtos projectDtos = new ProjectDtos();
+        projectDtos.setProjects(projectDtoList);
 
-    @Override
-    public void delete(JiraProject jiraProject) throws NoSuchEntityException {
-        projectRepository.delete(jiraProject);
+        return projectDtos;
     }
 }

@@ -4,7 +4,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.ImportedBardsDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraBoardMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraProject;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraBoardRepository;
-import com.swansoftwaresolutions.jirareport.domain.repository.ProjectRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.JiraProjectRepository;
 import com.swansoftwaresolutions.jirareport.rest.client.RestClient;
 import com.swansoftwaresolutions.jirareport.rest.service.BoardImporterService;
 import com.swansoftwaresolutions.jirareport.core.dto.ImportedJiraBoardDto;
@@ -25,7 +25,7 @@ public class BoardImporterServiceImpl implements BoardImporterService {
     RestClient restClient;
 
     @Autowired
-    ProjectRepository projectRepository;
+    JiraProjectRepository jiraProjectRepository;
 
     @Autowired
     JiraBoardRepository jiraBoardRepository;
@@ -37,7 +37,7 @@ public class BoardImporterServiceImpl implements BoardImporterService {
     @Override
     public void importBoardsFromJira() {
 
-        List<JiraProject> projects = projectRepository.findAll();
+        List<JiraProject> projects = jiraProjectRepository.findAll();
 
         for (JiraProject project : projects) {
             ImportedBardsDto importedBardsDto = restClient.loadAllBoardsByProjectKey(project.getKey());

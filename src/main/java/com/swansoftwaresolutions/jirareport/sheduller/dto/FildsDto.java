@@ -8,7 +8,7 @@ import java.util.Date;
  * @author Vitaliy Holovko
  */
 public class FildsDto {
-    private ProjectDto project;
+    private JiraProjectDto project;
     private IssueTypeDto issuetype;
     private long timespent;
     private ResolutionDto resolution;
@@ -22,11 +22,11 @@ public class FildsDto {
     private String description;
     private String summary;
 
-    public ProjectDto getProject() {
+    public JiraProjectDto getProject() {
         return project;
     }
 
-    public void setProject(ProjectDto project) {
+    public void setProject(JiraProjectDto project) {
         this.project = project;
     }
 
