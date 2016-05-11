@@ -244,7 +244,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 });
                 console.log(dataForUpdate);
 
-                //TODO need add request for save new data
+                //request for save new data
                 ResourceColumnFactory.update({id: 'sort'}, {filters: $scope.search, items: dataForUpdate}, function(result){
                     $scope.columns = result.columns;
                     if ($scope.currentMember !== null) {
@@ -412,7 +412,7 @@ jiraPluginApp.controller('ResourceManagementCtrl',
                 enabled: function() {return false}
             };
 
-            var hideContextMenu = true;
+            var hideContextMenu = false;
             $scope.memberMenuOptions = function (column, item) {
                 if (hideContextMenu) { return []; }
 
