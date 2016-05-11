@@ -5,17 +5,17 @@
 </div>
 <form name="processProjectForm" ng-submit="submit()" novalidate>
   <div class="modal-body">
-      <div class="form-group" ng-class="{ 'has-error': processProjectForm.$submitted || processProjectForm.name.$touched && processProjectForm.name.$invalid }">
-        <label for="name">Project name:</label>
-        <input type="text" class="form-control" id="name" name="name" ng-model="model.name" required>
-        <div class="help-block" ng-messages="processProjectForm.name.$error" ng-if="processProjectForm.name.$touched || processProjectForm.$submitted">
+      <div class="form-group" ng-class="{ 'has-error': processProjectForm.$submitted || processProjectForm.title.$touched && processProjectForm.title.$invalid }">
+        <label for="title">Project name:</label>
+        <input type="text" class="form-control" id="title" name="title" ng-model="model.title" required>
+        <div class="help-block" ng-messages="processProjectForm.title.$error" ng-if="processProjectForm.title.$touched || processProjectForm.$submitted">
           <p ng-message="required">Your name is required</p>
         </div>
       </div>
-      <div class="form-group">
-          <label for="description">Description</label>
-          <textarea ng-model="model.description" class="form-control" id="description" name="description" id="" cols="30" rows="5"></textarea>
-      </div>
+      <!--<div class="form-group">-->
+          <!--<label for="description">Description</label>-->
+          <!--<textarea ng-model="model.description" class="form-control" id="description" name="description" id="" cols="30" rows="5"></textarea>-->
+      <!--</div>-->
   </div>
   <div class="modal-footer">
     <button class="btn btn-primary" type="submit" ng-click="ok()">Save</button>

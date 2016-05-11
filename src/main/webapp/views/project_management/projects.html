@@ -17,7 +17,7 @@
             <!--</div>-->
         <!--</div>-->
     <!--</li>-->
-    <!--<p ng-if="column.users.length === 0" class="column-empty">Project is empty</p>-->
+    <!--<p ng-if="column.users === undefined || column.users.length === 0" class="column-empty">Project is empty</p>-->
 <!--</ul>-->
 
 <ul dnd-list="column.users"
@@ -54,5 +54,5 @@
             </div>
         </div>
     </li>
-    <p ng-if="column.users.length === 0" class="column-empty">Project is empty</p>
+    <p ng-if="column.users === undefined || column.users.length === 0" class="column-empty">Project is empty</p>
 </ul>
