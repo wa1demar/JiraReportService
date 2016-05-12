@@ -26,52 +26,7 @@
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <nav class="navbar navbar-default" ng-controller="HeaderCtrl">
-        <div class="container-fluid nav-block">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false" ng-show="showMenu">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a href="#/"><img src="/images/hero-logo.svg" alt="logo.svg" class="logo"></a>
-                <a class="navbar-brand" href="#/">Swan Intranet</a>
-            </div>
-
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav" ng-show="showMenu">
-                    <li ng-class="{active:isActive('/')}"><a ng-href="#/">Portfolio</a></li>
-                    <li ng-class="{active:isActive('/dashboards')}"><a href="#/dashboards">Project</a></li>
-                    <!--<li ng-class="{active:isActive('/productivity')}"><a href="#/productivity">Productivity</a></li>-->
-                    <li ng-class="{active:isActive('/due_date_issue')}"><a href="#/due_date_issue">Due Date</a></li>
-                    <li uib-dropdown on-toggle="toggled(open)" ng-class="(isActive('/resource_management') || isActive('/project_management')) ? 'dropdown active' : 'dropdown'">
-                        <a href="" class="menu-dropdown-item" id="rm-dropdown" uib-dropdown-toggle>Resources <span class="caret"></span></a>
-                        <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="system-dropdown">
-                            <li><a ng-class="{active:isActive('/resource_management')}" href="#/resource_management">Assignments Type</a></li>
-                            <li><a ng-class="{active:isActive('/project_management')}" href="#/project_management">Projects</a></li>
-                        </ul>
-                    </li>
-                    <li ng-if="isAdmin" uib-dropdown on-toggle="toggled(open)" ng-class="(isActive('/system_user') || isActive('/task') || isActive('/dictionary/locations') || isActive('/dictionary/technologies')) ? 'dropdown active' : 'dropdown'">
-                        <a href="" class="menu-dropdown-item" id="system-dropdown" uib-dropdown-toggle>System <span class="caret"></span></a>
-                        <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="system-dropdown">
-                            <li><a ng-class="{active:isActive('/system_user')}" href="#/system_user">Users</a></li>
-                            <li><a ng-class="{active:isActive('/task')}" href="#/task">Tasks</a></li>
-                            <li><a ng-class="{active:isActive('/dictionary/locations')}" href="#/dictionary/locations">Locations</a></li>
-                            <li><a ng-class="{active:isActive('/dictionary/technologies')}" href="#/dictionary/technologies">Technologies</a></li>
-                            <li><a ng-class="{active:isActive('/system_at_priority')}" href="#/system_at_priority">Assignment type priority</a></li>
-                            <li><a href="javascript:" ng-click="processConfig()">Settings</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right" ng-show="showMenu">
-                    <li ng-class="{active:isActive('/profile')}"><a ng-href="#/profile">Profile</a></li>
-                    <li class="dropdown"></li>
-                    <li><a href="javascript:" ng-click="logout()">Logout</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <nav class="navbar navbar-default" ng-controller="HeaderCtrl" ng-include="'scripts/controllers/header/header.html'"></nav>
 
     <div ng-controller="MainCtrl">
         <div ng-view=""></div>
@@ -114,51 +69,61 @@
     <script src="scripts/vendors/angular-bootstrap-contextmenu/contextMenu.js"></script>
 
     <script src="scripts/app.js"></script>
+    <script src="scripts/app.config.js"></script>
+    <script src="scripts/app.run.js"></script>
     <script src="scripts/config.js"></script>
+
     <script src="scripts/helpers/helpers.js"></script>
 
-    <script src="scripts/factories/report.js"></script>
-    <script src="scripts/factories/comment.js"></script>
-    <script src="scripts/factories/user.js"></script>
-    <script src="scripts/factories/board.js"></script>
-    <script src="scripts/factories/config.js"></script>
-    <script src="scripts/factories/sprint.js"></script>
-    <script src="scripts/factories/sprintTeam.js"></script>
-    <script src="scripts/factories/sprintWithTeam.js"></script>
-    <script src="scripts/factories/sprintIssue.js"></script>
-    <script src="scripts/factories/portfolio.js"></script>
-    <script src="scripts/factories/systemUser.js"></script>
-    <script src="scripts/factories/profile.js"></script>
-    <script src="scripts/factories/task.js"></script>
-    <script src="scripts/factories/dueDateIssue.js"></script>
-    <script src="scripts/factories/dictionary.js"></script>
-    <script src="scripts/factories/resourceColumn.js"></script>
-    <script src="scripts/factories/member.js"></script>
-    <script src="scripts/factories/project.js"></script>
+    <!--<script src="scripts/factories/report.js"></script>-->
+    <!--<script src="scripts/factories/comment.js"></script>-->
+    <!--<script src="scripts/factories/user.js"></script>-->
+    <!--<script src="scripts/factories/board.js"></script>-->
+    <script src="scripts/factories/configFactory.js"></script>
+    <!--<script src="scripts/factories/sprint.js"></script>-->
+    <!--<script src="scripts/factories/sprintTeam.js"></script>-->
+    <!--<script src="scripts/factories/sprintWithTeam.js"></script>-->
+    <!--<script src="scripts/factories/sprintIssue.js"></script>-->
+    <script src="scripts/factories/portfoliosFactory.js"></script>
+    <!--<script src="scripts/factories/systemUser.js"></script>-->
+    <!--<script src="scripts/factories/profile.js"></script>-->
+    <!--<script src="scripts/factories/task.js"></script>-->
+    <!--<script src="scripts/factories/dueDateIssue.js"></script>-->
+    <!--<script src="scripts/factories/dictionary.js"></script>-->
+    <!--<script src="scripts/factories/resourceColumn.js"></script>-->
+    <!--<script src="scripts/factories/member.js"></script>-->
+    <!--<script src="scripts/factories/project.js"></script>-->
 
-    <script src="scripts/filters/filters.js"></script>
-    <script src="scripts/directives/directives.js"></script>
+    <script src="scripts/filters/isChecked.js"></script>
+    <script src="scripts/filters/hasRole.js"></script>
+    <script src="scripts/directives/convertToNumber.js"></script>
+    <script src="scripts/directives/convertToDouble.js"></script>
+    <script src="scripts/directives/indicator.js"></script>
 
     <script src="scripts/controllers/main.js"></script>
-    <script src="scripts/controllers/about.js"></script>
-    <script src="scripts/controllers/header.js"></script>
-    <script src="scripts/controllers/home.js"></script>
-    <script src="scripts/controllers/portfolio.js"></script>
-    <script src="scripts/controllers/reportElement.js"></script>
-    <script src="scripts/controllers/comment.js"></script>
-    <script src="scripts/controllers/configure.js"></script>
-    <script src="scripts/controllers/systemUser.js"></script>
-    <script src="scripts/controllers/profile.js"></script>
-    <script src="scripts/controllers/task.js"></script>
-    <script src="scripts/controllers/dueDateIssue.js"></script>
-    <script src="scripts/controllers/productivity.js"></script>
-    <script src="scripts/controllers/resourceManagement.js"></script>
-    <script src="scripts/controllers/projectManagement.js"></script>
-    <script src="scripts/controllers/dictionary.js"></script>
-    <script src="scripts/controllers/systemAtProirity.js"></script>
-    <script src="scripts/controllers/dlgDelete.js"></script>
+    <script src="scripts/controllers/header/headerCtrl.js"></script>
+    <script src="scripts/controllers/header/dlgProcessConfigCtrl.js"></script>
+    <script src="scripts/controllers/portfolio/portfolioCtrl.js"></script>
 
-    <script src="scripts/auth/auth.factory.js"></script>
-    <script src="scripts/auth/auth.controller.js"></script>
+    <!--<script src="scripts/controllers/about.js"></script>-->
+    <!--<script src="scripts/controllers/home.js"></script>-->
+    <!--<script src="scripts/controllers/portfolio.js"></script>-->
+    <!--<script src="scripts/controllers/reportElement.js"></script>-->
+    <!--<script src="scripts/controllers/comment.js"></script>-->
+    <!--<script src="scripts/controllers/configure.js"></script>-->
+    <!--<script src="scripts/controllers/systemUser.js"></script>-->
+    <!--<script src="scripts/controllers/task.js"></script>-->
+    <!--<script src="scripts/controllers/dueDateIssue.js"></script>-->
+    <!--<script src="scripts/controllers/productivity.js"></script>-->
+    <!--<script src="scripts/controllers/resourceManagement.js"></script>-->
+    <!--<script src="scripts/controllers/projectManagement.js"></script>-->
+    <!--<script src="scripts/controllers/dictionary.js"></script>-->
+    <!--<script src="scripts/controllers/systemAtProirity.js"></script>-->
+    <!--<script src="scripts/controllers/dlgDelete.js"></script>-->
+
+    <script src="scripts/auth/authenticationFactory.js"></script>
+    <script src="scripts/auth/userAuthFactory.js"></script>
+    <script src="scripts/auth/tokenInterceptor.js"></script>
+    <script src="scripts/auth/loginCtrl.js"></script>
 </body>
 </html>

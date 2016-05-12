@@ -1,7 +1,13 @@
-'use strict';
+(function() {
+    'use strict';
 
-jiraPluginApp.controller('LoginCtrl', ['$scope', '$window', '$location', 'UserAuthFactory', 'AuthenticationFactory',
-    function($scope, $window, $location, UserAuthFactory, AuthenticationFactory) {
+    angular
+        .module('jiraPluginApp')
+        .controller('LoginCtrl', LoginCtrl);
+
+    LoginCtrl.$inject = ['$scope', '$window', '$location', 'userAuthFactory', 'authenticationFactory'];
+
+    function LoginCtrl($scope, $window, $location, userAuthFactory, authenticationFactory) {
         $scope.user = {
             username: '',
             password: ''
@@ -16,14 +22,14 @@ jiraPluginApp.controller('LoginCtrl', ['$scope', '$window', '$location', 'UserAu
                 var username = $scope.user.username,
                     password = $scope.user.password;
                 if (username !== undefined && password !== undefined) {
-                    UserAuthFactory.login(username, password).success(function(data) {
+                    userAuthFactory.login(username, password).success(function(data) {
                         if (data.status === "error") {
                             $scope.loginError.status = true;
                             $scope.loginError.message = data.message;
                         } else {
-                            AuthenticationFactory.isLogged = true;
-                            AuthenticationFactory.user = data.user.username;
-                            AuthenticationFactory.roles = data.user.roles;
+                            authenticationFactory.isLogged = true;
+                            authenticationFactory.user = data.user.username;
+                            authenticationFactory.roles = data.user.roles;
 
 
                             $window.localStorage.token = data.token;
@@ -46,8 +52,7 @@ jiraPluginApp.controller('LoginCtrl', ['$scope', '$window', '$location', 'UserAu
                     };
                 }
             }
-
         };
-
     }
-]);
+
+})();

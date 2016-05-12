@@ -1,12 +1,17 @@
-'use strict';
+(function() {
+    'use strict';
 
-jiraPluginApp.controller("PortfolioCtrl", ['$scope', 'PortfoliosFactory', '$timeout',
-    function($scope, PortfoliosFactory, $timeout) {
+    angular
+        .module('jiraPluginApp')
+        .controller('PortfolioCtrl', PortfolioCtrl);
+
+    PortfolioCtrl.$inject = ['$scope', '$timeout', 'PortfoliosFactory'];
+
+    function PortfolioCtrl($scope, $timeout, PortfoliosFactory) {
         var self = this;
         $scope.loaderShow = true;
 
-//----------------------------------------------------------------------------------------------------------------------
-//update ProgressBar
+        //update ProgressBar
         this.updateProgressBar = function (item) {
             var actualPoints = item.actualPoints,
                 actualHours  = item.actualHours,
@@ -30,12 +35,11 @@ jiraPluginApp.controller("PortfolioCtrl", ['$scope', 'PortfoliosFactory', '$time
             return progressBarData;
         };
 
-//----------------------------------------------------------------------------------------------------------------------
-//update chart
+        //update chart
         this.updateChart = function (item) {
             var chartData = item.chart;
-//----------------------------------------------------------------------------------------------------------------------
-//Chart type (bad: red; good: green)
+
+            //Chart type (bad: red; good: green)
             console.log("Data for chart: actual = "+chartData.actual[chartData.actual.length - 1]+" ; target = "+chartData.target[chartData.actual.length - 1]);
             var actualChartColor = "#FF0000";
             if (chartData.actual[chartData.actual.length - 1] <= chartData.target[chartData.actual.length - 1]) {
@@ -58,8 +62,7 @@ jiraPluginApp.controller("PortfolioCtrl", ['$scope', 'PortfoliosFactory', '$time
             return chart;
         };
 
-//----------------------------------------------------------------------------------------------------------------------
-//For pagination
+        //For pagination
         $scope.reportsData = [];
         $scope.totalReportsData = 0;
         $scope.reportsDataPerPage = 10; // this should match however many results your API puts on one page
@@ -99,6 +102,6 @@ jiraPluginApp.controller("PortfolioCtrl", ['$scope', 'PortfoliosFactory', '$time
                 $scope.loaderShow = false;
             });
         }
-
     }
-]);
+
+})();

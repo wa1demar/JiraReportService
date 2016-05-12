@@ -1,3 +1,21 @@
+(function() {
+  'use strict';
+
+  angular
+      .module('jiraPluginApp')
+      .factory('ReportsFactory', ReportsFactory);
+
+  ReportsFactory.$inject = ['$resource', 'CONFIG'];
+
+  function ReportsFactory($resource, CONFIG) {
+    return $resource(CONFIG.API_PATH + '/reports/:type/:page', {type: "@type", page: "@page"}, {
+      query:  { method: 'GET', isArray: false },
+      create: { method: 'POST' }
+    });
+  }
+
+})();
+
 'use strict';
 
 jiraPluginApp.factory('ReportsFactory', ['$resource', 'CONFIG', function ($resource, CONFIG) {

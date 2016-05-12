@@ -1,15 +1,19 @@
-'use strict';
+(function() {
+    'use strict';
 
-jiraPluginApp.controller('HomeCtrl', ['$scope', '$location', 'AuthenticationFactory', '$uibModal', 'ReportsFactory', 'ReportFactory', 'CopyReportFactory', 'Notification',
-    function($scope, $location, AuthenticationFactory, $uibModal, ReportsFactory, ReportFactory, CopyReportFactory, Notification) {
+    angular
+        .module('jiraPluginApp')
+        .controller('ReportListCtrl', ReportListCtrl);
 
+    ReportListCtrl.$inject = ['$scope', '$location', '$uibModal', 'authenticationFactory', 'ReportsFactory', 'ReportFactory', 'CopyReportFactory', 'Notification'];
+
+    function ReportListCtrl($scope, $location, $uibModal, AuthenticationFactory, ReportsFactory, ReportFactory, CopyReportFactory, Notification) {
         var self = this;
         $scope.loaderShow = true;
         $scope.currentTabTitle = 'ongoing';
         //$scope.setLoading(true);
 
-//----------------------------------------------------------------------------------------------------------------------
-//TODO For pagination
+        //TODO For pagination
         $scope.dataOngoing = [];
         $scope.totalOngoing = 0;
         $scope.ongoingPerPage = 10; // this should match however many results your API puts on one page
@@ -50,17 +54,16 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', '$location', 'AuthenticationFact
 //
 //        self.getReportsData();
 
-//----------------------------------------------------------------------------------------------------------------------
-//Tabs
+        //Tabs
         $scope.tabs = [{
             title: 'Ongoing',
-            url: 'views/report_list/ongoing.html'
+            url: ' scripts/controllers/report_list/ongoing.html'
         }, {
             title: 'Closed',
-            url: 'views/report_list/closed.html'
+            url: 'scripts/controllers/report_list/closed.html'
         }];
 
-        $scope.currentTab = 'views/report_list/ongoing.html';
+        $scope.currentTab = 'scripts/controllers/report_list/ongoing.html';
 
         $scope.onClickTab = function (tab) {
             $scope.currentTab = tab.url;
@@ -72,8 +75,7 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', '$location', 'AuthenticationFact
             return tabUrl === $scope.currentTab;
         };
 
-//----------------------------------------------------------------------------------------------------------------------
-//Order reports
+        //Order reports
         $scope.predicate = 'title';
         $scope.reverse = false;
         $scope.order = function(predicate) {
@@ -81,13 +83,12 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', '$location', 'AuthenticationFact
             $scope.predicate = predicate;
         };
 
-//----------------------------------------------------------------------------------------------------------------------
-//Dlg process report
+        //Dlg process report
         $scope.dlgData = {};
         $scope.processReport = function (size) {
             var modalInstance = $uibModal.open({
                 animation: true,
-                templateUrl: 'views/dlg/dlg_process_report.html',
+                templateUrl: 'scripts/controllers/report_list/dlg_process_report.html',
                 controller: 'DlgProcessReportCtrl',
                 size: size,
                 resolve: {
@@ -110,8 +111,7 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', '$location', 'AuthenticationFact
             }, function () {});
         };
 
-//----------------------------------------------------------------------------------------------------------------------
-//Dlg delete report
+        //Dlg delete report
         $scope.deleteReport = function (item) {
             var modalInstance = $uibModal.open({
                 animation: true,
@@ -135,12 +135,11 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', '$location', 'AuthenticationFact
         };
 
 
-//----------------------------------------------------------------------------------------------------------------------
-//Dlg copy report
+        //Dlg copy report
         $scope.copyReport = function (item) {
             var modalInstance = $uibModal.open({
                 animation: true,
-                templateUrl: 'views/dlg/dlg_copy_element.html',
+                templateUrl: 'scripts/controllers/report_list/dlg_copy_element.html',
                 controller: 'DlgCopyReportCtrl',
                 resolve: {
                     dlgData: function () {
@@ -159,50 +158,5 @@ jiraPluginApp.controller('HomeCtrl', ['$scope', '$location', 'AuthenticationFact
             }, function () {});
         };
     }
-]);
 
-jiraPluginApp.controller('DlgProcessReportCtrl',
-    ['$scope', '$uibModalInstance', 'dlgData', 'UsersFactory', 'BoardsFactory',
-        function ($scope, $uibModalInstance, dlgData, UsersFactory, BoardsFactory) {
-            $scope.dlgData = {};
-
-            var users = UsersFactory.query(function(){
-                $scope.dlgData['users'] = users.users;
-            });
-            var boards = BoardsFactory.query(function(){
-                $scope.dlgData['boards'] = boards.boards;
-            });
-
-            $scope.model = {
-                typeId: 1
-            };
-
-            $scope.ok = function () {
-                if($scope.processReportForm.$valid) {
-                    $uibModalInstance.close($scope.model);
-                }
-            };
-
-            $scope.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
-            };
-        }
-    ]);
-
-jiraPluginApp.controller('DlgCopyReportCtrl', ['$scope', '$uibModalInstance', 'dlgData',
-    function ($scope, $uibModalInstance, dlgData) {
-        $scope.dlgData = dlgData;
-        $scope.dlgData = {
-            id:   $scope.dlgData.id,
-            name: "Copy of " + $scope.dlgData.title
-        };
-
-        $scope.ok = function () {
-            $uibModalInstance.close($scope.dlgData);
-        };
-
-        $scope.cancel = function () {
-            $uibModalInstance.dismiss('cancel');
-        };
-    }
-]);
+})();

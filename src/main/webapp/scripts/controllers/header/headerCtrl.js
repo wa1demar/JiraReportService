@@ -1,7 +1,13 @@
-'use strict';
+(function() {
+    'use strict';
 
-jiraPluginApp.controller("HeaderCtrl", ['$scope', '$location', 'UserAuthFactory','$uibModal', 'ConfigFactory', 'Notification', '$timeout',
-    function($scope, $location, UserAuthFactory, $uibModal, ConfigFactory, Notification, $timeout) {
+    angular
+        .module('jiraPluginApp')
+        .controller('HeaderCtrl', HeaderCtrl);
+
+    HeaderCtrl.$inject = ['$scope', '$location', '$uibModal', 'userAuthFactory', 'ConfigFactory', 'Notification'];
+
+    function HeaderCtrl($scope, $location, $uibModal, userAuthFactory, ConfigFactory, Notification) {
         $scope.status = {
             isopen: false
         };
@@ -17,17 +23,16 @@ jiraPluginApp.controller("HeaderCtrl", ['$scope', '$location', 'UserAuthFactory'
         };
 
         $scope.logout = function () {
-            UserAuthFactory.logout();
+            userAuthFactory.logout();
         };
 
-        //------------------------------------------------------------------------------------------------------------------
         //Dlg process config
         $scope.dlgData = {};
         $scope.processConfig = function () {
             var modalInstance = $uibModal.open({
                 animation: true,
                 size: "lg",
-                templateUrl: 'views/dlg/dlg_process_config.html',
+                templateUrl: 'scripts/controllers/header/dlg_process_config.html',
                 controller: 'DlgProcessConfigCtrl',
                 resolve: {
                     dlgData: function () {
@@ -44,22 +49,5 @@ jiraPluginApp.controller("HeaderCtrl", ['$scope', '$location', 'UserAuthFactory'
             }, function () {});
         };
     }
-]);
 
-jiraPluginApp.controller('DlgProcessConfigCtrl', ['$scope', '$uibModalInstance', 'dlgData', 'ConfigFactory',
-    function ($scope, $uibModalInstance, dlgData, ConfigFactory) {
-        $scope.dlgData = dlgData;
-
-        var boards = ConfigFactory.get(function(){
-            $scope.configData = boards;
-        });
-
-        $scope.ok = function () {
-            $uibModalInstance.close($scope.configData);
-        };
-
-        $scope.cancel = function () {
-            $uibModalInstance.dismiss('cancel');
-        };
-    }
-]);
+})();

@@ -1,12 +1,18 @@
-'use strict';
+(function() {
+    'use strict';
 
-jiraPluginApp.controller('MainCtrl', ['$scope',
-    function($scope) {
+    angular
+        .module('jiraPluginApp')
+        .controller('MainCtrl', MainCtrl);
+
+    MainCtrl.$inject = ['$scope'];
+
+    function MainCtrl($scope) {
         $scope.isLoading = false;
 
-        $scope.setLoading = function(loading) {
+        $scope.setLoading = function (loading) {
             $scope.isLoading = loading;
         };
-
     }
-]);
+
+})();
