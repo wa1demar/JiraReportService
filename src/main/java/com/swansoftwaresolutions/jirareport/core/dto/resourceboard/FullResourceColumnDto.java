@@ -16,6 +16,8 @@ public class FullResourceColumnDto {
     private boolean fixed;
     private int priority;
     private int sortPosition;
+    private int allMembersCount;
+    private int membersCount;
     private List<FullResourceUserDto> users = new ArrayList<>();
 
     public Long getId() {
@@ -72,5 +74,21 @@ public class FullResourceColumnDto {
 
     public void setSortPosition(int sortPosition) {
         this.sortPosition = sortPosition;
+    }
+
+    public int getMembersCount() {
+        return membersCount;
+    }
+
+    public void setMembersCount(int membersCount) {
+        this.membersCount = membersCount;
+    }
+
+    public int getAllMembersCount() {
+        return allMembersCount;
+    }
+
+    public void setAllMembersCount(int allMembersCount) {
+        this.allMembersCount = allMembersCount;
     }
 }

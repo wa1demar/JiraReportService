@@ -3,8 +3,6 @@ package com.swansoftwaresolutions.jirareport;
 import org.junit.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.*;
-
 /**
  * @author Vladimir Martynyuk
  */
