@@ -23,6 +23,11 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                 };
             }
 
+// ----------------------------------------------------------------------------------------------------------------------
+            $scope.lightColor = function (hex, lum) {
+                return colorLuminance(hex, lum);
+            };
+
 //----------------------------------------------------------------------------------------------------------------------
 //Get all data for Resource Board
             $scope.columns = [];
@@ -41,20 +46,16 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                 };
 
                 // ProjectFactory.query(searchQuery, function (result) {
-                //     $scope.columns = result.columns;
+                //     $scope.columns = result.projects;
                 //     $scope.loaderShow = false;
                 // }, function (error) {
                 //     Notification.error("Server error");
                 // });
                 
-                $scope.lightColor = function (hex, lum) {
-                    return colorLuminance(hex, lum);
-                };
-                
                 $scope.columns = [
                     {
                         id: 1,
-                        name: "Project 1",
+                        title: "Project 1",
                         description: "Description",
                         users: [
                             {
@@ -93,7 +94,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                     },
                     {
                         id: 2,
-                        name: "Project 2",
+                        title: "Project 2",
                         description: "Description",
                         users: [
                             {
@@ -107,7 +108,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                     },
                     {
                         id: 3,
-                        name: "Project 3",
+                        title: "Project 3",
                         description: "Description",
                         users: [
                             {
@@ -131,7 +132,7 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                     },
                     {
                         id: 4,
-                        name: "Project 4",
+                        title: "Project 4",
                         description: "Description",
                         users: [
                             {
@@ -384,7 +385,10 @@ jiraPluginApp.controller('ProjectManagementCtrl',
                     controller: 'DlgDeleteCtrl',
                     resolve: {
                         dlgData: function () {
-                            return item;
+                            return {
+                                id: item.id,
+                                name: item.title
+                            };
                         }
                     }
                 });

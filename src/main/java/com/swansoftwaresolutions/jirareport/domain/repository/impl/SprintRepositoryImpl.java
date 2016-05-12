@@ -99,7 +99,7 @@ public class SprintRepositoryImpl implements SprintRepository {
             return;
         }
 
-        Query query = sessionFactory.getCurrentSession().createQuery("FROM Sprint s");
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM Sprint s where s.jiraSprint != null");
         List<Sprint> existed = query.list();
 
         Session session = sessionFactory.openSession();

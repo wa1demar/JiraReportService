@@ -44,7 +44,7 @@ jiraPluginApp.controller('CommentCtrl', ['$scope', '$routeParams', 'CommentsFact
             var modalInstance = $uibModal.open({
                 animation: true,
                 templateUrl: 'views/dlg/dlg_delete_element.html',
-                controller: 'DlgDeleteCommentCtrl',
+                controller: 'DlgDeleteCtrl',
                 resolve: {
                     dlgData: function () {
                         return item;
@@ -63,20 +63,6 @@ jiraPluginApp.controller('CommentCtrl', ['$scope', '$routeParams', 'CommentsFact
             }, function () {});
         };
 
-    }
-]);
-
-jiraPluginApp.controller('DlgDeleteCommentCtrl', ['$scope', '$uibModalInstance', 'dlgData',
-    function ($scope, $uibModalInstance, dlgData) {
-        $scope.dlgData = dlgData;
-
-        $scope.ok = function () {
-            $uibModalInstance.close($scope.dlgData);
-        };
-
-        $scope.cancel = function () {
-            $uibModalInstance.dismiss('cancel');
-        };
     }
 ]);
 

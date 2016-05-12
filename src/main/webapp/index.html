@@ -46,10 +46,10 @@
                     <!--<li ng-class="{active:isActive('/productivity')}"><a href="#/productivity">Productivity</a></li>-->
                     <li ng-class="{active:isActive('/due_date_issue')}"><a href="#/due_date_issue">Due Date</a></li>
                     <li uib-dropdown on-toggle="toggled(open)" ng-class="(isActive('/resource_management') || isActive('/project_management')) ? 'dropdown active' : 'dropdown'">
-                        <a href="" class="menu-dropdown-item" id="rm-dropdown" uib-dropdown-toggle>RM <span class="caret"></span></a>
+                        <a href="" class="menu-dropdown-item" id="rm-dropdown" uib-dropdown-toggle>Resources <span class="caret"></span></a>
                         <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="system-dropdown">
-                            <li><a ng-class="{active:isActive('/resource_management')}" href="#/resource_management">Resource</a></li>
-                            <li><a ng-class="{active:isActive('/project_management')}" href="#/project_management">Project</a></li>
+                            <li><a ng-class="{active:isActive('/resource_management')}" href="#/resource_management">Assignments Type</a></li>
+                            <li><a ng-class="{active:isActive('/project_management')}" href="#/project_management">Projects</a></li>
                         </ul>
                     </li>
                     <li ng-if="isAdmin" uib-dropdown on-toggle="toggled(open)" ng-class="(isActive('/system_user') || isActive('/task') || isActive('/dictionary/locations') || isActive('/dictionary/technologies')) ? 'dropdown active' : 'dropdown'">
