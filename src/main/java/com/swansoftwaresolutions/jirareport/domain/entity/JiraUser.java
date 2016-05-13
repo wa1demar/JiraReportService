@@ -26,6 +26,7 @@ public class JiraUser implements Serializable {
     private List<Technology> technologies = new ArrayList<>();
     private List<Attachment> attachments = new ArrayList<>();
     private List<ResourceColumn> columns = new ArrayList<>();
+    private List<Project> projects = new ArrayList<>();
     private String avatar;
     private int resourceOrder;
 
@@ -163,5 +164,18 @@ public class JiraUser implements Serializable {
 
     public void setResourceOrder(int resourceOrder) {
         this.resourceOrder = resourceOrder;
+    }
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "jira_users_projects", joinColumns = {
+            @JoinColumn(name = "jira_user_login")},
+            inverseJoinColumns = {@JoinColumn(name = "project_id")})
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DETACH})
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
 }

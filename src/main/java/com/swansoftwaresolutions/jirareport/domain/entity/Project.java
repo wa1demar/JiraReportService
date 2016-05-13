@@ -1,6 +1,10 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Vladimir Martynyuk
@@ -12,6 +16,7 @@ public class Project {
     private Long id;
     private String title;
     private int sortPosition;
+    private List<JiraUser> users = new ArrayList<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,5 +44,15 @@ public class Project {
 
     public void setSortPosition(int sortPosition) {
         this.sortPosition = sortPosition;
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "projects")
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
+    public List<JiraUser> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<JiraUser> users) {
+        this.users = users;
     }
 }

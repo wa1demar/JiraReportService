@@ -7,11 +7,8 @@ import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologyId;
 import com.swansoftwaresolutions.jirareport.core.mapper.TechnologyMapper;
 import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
 import com.swansoftwaresolutions.jirareport.core.service.ResourceBordService;
-import com.swansoftwaresolutions.jirareport.domain.entity.Attachment;
-import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
+import com.swansoftwaresolutions.jirareport.domain.entity.*;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
-import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
-import com.swansoftwaresolutions.jirareport.domain.entity.Technology;
 import com.swansoftwaresolutions.jirareport.domain.repository.*;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
@@ -51,6 +48,9 @@ public class JiraUserServiceImpl implements JiraUserService {
 
     @Autowired
     AttachmentRepository attachmentRepository;
+
+    @Autowired
+    ProjectRepository projectRepository;
 
     @Autowired
     ResourceBordService resourceBordService;
@@ -272,5 +272,17 @@ public class JiraUserServiceImpl implements JiraUserService {
         jiraUserRepository.sortMembers(memberDto.getUsers());
 
         return resourceBordService.getColumns(memberDto.getFilters());
+    }
+
+    @Override
+    public ResourceUserDto addProject(String login, Long projectId) throws NoSuchEntityException {
+        Project project = projectRepository.findById(projectId);
+        JiraUser jiraUser = jiraUserRepository.findByLogin(login);
+
+        jiraUser.getProjects().add(project);
+
+        jiraUserRepository.update(jiraUser);
+
+        return jiraUserMapper.fromJiraUserToResourceUserDto(jiraUser);
     }
 }

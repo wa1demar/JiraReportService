@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.dto.jira_users;
 
 import com.swansoftwaresolutions.jirareport.core.dto.locations.LocationDto;
+import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologyDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.Attachment;
@@ -16,6 +17,7 @@ public class FullResourceUserDto {
     private String name;
     private Integer engineerLevel;
     private List<TechnologyDto> technologies = new ArrayList<>();
+    private List<ProjectDto> projects = new ArrayList<>();
     private LocationDto location;
     private String description;
     private String avatar;
@@ -127,5 +129,13 @@ public class FullResourceUserDto {
 
     public void setResourceOrder(int resourceOrder) {
         this.resourceOrder = resourceOrder;
+    }
+
+    public List<ProjectDto> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<ProjectDto> projects) {
+        this.projects = projects;
     }
 }

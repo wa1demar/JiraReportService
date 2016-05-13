@@ -30,4 +30,11 @@ public class ProjectRepositoryImpl implements ProjectRepository {
 
         return query.list();
     }
+
+    @Override
+    public Project findById(Long projectId) {
+        Query query = sessionFactory.getCurrentSession().createQuery("from Project p where p.id = :id");
+        query.setParameter("id", projectId);
+        return (Project) query.uniqueResult();
+    }
 }

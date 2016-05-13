@@ -5,6 +5,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MoveMemberDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.NewResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectIdDto;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDtoList;
 import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologiesDto;
 import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologyId;
@@ -156,6 +157,15 @@ public class JiraUsersController {
         InputStream inputStream = attachmentService.loadFile(response, id);
 
         FileCopyUtils.copy(inputStream, response.getOutputStream());
+    }
+
+    @RequestMapping(value = "/v1/members/{login:.+}/projects", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResourceUserDto> addProject(@PathVariable("login") String login, @Valid @RequestBody ProjectIdDto projectIdDto) throws NoSuchEntityException {
+
+        ResourceUserDto newNewResourceUserDto = jiraUserService.addProject(login, projectIdDto.getProjectId());
+
+        return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
     }
 
 
