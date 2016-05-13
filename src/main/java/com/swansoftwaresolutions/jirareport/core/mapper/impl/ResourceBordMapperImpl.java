@@ -10,7 +10,6 @@ import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.JiraUserToFu
 import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.JiraUserToResourceUserDtoMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
-import org.apache.commons.beanutils.converters.IntegerArrayConverter;
 import org.apache.commons.lang.StringUtils;
 import org.modelmapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Type;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author Vladimir Martynyuk
@@ -93,10 +90,14 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
         List<FullResourceUserDto> allUsersFiltered = new ArrayList<>();
         for (ResourceColumn c : columns) {
             FullResourceColumnDto fullResourceColumnDto = modelMapper.map(c, FullResourceColumnDto.class);
+            int count = 0;
             if (c.getUsers() != null && c.getUsers().size() > 0) {
                 List<FullResourceUserDto> fullResourceUserDtos = new ArrayList<>();
                 for (JiraUser user : c.getUsers()) {
                     FullResourceUserDto userDto = modelMapper.map(user, FullResourceUserDto.class);
+                    if (!allUsersFiltered.contains(userDto)) {
+                        count++;
+                    }
                     if (!allUsersFiltered.contains(userDto) && filterName(userDto, filterData.getName())
                             && filterTechnologies(userDto, filterData.getTechnology())
                             && filterLevel(userDto, filterData.getEngineerLevel())
@@ -113,6 +114,8 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
                 }
                 Collections.sort(fullResourceUserDtos, (o1, o2) -> o1.getResourceOrder() - o2.getResourceOrder());
                 fullResourceColumnDto.setUsers(fullResourceUserDtos);
+                fullResourceColumnDto.setAllMembersCount(count);
+                fullResourceColumnDto.setMembersCount(fullResourceUserDtos.size());
             }
             columnDtos.add(fullResourceColumnDto);
         }
