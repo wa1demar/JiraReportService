@@ -88,7 +88,7 @@
         $scope.processReport = function (size) {
             var modalInstance = $uibModal.open({
                 animation: true,
-                templateUrl: 'scripts/controllers/report_list/dlg_process_report.html',
+                templateUrl: 'scripts/controllers/report_list/dlg/dlg_process_report.html',
                 controller: 'DlgProcessReportCtrl',
                 size: size,
                 resolve: {
@@ -115,7 +115,7 @@
         $scope.deleteReport = function (item) {
             var modalInstance = $uibModal.open({
                 animation: true,
-                templateUrl: 'views/dlg/dlg_delete_element.html',
+                templateUrl: 'scripts/controllers/dlg_delete/dlg_delete_element.html',
                 controller: 'DlgDeleteCtrl',
                 resolve: {
                     dlgData: function () {
@@ -139,7 +139,7 @@
         $scope.copyReport = function (item) {
             var modalInstance = $uibModal.open({
                 animation: true,
-                templateUrl: 'scripts/controllers/report_list/dlg_copy_element.html',
+                templateUrl: 'scripts/controllers/report_list/dlg/dlg_copy_element.html',
                 controller: 'DlgCopyReportCtrl',
                 resolve: {
                     dlgData: function () {

@@ -32,7 +32,7 @@
             var modalInstance = $uibModal.open({
                 animation: true,
                 size: "lg",
-                templateUrl: 'scripts/controllers/header/dlg_process_config.html',
+                templateUrl: 'scripts/controllers/header/dlg/dlg_process_config.html',
                 controller: 'DlgProcessConfigCtrl',
                 resolve: {
                     dlgData: function () {
