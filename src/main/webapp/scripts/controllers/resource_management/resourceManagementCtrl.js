@@ -669,7 +669,7 @@
             var count = $scope.technologies.length;
             var result = [];
             for (var index = 0; index < count; index++) {
-                var flag = _.findWhere($scope.currentMember.technologies, {name: $scope.technologies[index].name});
+                var flag = _.findWhere($scope.currentMember.technologies, {id: $scope.technologies[index].id});
                 if (flag === undefined) {
                     result.push($scope.technologies[index]);
                 }
@@ -728,12 +728,12 @@
             var count = $scope.projects.length;
             var result = [];
             for (var index = 0; index < count; index++) {
-                var flag = _.findWhere($scope.currentMember.projects, {title: $scope.projects[index].title});
+                var flag = _.findWhere($scope.currentMember.projects, {id: $scope.projects[index].id});
                 if (flag === undefined) {
                     result.push($scope.projects[index]);
                 }
             }
-            
+
             var modalInstance = $uibModal.open({
                 animation: true,
                 templateUrl: 'scripts/controllers/resource_management/dlg/dlg_add_project.html',
