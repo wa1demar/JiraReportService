@@ -4,7 +4,7 @@
     angular
         .module('jiraPluginApp')
         .constant('CONFIG', {
-            APP_NAME: 'mytodoApp',
+            APP_NAME: 'Swan Intranet',
             APP_VERSION: '0.1',
             DESIGN_VERSION: 'v1',
             //API_PATH: 'http://localhost:3000',
