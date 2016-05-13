@@ -23,13 +23,16 @@
                     <li><a ng-class="{active:isActive('/project_management')}" href="#/project_management">Projects</a></li>
                 </ul>
             </li>
-            <li ng-if="isAdmin" uib-dropdown on-toggle="toggled(open)" ng-class="(isActive('/system_user') || isActive('/task') || isActive('/dictionary/locations') || isActive('/dictionary/technologies')) ? 'dropdown active' : 'dropdown'">
+            <li ng-if="isAdmin"
+                uib-dropdown on-toggle="toggled(open)"
+                ng-class="(isActive('/system_user') || isActive('/task') || isActive('/dictionary/locations') || isActive('/dictionary/technologies') || isActive('/dictionary/el_position')) ? 'dropdown active' : 'dropdown'">
                 <a href="" class="menu-dropdown-item" id="system-dropdown" uib-dropdown-toggle>System <span class="caret"></span></a>
                 <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="system-dropdown">
                     <li><a ng-class="{active:isActive('/system_user')}" href="#/system_user">Users</a></li>
                     <li><a ng-class="{active:isActive('/task')}" href="#/task">Tasks</a></li>
                     <li><a ng-class="{active:isActive('/dictionary/locations')}" href="#/dictionary/locations">Locations</a></li>
                     <li><a ng-class="{active:isActive('/dictionary/technologies')}" href="#/dictionary/technologies">Technologies</a></li>
+                    <!--<li><a ng-class="{active:isActive('/dictionary/el_position')}" href="#/dictionary/el_position">EL/Position</a></li>-->
                     <li><a ng-class="{active:isActive('/system_at_priority')}" href="#/system_at_priority">Assignment type priority</a></li>
                     <li><a href="javascript:" ng-click="processConfig()">Settings</a></li>
                 </ul>
