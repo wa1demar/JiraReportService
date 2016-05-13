@@ -1,164 +1,169 @@
 <!doctype html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
+<html ng-app="jiraPluginApp" ng-controller="AppController as app">
+    <head>
+        <meta charset="utf-8">
+        <title>Swan Intranet</title>
+        <meta name="description" content="Swan Intranet">
+        <meta name="viewport" content="width=device-width">
 
-    <link rel="stylesheet" href="http://aui-cdn.atlassian.com/aui-adg/5.9.13/css/aui.min.css" media="all">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script src="http://aui-cdn.atlassian.com/aui-adg/5.9.13/js/aui.min.js"></script>
+        <link rel="apple-touch-icon" sizes="57x57" href="/images/favicon/apple-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="/images/favicon/apple-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/images/favicon/apple-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon/apple-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/images/favicon/apple-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="/images/favicon/apple-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="/images/favicon/apple-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/images/favicon/apple-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-icon-180x180.png">
+        <link rel="icon" type="image/png" sizes="192x192"  href="/images/favicon/android-icon-192x192.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="/images/favicon/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="/images/favicon/ms-icon-144x144.png">
+        <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" href="scripts/vendors/select2/select2.css" />
-    <link rel="stylesheet" href="scripts/vendors/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="scripts/vendors/angular-chart.js/dist/angular-chart.css" />
-    <link rel="stylesheet" href="scripts/vendors/angular-ui-notification/dist/angular-ui-notification.min.css" />
-    <link rel="stylesheet" href="scripts/vendors/angular-xeditable/dist/css/xeditable.min.css" />
-    <link rel="stylesheet" href="scripts/vendors/angular-bootstrap-colorpicker/css/colorpicker.min.css" />
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/AgileReportPlugin.css">
-    <link rel="stylesheet" href="styles/resourceManagement.css">
-    <link rel="stylesheet" href="styles/system.css">
-</head>
-<body ng-app="jiraPluginApp">
-    <!--[if lte IE 8]>
-    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
+        <link rel="stylesheet" href="http://aui-cdn.atlassian.com/aui-adg/5.9.13/css/aui.min.css" media="all">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script src="http://aui-cdn.atlassian.com/aui-adg/5.9.13/js/aui.min.js"></script>
 
-    <nav class="navbar navbar-default" ng-controller="HeaderCtrl">
-        <div class="container-fluid nav-block">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false" ng-show="showMenu">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a href="#/"><img src="/images/hero-logo.svg" alt="logo.svg" class="logo"></a>
-                <a class="navbar-brand" href="#/">Swan Intranet</a>
-            </div>
+        <link rel="stylesheet" href="bower_components/select2/select2.css" />
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="bower_components/angular-chart.js/dist/angular-chart.css" />
+        <link rel="stylesheet" href="bower_components/angular-ui-notification/dist/angular-ui-notification.min.css" />
+        <link rel="stylesheet" href="bower_components/angular-xeditable/dist/css/xeditable.min.css" />
+        <link rel="stylesheet" href="bower_components/angular-bootstrap-colorpicker/css/colorpicker.min.css" />
+        <link rel="stylesheet" href="styles/main.css">
+        <link rel="stylesheet" href="styles/AgileReportPlugin.css">
+        <link rel="stylesheet" href="styles/resourceManagement.css">
+        <link rel="stylesheet" href="styles/system.css">
+    </head>
+    <body>
+        <!--[if lte IE 8]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
 
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav" ng-show="showMenu">
-                    <li ng-class="{active:isActive('/')}"><a ng-href="#/">Portfolio</a></li>
-                    <li ng-class="{active:isActive('/dashboards')}"><a href="#/dashboards">Project</a></li>
-                    <!--<li ng-class="{active:isActive('/productivity')}"><a href="#/productivity">Productivity</a></li>-->
-                    <li ng-class="{active:isActive('/due_date_issue')}"><a href="#/due_date_issue">Due Date</a></li>
-                    <li uib-dropdown on-toggle="toggled(open)" ng-class="(isActive('/resource_management') || isActive('/project_management')) ? 'dropdown active' : 'dropdown'">
-                        <a href="" class="menu-dropdown-item" id="rm-dropdown" uib-dropdown-toggle>Resources <span class="caret"></span></a>
-                        <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="system-dropdown">
-                            <li><a ng-class="{active:isActive('/resource_management')}" href="#/resource_management">Assignments Type</a></li>
-                            <li><a ng-class="{active:isActive('/project_management')}" href="#/project_management">Projects</a></li>
-                        </ul>
-                    </li>
-                    <li ng-if="isAdmin" uib-dropdown on-toggle="toggled(open)" ng-class="(isActive('/system_user') || isActive('/task') || isActive('/dictionary/locations') || isActive('/dictionary/technologies')) ? 'dropdown active' : 'dropdown'">
-                        <a href="" class="menu-dropdown-item" id="system-dropdown" uib-dropdown-toggle>System <span class="caret"></span></a>
-                        <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="system-dropdown">
-                            <li><a ng-class="{active:isActive('/system_user')}" href="#/system_user">Users</a></li>
-                            <li><a ng-class="{active:isActive('/task')}" href="#/task">Tasks</a></li>
-                            <li><a ng-class="{active:isActive('/dictionary/locations')}" href="#/dictionary/locations">Locations</a></li>
-                            <li><a ng-class="{active:isActive('/dictionary/technologies')}" href="#/dictionary/technologies">Technologies</a></li>
-                            <li><a ng-class="{active:isActive('/system_at_priority')}" href="#/system_at_priority">Assignment type priority</a></li>
-                            <li><a href="javascript:" ng-click="processConfig()">Settings</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right" ng-show="showMenu">
-                    <li ng-class="{active:isActive('/profile')}"><a ng-href="#/profile">Profile</a></li>
-                    <li class="dropdown"></li>
-                    <li><a href="javascript:" ng-click="logout()">Logout</a></li>
-                </ul>
-            </div>
+        <nav class="navbar navbar-default" ng-controller="HeaderCtrl" ng-include="'scripts/controllers/header/header.html'"></nav>
+
+        <div ng-controller="MainCtrl">
+            <div ng-view=""></div>
+
+            <div id="veil" ng-show="isLoading !== undefined && isLoading"></div>
+            <div id="feedLoading" ng-show="isLoading !== undefined && isLoading">Loading...</div>
         </div>
-    </nav>
 
-    <div ng-controller="MainCtrl">
-        <div ng-view=""></div>
-
-        <div id="veil" ng-show="isLoading !== undefined && isLoading"></div>
-        <div id="feedLoading" ng-show="isLoading !== undefined && isLoading">Loading...</div>
-    </div>
-
-    <!--<div class="footer">-->
-        <!--<div class="container">-->
-            <!--<p class="text-muted">Place sticky footer content here-->
-                <!--<a class="pull-right" href="http://google.com" target="_blank">google.com</a>-->
-            <!--</p>-->
+        <!--<div class="footer">-->
+            <!--<div class="container">-->
+                <!--<p class="text-muted">Place sticky footer content here-->
+                    <!--<a class="pull-right" href="http://google.com" target="_blank">google.com</a>-->
+                <!--</p>-->
+            <!--</div>-->
         <!--</div>-->
-    <!--</div>-->
 
-    <script src="scripts/vendors/jquery/dist/jquery.js"></script>
-    <script src="scripts/vendors/angular/angular.js"></script>
-    <script src="scripts/vendors/angular-animate/angular-animate.js"></script>
-    <script src="scripts/vendors/angular-cookies/angular-cookies.js"></script>
-    <script src="scripts/vendors/angular-resource/angular-resource.js"></script>
-    <script src="scripts/vendors/angular-route/angular-route.js"></script>
-    <script src="scripts/vendors/angular-sanitize/angular-sanitize.js"></script>
-    <script src="scripts/vendors/angular-touch/angular-touch.js"></script>
-    <script src="scripts/vendors/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="scripts/vendors/select2/select2.js"></script>
-    <script src="scripts/vendors/angular-ui-select2/src/select2.js"></script>
-    <script src="scripts/vendors/angular-messages/angular-messages.js"></script>
-    <script src="scripts/vendors/Chart.js/Chart.min.js"></script>
-    <script src="scripts/vendors/angular-chart.js/dist/angular-chart.js"></script>
-    <script src="scripts/vendors/underscore/underscore-min.js"></script>
-    <script src="scripts/vendors/angular-ui-notification/dist/angular-ui-notification.min.js"></script>
-    <script src="scripts/vendors/angular-nl2br/angular-nl2br.min.js"></script>
-    <script src="scripts/vendors/angularUtils-pagination/dirPagination.js"></script>
-    <script src="scripts/vendors/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js"></script>
-    <script src="scripts/vendors/angular-xeditable/dist/js/xeditable.min.js"></script>
-    <script src="scripts/vendors/angular-xeditable/dist/js/xeditable.min.js"></script>
-    <script src="scripts/vendors/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.min.js"></script>
-    <script src="scripts/vendors/angular-file-upload/dist/angular-file-upload.min.js"></script>
-    <script src="scripts/vendors/angular-bootstrap-contextmenu/contextMenu.js"></script>
+        <script src="bower_components/jquery/dist/jquery.js"></script>
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/angular-animate/angular-animate.js"></script>
+        <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+        <script src="bower_components/angular-resource/angular-resource.js"></script>
+        <script src="bower_components/angular-route/angular-route.js"></script>
+        <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+        <script src="bower_components/angular-touch/angular-touch.js"></script>
+        <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script src="bower_components/select2/select2.js"></script>
+        <script src="bower_components/angular-ui-select2/src/select2.js"></script>
+        <script src="bower_components/angular-messages/angular-messages.js"></script>
+        <script src="bower_components/Chart.js/Chart.min.js"></script>
+        <script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
+        <script src="bower_components/underscore/underscore-min.js"></script>
+        <script src="bower_components/angular-ui-notification/dist/angular-ui-notification.min.js"></script>
+        <script src="bower_components/angular-nl2br/angular-nl2br.min.js"></script>
+        <script src="bower_components/angularUtils-pagination/dirPagination.js"></script>
+        <script src="bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js"></script>
+        <script src="bower_components/angular-xeditable/dist/js/xeditable.min.js"></script>
+        <script src="bower_components/angular-xeditable/dist/js/xeditable.min.js"></script>
+        <script src="bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.min.js"></script>
+        <script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
+        <script src="bower_components/angular-bootstrap-contextmenu/contextMenu.js"></script>
 
-    <script src="scripts/app.js"></script>
-    <script src="scripts/config.js"></script>
-    <script src="scripts/helpers/helpers.js"></script>
+        <script src="scripts/app.js"></script>
+        <script src="scripts/app.config.js"></script>
+        <script src="scripts/app.routes.js"></script>
+        <script src="scripts/app.run.js"></script>
+        <script src="scripts/constants.js"></script>
 
-    <script src="scripts/factories/report.js"></script>
-    <script src="scripts/factories/comment.js"></script>
-    <script src="scripts/factories/user.js"></script>
-    <script src="scripts/factories/board.js"></script>
-    <script src="scripts/factories/config.js"></script>
-    <script src="scripts/factories/sprint.js"></script>
-    <script src="scripts/factories/sprintTeam.js"></script>
-    <script src="scripts/factories/sprintWithTeam.js"></script>
-    <script src="scripts/factories/sprintIssue.js"></script>
-    <script src="scripts/factories/portfolio.js"></script>
-    <script src="scripts/factories/systemUser.js"></script>
-    <script src="scripts/factories/profile.js"></script>
-    <script src="scripts/factories/task.js"></script>
-    <script src="scripts/factories/dueDateIssue.js"></script>
-    <script src="scripts/factories/dictionary.js"></script>
-    <script src="scripts/factories/resourceColumn.js"></script>
-    <script src="scripts/factories/member.js"></script>
-    <script src="scripts/factories/project.js"></script>
+        <script src="scripts/helpers/helpers.js"></script>
 
-    <script src="scripts/filters/filters.js"></script>
-    <script src="scripts/directives/directives.js"></script>
+        <script src="scripts/factories/reportsFactory.js"></script>
+        <script src="scripts/factories/commentsFactory.js"></script>
+        <script src="scripts/factories/usersFactory.js"></script>
+        <script src="scripts/factories/boardsFactory.js"></script>
+        <script src="scripts/factories/configFactory.js"></script>
+        <script src="scripts/factories/sprintsFactory.js"></script>
+        <script src="scripts/factories/sprintTeamFactory.js"></script>
+        <script src="scripts/factories/sprintsWithTeamFactory.js"></script>
+        <script src="scripts/factories/sprintIssuesFactory.js"></script>
+        <script src="scripts/factories/portfoliosFactory.js"></script>
+        <script src="scripts/factories/systemUsersFactory.js"></script>
+        <script src="scripts/factories/profileFactory.js"></script>
+        <script src="scripts/factories/taskFactory.js"></script>
+        <script src="scripts/factories/dueDateIssueFactory.js"></script>
+        <script src="scripts/factories/dictionaryFactory.js"></script>
+        <script src="scripts/factories/resourceColumnFactory.js"></script>
+        <script src="scripts/factories/memberFactory.js"></script>
+        <script src="scripts/factories/projectFactory.js"></script>
 
-    <script src="scripts/controllers/main.js"></script>
-    <script src="scripts/controllers/about.js"></script>
-    <script src="scripts/controllers/header.js"></script>
-    <script src="scripts/controllers/home.js"></script>
-    <script src="scripts/controllers/portfolio.js"></script>
-    <script src="scripts/controllers/reportElement.js"></script>
-    <script src="scripts/controllers/comment.js"></script>
-    <script src="scripts/controllers/configure.js"></script>
-    <script src="scripts/controllers/systemUser.js"></script>
-    <script src="scripts/controllers/profile.js"></script>
-    <script src="scripts/controllers/task.js"></script>
-    <script src="scripts/controllers/dueDateIssue.js"></script>
-    <script src="scripts/controllers/productivity.js"></script>
-    <script src="scripts/controllers/resourceManagement.js"></script>
-    <script src="scripts/controllers/projectManagement.js"></script>
-    <script src="scripts/controllers/dictionary.js"></script>
-    <script src="scripts/controllers/systemAtProirity.js"></script>
-    <script src="scripts/controllers/dlgDelete.js"></script>
+        <script src="scripts/filters/isChecked.js"></script>
+        <script src="scripts/filters/hasRole.js"></script>
+        <script src="scripts/directives/convertToNumber.js"></script>
+        <script src="scripts/directives/convertToDouble.js"></script>
+        <script src="scripts/directives/indicator.js"></script>
 
-    <script src="scripts/auth/auth.factory.js"></script>
-    <script src="scripts/auth/auth.controller.js"></script>
-</body>
+        <script src="scripts/controllers/main/mainCtrl.js"></script>
+        <script src="scripts/controllers/header/headerCtrl.js"></script>
+        <script src="scripts/controllers/header/dlg/dlgProcessConfigCtrl.js"></script>
+        <script src="scripts/controllers/portfolio/portfolioCtrl.js"></script>
+        <script src="scripts/controllers/report_list/reportListCtrl.js"></script>
+        <script src="scripts/controllers/report_list/dlg/dlgProcessReportCtrl.js"></script>
+        <script src="scripts/controllers/report_list/dlg/dlgCopyReportCtrl.js"></script>
+        <script src="scripts/controllers/report_element/reportElementCtrl.js"></script>
+        <script src="scripts/controllers/comments/commentCtrl.js"></script>
+        <script src="scripts/controllers/report_configure/configureCtrl.js"></script>
+        <script src="scripts/controllers/report_configure/configureGeneralDataCtrl.js"></script>
+        <script src="scripts/controllers/report_configure/configureSprintTeamCtrl.js"></script>
+        <script src="scripts/controllers/report_configure/dlg/dlgProcessIssueCtrl.js"></script>
+        <script src="scripts/controllers/report_configure/dlg/dlgProcessSprintCtrl.js"></script>
+        <script src="scripts/controllers/report_configure/dlg/dlgSprintTeamActivityCtrl.js"></script>
+        <script src="scripts/controllers/profile/profileCtrl.js"></script>
+        <script src="scripts/controllers/system_user/systemUserCtrl.js"></script>
+        <script src="scripts/controllers/system_user/dlg/dlgProcessSystemUserCtrl.js"></script>
+        <script src="scripts/controllers/system_user/dlg/dlgInviteSystemUserCtrl.js"></script>
+        <script src="scripts/controllers/system_user/dlg/dlgResetPasswordSystemUserCtrl.js"></script>
+        <script src="scripts/controllers/system_at_priority/systemAtPriorityCtrl.js"></script>
+        <script src="scripts/controllers/task/taskCtrl.js"></script>
+        <script src="scripts/controllers/task/dlg/dlgStartTaskCtrl.js"></script>
+        <script src="scripts/controllers/due_date_issue/dueDateIssue.js"></script>
+        <script src="scripts/controllers/productivity/productivityCtrl.js"></script>
+
+        <script src="scripts/controllers/dictionary/dictionaryCtrl.js"></script>
+        <script src="scripts/controllers/dictionary/dlg/dlgProcessDictionaryCtrl.js"></script>
+
+        <script src="scripts/controllers/resource_management/resourceManagementCtrl.js"></script>
+        <script src="scripts/controllers/resource_management/dlg/dlgUploadAttachCtrl.js"></script>
+        <script src="scripts/controllers/resource_management/dlg/dlgAddExperienceCtrl.js"></script>
+        <script src="scripts/controllers/resource_management/dlg/dlgAddMemberCtrl.js"></script>
+        <script src="scripts/controllers/resource_management/dlg/dlgAddMemberProjectCtrl.js"></script>
+        <script src="scripts/controllers/resource_management/dlg/dlgChangeLevelCtrl.js"></script>
+        <script src="scripts/controllers/resource_management/dlg/dlgProcessColumnCtrl.js"></script>
+
+        <script src="scripts/controllers/project_management/projectManagementCtrl.js"></script>
+        <script src="scripts/controllers/project_management/dlg/dlgMemberChangeProject.js"></script>
+        <script src="scripts/controllers/project_management/dlg/dlgProcessProjectCtrl.js"></script>
+
+        <script src="scripts/controllers/dlg_delete/dlgDeleteCtrl.js"></script>
+
+        <script src="scripts/auth/authenticationFactory.js"></script>
+        <script src="scripts/auth/userAuthFactory.js"></script>
+        <script src="scripts/auth/tokenInterceptor.js"></script>
+        <script src="scripts/auth/loginCtrl.js"></script>
+    </body>
 </html>
