@@ -279,7 +279,11 @@ public class JiraUserServiceImpl implements JiraUserService {
         Project project = projectRepository.findById(projectId);
         JiraUser jiraUser = jiraUserRepository.findByLogin(login);
 
-        jiraUser.getProjects().add(project);
+        Set<Project> projects = new HashSet<>(jiraUser.getProjects());
+
+        projects.add(project);
+
+        jiraUser.setProjects(new ArrayList<>(projects));
 
         jiraUserRepository.update(jiraUser);
 
