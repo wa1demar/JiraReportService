@@ -23,7 +23,7 @@
     <div class="form-group">
         <label for="project">Project</label>
         <select ui-select2 multiple style="width: 100%;" ng-model="search.project" data-placeholder="Select projects" id="project" name="project">
-            <option ng-repeat="value in projects" value="{{value.id}}">{{value.name}}</option>
+            <option ng-repeat="value in projects" value="{{value.id}}">{{value.title}}</option>
         </select>
     </div>
 </div>

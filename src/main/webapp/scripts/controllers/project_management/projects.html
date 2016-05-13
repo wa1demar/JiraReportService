@@ -22,10 +22,11 @@
 
 <ul dnd-list="column.users"
     dnd-allowed-types="['user']"
+    dnd-dragover="dragoverCallback(event, $parent.$index, index, external, type)"
     class="item projects">
     <li ng-repeat="item in column.users"
         dnd-draggable="item"
-        dnd-effect-allowed="move"
+            dnd-effect-allowed="copyMove"
         dnd-type="'user'"
         dnd-external-sources="true"
         dnd-selected="selectElement(column)"
