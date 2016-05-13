@@ -7,7 +7,7 @@
           <label for="projectId">Name:</label>
           <select ui-select2 ng-model="model.projectId" data-placeholder="Select member" id="projectId" name="projectId" style="width: 100%;" required>
               <option value=""></option>
-              <option ng-repeat="value in projects" value="{{value.id}}">{{value.name}}</option>
+              <option ng-repeat="value in projects" value="{{value.id}}">{{value.title}}</option>
           </select>
           <div class="help-block" ng-messages="addMemberProjectForm.projectId.$error" ng-if="addMemberProjectForm.projectId.$touched || addMemberProjectForm.$submitted">
               <p ng-message="required">Project is required</p>
