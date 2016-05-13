@@ -5,9 +5,9 @@
         .module('jiraPluginApp')
         .controller('ResourceManagementCtrl', ResourceManagementCtrl);
 
-    ResourceManagementCtrl.$inject = ['$scope', '$uibModal', '$filter', '$window', 'ResourceColumnFactory', 'UsersFactory', 'DictionaryFactory', 'MemberFactory', 'Notification'];
+    ResourceManagementCtrl.$inject = ['$scope', '$uibModal', '$filter', '$window', 'ResourceColumnFactory', 'UsersFactory', 'DictionaryFactory', 'MemberFactory', 'ProjectFactory', 'Notification'];
 
-    function ResourceManagementCtrl($scope, $uibModal, $filter, $window, ResourceColumnFactory, UsersFactory, DictionaryFactory, MemberFactory, Notification) {
+    function ResourceManagementCtrl($scope, $uibModal, $filter, $window, ResourceColumnFactory, UsersFactory, DictionaryFactory, MemberFactory, ProjectFactory, Notification) {
         var self = this;
         $scope.loaderShow = true;
         $scope.showSearch = true;
@@ -183,13 +183,11 @@
         //TODO Get projects
         $scope.projects = [];
         $scope.getProjects = function () {
-            $scope.projects = [
-                {id: 1, name: "project 1"},
-                {id: 2, name: "project 2"},
-                {id: 3, name: "project 3"},
-                {id: 4, name: "project 4"},
-                {id: 5, name: "project 5"}
-            ];
+            ProjectFactory.query(function(result){
+                $scope.projects = result.projects;
+            }, function (error) {
+                Notification.error("Server error: get projects");
+            });
         };
         $scope.getProjects();
 
@@ -671,7 +669,7 @@
             var count = $scope.technologies.length;
             var result = [];
             for (var index = 0; index < count; index++) {
-                var flag = _.findWhere($scope.currentMember.technologies, {name: $scope.technologies[index].name});
+                var flag = _.findWhere($scope.currentMember.technologies, {id: $scope.technologies[index].id});
                 if (flag === undefined) {
                     result.push($scope.technologies[index]);
                 }
@@ -727,6 +725,15 @@
 
         //Dlg add project
         $scope.addMemberProject = function () {
+            var count = $scope.projects.length;
+            var result = [];
+            for (var index = 0; index < count; index++) {
+                var flag = _.findWhere($scope.currentMember.projects, {id: $scope.projects[index].id});
+                if (flag === undefined) {
+                    result.push($scope.projects[index]);
+                }
+            }
+
             var modalInstance = $uibModal.open({
                 animation: true,
                 templateUrl: 'scripts/controllers/resource_management/dlg/dlg_add_project.html',
@@ -734,7 +741,7 @@
                 resolve: {
                     dlgData: function () {
                         return {
-                            projects: $scope.projects
+                            projects: result
                         };
                     }
                 }
