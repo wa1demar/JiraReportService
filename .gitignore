@@ -8,7 +8,6 @@
 /.gradle
 /classes
 *.iml
-/src/main/webapp/scripts/vendors
 /src/main/webapp/bower_components
 
 #Remove a file from a Git repository without deleting it from the local filesystem
