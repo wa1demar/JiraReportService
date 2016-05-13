@@ -1,0 +1,44 @@
+<div class="container-fluid nav-block">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false" ng-show="showMenu">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a href="#/"><img src="/images/hero-logo.svg" alt="logo.svg" class="logo"></a>
+        <a class="navbar-brand" href="#/">Swan Intranet</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav" ng-show="showMenu">
+            <li ng-class="{active:isActive('/')}"><a ng-href="#/">Portfolio</a></li>
+            <li ng-class="{active:isActive('/dashboards')}"><a href="#/dashboards">Project</a></li>
+            <!--<li ng-class="{active:isActive('/productivity')}"><a href="#/productivity">Productivity</a></li>-->
+            <li ng-class="{active:isActive('/due_date_issue')}"><a href="#/due_date_issue">Due Date</a></li>
+            <li uib-dropdown on-toggle="toggled(open)" ng-class="(isActive('/resource_management') || isActive('/project_management')) ? 'dropdown active' : 'dropdown'">
+                <a href="" class="menu-dropdown-item" id="rm-dropdown" uib-dropdown-toggle>Resources <span class="caret"></span></a>
+                <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="system-dropdown">
+                    <li><a ng-class="{active:isActive('/resource_management')}" href="#/resource_management">Assignments Type</a></li>
+                    <li><a ng-class="{active:isActive('/project_management')}" href="#/project_management">Projects</a></li>
+                </ul>
+            </li>
+            <li ng-if="isAdmin" uib-dropdown on-toggle="toggled(open)" ng-class="(isActive('/system_user') || isActive('/task') || isActive('/dictionary/locations') || isActive('/dictionary/technologies')) ? 'dropdown active' : 'dropdown'">
+                <a href="" class="menu-dropdown-item" id="system-dropdown" uib-dropdown-toggle>System <span class="caret"></span></a>
+                <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="system-dropdown">
+                    <li><a ng-class="{active:isActive('/system_user')}" href="#/system_user">Users</a></li>
+                    <li><a ng-class="{active:isActive('/task')}" href="#/task">Tasks</a></li>
+                    <li><a ng-class="{active:isActive('/dictionary/locations')}" href="#/dictionary/locations">Locations</a></li>
+                    <li><a ng-class="{active:isActive('/dictionary/technologies')}" href="#/dictionary/technologies">Technologies</a></li>
+                    <li><a ng-class="{active:isActive('/system_at_priority')}" href="#/system_at_priority">Assignment type priority</a></li>
+                    <li><a href="javascript:" ng-click="processConfig()">Settings</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right" ng-show="showMenu">
+            <li ng-class="{active:isActive('/profile')}"><a ng-href="#/profile">Profile</a></li>
+            <li class="dropdown"></li>
+            <li><a href="javascript:" ng-click="logout()">Logout</a></li>
+        </ul>
+    </div>
+</div>
