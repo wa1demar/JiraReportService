@@ -32,7 +32,8 @@
         dnd-selected="selectElement(column)"
         dnd-dragend="dragendElement(item, $parent.$index, $index)"
         ng-class="{'selected': columns.selected === column}"
-        ng-style="{background: lightColor(item.assignmentTypes[0].color, 0.4), border: '2px solid {{item.assignmentTypes[0].color}}'}">
+        ng-style="{background: lightColor(item.assignmentTypes[0].color, 0.4), border: '2px solid {{item.assignmentTypes[0].color}}'}"
+        context-menu="memberMenuOptions(column, item)">
 
         <div class="projects-item-box">
             <div class="row margin-0">

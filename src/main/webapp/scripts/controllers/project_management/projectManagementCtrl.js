@@ -5,9 +5,9 @@
         .module('jiraPluginApp')
         .controller('ProjectManagementCtrl', ProjectManagementCtrl);
 
-    ProjectManagementCtrl.$inject = ['$scope', '$uibModal', '$filter', '$window', 'ProjectFactory', 'UsersFactory', 'DictionaryFactory', 'MemberFactory', 'ResourceColumnFactory', 'Notification'];
+    ProjectManagementCtrl.$inject = ['$scope', '$uibModal', '$filter', '$window', 'ProjectFactory', 'UsersFactory', 'DictionaryFactory', 'Notification'];
 
-    function ProjectManagementCtrl($scope, $uibModal, $filter, $window, ProjectFactory, UsersFactory, DictionaryFactory, MemberFactory, ResourceColumnFactory, Notification) {
+    function ProjectManagementCtrl($scope, $uibModal, $filter, $window, ProjectFactory, UsersFactory, DictionaryFactory, Notification) {
         var self = this;
         $scope.loaderShow = true;
         $scope.showSearch = true;
@@ -181,6 +181,14 @@
         //TODO Get projects
         $scope.projects = [];
         $scope.getProjects = function () {
+
+            // $scope.projects = [
+            //     {id: 1, title: "Project 1"},
+            //     {id: 2, title: "Project 2"},
+            //     {id: 3, title: "Project 3"},
+            //     {id: 4, title: "Project 4"},
+            // ];
+
             ProjectFactory.query(function(result){
                 $scope.projects = result.projects;
             }, function (error) {
@@ -213,11 +221,6 @@
             // });
         };
 
-        $scope.logEvent = function(message, event) {
-            console.log(message, '(triggered by the following', event.type, 'event)');
-            console.log(event);
-        };
-
         $scope.dragoverPositions = {
             parentIndex: null,
             index: null
@@ -233,7 +236,6 @@
 
         //Dragend member
         $scope.dragendElement = function(item, projectIndex, memberIndex) {
-
 
             //if sort elements
             if ($scope.dragoverPositions.projectIndex === projectIndex) {
@@ -406,6 +408,180 @@
                 //     Notification.error("Server error");
                 // });
             }, function () {});
+        };
+
+        //Contextmenu
+        var customItem = {
+            html: '<a><b>Send to</b></a>',
+            enabled: function() {return false}
+        };
+
+        var hideContextMenu = true;
+        $scope.memberMenuOptions = function (column, item) {
+            if (hideContextMenu) { return []; }
+
+            $scope.columns.selected = null;
+            $scope.selectElement(column);
+
+            var menu = [];
+            menu.push(customItem);
+            for (var index = 0; index < $scope.projects.length; index++) {
+                //check column by id
+                if (column.id != $scope.projects[index].id) {
+                    menu.push(
+                        {
+                            html: '<a tabindex="-1" href="#" class="context-menu-item" data-id-project-index="'+index+'">'+$scope.projects[index].title+'</a>',
+                            enabled: function() {return true},
+                            click: function ($itemScope, $event, value, html) {
+
+                                var columnFromIndex = $itemScope.$parent.$index,
+                                    columnToIndex   = $(html).data("idProjectIndex");
+
+                                //change assignment type
+                                // $scope.columns[columnFromIndex].users.splice($itemScope.$index, 1);
+                                // $scope.columns[columnToIndex].users.push($itemScope.item);
+
+                                var dataForUpdate = {
+                                    assignmentType: {
+                                        fromAssignmentTypeId:   $scope.columns[columnFromIndex].id,
+                                        toAssignmentTypeId:     $scope.columns[columnToIndex].id
+                                    },
+                                    users: $scope.columns[columnToIndex].users.map(function(value, index) {
+                                        return {
+                                            login: value.login,
+                                            index: index
+                                        };
+                                    })
+                                };
+
+                                //dlg
+                                var modalInstance = $uibModal.open({
+                                    animation: true,
+                                    templateUrl: 'scripts/controllers/project_management/dlg/dlg_member_change_project.html',
+                                    controller: 'DlgMemberChangeProject',
+                                    size: 'md',
+                                    resolve: {
+                                        dlgData: function () {
+                                            return {
+                                                item: item,
+                                                projectIndex: columnFromIndex,
+                                                memberIndex: $itemScope.$index,
+                                                assignmentTypes: $scope.assignmentTypes
+                                            };
+                                        }
+                                    }
+                                });
+                                modalInstance.result.then(function (data) {
+                                    if (data.moveType === 'move') {
+                                        $scope.columns[columnFromIndex].users.splice($itemScope.$index, 1);
+                                        $scope.columns[columnToIndex].users.push($itemScope.item);
+                                    } else {
+                                        $scope.columns[columnToIndex].users.push($itemScope.item);
+                                    }
+
+                                    //TODO save new data
+
+                                    Notification.success("Update projects success");
+                                }, function (error) {
+
+                                });
+
+                                //add request for save new data
+                                // $scope.moveMember(dataForUpdate, columnToIndex, $scope.columns[columnToIndex].users.length - 1);
+                            }
+                        }
+                    );
+                }
+            }
+
+            menu.push(
+                null,
+                {
+                    html: '<a tabindex="-1" href="#" class="context-menu-item">Top of the column</a>',
+                    enabled: function($itemScope) {
+                        //check position for enabled button
+                        return $itemScope.$index !== 0;
+                    },
+                    click: function ($itemScope, $event, value) {
+                        console.log('Top of the column');
+                        $scope.columns[$itemScope.$parent.$index].users.splice($itemScope.$index, 1);
+                        $scope.columns[$itemScope.$parent.$index].users.unshift($itemScope.item);
+
+                        var dataForUpdate = {
+                            assignmentType: {
+                                fromAssignmentTypeId:   $scope.columns[$itemScope.$parent.$index].id,
+                                toAssignmentTypeId:     $scope.columns[$itemScope.$parent.$index].id
+                            },
+                            users: $scope.columns[$itemScope.$parent.$index].users.map(function(value, index) {
+                                return {
+                                    login: value.login,
+                                    index: index
+                                };
+                            })
+                        };
+
+                        //add request for save new data
+                        // $scope.moveMember(dataForUpdate, $itemScope.$parent.$index, 0);
+                    }
+                },
+                {
+                    html: '<a tabindex="-1" href="#" class="context-menu-item">Bottom of the column</a>',
+                    enabled: function($itemScope) {
+                        //check position for enabled button
+                        return $itemScope.$index !== $scope.columns[$itemScope.$parent.$index].users.length - 1;
+                    },
+                    click: function ($itemScope, $event, value) {
+                        console.log('Bottom of the column');
+                        $scope.columns[$itemScope.$parent.$index].users.splice($itemScope.$index, 1);
+                        $scope.columns[$itemScope.$parent.$index].users.push($itemScope.item);
+
+                        var dataForUpdate = {
+                            assignmentType: {
+                                fromAssignmentTypeId:   $scope.columns[$itemScope.$parent.$index].id,
+                                toAssignmentTypeId:     $scope.columns[$itemScope.$parent.$index].id
+                            },
+                            users: $scope.columns[$itemScope.$parent.$index].users.map(function(value, index) {
+                                return {
+                                    login: value.login,
+                                    index: index
+                                };
+                            })
+                        };
+
+                        //add request for save new data
+                        // $scope.moveMember(dataForUpdate, $itemScope.$parent.$index, $scope.columns[$itemScope.$parent.$index].users.length - 1);
+                    }
+                }
+            );
+
+            return menu;
+        };
+
+        //Save data after member move
+        $scope.moveMember = function (dataForUpdate, indexColumn, indexElementInColumn) {
+            // dataForUpdate["filters"] = $scope.search;
+            // ProjectFactory.update({login: $scope.currentMember.login, relation: "move"}, dataForUpdate, function(data){
+            //     //update member info from backend
+            //     // $scope.columns = data.columns;
+            //
+            //     // if ($scope.currentMember !== null) {
+            //     //     $scope.selectElement($scope.currentMember);
+            //     // }
+            //
+            //     //update member info without getResourceColumns
+            //     $scope.columns[indexColumn].users[indexElementInColumn] = data;
+            //     //reindexing resourceOrder
+            //     $scope.columns[indexColumn].users.map(function(value, index) {
+            //         value.resourceOrder = index;
+            //
+            //         return value;
+            //     });
+            //     $scope.selectElement(data);
+            //
+            //     Notification.success("Save changes success");
+            // }, function (error) {
+            //     Notification.error("Server error: get assignment type");
+            // });
         };
 
     }
