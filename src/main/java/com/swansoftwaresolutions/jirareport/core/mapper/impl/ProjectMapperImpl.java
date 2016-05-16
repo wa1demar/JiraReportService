@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
+import com.swansoftwaresolutions.jirareport.core.dto.projects.FullProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDtos;
 import com.swansoftwaresolutions.jirareport.core.mapper.ProjectMapper;
@@ -34,6 +35,12 @@ public class ProjectMapperImpl implements ProjectMapper {
     @Override
     public List<ProjectDto> fromProjectsToProjectDtos(List<Project> projects) {
         Type targetistType = new TypeToken<List<ProjectDto>>(){}.getType();
+        return modelMapper.map(projects, targetistType);
+    }
+
+    @Override
+    public List<FullProjectDto> fromProjectsToFullProjectDtos(List<Project> projects) {
+        Type targetistType = new TypeToken<List<FullProjectDto>>(){}.getType();
         return modelMapper.map(projects, targetistType);
     }
 }

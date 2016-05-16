@@ -101,6 +101,7 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
                     if (!allUsersFiltered.contains(userDto) && filterName(userDto, filterData.getName())
                             && filterTechnologies(userDto, filterData.getTechnology())
                             && filterLevel(userDto, filterData.getEngineerLevel())
+                            && filterProject(userDto, filterData.getProject())
                             && filterLocations(userDto, filterData.getLocation())) {
                         if (user.getColumns() != null) {
                             ResourceColumn column = user.getColumns().get(0);
@@ -132,6 +133,23 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
         for (int i = 0; i < locations.length; i++) {
 
             List<Long> filteredData = Arrays.stream(locations).filter(t -> t.equals(userDto.getLocation().getId())).collect(Collectors.toList());
+            if (filteredData != null && filteredData.size() > 0) {
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
+    private boolean filterProject(FullResourceUserDto userDto, Long[] projects) {
+        if (projects == null || projects.length == 0) {
+            return true;
+        }
+
+        for (int i = 0; i < projects.length; i++) {
+
+            List<Long> filteredData = Arrays.stream(projects).filter(t -> t.equals(userDto.getProjects())).collect(Collectors.toList());
             if (filteredData != null && filteredData.size() > 0) {
                 return true;
             }

@@ -5,7 +5,6 @@ import com.swansoftwaresolutions.jirareport.core.dto.locations.LocationDto;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologyDto;
-import com.swansoftwaresolutions.jirareport.domain.entity.Attachment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +12,12 @@ import java.util.List;
 /**
  * @author Vladimir Martynyuk
  */
-public class FullResourceUserDto {
+public class FullProjectUserDto {
     private String login;
     private String name;
     private Integer engineerLevel;
     private List<TechnologyDto> technologies = new ArrayList<>();
-    private List<ProjectDto> projects = new ArrayList<>();
+//    private List<ProjectDto> projects = new ArrayList<>();
     private LocationDto location;
     private String description;
     private String avatar;
@@ -104,7 +103,7 @@ public class FullResourceUserDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        FullResourceUserDto userDto = (FullResourceUserDto) o;
+        FullProjectUserDto userDto = (FullProjectUserDto) o;
 
         if (!login.equals(userDto.login)) return false;
         if (name != null ? !name.equals(userDto.name) : userDto.name != null) return false;
@@ -133,12 +132,12 @@ public class FullResourceUserDto {
         this.resourceOrder = resourceOrder;
     }
 
-    @JsonPropertyOrder({ "id" })
-    public List<ProjectDto> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(List<ProjectDto> projects) {
-        this.projects = projects;
-    }
+//    @JsonPropertyOrder({ "id" })
+//    public List<ProjectDto> getProjects() {
+//        return projects;
+//    }
+//
+//    public void setProjects(List<ProjectDto> projects) {
+//        this.projects = projects;
+//    }
 }

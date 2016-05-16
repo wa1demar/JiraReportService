@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.service;
 
+import com.swansoftwaresolutions.jirareport.core.dto.projects.FullProjectDtos;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDtos;
 
@@ -12,4 +13,7 @@ public interface ProjectService {
     ProjectDtos findAll();
 
     void delete(Long id);
+
+    FullProjectDtos findAllFull();
+
 }
