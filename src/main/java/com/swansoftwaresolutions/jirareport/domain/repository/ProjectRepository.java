@@ -13,4 +13,6 @@ public interface ProjectRepository {
     List<Project> findAll();
 
     Project findById(Long projectId);
+
+    void delete(Long id);
 }

@@ -168,5 +168,14 @@ public class JiraUsersController {
         return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/v1/members/{login:.+}/projects/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<ResourceUserDto> deleteProject(@PathVariable("login") String login, @PathVariable("id") Long id) throws NoSuchEntityException {
+
+        ResourceUserDto newNewResourceUserDto = jiraUserService.deleteProject(login, id);
+
+        return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
+    }
+
 
 }
