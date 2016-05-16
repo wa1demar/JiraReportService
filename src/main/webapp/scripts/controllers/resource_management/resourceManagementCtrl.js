@@ -741,7 +741,8 @@
                 resolve: {
                     dlgData: function () {
                         return {
-                            projects: result
+                            projects: result,
+                            assignmentTypes: $scope.assignmentTypes
                         };
                     }
                 }

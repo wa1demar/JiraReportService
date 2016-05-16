@@ -13,6 +13,16 @@
               <p ng-message="required">Project is required</p>
           </div>
       </div>
+      <div class="form-group" ng-class="{ 'has-error': addMemberProjectForm.$submitted || addMemberProjectForm.assignmentTypeId.$touched && addMemberProjectForm.assignmentTypeId.$invalid }">
+          <label for="assignmentTypeId">Assignment type:</label>
+          <select ui-select2 ng-model="model.assignmentTypeId" data-placeholder="Select assignment type" id="assignmentTypeId" name="assignmentTypeId" style="width: 100%;" required>
+              <option value=""></option>
+              <option ng-repeat="value in assignmentTypes" value="{{value.id}}">{{value.name}}</option>
+          </select>
+          <div class="help-block" ng-messages="addMemberProjectForm.assignmentTypeId.$error" ng-if="addMemberProjectForm.assignmentTypeId.$touched || addMemberProjectForm.$submitted">
+              <p ng-message="required">Project is required</p>
+          </div>
+      </div>
   </div>
   <div class="modal-footer">
     <button class="btn btn-primary" type="submit" ng-click="ok()">Save</button>
