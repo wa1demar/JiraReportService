@@ -50,106 +50,106 @@
                 "project": $scope.search.project
             };
 
-            // ProjectFactory.query(searchQuery, function (result) {
-            //     $scope.columns = result.projects;
-            //     $scope.loaderShow = false;
-            // }, function (error) {
-            //     Notification.error("Server error");
-            // });
+            ProjectFactory.query({id: 'list_with_users'}, searchQuery, function (result) {
+                $scope.columns = result.projects;
+                $scope.loaderShow = false;
+            }, function (error) {
+                Notification.error("Server error");
+            });
 
-            $scope.columns = [
-                {
-                    id: 1,
-                    title: "Project 1",
-                    description: "Description",
-                    users: [
-                        {
-                            id: 1,
-                            name: "Full Name 1",
-                            engineerLevel: 1,
-                            assignmentTypes: [{id: 3, name: "PM", color: "#4086E7"}],
-                            avatar: "https://swansoftwaresolutions.atlassian.net/secure/useravatar?ownerId=slevchenko&avatarId=13706",
-                            column: {id: 1, name: "Project 1"}
-                        },
-                        {
-                            id: 2,
-                            name: "Full Name 2",
-                            engineerLevel: 3,
-                            assignmentTypes: [
-                                {id: 11, name: "Dev", color: "#179f1c"},
-                                {id: 12, name: "Shadow", color: "#424242"}
-                            ],
-                            column: {id: 1, name: "Project 1"}
-                        },
-                        {
-                            id: 11,
-                            name: "Full Name 3",
-                            engineerLevel: 2,
-                            assignmentTypes: [{id: 11, name: "Dev", color: "#179f1c"}],
-                            column: {id: 1, name: "Project 1"}
-                        },
-                        {
-                            id: 12,
-                            name: "Full Name 5",
-                            engineerLevel: 2,
-                            assignmentTypes: [{id: 5, name: "QA", color: "#F4D520"}],
-                            column: {id: 1, name: "Project 1"}
-                        }
-                    ]
-                },
-                {
-                    id: 2,
-                    title: "Project 2",
-                    description: "Description",
-                    users: [
-                        {
-                            id: 3,
-                            name: "Full Name 2",
-                            engineerLevel: 3,
-                            assignmentTypes: [{id: 3, name: "PM", color: "#4086E7"}],
-                            column: {id: 2, name: "Project 2"}
-                        }
-                    ]
-                },
-                {
-                    id: 3,
-                    title: "Project 3",
-                    description: "Description",
-                    users: [
-                        {
-                            id: 4,
-                            name: "Full Name 3",
-                            engineerLevel: 2,
-                            assignmentTypes: [{id: 3, name: "PM", color: "#4086E7"}],
-                            column: {id: 3, name: "Project 3"}
-                        },
-                        {
-                            id: 2,
-                            name: "Full Name 2",
-                            engineerLevel: 3,
-                            assignmentTypes: [
-                                {id: 12, name: "Shadow", color: "#424242"},
-                                {id: 11, name: "Dev", color: "#179f1c"}
-                            ],
-                            column: {id: 1, name: "Project 1"}
-                        }
-                    ]
-                },
-                {
-                    id: 4,
-                    title: "Project 4",
-                    description: "Description",
-                    users: [
-                        {
-                            id: 5,
-                            name: "Full Name 4",
-                            engineerLevel: 2,
-                            assignmentTypes: [{id: 3, name: "PM", color: "#4086E7"}],
-                            column: {id: 4, name: "Project 4"}
-                        }
-                    ]
-                }
-            ];
+            // $scope.columns = [
+            //     {
+            //         id: 1,
+            //         title: "Project 1",
+            //         description: "Description",
+            //         users: [
+            //             {
+            //                 id: 1,
+            //                 name: "Full Name 1",
+            //                 engineerLevel: 1,
+            //                 assignmentTypes: [{id: 3, name: "PM", color: "#4086E7"}],
+            //                 avatar: "https://swansoftwaresolutions.atlassian.net/secure/useravatar?ownerId=slevchenko&avatarId=13706",
+            //                 column: {id: 1, name: "Project 1"}
+            //             },
+            //             {
+            //                 id: 2,
+            //                 name: "Full Name 2",
+            //                 engineerLevel: 3,
+            //                 assignmentTypes: [
+            //                     {id: 11, name: "Dev", color: "#179f1c"},
+            //                     {id: 12, name: "Shadow", color: "#424242"}
+            //                 ],
+            //                 column: {id: 1, name: "Project 1"}
+            //             },
+            //             {
+            //                 id: 11,
+            //                 name: "Full Name 3",
+            //                 engineerLevel: 2,
+            //                 assignmentTypes: [{id: 11, name: "Dev", color: "#179f1c"}],
+            //                 column: {id: 1, name: "Project 1"}
+            //             },
+            //             {
+            //                 id: 12,
+            //                 name: "Full Name 5",
+            //                 engineerLevel: 2,
+            //                 assignmentTypes: [{id: 5, name: "QA", color: "#F4D520"}],
+            //                 column: {id: 1, name: "Project 1"}
+            //             }
+            //         ]
+            //     },
+            //     {
+            //         id: 2,
+            //         title: "Project 2",
+            //         description: "Description",
+            //         users: [
+            //             {
+            //                 id: 3,
+            //                 name: "Full Name 2",
+            //                 engineerLevel: 3,
+            //                 assignmentTypes: [{id: 3, name: "PM", color: "#4086E7"}],
+            //                 column: {id: 2, name: "Project 2"}
+            //             }
+            //         ]
+            //     },
+            //     {
+            //         id: 3,
+            //         title: "Project 3",
+            //         description: "Description",
+            //         users: [
+            //             {
+            //                 id: 4,
+            //                 name: "Full Name 3",
+            //                 engineerLevel: 2,
+            //                 assignmentTypes: [{id: 3, name: "PM", color: "#4086E7"}],
+            //                 column: {id: 3, name: "Project 3"}
+            //             },
+            //             {
+            //                 id: 2,
+            //                 name: "Full Name 2",
+            //                 engineerLevel: 3,
+            //                 assignmentTypes: [
+            //                     {id: 12, name: "Shadow", color: "#424242"},
+            //                     {id: 11, name: "Dev", color: "#179f1c"}
+            //                 ],
+            //                 column: {id: 1, name: "Project 1"}
+            //             }
+            //         ]
+            //     },
+            //     {
+            //         id: 4,
+            //         title: "Project 4",
+            //         description: "Description",
+            //         users: [
+            //             {
+            //                 id: 5,
+            //                 name: "Full Name 4",
+            //                 engineerLevel: 2,
+            //                 assignmentTypes: [{id: 3, name: "PM", color: "#4086E7"}],
+            //                 column: {id: 4, name: "Project 4"}
+            //             }
+            //         ]
+            //     }
+            // ];
 
             console.log($scope.columns);
         };
