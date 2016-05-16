@@ -50,7 +50,7 @@ public class ResourceBoardController {
 
         ResourceFilterData filterData = new ResourceFilterData();
         filterData.setTechnology(arrToLong(technologies));
-        filterData.setProject(projects);
+        filterData.setProject(arrToLong(projects));
         filterData.setEngineerLevel(arrToInteger(engineerLevels));
         filterData.setLocation(arrToLong(locations));
         filterData.setName(name);

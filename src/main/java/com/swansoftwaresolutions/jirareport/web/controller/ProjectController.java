@@ -1,5 +1,7 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
+import com.swansoftwaresolutions.jirareport.core.dto.projects.FullProjectDto;
+import com.swansoftwaresolutions.jirareport.core.dto.projects.FullProjectDtos;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDtos;
 import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
@@ -44,9 +46,9 @@ public class ProjectController {
         return new ResponseEntity<>(allProjects, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/v1/projects_with_users", method = RequestMethod.GET)
-    private ResponseEntity<ProjectDtos> getProjectsWithUsers() throws NoSuchEntityException {
-        ProjectDtos allProjects = projectService.findAll();
+    @RequestMapping(value = "/v1/projects/list_with_users", method = RequestMethod.GET)
+    private ResponseEntity<FullProjectDtos> getProjectsWithUsers() throws NoSuchEntityException {
+        FullProjectDtos allProjects = projectService.findAllFull();
 
         return new ResponseEntity<>(allProjects, HttpStatus.OK);
     }

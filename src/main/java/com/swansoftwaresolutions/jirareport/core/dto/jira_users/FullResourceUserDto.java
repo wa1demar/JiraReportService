@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.dto.jira_users;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.swansoftwaresolutions.jirareport.core.dto.locations.LocationDto;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
@@ -49,6 +50,7 @@ public class FullResourceUserDto {
         this.engineerLevel = engineerLevel;
     }
 
+    @JsonPropertyOrder({ "id" })
     public List<TechnologyDto> getTechnologies() {
         return technologies;
     }
@@ -131,6 +133,7 @@ public class FullResourceUserDto {
         this.resourceOrder = resourceOrder;
     }
 
+    @JsonPropertyOrder({ "id" })
     public List<ProjectDto> getProjects() {
         return projects;
     }

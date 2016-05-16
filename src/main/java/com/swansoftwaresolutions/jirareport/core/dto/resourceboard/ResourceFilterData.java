@@ -5,7 +5,7 @@ package com.swansoftwaresolutions.jirareport.core.dto.resourceboard;
  */
 public class ResourceFilterData {
     private Long[] technology;
-    private String[] project;
+    private Long[] project;
     private Integer[] engineerLevel;
     private Long[] location;
     private String name;
@@ -34,11 +34,11 @@ public class ResourceFilterData {
         this.name = name;
     }
 
-    public String[] getProject() {
+    public Long[] getProject() {
         return project;
     }
 
-    public void setProject(String[] project) {
+    public void setProject(Long[] project) {
         this.project = project;
     }
 

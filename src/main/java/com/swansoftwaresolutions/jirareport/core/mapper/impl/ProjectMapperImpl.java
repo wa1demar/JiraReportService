@@ -1,15 +1,24 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.FullProjectUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.projects.FullProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDtos;
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.ProjectMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.JiraUserToFullProjectUserDtoMapper;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.Project;
+import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -35,5 +44,39 @@ public class ProjectMapperImpl implements ProjectMapper {
     public List<ProjectDto> fromProjectsToProjectDtos(List<Project> projects) {
         Type targetistType = new TypeToken<List<ProjectDto>>(){}.getType();
         return modelMapper.map(projects, targetistType);
+    }
+
+    @Override
+    public List<FullProjectDto> fromProjectsToFullProjectDtos(List<Project> projects) {
+
+        List<FullProjectDto> projectDtos = new ArrayList<>();
+        for (Project project : projects) {
+            FullProjectDto projectDto = modelMapper.map(project, FullProjectDto.class);
+
+            List<JiraUser> users = project.getUsers();
+            List<FullProjectUserDto> userDtos = new ArrayList<>();
+            for (JiraUser user : users) {
+                FullProjectUserDto projectUserDto = modelMapper.map(user, FullProjectUserDto.class);
+                projectUserDto.setEngineerLevel(user.getLevel());
+                if (user.getColumns().size() > 0) {
+                    projectUserDto.setColumn(modelMapper.map(project, ProjectDto.class));
+                }
+
+                List<ResourceColumn> columns = user.getColumns();
+                Collections.sort(columns, (o1, o2) -> o1.getPriority() - o2.getPriority());
+
+                Type targetistType = new TypeToken<List<ResourceColumnDto>>(){}.getType();
+
+                projectUserDto.setAssignmentTypes(modelMapper.map(columns, targetistType));
+
+                userDtos.add(projectUserDto);
+            }
+
+            projectDto.setUsers(userDtos);
+
+            projectDtos.add(projectDto);
+        }
+
+       return projectDtos;
     }
 }

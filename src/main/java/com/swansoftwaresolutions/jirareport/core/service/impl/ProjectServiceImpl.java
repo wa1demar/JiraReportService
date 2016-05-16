@@ -1,5 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
+import com.swansoftwaresolutions.jirareport.core.dto.projects.FullProjectDto;
+import com.swansoftwaresolutions.jirareport.core.dto.projects.FullProjectDtos;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDtos;
 import com.swansoftwaresolutions.jirareport.core.mapper.ProjectMapper;
@@ -44,5 +46,16 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void delete(Long id) {
         projectRepository.delete(id);
+    }
+
+    @Override
+    public FullProjectDtos findAllFull() {
+        List<Project> projects = projectRepository.findAll();
+        List<FullProjectDto> projectDtoList = projectMapper.fromProjectsToFullProjectDtos(projects);
+
+        FullProjectDtos projectDtos = new FullProjectDtos();
+        projectDtos.setProjects(projectDtoList);
+
+        return projectDtos;
     }
 }
