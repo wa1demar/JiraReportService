@@ -46,7 +46,7 @@ public class ProjectController {
         return new ResponseEntity<>(allProjects, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/v1/projects_with_users", method = RequestMethod.GET)
+    @RequestMapping(value = "/v1/projects/list_with_users", method = RequestMethod.GET)
     private ResponseEntity<FullProjectDtos> getProjectsWithUsers() throws NoSuchEntityException {
         FullProjectDtos allProjects = projectService.findAllFull();
 
