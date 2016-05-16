@@ -289,4 +289,16 @@ public class JiraUserServiceImpl implements JiraUserService {
 
         return jiraUserMapper.fromJiraUserToResourceUserDto(jiraUser);
     }
+
+    @Override
+    public ResourceUserDto deleteProject(String login, Long projectId) throws NoSuchEntityException {
+        Project project = projectRepository.findById(projectId);
+        JiraUser jiraUser = jiraUserRepository.findByLogin(login);
+
+        jiraUser.getProjects().remove(project);
+
+        jiraUserRepository.update(jiraUser);
+
+        return jiraUserMapper.fromJiraUserToResourceUserDto(jiraUser);
+    }
 }

@@ -52,4 +52,6 @@ public interface JiraUserService {
     FullResourceColumnDtoList moveMemberFull(String login, MoveMemberDto memberDto) throws NoSuchEntityException;
 
     ResourceUserDto addProject(String login, Long projectId) throws NoSuchEntityException;
+
+    ResourceUserDto deleteProject(String login, Long projectId) throws NoSuchEntityException;
 }
