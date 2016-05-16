@@ -231,7 +231,7 @@
                 memberIndex:    memberIndex
             };
 
-            return false;
+            return true;
         };
 
         //Dragend member
