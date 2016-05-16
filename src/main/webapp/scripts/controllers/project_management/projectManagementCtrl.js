@@ -5,9 +5,9 @@
         .module('jiraPluginApp')
         .controller('ProjectManagementCtrl', ProjectManagementCtrl);
 
-    ProjectManagementCtrl.$inject = ['$scope', '$uibModal', '$filter', '$window', 'ProjectFactory', 'UsersFactory', 'DictionaryFactory', 'MemberFactory', 'ResourceColumnFactory', 'Notification'];
+    ProjectManagementCtrl.$inject = ['$scope', '$uibModal', '$filter', '$window', 'ProjectFactory', 'UsersFactory', 'DictionaryFactory', 'Notification'];
 
-    function ProjectManagementCtrl($scope, $uibModal, $filter, $window, ProjectFactory, UsersFactory, DictionaryFactory, MemberFactory, ResourceColumnFactory, Notification) {
+    function ProjectManagementCtrl($scope, $uibModal, $filter, $window, ProjectFactory, UsersFactory, DictionaryFactory, Notification) {
         var self = this;
         $scope.loaderShow = true;
         $scope.showSearch = true;
@@ -156,8 +156,7 @@
 
         $scope.currentProject = {};
 
-//----------------------------------------------------------------------------------------------------------------------
-//Get technologies
+        //Get technologies
         $scope.technologies = [];
         $scope.getTechnologies = function () {
             DictionaryFactory.query({name: 'technologies'}, function(result){
@@ -168,8 +167,7 @@
         };
         $scope.getTechnologies();
 
-//----------------------------------------------------------------------------------------------------------------------
-//Get assignment type
+        //Get assignment type
         $scope.assignmentTypes = [];
         $scope.getAssignmentTypes = function () {
             ResourceColumnFactory.query({id: 'sorted_list'}, function(result){
@@ -180,17 +178,22 @@
         };
         $scope.getAssignmentTypes();
 
-//----------------------------------------------------------------------------------------------------------------------
-//TODO Get projects
+        //TODO Get projects
         $scope.projects = [];
         $scope.getProjects = function () {
-            $scope.projects = [
-                {id: 1, name: "project 1"},
-                {id: 2, name: "project 2"},
-                {id: 3, name: "project 3"},
-                {id: 4, name: "project 4"},
-                {id: 5, name: "project 5"}
-            ];
+
+            // $scope.projects = [
+            //     {id: 1, title: "Project 1"},
+            //     {id: 2, title: "Project 2"},
+            //     {id: 3, title: "Project 3"},
+            //     {id: 4, title: "Project 4"},
+            // ];
+
+            ProjectFactory.query(function(result){
+                $scope.projects = result.projects;
+            }, function (error) {
+                Notification.error("Server error: get projects");
+            });
         };
         $scope.getProjects();
 
@@ -200,8 +203,7 @@
             $scope.getProjectColumns(true);
         }, true);
 
-//----------------------------------------------------------------------------------------------------------------------
-//Dragend project
+        //Dragend project
         $scope.dragendProject = function () {
             var dataForUpdate = $scope.columns.map(function(value, index) {
                 return {
@@ -219,86 +221,67 @@
             // });
         };
 
-//----------------------------------------------------------------------------------------------------------------------
-//Dragend member
+        $scope.dragoverPositions = {
+            parentIndex: null,
+            index: null
+        };
+        $scope.dragoverCallback = function(event, projectIndex, memberIndex, external, type) {
+            $scope.dragoverPositions = {
+                projectIndex:   projectIndex,
+                memberIndex:    memberIndex
+            };
+
+            return true;
+        };
+
+        //Dragend member
         $scope.dragendElement = function(item, projectIndex, memberIndex) {
 
-            var modalInstance = $uibModal.open({
-                animation: true,
-                templateUrl: 'scripts/controllers/project_management/dlg/dlg_member_change_project.html',
-                controller: 'DlgMemberChangeProject',
-                size: 'md',
-                resolve: {
-                    dlgData: function () {
-                        return {
-                            item: item,
-                            projectIndex: projectIndex,
-                            memberIndex: memberIndex,
-                            assignmentTypes: $scope.assignmentTypes
-                        };
-                    }
-                }
-            });
-            modalInstance.result.then(function (data) {
-                if (data.moveType === 'move') {
-                    $scope.columns[projectIndex].users.splice(memberIndex, 1);
-                }
+            //if sort elements
+            if ($scope.dragoverPositions.projectIndex === projectIndex) {
+                //delete old position
+                $scope.columns[projectIndex].users.splice(memberIndex, 1);
 
-                // console.log(projectIndex + " ---- " + memberIndex);
-                // console.log(item);
-                // console.log(data);
+                //TODO save new data
 
                 Notification.success("Update projects success");
-            }, function (error) {
-                console.log($scope.columns);
-                return false;
-
-                console.log(11111111);
-                Notification.error("Server error");
-
-                var indexElementInColumn = null;
-                var count = $scope.columns.length;
-                for (var index = 0; index < count; index++) {
-                    result = _.findWhere($scope.columns[index].users, {login: item.login});
-                    if (result !== undefined) {
-                        //save column data
-                        column = $scope.columns[index];
-                        //find index new position in column
-                        indexElementInColumn = $scope.columns[index].users.indexOf(result);
-                        break;
+            } else {
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: 'scripts/controllers/project_management/dlg/dlg_member_change_project.html',
+                    controller: 'DlgMemberChangeProject',
+                    size: 'md',
+                    resolve: {
+                        dlgData: function () {
+                            return {
+                                item: item,
+                                projectIndex: projectIndex,
+                                memberIndex: memberIndex,
+                                assignmentTypes: $scope.assignmentTypes
+                            };
+                        }
                     }
-                }
-            });
+                });
+                modalInstance.result.then(function (data) {
+                    console.log($scope.dragoverPositions);
+                    if (data.moveType === 'move') {
+                        $scope.columns[projectIndex].users.splice(memberIndex, 1);
+                    }
+
+                    //TODO save new data
+
+                    Notification.success("Update projects success");
+                }, function (error) {
+                    //delete element which moved
+                    $scope.columns[$scope.dragoverPositions.projectIndex].users.splice($scope.dragoverPositions.memberIndex, 1);
+                });
+            }
 
             // console.log(projectIndex);
             return true;
-
-
-            //Find column when drag
-            var column = undefined;
-            var result = undefined;
-            var indexElementInColumn = null;
-            var count = $scope.columns.length;
-            for (var index = 0; index < count; index++) {
-                result = _.findWhere($scope.columns[index].users, {login: item.login});
-                if (result !== undefined) {
-                    //save column data
-                    column = $scope.columns[index];
-                    //find index new position in column
-                    indexElementInColumn = $scope.columns[index].users.indexOf(result);
-                    break;
-                }
-            }
-
-            //TODO save new member position
-            //change member assignment type
-            $scope.columns[index].users[indexElementInColumn].assignmentType = column.id;
-            console.log("column id: " + column.id + " ---- position: " + indexElementInColumn);
-            // $scope.getProjectColumns();
         };
 
-//----------------------------------------------------------------------------------------------------------------------
-//Select member
+        //Select member
         $scope.selectElement = function (item) {
             console.log(item);
             if ($scope.columns.selected === item) {
@@ -318,21 +301,18 @@
             }
         };
 
-//----------------------------------------------------------------------------------------------------------------------
-//Show member info in right part
+        //Show member info in right part
         $scope.showProjectInfoData = function(item) {
             // console.log('showProjectInfoData');
             $scope.currentProject = item;
         };
 
-//----------------------------------------------------------------------------------------------------------------------
-//Show search in right part
+        //Show search in right part
         $scope.showSearchFilters = function() {
             // console.log('showSearchFilters');
         };
 
-//----------------------------------------------------------------------------------------------------------------------
-//Update member description
+        //Update member description
         $scope.updateProjectDescription = function(data) {
             console.log('updateProjectDescription:');
             console.log(data);
@@ -346,8 +326,7 @@
             });
         };
 
-//----------------------------------------------------------------------------------------------------------------------
-//Dlg process project
+        //Dlg process project
         $scope.processProject = function (item) {
             var modalInstance = $uibModal.open({
                 animation: true,
@@ -381,8 +360,7 @@
             }, function () {});
         };
 
-//----------------------------------------------------------------------------------------------------------------------
-//Dlg delete project
+        //Dlg delete project
         $scope.delProject = function (item) {
             var modalInstance = $uibModal.open({
                 animation: true,
@@ -408,8 +386,7 @@
             }, function () {});
         };
 
-//----------------------------------------------------------------------------------------------------------------------
-//Dlg delete project member
+        //Dlg delete project member
         $scope.delProjectMember = function (item) {
             var modalInstance = $uibModal.open({
                 animation: true,
@@ -431,6 +408,180 @@
                 //     Notification.error("Server error");
                 // });
             }, function () {});
+        };
+
+        //Contextmenu
+        var customItem = {
+            html: '<a><b>Send to</b></a>',
+            enabled: function() {return false}
+        };
+
+        var hideContextMenu = true;
+        $scope.memberMenuOptions = function (column, item) {
+            if (hideContextMenu) { return []; }
+
+            $scope.columns.selected = null;
+            $scope.selectElement(column);
+
+            var menu = [];
+            menu.push(customItem);
+            for (var index = 0; index < $scope.projects.length; index++) {
+                //check column by id
+                if (column.id != $scope.projects[index].id) {
+                    menu.push(
+                        {
+                            html: '<a tabindex="-1" href="#" class="context-menu-item" data-id-project-index="'+index+'">'+$scope.projects[index].title+'</a>',
+                            enabled: function() {return true},
+                            click: function ($itemScope, $event, value, html) {
+
+                                var columnFromIndex = $itemScope.$parent.$index,
+                                    columnToIndex   = $(html).data("idProjectIndex");
+
+                                //change assignment type
+                                // $scope.columns[columnFromIndex].users.splice($itemScope.$index, 1);
+                                // $scope.columns[columnToIndex].users.push($itemScope.item);
+
+                                var dataForUpdate = {
+                                    assignmentType: {
+                                        fromAssignmentTypeId:   $scope.columns[columnFromIndex].id,
+                                        toAssignmentTypeId:     $scope.columns[columnToIndex].id
+                                    },
+                                    users: $scope.columns[columnToIndex].users.map(function(value, index) {
+                                        return {
+                                            login: value.login,
+                                            index: index
+                                        };
+                                    })
+                                };
+
+                                //dlg
+                                var modalInstance = $uibModal.open({
+                                    animation: true,
+                                    templateUrl: 'scripts/controllers/project_management/dlg/dlg_member_change_project.html',
+                                    controller: 'DlgMemberChangeProject',
+                                    size: 'md',
+                                    resolve: {
+                                        dlgData: function () {
+                                            return {
+                                                item: item,
+                                                projectIndex: columnFromIndex,
+                                                memberIndex: $itemScope.$index,
+                                                assignmentTypes: $scope.assignmentTypes
+                                            };
+                                        }
+                                    }
+                                });
+                                modalInstance.result.then(function (data) {
+                                    if (data.moveType === 'move') {
+                                        $scope.columns[columnFromIndex].users.splice($itemScope.$index, 1);
+                                        $scope.columns[columnToIndex].users.push($itemScope.item);
+                                    } else {
+                                        $scope.columns[columnToIndex].users.push($itemScope.item);
+                                    }
+
+                                    //TODO save new data
+
+                                    Notification.success("Update projects success");
+                                }, function (error) {
+
+                                });
+
+                                //add request for save new data
+                                // $scope.moveMember(dataForUpdate, columnToIndex, $scope.columns[columnToIndex].users.length - 1);
+                            }
+                        }
+                    );
+                }
+            }
+
+            menu.push(
+                null,
+                {
+                    html: '<a tabindex="-1" href="#" class="context-menu-item">Top of the column</a>',
+                    enabled: function($itemScope) {
+                        //check position for enabled button
+                        return $itemScope.$index !== 0;
+                    },
+                    click: function ($itemScope, $event, value) {
+                        console.log('Top of the column');
+                        $scope.columns[$itemScope.$parent.$index].users.splice($itemScope.$index, 1);
+                        $scope.columns[$itemScope.$parent.$index].users.unshift($itemScope.item);
+
+                        var dataForUpdate = {
+                            assignmentType: {
+                                fromAssignmentTypeId:   $scope.columns[$itemScope.$parent.$index].id,
+                                toAssignmentTypeId:     $scope.columns[$itemScope.$parent.$index].id
+                            },
+                            users: $scope.columns[$itemScope.$parent.$index].users.map(function(value, index) {
+                                return {
+                                    login: value.login,
+                                    index: index
+                                };
+                            })
+                        };
+
+                        //add request for save new data
+                        // $scope.moveMember(dataForUpdate, $itemScope.$parent.$index, 0);
+                    }
+                },
+                {
+                    html: '<a tabindex="-1" href="#" class="context-menu-item">Bottom of the column</a>',
+                    enabled: function($itemScope) {
+                        //check position for enabled button
+                        return $itemScope.$index !== $scope.columns[$itemScope.$parent.$index].users.length - 1;
+                    },
+                    click: function ($itemScope, $event, value) {
+                        console.log('Bottom of the column');
+                        $scope.columns[$itemScope.$parent.$index].users.splice($itemScope.$index, 1);
+                        $scope.columns[$itemScope.$parent.$index].users.push($itemScope.item);
+
+                        var dataForUpdate = {
+                            assignmentType: {
+                                fromAssignmentTypeId:   $scope.columns[$itemScope.$parent.$index].id,
+                                toAssignmentTypeId:     $scope.columns[$itemScope.$parent.$index].id
+                            },
+                            users: $scope.columns[$itemScope.$parent.$index].users.map(function(value, index) {
+                                return {
+                                    login: value.login,
+                                    index: index
+                                };
+                            })
+                        };
+
+                        //add request for save new data
+                        // $scope.moveMember(dataForUpdate, $itemScope.$parent.$index, $scope.columns[$itemScope.$parent.$index].users.length - 1);
+                    }
+                }
+            );
+
+            return menu;
+        };
+
+        //Save data after member move
+        $scope.moveMember = function (dataForUpdate, indexColumn, indexElementInColumn) {
+            // dataForUpdate["filters"] = $scope.search;
+            // ProjectFactory.update({login: $scope.currentMember.login, relation: "move"}, dataForUpdate, function(data){
+            //     //update member info from backend
+            //     // $scope.columns = data.columns;
+            //
+            //     // if ($scope.currentMember !== null) {
+            //     //     $scope.selectElement($scope.currentMember);
+            //     // }
+            //
+            //     //update member info without getResourceColumns
+            //     $scope.columns[indexColumn].users[indexElementInColumn] = data;
+            //     //reindexing resourceOrder
+            //     $scope.columns[indexColumn].users.map(function(value, index) {
+            //         value.resourceOrder = index;
+            //
+            //         return value;
+            //     });
+            //     $scope.selectElement(data);
+            //
+            //     Notification.success("Save changes success");
+            // }, function (error) {
+            //     Notification.error("Server error: get assignment type");
+            // });
         };
 
     }
