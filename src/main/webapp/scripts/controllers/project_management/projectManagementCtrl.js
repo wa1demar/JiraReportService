@@ -5,9 +5,9 @@
         .module('jiraPluginApp')
         .controller('ProjectManagementCtrl', ProjectManagementCtrl);
 
-    ProjectManagementCtrl.$inject = ['$scope', '$uibModal', '$filter', '$window', 'ProjectFactory', 'UsersFactory', 'DictionaryFactory', 'Notification'];
+    ProjectManagementCtrl.$inject = ['$scope', '$uibModal', '$filter', '$window', 'ProjectFactory', 'UsersFactory', 'DictionaryFactory', 'ResourceColumnFactory', 'Notification'];
 
-    function ProjectManagementCtrl($scope, $uibModal, $filter, $window, ProjectFactory, UsersFactory, DictionaryFactory, Notification) {
+    function ProjectManagementCtrl($scope, $uibModal, $filter, $window, ProjectFactory, UsersFactory, DictionaryFactory, ResourceColumnFactory, Notification) {
         var self = this;
         $scope.loaderShow = true;
         $scope.showSearch = true;
@@ -231,11 +231,18 @@
                 memberIndex:    memberIndex
             };
 
-            return true;
+            return false;
         };
 
         //Dragend member
         $scope.dragendElement = function(item, projectIndex, memberIndex) {
+
+            console.log('----------------------');
+            console.log($scope.dragoverPositions);
+            console.log('----------------------');
+            if ($scope.dragoverPositions.parentIndex === null || $scope.dragoverPositions.memberIndex === null) {
+                return false;
+            }
 
             //if sort elements
             if ($scope.dragoverPositions.projectIndex === projectIndex) {
