@@ -7,10 +7,7 @@ import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEn
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -33,6 +30,15 @@ public class ProjectController {
 
     @RequestMapping(value = "/v1/projects", method = RequestMethod.GET)
     private ResponseEntity<ProjectDtos> getProjects() throws NoSuchEntityException {
+        ProjectDtos allProjects = projectService.findAll();
+
+        return new ResponseEntity<>(allProjects, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/v1/projects/{id}", method = RequestMethod.DELETE)
+    private ResponseEntity<ProjectDtos> getProjects(@PathVariable("id") Long id) throws NoSuchEntityException {
+        projectService.delete(id);
+
         ProjectDtos allProjects = projectService.findAll();
 
         return new ResponseEntity<>(allProjects, HttpStatus.OK);

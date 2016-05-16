@@ -11,4 +11,5 @@ public interface ProjectService {
 
     ProjectDtos findAll();
 
+    void delete(Long id);
 }

@@ -37,4 +37,11 @@ public class ProjectRepositoryImpl implements ProjectRepository {
         query.setParameter("id", projectId);
         return (Project) query.uniqueResult();
     }
+
+    @Override
+    public void delete(Long id) {
+        Query query = sessionFactory.getCurrentSession().createQuery("delete Project p where p.id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
+    }
 }

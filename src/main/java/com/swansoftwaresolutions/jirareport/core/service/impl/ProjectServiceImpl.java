@@ -40,4 +40,9 @@ public class ProjectServiceImpl implements ProjectService {
 
         return projectDtos;
     }
+
+    @Override
+    public void delete(Long id) {
+        projectRepository.delete(id);
+    }
 }
