@@ -285,7 +285,7 @@
             // }
 
             if ($scope.insertedPositions === null ||
-                $scope.insertedPositions.memberIndex === null ||
+                $scope.insertedPositions.columnIndex === null ||
                 $scope.insertedPositions.memberIndex === null) {
                 return false;
             }
@@ -294,6 +294,7 @@
             //if not change position
             if (columnFrom.id === columnTo.id && item.resourceOrder === $scope.insertedPositions.memberIndex) {
                 console.info("Not change position");
+                $scope.insertedPositions = null;
                 return true;
             }
 
@@ -339,6 +340,7 @@
 
             //add request for save new data
             $scope.moveMember(dataForUpdate, $scope.insertedPositions.columnIndex, $scope.insertedPositions.memberIndex);
+            $scope.insertedPositions = null;
         };
 
         //Select member
