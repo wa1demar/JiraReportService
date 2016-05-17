@@ -1,0 +1,19 @@
+<div class="modal-header">
+  <h3 class="modal-title">
+      Change assignment type for member
+  </h3>
+</div>
+<form name="processProjectForm" ng-submit="submit()" novalidate>
+  <div class="modal-body">
+      <div class="form-group">
+          <label for="projectId">Project</label>
+          <select class="form-control" ng-init="model.projectId = dlgData.projects[0].id" ng-model="model.projectId" id="projectId" name="projectId" convert-to-number>
+              <option ng-repeat="value in dlgData.projects" value="{{value.id}}">{{value.title}}</option>
+          </select>
+      </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="submit" ng-click="ok()">Save</button>
+    <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+  </div>
+</form>

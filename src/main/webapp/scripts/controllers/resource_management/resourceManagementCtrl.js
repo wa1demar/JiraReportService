@@ -251,13 +251,8 @@
             });
         };
 
-        //Dragstart member
-        $scope.dragStart = function () {
-
-        };
-
         //Dragend member
-        $scope.dragendElement = function(item, columnFrom) {
+        $scope.dragendElement = function(item, columnFrom, indexMember, indexParent) {
             $scope.selectElement(item);
 
             //Find column when drag
@@ -296,6 +291,33 @@
                     };
                 })
             };
+
+            //TODO check member projects
+            // var modalInstance = $uibModal.open({
+            //     animation: true,
+            //     templateUrl: 'scripts/controllers/resource_management/dlg/dlg_member_change_column.html',
+            //     controller: 'DlgMemberChangeColumn',
+            //     size: 'md',
+            //     resolve: {
+            //         dlgData: function () {
+            //             return {
+            //                 projects: $scope.projects
+            //             };
+            //         }
+            //     }
+            // });
+            // modalInstance.result.then(function (data) {
+            //     dataForUpdate['projectId'] = data.projectId;
+            //     //TODO save new data
+            //     //add request for save new data
+            //     // $scope.moveMember(dataForUpdate, indexColumn, indexElementInColumn);
+            //
+            //     Notification.success("Update projects success");
+            // }, function (error) {
+            //     //delete element which moved
+            //     $scope.columns[indexColumn].users.splice(indexElementInColumn, 1);
+            //     $scope.columns[indexParent].users.splice(indexMember, 0, item);
+            // });
 
             //add request for save new data
             $scope.moveMember(dataForUpdate, indexColumn, indexElementInColumn);

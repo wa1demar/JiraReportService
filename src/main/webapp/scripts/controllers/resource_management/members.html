@@ -7,8 +7,7 @@
         dnd-moved="column.users.splice($index, 1)"
         dnd-effect-allowed="move"
         dnd-selected="selectElement(item)"
-        dnd-dragstart="dragStart()"
-        dnd-dragend="dragendElement(item, column)"
+        dnd-dragend="dragendElement(item, column, $index, $parent.$index)"
         class="resource-box"
         ng-class="{'selected': columns.selected.login === item.login}"
         context-menu="memberMenuOptions(column, item)">
