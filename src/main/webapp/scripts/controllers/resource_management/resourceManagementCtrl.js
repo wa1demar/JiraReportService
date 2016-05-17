@@ -251,30 +251,48 @@
             });
         };
 
+        $scope.insertedPositions = {
+            columnIndex: null,
+            memberIndex: null
+        };
+        $scope.insertedElement = function(columnIndex, memberIndex, event) {
+            $scope.insertedPositions = {
+                columnIndex: columnIndex,
+                memberIndex: memberIndex
+            };
+        };
+        
         //Dragend member
         $scope.dragendElement = function(item, columnFrom, indexMember, indexParent) {
             $scope.selectElement(item);
 
             //Find column when drag
-            var columnTo = undefined;
-            var result = undefined;
-            var indexColumn = null;
-            var indexElementInColumn = null;
-            var count = $scope.columns.length;
-            for (var index = 0; index < count; index++) {
-                result = _.findWhere($scope.columns[index].users, {login: item.login});
-                if (result !== undefined) {
-                    //save column data
-                    columnTo = $scope.columns[index];
-                    indexColumn = index;
-                    //find index new position in column
-                    indexElementInColumn = $scope.columns[index].users.indexOf(result);
-                    break;
-                }
+            // var columnTo = undefined;
+            // var result = undefined;
+            // var indexColumn = null;
+            // var indexElementInColumn = null;
+            // var count = $scope.columns.length;
+            // for (var index = 0; index < count; index++) {
+            //     result = _.findWhere($scope.columns[index].users, {login: item.login});
+            //     if (result !== undefined) {
+            //         //save column data
+            //         columnTo = $scope.columns[index];
+            //         indexColumn = index;
+            //         //find index new position in column
+            //         indexElementInColumn = $scope.columns[index].users.indexOf(result);
+            //         break;
+            //     }
+            // }
+
+            if ($scope.insertedPositions === null ||
+                $scope.insertedPositions.memberIndex === null ||
+                $scope.insertedPositions.memberIndex === null) {
+                return false;
             }
+            var columnTo = $scope.columns[$scope.insertedPositions.columnIndex];
 
             //if not change position
-            if (columnFrom.id === columnTo.id && item.resourceOrder === indexElementInColumn) {
+            if (columnFrom.id === columnTo.id && item.resourceOrder === $scope.insertedPositions.memberIndex) {
                 console.info("Not change position");
                 return true;
             }
@@ -310,17 +328,17 @@
             //     dataForUpdate['projectId'] = data.projectId;
             //     //TODO save new data
             //     //add request for save new data
-            //     // $scope.moveMember(dataForUpdate, indexColumn, indexElementInColumn);
+            //     // $scope.moveMember(dataForUpdate, $scope.insertedPositions.columnIndex, $scope.insertedPositions.memberIndex);
             //
             //     Notification.success("Update projects success");
             // }, function (error) {
             //     //delete element which moved
-            //     $scope.columns[indexColumn].users.splice(indexElementInColumn, 1);
+            //     $scope.columns[$scope.insertedPositions.memberIndex].users.splice($scope.insertedPositions.memberIndex, 1);
             //     $scope.columns[indexParent].users.splice(indexMember, 0, item);
             // });
 
             //add request for save new data
-            $scope.moveMember(dataForUpdate, indexColumn, indexElementInColumn);
+            $scope.moveMember(dataForUpdate, $scope.insertedPositions.columnIndex, $scope.insertedPositions.memberIndex);
         };
 
         //Select member

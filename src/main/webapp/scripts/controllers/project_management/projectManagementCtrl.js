@@ -221,31 +221,32 @@
             // });
         };
 
-        $scope.dragoverPositions = {
-            parentIndex:    null,
-            index:          null
+        $scope.insertedPositions = {
+            columnIndex: null,
+            memberIndex: null
         };
-        $scope.insertedMember = function(projectIndex, memberIndex, event) {
-            $scope.dragoverPositions = {
-                projectIndex:   projectIndex,
-                memberIndex:    memberIndex
+        $scope.insertedElement = function(columnIndex, memberIndex, event) {
+            $scope.insertedPositions = {
+                columnIndex: columnIndex,
+                memberIndex: memberIndex
             };
+            console.log('$scope.insertedElement');
         };
 
         //Dragend member
         $scope.dragendElement = function(item, projectIndex, memberIndex) {
 
             console.log('----------------------');
-            console.log($scope.dragoverPositions);
+            console.log($scope.insertedPositions);
             console.log('----------------------');
-            if ($scope.dragoverPositions === null ||
-                $scope.dragoverPositions.parentIndex === null ||
-                $scope.dragoverPositions.memberIndex === null) {
+            if ($scope.insertedPositions === null ||
+                $scope.insertedPositions.columnIndex === null ||
+                $scope.insertedPositions.memberIndex === null) {
                 return false;
             }
 
             //if sort elements
-            if ($scope.dragoverPositions.projectIndex === projectIndex) {
+            if ($scope.insertedPositions.columnIndex === projectIndex) {
                 //delete old position
                 $scope.columns[projectIndex].users.splice(memberIndex, 1);
 
@@ -253,7 +254,7 @@
 
                 Notification.success("Update projects success");
 
-                $scope.dragoverPositions = null;
+                $scope.insertedPositions = null;
             } else {
                 var modalInstance = $uibModal.open({
                     animation: true,
@@ -272,7 +273,7 @@
                     }
                 });
                 modalInstance.result.then(function (data) {
-                    console.log($scope.dragoverPositions);
+                    console.log($scope.insertedPositions);
                     if (data.moveType === 'move') {
                         $scope.columns[projectIndex].users.splice(memberIndex, 1);
                     }
@@ -281,12 +282,12 @@
 
                     Notification.success("Update projects success");
 
-                    $scope.dragoverPositions = null;
+                    $scope.insertedPositions = null;
                 }, function (error) {
                     //delete element which moved
-                    $scope.columns[$scope.dragoverPositions.projectIndex].users.splice($scope.dragoverPositions.memberIndex, 1);
+                    $scope.columns[$scope.insertedPositions.columnIndex].users.splice($scope.insertedPositions.memberIndex, 1);
 
-                    $scope.dragoverPositions = null;
+                    $scope.insertedPositions = null;
                 });
             }
 

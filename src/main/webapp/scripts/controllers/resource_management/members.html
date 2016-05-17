@@ -1,5 +1,6 @@
 <ul dnd-list="column.users"
     dnd-allowed-types="['user']"
+    dnd-inserted="insertedElement($parent.$index, index, event)"
     class="item">
     <li ng-repeat="item in column.users"
         dnd-draggable="item"

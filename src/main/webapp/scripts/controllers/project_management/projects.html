@@ -22,7 +22,7 @@
 
 <ul dnd-list="column.users"
     dnd-allowed-types="['user']"
-    dnd-inserted="insertedMember($parent.$index, index, event)"
+    dnd-inserted="insertedElement($parent.$index, index, event)"
     class="item projects">
     <li ng-repeat="item in column.users"
         dnd-draggable="item"
