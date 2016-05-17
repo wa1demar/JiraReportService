@@ -1,0 +1,19 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="1463478572830" author="Vladimir Martynyuk">
+
+      <createTable tableName="jira_users_references">
+          <column name="jira_user_login" type="varchar">
+              <constraints nullable="false" />
+          </column>
+          <column name="project_id" type="bigint">
+              <constraints nullable="true" />
+          </column>
+          <column name="assygnment_type_id" type="bigint">
+              <constraints nullable="false" />
+          </column>
+      </createTable>
+
+    </changeSet>
+</databaseChangeLog>

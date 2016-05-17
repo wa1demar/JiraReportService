@@ -3,12 +3,10 @@ package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
-import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.TechnologyMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.ImportedJiraUserDtoToJiraUserMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
-import com.swansoftwaresolutions.jirareport.core.dto.JiraUserAutoDto;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,11 +67,11 @@ public class JiraUserMapperImpl implements JiraUserMapper {
     public ResourceUserDto fromJiraUserToResourceUserDto(JiraUser jiraUser) {
         ResourceUserDto userDto = modelMapper.map(jiraUser, ResourceUserDto.class);
         userDto.setTechnologies(technologyMapper.fromTechnologiesToTechnologiesDto(jiraUser.getTechnologies()));
-        if (jiraUser.getColumns() != null && jiraUser.getColumns().size() > 0) {
-            userDto.setColumn(modelMapper.map(jiraUser.getColumns().get(0), ResourceColumnDto.class));
-        } else {
-            userDto.setColumn(null);
-        }
+//        if (jiraUser.getColumns() != null && jiraUser.getColumns().size() > 0) {
+//            userDto.setColumn(modelMapper.map(jiraUser.getColumns().get(0), ResourceColumnDto.class));
+//        } else {
+//            userDto.setColumn(null);
+//        }
         return userDto;
     }
 

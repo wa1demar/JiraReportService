@@ -25,10 +25,9 @@ public class JiraUser implements Serializable {
     private Location location;
     private List<Technology> technologies = new ArrayList<>();
     private List<Attachment> attachments = new ArrayList<>();
-    private List<ResourceColumn> columns = new ArrayList<>();
-    private List<Project> projects = new ArrayList<>();
     private String avatar;
     private int resourceOrder;
+    private List<JiraUsersReferences> userReferences = new ArrayList<>();
 
     @Column(name = "email")
     public String getEmail() {
@@ -98,7 +97,7 @@ public class JiraUser implements Serializable {
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users")
     @Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
-    @OrderBy("id")
+    @OrderBy("id ASC")
     public List<Technology> getTechnologies() {
         return technologies;
     }
@@ -143,20 +142,6 @@ public class JiraUser implements Serializable {
         this.avatar = avatar;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "jira_users_resource_columns", joinColumns = {
-            @JoinColumn(name = "jira_user_login")},
-            inverseJoinColumns = {@JoinColumn(name = "resource_column_id")})
-    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DETACH})
-    @OrderBy("priority")
-    public List<ResourceColumn> getColumns() {
-        return columns;
-    }
-
-    public void setColumns(List<ResourceColumn> columns) {
-        this.columns = columns;
-    }
-
     @Column(name = "resource_order")
     public int getResourceOrder() {
         return resourceOrder;
@@ -166,17 +151,12 @@ public class JiraUser implements Serializable {
         this.resourceOrder = resourceOrder;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "jira_users_projects", joinColumns = {
-            @JoinColumn(name = "jira_user_login")},
-            inverseJoinColumns = {@JoinColumn(name = "project_id")})
-    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DETACH})
-    @OrderBy("id")
-    public List<Project> getProjects() {
-        return projects;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    public List<JiraUsersReferences> getUserReferences() {
+        return userReferences;
     }
 
-    public void setProjects(List<Project> projects) {
-        this.projects = projects;
+    public void setUserReferences(List<JiraUsersReferences> userReferences) {
+        this.userReferences = userReferences;
     }
 }

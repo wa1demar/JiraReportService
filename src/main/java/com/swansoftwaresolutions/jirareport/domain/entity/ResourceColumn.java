@@ -1,10 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
-import org.hibernate.annotations.*;
-
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +18,7 @@ public class ResourceColumn implements Serializable {
     private boolean fixed;
     private int priority;
     private int sortPosition;
-    private List<JiraUser> users = new ArrayList<>();
+    private List<JiraUsersReferences> references = new ArrayList<>();
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -61,16 +57,6 @@ public class ResourceColumn implements Serializable {
         this.fixed = fixed;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "columns")
-    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
-    public List<JiraUser> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<JiraUser> users) {
-        this.users = users;
-    }
-
     @Column(name = "priority")
     public int getPriority() {
         return priority;
@@ -87,5 +73,14 @@ public class ResourceColumn implements Serializable {
 
     public void setSortPosition(int sortPosition) {
         this.sortPosition = sortPosition;
+    }
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "column")
+    public List<JiraUsersReferences> getReferences() {
+        return references;
+    }
+
+    public void setReferences(List<JiraUsersReferences> references) {
+        this.references = references;
     }
 }

@@ -1,7 +1,5 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +14,7 @@ public class Project {
     private Long id;
     private String title;
     private int sortPosition;
-    private List<JiraUser> users = new ArrayList<>();
+    private List<JiraUsersReferences> references = new ArrayList<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,13 +44,12 @@ public class Project {
         this.sortPosition = sortPosition;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "projects")
-    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
-    public List<JiraUser> getUsers() {
-        return users;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
+    public List<JiraUsersReferences> getReferences() {
+        return references;
     }
 
-    public void setUsers(List<JiraUser> users) {
-        this.users = users;
+    public void setReferences(List<JiraUsersReferences> references) {
+        this.references = references;
     }
 }

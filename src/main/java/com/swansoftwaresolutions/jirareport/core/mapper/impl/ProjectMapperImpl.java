@@ -53,26 +53,26 @@ public class ProjectMapperImpl implements ProjectMapper {
         for (Project project : projects) {
             FullProjectDto projectDto = modelMapper.map(project, FullProjectDto.class);
 
-            List<JiraUser> users = project.getUsers();
-            List<FullProjectUserDto> userDtos = new ArrayList<>();
-            for (JiraUser user : users) {
-                FullProjectUserDto projectUserDto = modelMapper.map(user, FullProjectUserDto.class);
-                projectUserDto.setEngineerLevel(user.getLevel());
-                if (user.getColumns().size() > 0) {
-                    projectUserDto.setColumn(modelMapper.map(project, ProjectDto.class));
-                }
+//            List<JiraUser> users = project.getUsers();
+//            List<FullProjectUserDto> userDtos = new ArrayList<>();
+//            for (JiraUser user : users) {
+//                FullProjectUserDto projectUserDto = modelMapper.map(user, FullProjectUserDto.class);
+//                projectUserDto.setEngineerLevel(user.getLevel());
+//                if (user.getColumns().size() > 0) {
+//                    projectUserDto.setColumn(modelMapper.map(project, ProjectDto.class));
+//                }
+//
+//                List<ResourceColumn> columns = user.getColumns();
+//                Collections.sort(columns, (o1, o2) -> o1.getPriority() - o2.getPriority());
+//
+//                Type targetistType = new TypeToken<List<ResourceColumnDto>>(){}.getType();
+//
+//                projectUserDto.setAssignmentTypes(modelMapper.map(columns, targetistType));
+//
+//                userDtos.add(projectUserDto);
+//            }
 
-                List<ResourceColumn> columns = user.getColumns();
-                Collections.sort(columns, (o1, o2) -> o1.getPriority() - o2.getPriority());
-
-                Type targetistType = new TypeToken<List<ResourceColumnDto>>(){}.getType();
-
-                projectUserDto.setAssignmentTypes(modelMapper.map(columns, targetistType));
-
-                userDtos.add(projectUserDto);
-            }
-
-            projectDto.setUsers(userDtos);
+//            projectDto.setUsers(userDtos);
 
             projectDtos.add(projectDto);
         }

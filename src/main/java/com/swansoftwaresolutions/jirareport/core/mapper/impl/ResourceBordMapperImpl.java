@@ -9,14 +9,19 @@ import com.swansoftwaresolutions.jirareport.core.mapper.ResourceBordMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.JiraUserToFullResourceUserDtoMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.JiraUserToResourceUserDtoMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraUsersReferences;
 import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
 import org.apache.commons.lang.StringUtils;
-import org.modelmapper.*;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -52,23 +57,23 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
         List<FullResourceUserDto> allUsersFiltered = new ArrayList<>();
         for (ResourceColumn c : columns) {
             FullResourceColumnDto fullResourceColumnDto = modelMapper.map(c, FullResourceColumnDto.class);
-            if (c.getUsers() != null && c.getUsers().size() > 0) {
-                List<FullResourceUserDto> fullResourceUserDtos = new ArrayList<>();
-                for (JiraUser user : c.getUsers()) {
-                    FullResourceUserDto userDto = modelMapper.map(user, FullResourceUserDto.class);
-                    if (!allUsersFiltered.contains(userDto)) {
-                        if (user.getColumns() != null) {
-                            ResourceColumn column = user.getColumns().get(0);
-                            userDto.setColumn(modelMapper.map(column, ResourceColumnDto.class));
-                        }
-
-                        fullResourceUserDtos.add(userDto);
-                        allUsersFiltered.add(userDto);
-                    }
-
-                }
-                fullResourceColumnDto.setUsers(fullResourceUserDtos);
-            }
+//            if (c.getUsers() != null && c.getUsers().size() > 0) {
+//                List<FullResourceUserDto> fullResourceUserDtos = new ArrayList<>();
+//                for (JiraUser user : c.getUsers()) {
+//                    FullResourceUserDto userDto = modelMapper.map(user, FullResourceUserDto.class);
+//                    if (!allUsersFiltered.contains(userDto)) {
+//                        if (user.getColumns() != null) {
+//                            ResourceColumn column = user.getColumns().get(0);
+//                            userDto.setColumn(modelMapper.map(column, ResourceColumnDto.class));
+//                        }
+//
+//                        fullResourceUserDtos.add(userDto);
+//                        allUsersFiltered.add(userDto);
+//                    }
+//
+//                }
+//                fullResourceColumnDto.setUsers(fullResourceUserDtos);
+//            }
             columnDtos.add(fullResourceColumnDto);
         }
         Collections.sort(columnDtos, (o1, o2) -> o1.getId().compareTo(o2.getId()));
@@ -90,10 +95,16 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
         List<FullResourceUserDto> allUsersFiltered = new ArrayList<>();
         for (ResourceColumn c : columns) {
             FullResourceColumnDto fullResourceColumnDto = modelMapper.map(c, FullResourceColumnDto.class);
+            List<JiraUsersReferences> references = c.getReferences();
             int count = 0;
-            if (c.getUsers() != null && c.getUsers().size() > 0) {
+            if (c.getReferences() != null && c.getReferences().size() > 0) {
+
+                List<JiraUser> users = new ArrayList<>();
+                for (JiraUsersReferences r : c.getReferences()) {
+                    users.add(r.getUser());
+                }
                 List<FullResourceUserDto> fullResourceUserDtos = new ArrayList<>();
-                for (JiraUser user : c.getUsers()) {
+                for (JiraUser user : users) {
                     FullResourceUserDto userDto = modelMapper.map(user, FullResourceUserDto.class);
                     if (!allUsersFiltered.contains(userDto)) {
                         count++;
@@ -103,21 +114,53 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
                             && filterLevel(userDto, filterData.getEngineerLevel())
                             && filterProject(userDto, filterData.getProject())
                             && filterLocations(userDto, filterData.getLocation())) {
-                        if (user.getColumns() != null) {
-                            ResourceColumn column = user.getColumns().get(0);
+                        if (user.getUserReferences() != null) {
+                            List<ResourceColumn> resourceColumns = new ArrayList<>();
+                            for (JiraUsersReferences r : c.getReferences()) {
+                                resourceColumns.add(r.getColumn());
+                            }
+                            Collections.sort(resourceColumns, (o1, o2) -> o1.getPriority() - o2.getPriority());
+                            ResourceColumn column = resourceColumns.get(0);
                             userDto.setColumn(modelMapper.map(column, ResourceColumnDto.class));
                         }
 
                         fullResourceUserDtos.add(userDto);
                         allUsersFiltered.add(userDto);
                     }
-
                 }
                 Collections.sort(fullResourceUserDtos, (o1, o2) -> o1.getResourceOrder() - o2.getResourceOrder());
                 fullResourceColumnDto.setUsers(fullResourceUserDtos);
                 fullResourceColumnDto.setAllMembersCount(count);
                 fullResourceColumnDto.setMembersCount(fullResourceUserDtos.size());
+
             }
+//            if (c.getUsers() != null && c.getUsers().size() > 0) {
+//                List<FullResourceUserDto> fullResourceUserDtos = new ArrayList<>();
+//                for (JiraUser user : c.getUsers()) {
+//                    FullResourceUserDto userDto = modelMapper.map(user, FullResourceUserDto.class);
+//                    if (!allUsersFiltered.contains(userDto)) {
+//                        count++;
+//                    }
+//                    if (!allUsersFiltered.contains(userDto) && filterName(userDto, filterData.getName())
+//                            && filterTechnologies(userDto, filterData.getTechnology())
+//                            && filterLevel(userDto, filterData.getEngineerLevel())
+//                            && filterProject(userDto, filterData.getProject())
+//                            && filterLocations(userDto, filterData.getLocation())) {
+//                        if (user.getColumns() != null) {
+//                            ResourceColumn column = user.getColumns().get(0);
+//                            userDto.setColumn(modelMapper.map(column, ResourceColumnDto.class));
+//                        }
+//
+//                        fullResourceUserDtos.add(userDto);
+//                        allUsersFiltered.add(userDto);
+//                    }
+//
+//                }
+//                Collections.sort(fullResourceUserDtos, (o1, o2) -> o1.getResourceOrder() - o2.getResourceOrder());
+//                fullResourceColumnDto.setUsers(fullResourceUserDtos);
+//                fullResourceColumnDto.setAllMembersCount(count);
+//                fullResourceColumnDto.setMembersCount(fullResourceUserDtos.size());
+//            }
             columnDtos.add(fullResourceColumnDto);
         }
         Collections.sort(columnDtos, (o1, o2) -> o1.getSortPosition() - o2.getSortPosition());

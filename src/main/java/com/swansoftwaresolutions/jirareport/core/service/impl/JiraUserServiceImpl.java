@@ -1,19 +1,19 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
+import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.JiraUsersDto;
 import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.*;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDtoList;
 import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologyId;
+import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.TechnologyMapper;
 import com.swansoftwaresolutions.jirareport.core.service.ConfigService;
+import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
 import com.swansoftwaresolutions.jirareport.core.service.ResourceBordService;
 import com.swansoftwaresolutions.jirareport.domain.entity.*;
-import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
 import com.swansoftwaresolutions.jirareport.domain.repository.*;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
-import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
-import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
-import com.swansoftwaresolutions.jirareport.core.dto.JiraUsersDto;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,6 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -36,6 +35,9 @@ public class JiraUserServiceImpl implements JiraUserService {
 
     @Autowired
     JiraUserRepository jiraUserRepository;
+
+    @Autowired
+    JiraUsersReferencesRepository jiraUsersReferencesRepository;
 
     @Autowired
     TechnologyRepository technologyRepository;
@@ -114,8 +116,13 @@ public class JiraUserServiceImpl implements JiraUserService {
         jiraUser.setTechnologies(technologyRepository.findAllByIds(newResourceUserDto.getTechnologies()));
 
         ResourceColumn defaultColumn = resourceBordRepository.findById(newResourceUserDto.getAssignmentTypeId());
-        jiraUser.setColumns(new ArrayList<ResourceColumn>() {{
-            add(defaultColumn);
+        JiraUsersReferences jiraUsersReferences = new JiraUsersReferences();
+        jiraUsersReferences.setColumn(defaultColumn);
+        jiraUsersReferences.setUser(jiraUser);
+        JiraUsersReferences newJiraUsersReferences = jiraUsersReferencesRepository.add(jiraUsersReferences);
+
+        jiraUser.setUserReferences(new ArrayList<JiraUsersReferences>() {{
+            add(newJiraUsersReferences);
         }});
 
         jiraUser.setLocation(locationRepository.findById(newResourceUserDto.getLocation()));
@@ -135,7 +142,7 @@ public class JiraUserServiceImpl implements JiraUserService {
     @Override
     public ResourceUserDto removeUserFromBoardFully(String login) throws NoSuchEntityException {
         JiraUser user = jiraUserRepository.findByLogin(login);
-        user.setColumns(null);
+//        user.setColumns(null);
 
         return jiraUserMapper.fromJiraUserToResourceUserDto(jiraUserRepository.merge(user));
     }
@@ -187,15 +194,15 @@ public class JiraUserServiceImpl implements JiraUserService {
         JiraUser user = jiraUserRepository.updateJiraUserInfo(login, memberDto);
 
         AssignmentType assignmentType = memberDto.getAssignmentType();
-        if (memberDto.getAssignmentType() != null) {
-            Set<ResourceColumn> columns = new HashSet<>(user.getColumns());
-            columns.removeIf(resourceColumn -> resourceColumn.getId().equals(assignmentType.getFromAssignmentTypeId()));
-
-            columns.add(resourceBordRepository.findById(assignmentType.getToAssignmentTypeId()));
-            user.setColumns(new ArrayList<>(columns));
-
-            user = jiraUserRepository.update(user);
-        }
+//        if (memberDto.getAssignmentType() != null) {
+//            Set<ResourceColumn> columns = new HashSet<>(user.getColumns());
+//            columns.removeIf(resourceColumn -> resourceColumn.getId().equals(assignmentType.getFromAssignmentTypeId()));
+//
+//            columns.add(resourceBordRepository.findById(assignmentType.getToAssignmentTypeId()));
+//            user.setColumns(new ArrayList<>(columns));
+//
+//            user = jiraUserRepository.update(user);
+//        }
         return jiraUserMapper.fromJiraUserToResourceUserDto(user);
     }
 
@@ -240,15 +247,15 @@ public class JiraUserServiceImpl implements JiraUserService {
         JiraUser jiraUser = jiraUserRepository.findByLogin(login);
         AssignmentType assignmentType = memberDto.getAssignmentType();
 
-        if (memberDto.getAssignmentType() != null) {
-            Set<ResourceColumn> columns = new HashSet<>(jiraUser.getColumns());
-            columns.removeIf(resourceColumn -> resourceColumn.getId().equals(assignmentType.getFromAssignmentTypeId()));
-
-            columns.add(resourceBordRepository.findById(assignmentType.getToAssignmentTypeId()));
-            jiraUser.setColumns(new ArrayList<>(columns));
-
-            jiraUser = jiraUserRepository.update(jiraUser);
-        }
+//        if (memberDto.getAssignmentType() != null) {
+//            Set<ResourceColumn> columns = new HashSet<>(jiraUser.getColumns());
+//            columns.removeIf(resourceColumn -> resourceColumn.getId().equals(assignmentType.getFromAssignmentTypeId()));
+//
+//            columns.add(resourceBordRepository.findById(assignmentType.getToAssignmentTypeId()));
+//            jiraUser.setColumns(new ArrayList<>(columns));
+//
+//            jiraUser = jiraUserRepository.update(jiraUser);
+//        }
 
         jiraUserRepository.sortMembers(memberDto.getUsers());
         return jiraUserMapper.fromJiraUserToResourceUserDto(jiraUser);
@@ -259,15 +266,15 @@ public class JiraUserServiceImpl implements JiraUserService {
         JiraUser jiraUser = jiraUserRepository.findByLogin(login);
         AssignmentType assignmentType = memberDto.getAssignmentType();
 
-        if (memberDto.getAssignmentType() != null) {
-            Set<ResourceColumn> columns = new HashSet<>(jiraUser.getColumns());
-            columns.removeIf(resourceColumn -> resourceColumn.getId().equals(assignmentType.getFromAssignmentTypeId()));
-
-            columns.add(resourceBordRepository.findById(assignmentType.getToAssignmentTypeId()));
-            jiraUser.setColumns(new ArrayList<>(columns));
-
-            jiraUser = jiraUserRepository.update(jiraUser);
-        }
+//        if (memberDto.getAssignmentType() != null) {
+//            Set<ResourceColumn> columns = new HashSet<>(jiraUser.getColumns());
+//            columns.removeIf(resourceColumn -> resourceColumn.getId().equals(assignmentType.getFromAssignmentTypeId()));
+//
+//            columns.add(resourceBordRepository.findById(assignmentType.getToAssignmentTypeId()));
+//            jiraUser.setColumns(new ArrayList<>(columns));
+//
+//            jiraUser = jiraUserRepository.update(jiraUser);
+//        }
 
         jiraUserRepository.sortMembers(memberDto.getUsers());
 
@@ -279,11 +286,11 @@ public class JiraUserServiceImpl implements JiraUserService {
         Project project = projectRepository.findById(projectId);
         JiraUser jiraUser = jiraUserRepository.findByLogin(login);
 
-        Set<Project> projects = new HashSet<>(jiraUser.getProjects());
+//        Set<Project> projects = new HashSet<>(jiraUser.getProjects());
 
-        projects.add(project);
-
-        jiraUser.setProjects(new ArrayList<>(projects));
+//        projects.add(project);
+//
+//        jiraUser.setProjects(new ArrayList<>(projects));
 
         jiraUserRepository.update(jiraUser);
 
@@ -295,7 +302,7 @@ public class JiraUserServiceImpl implements JiraUserService {
         Project project = projectRepository.findById(projectId);
         JiraUser jiraUser = jiraUserRepository.findByLogin(login);
 
-        jiraUser.getProjects().remove(project);
+//        jiraUser.getProjects().remove(project);
 
         jiraUserRepository.update(jiraUser);
 
