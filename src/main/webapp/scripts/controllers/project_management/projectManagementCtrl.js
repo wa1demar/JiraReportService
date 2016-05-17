@@ -222,16 +222,14 @@
         };
 
         $scope.dragoverPositions = {
-            parentIndex: null,
-            index: null
+            parentIndex:    null,
+            index:          null
         };
-        $scope.dragoverCallback = function(event, projectIndex, memberIndex, external, type) {
+        $scope.insertedMember = function(projectIndex, memberIndex, event) {
             $scope.dragoverPositions = {
                 projectIndex:   projectIndex,
                 memberIndex:    memberIndex
             };
-
-            return true;
         };
 
         //Dragend member
@@ -240,7 +238,9 @@
             console.log('----------------------');
             console.log($scope.dragoverPositions);
             console.log('----------------------');
-            if ($scope.dragoverPositions.parentIndex === null || $scope.dragoverPositions.memberIndex === null) {
+            if ($scope.dragoverPositions === null ||
+                $scope.dragoverPositions.parentIndex === null ||
+                $scope.dragoverPositions.memberIndex === null) {
                 return false;
             }
 
@@ -252,6 +252,8 @@
                 //TODO save new data
 
                 Notification.success("Update projects success");
+
+                $scope.dragoverPositions = null;
             } else {
                 var modalInstance = $uibModal.open({
                     animation: true,
@@ -278,9 +280,13 @@
                     //TODO save new data
 
                     Notification.success("Update projects success");
+
+                    $scope.dragoverPositions = null;
                 }, function (error) {
                     //delete element which moved
                     $scope.columns[$scope.dragoverPositions.projectIndex].users.splice($scope.dragoverPositions.memberIndex, 1);
+
+                    $scope.dragoverPositions = null;
                 });
             }
 

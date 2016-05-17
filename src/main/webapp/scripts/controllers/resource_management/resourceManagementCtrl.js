@@ -292,7 +292,7 @@
                 })
             };
 
-            //TODO check member projects
+            //TODO check member projects (_.groupBy(list, iterator))
             // var modalInstance = $uibModal.open({
             //     animation: true,
             //     templateUrl: 'scripts/controllers/resource_management/dlg/dlg_member_change_column.html',

@@ -22,7 +22,7 @@
 
 <ul dnd-list="column.users"
     dnd-allowed-types="['user']"
-    dnd-dragover="dragoverCallback(event, $parent.$index, index, external, type)"
+    dnd-inserted="insertedMember($parent.$index, index, event)"
     class="item projects">
     <li ng-repeat="item in column.users"
         dnd-draggable="item"
