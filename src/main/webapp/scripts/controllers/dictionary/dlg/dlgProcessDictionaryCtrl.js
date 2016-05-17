@@ -10,8 +10,6 @@
     function DlgProcessDictionaryCtrl($scope, $uibModalInstance, dlgData) {
         $scope.model = dlgData;
 
-        console.log($scope.model);
-
         $scope.ok = function () {
             if($scope.dictionaryForm.$valid) {
                 $uibModalInstance.close($scope.model);

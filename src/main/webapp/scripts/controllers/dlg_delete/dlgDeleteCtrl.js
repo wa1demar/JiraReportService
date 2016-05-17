@@ -8,7 +8,6 @@
     DlgDeleteCtrl.$inject = ['$scope', '$uibModalInstance', 'dlgData'];
 
     function DlgDeleteCtrl($scope, $uibModalInstance, dlgData) {
-        console.log(dlgData);
         $scope.dlgData = dlgData;
 
         $scope.ok = function () {
