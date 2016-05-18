@@ -14,6 +14,7 @@ public class FullProjectUserDto {
     private String login;
     private String name;
     private Integer engineerLevel;
+    private String avatar;
     private ProjectDto column;
     private List<ResourceColumnDto> assignmentTypes = new ArrayList<>();
 
@@ -56,5 +57,13 @@ public class FullProjectUserDto {
 
     public void setColumn(ProjectDto column) {
         this.column = column;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

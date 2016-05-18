@@ -5,10 +5,13 @@ import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.ResourceBordMapper;
 import com.swansoftwaresolutions.jirareport.core.service.ResourceBordService;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraUsersReferences;
 import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.JiraUsersReferencesRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.ResourceBordRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.TechnologyRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,9 @@ public class ResourceBordServiceImpl implements ResourceBordService {
 
     @Autowired
     ResourceBordRepository resourceBordRepository;
+
+    @Autowired
+    JiraUsersReferencesRepository jiraUsersReferencesRepository;
 
     @Autowired
     JiraUserRepository jiraUserRepository;
@@ -60,13 +66,23 @@ public class ResourceBordServiceImpl implements ResourceBordService {
     }
 
     @Override
-    public void deleteColumn(Long id) {
+    public void deleteColumn(Long id) throws NoSuchEntityException {
         List<JiraUser> users = resourceBordRepository.findUsersByColumnId(id);
-        ResourceColumn defaultColumn = resourceBordRepository.findDefaultColumn();
-//        for (JiraUser u : users) {
-//            u.setColumns(new ArrayList<ResourceColumn>() {{ add(defaultColumn); }});
-//        }
-        jiraUserRepository.updateAll(users);
+
+        for (JiraUser u : users) {
+            jiraUsersReferencesRepository.deleteByAssignmentType(u.getLogin(), id);
+
+            JiraUser updatedUser = jiraUserRepository.findByLogin(u.getLogin());
+            if (updatedUser.getUserReferences().size() == 0) {
+                ResourceColumn defaultColumn = resourceBordRepository.findDefaultColumn();
+                JiraUsersReferences jiraUsersReferences = new JiraUsersReferences();
+                jiraUsersReferences.setUser(updatedUser);
+                jiraUsersReferences.setColumn(defaultColumn);
+                jiraUsersReferencesRepository.add(jiraUsersReferences);
+
+            }
+        }
+
         resourceBordRepository.removeColumn(id);
     }
 

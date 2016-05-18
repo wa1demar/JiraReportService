@@ -7,7 +7,6 @@ import com.swansoftwaresolutions.jirareport.core.dto.jira_users.NewResourceUserD
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectIdDto;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDtoList;
-import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologiesDto;
 import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologyId;
 import com.swansoftwaresolutions.jirareport.core.service.AttachmentService;
 import com.swansoftwaresolutions.jirareport.core.service.JiraUserService;
@@ -21,9 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.*;
-import java.net.URLConnection;
-import java.nio.charset.Charset;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author Vladimir Martynyuk
@@ -163,7 +161,7 @@ public class JiraUsersController {
     @ResponseBody
     public ResponseEntity<ResourceUserDto> addProject(@PathVariable("login") String login, @Valid @RequestBody ProjectIdDto projectIdDto) throws NoSuchEntityException {
 
-        ResourceUserDto newNewResourceUserDto = jiraUserService.addProject(login, projectIdDto.getProjectId());
+        ResourceUserDto newNewResourceUserDto = jiraUserService.addProject(login, projectIdDto);
 
         return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
     }

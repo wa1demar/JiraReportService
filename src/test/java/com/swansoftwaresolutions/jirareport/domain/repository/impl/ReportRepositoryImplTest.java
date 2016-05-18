@@ -125,7 +125,7 @@ public class ReportRepositoryImplTest extends AbstractDbTest {
 //
 //    @Test(expected = NoSuchEntityException.class)
 //    public void testDeleteConfigByWrongId() throws Exception {
-//        configRepository.delete(10L);
+//        configRepository.deleteByAssignmentType(10L);
 //    }
 //
 //    @Test
@@ -133,7 +133,7 @@ public class ReportRepositoryImplTest extends AbstractDbTest {
 //        Config config = configRepository.findById(1L);
 //        assertNotNull(config);
 //
-//        configRepository.delete(config);
+//        configRepository.deleteByAssignmentType(config);
 //        assertNull(configRepository.findById(1L));
 //        assertEquals(4, configRepository.findAll().size());
 //    }
@@ -150,7 +150,7 @@ public class ReportRepositoryImplTest extends AbstractDbTest {
 //        config.setNonWorkingDays("Sunday");
 //        config.setAutoSyncTime(dataFormatnew.format(new Date()));
 //
-//        configRepository.delete(config);
+//        configRepository.deleteByAssignmentType(config);
 //    }
 //
 //    @Test(expected = NullPointerException.class)
@@ -162,6 +162,6 @@ public class ReportRepositoryImplTest extends AbstractDbTest {
 //        config.setNonWorkingDays("Sunday");
 //        config.setAutoSyncTime(dataFormatnew.format(new Date()));
 //
-//        configRepository.delete(config);
+//        configRepository.deleteByAssignmentType(config);
 //    }
 }

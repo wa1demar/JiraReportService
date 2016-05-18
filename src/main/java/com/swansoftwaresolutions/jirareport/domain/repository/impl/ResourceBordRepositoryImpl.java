@@ -59,7 +59,7 @@ public class ResourceBordRepositoryImpl implements ResourceBordRepository {
     @Override
     @SuppressWarnings("unchecked")
     public List<JiraUser> findUsersByColumnId(Long id) {
-        Query query = sessionFactory.getCurrentSession().createQuery("select u from JiraUser u join u.columns c where c.id = :id");
+        Query query = sessionFactory.getCurrentSession().createQuery("select u from JiraUser u join u.userReferences r where r.column.id = :id");
         query.setParameter("id", id);
         return query.list();
     }

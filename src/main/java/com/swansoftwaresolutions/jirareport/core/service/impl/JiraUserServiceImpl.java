@@ -4,6 +4,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUsersDto;
 import com.swansoftwaresolutions.jirareport.core.dto.config.ConfigDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.*;
+import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectIdDto;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDtoList;
 import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologyId;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
@@ -194,15 +195,30 @@ public class JiraUserServiceImpl implements JiraUserService {
         JiraUser user = jiraUserRepository.updateJiraUserInfo(login, memberDto);
 
         AssignmentType assignmentType = memberDto.getAssignmentType();
-//        if (memberDto.getAssignmentType() != null) {
-//            Set<ResourceColumn> columns = new HashSet<>(user.getColumns());
-//            columns.removeIf(resourceColumn -> resourceColumn.getId().equals(assignmentType.getFromAssignmentTypeId()));
-//
-//            columns.add(resourceBordRepository.findById(assignmentType.getToAssignmentTypeId()));
-//            user.setColumns(new ArrayList<>(columns));
-//
-//            user = jiraUserRepository.update(user);
-//        }
+        if (assignmentType != null) {
+            List<Project>  projects = jiraUsersReferencesRepository.findByUserAndAssignmentType(user.getLogin(), assignmentType.getFromAssignmentTypeId());
+            jiraUsersReferencesRepository.deleteByAssignmentType(user.getLogin(), assignmentType.getFromAssignmentTypeId());
+
+            ResourceColumn resourceColumn = resourceBordRepository.findById(assignmentType.getToAssignmentTypeId());
+
+            if (projects != null && projects.size() > 0) {
+                for (Project project  : projects) {
+                    JiraUsersReferences jiraUsersReferences = new JiraUsersReferences();
+                    jiraUsersReferences.setUser(user);
+                    jiraUsersReferences.setColumn(resourceColumn);
+                    jiraUsersReferences.setProject(project);
+
+                    jiraUsersReferencesRepository.add(jiraUsersReferences);
+                }
+            } else {
+                JiraUsersReferences jiraUsersReferences = new JiraUsersReferences();
+                jiraUsersReferences.setUser(user);
+                jiraUsersReferences.setColumn(resourceColumn);
+
+                jiraUsersReferencesRepository.add(jiraUsersReferences);
+            }
+
+        }
         return jiraUserMapper.fromJiraUserToResourceUserDto(user);
     }
 
@@ -247,15 +263,30 @@ public class JiraUserServiceImpl implements JiraUserService {
         JiraUser jiraUser = jiraUserRepository.findByLogin(login);
         AssignmentType assignmentType = memberDto.getAssignmentType();
 
-//        if (memberDto.getAssignmentType() != null) {
-//            Set<ResourceColumn> columns = new HashSet<>(jiraUser.getColumns());
-//            columns.removeIf(resourceColumn -> resourceColumn.getId().equals(assignmentType.getFromAssignmentTypeId()));
-//
-//            columns.add(resourceBordRepository.findById(assignmentType.getToAssignmentTypeId()));
-//            jiraUser.setColumns(new ArrayList<>(columns));
-//
-//            jiraUser = jiraUserRepository.update(jiraUser);
-//        }
+        if (assignmentType != null) {
+            List<Project>  projects = jiraUsersReferencesRepository.findByUserAndAssignmentType(jiraUser.getLogin(), assignmentType.getFromAssignmentTypeId());
+            jiraUsersReferencesRepository.deleteByAssignmentType(jiraUser.getLogin(), assignmentType.getFromAssignmentTypeId());
+
+            ResourceColumn resourceColumn = resourceBordRepository.findById(assignmentType.getToAssignmentTypeId());
+
+            if (projects != null && projects.size() > 0) {
+                for (Project project  : projects) {
+                    JiraUsersReferences jiraUsersReferences = new JiraUsersReferences();
+                    jiraUsersReferences.setUser(jiraUser);
+                    jiraUsersReferences.setColumn(resourceColumn);
+                    jiraUsersReferences.setProject(project);
+
+                    jiraUsersReferencesRepository.add(jiraUsersReferences);
+                }
+            } else {
+                JiraUsersReferences jiraUsersReferences = new JiraUsersReferences();
+                jiraUsersReferences.setUser(jiraUser);
+                jiraUsersReferences.setColumn(resourceColumn);
+
+                jiraUsersReferencesRepository.add(jiraUsersReferences);
+            }
+
+        }
 
         jiraUserRepository.sortMembers(memberDto.getUsers());
         return jiraUserMapper.fromJiraUserToResourceUserDto(jiraUser);
@@ -282,17 +313,32 @@ public class JiraUserServiceImpl implements JiraUserService {
     }
 
     @Override
-    public ResourceUserDto addProject(String login, Long projectId) throws NoSuchEntityException {
-        Project project = projectRepository.findById(projectId);
+    public ResourceUserDto addProject(String login, ProjectIdDto projectId) throws NoSuchEntityException {
+        Project project = projectRepository.findById(projectId.getProjectId());
         JiraUser jiraUser = jiraUserRepository.findByLogin(login);
+        ResourceColumn resourceColumn = resourceBordRepository.findById(projectId.getAssignmentTypeId());
 
-//        Set<Project> projects = new HashSet<>(jiraUser.getProjects());
+        List<JiraUsersReferences> userReferences = jiraUser.getUserReferences();
 
-//        projects.add(project);
-//
-//        jiraUser.setProjects(new ArrayList<>(projects));
+        if (userReferences != null && userReferences.size() > 0) {
+            List<Project> projects = new ArrayList<>();
+            for (JiraUsersReferences references : userReferences) {
+                if (references.getProject() != null) {
+                    projects.add(references.getProject());
+                }
+            }
+            if (projects.size() == 0) {
+                jiraUsersReferencesRepository.deleteByAssignmentType(jiraUser.getLogin());
+            }
+        }
 
-        jiraUserRepository.update(jiraUser);
+        JiraUsersReferences jiraUsersReferences = new JiraUsersReferences();
+        jiraUsersReferences.setColumn(resourceColumn);
+        jiraUsersReferences.setUser(jiraUser);
+        jiraUsersReferences.setProject(project);
+
+        jiraUsersReferencesRepository.add(jiraUsersReferences);
+        jiraUser.getUserReferences().add(jiraUsersReferences);
 
         return jiraUserMapper.fromJiraUserToResourceUserDto(jiraUser);
     }
@@ -302,9 +348,20 @@ public class JiraUserServiceImpl implements JiraUserService {
         Project project = projectRepository.findById(projectId);
         JiraUser jiraUser = jiraUserRepository.findByLogin(login);
 
-//        jiraUser.getProjects().remove(project);
+        jiraUsersReferencesRepository.deleteByProject(jiraUser.getLogin(), project.getId());
 
-        jiraUserRepository.update(jiraUser);
+        jiraUser = jiraUserRepository.findByLogin(login);
+        if (jiraUser.getUserReferences().size() == 0) {
+            ResourceColumn bench = resourceBordRepository.findDefaultColumn();
+            JiraUsersReferences jiraUsersReferences = new JiraUsersReferences();
+            jiraUsersReferences.setColumn(bench);
+            jiraUsersReferences.setUser(jiraUser);
+            jiraUsersReferencesRepository.add(jiraUsersReferences);
+
+            jiraUser.setUserReferences(new ArrayList<JiraUsersReferences>(){{
+                add(jiraUsersReferences); }});
+
+        }
 
         return jiraUserMapper.fromJiraUserToResourceUserDto(jiraUser);
     }

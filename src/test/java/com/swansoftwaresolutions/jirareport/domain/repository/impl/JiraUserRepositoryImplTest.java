@@ -105,7 +105,7 @@ public class JiraUserRepositoryImplTest extends AbstractDbTest {
 
     @Test(expected = NoSuchEntityException.class)
     public void testDeleteUserByWrongId() throws Exception {
-//        userRepository.delete(10L);
+//        userRepository.deleteByAssignmentType(10L);
 
     }
 
@@ -114,7 +114,7 @@ public class JiraUserRepositoryImplTest extends AbstractDbTest {
 //        JiraUser user = userRepository.findById(1L);
 //        assertNotNull(user);
 //
-//        userRepository.delete(user);
+//        userRepository.deleteByAssignmentType(user);
 //        assertNull(userRepository.findById(1L));
 //        assertEquals(4, userRepository.findAll().size());
     }

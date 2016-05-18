@@ -4,6 +4,7 @@ import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MoveMemberDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.NewResourceUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectIdDto;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDtoList;
 import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologyId;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
@@ -51,7 +52,7 @@ public interface JiraUserService {
 
     FullResourceColumnDtoList moveMemberFull(String login, MoveMemberDto memberDto) throws NoSuchEntityException;
 
-    ResourceUserDto addProject(String login, Long projectId) throws NoSuchEntityException;
+    ResourceUserDto addProject(String login, ProjectIdDto projectId) throws NoSuchEntityException;
 
     ResourceUserDto deleteProject(String login, Long projectId) throws NoSuchEntityException;
 }

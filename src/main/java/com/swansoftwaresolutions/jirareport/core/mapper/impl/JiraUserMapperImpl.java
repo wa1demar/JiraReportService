@@ -3,16 +3,23 @@ package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDto;
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.TechnologyMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.ImportedJiraUserDtoToJiraUserMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraUsersReferences;
+import com.swansoftwaresolutions.jirareport.domain.entity.Project;
+import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -67,11 +74,29 @@ public class JiraUserMapperImpl implements JiraUserMapper {
     public ResourceUserDto fromJiraUserToResourceUserDto(JiraUser jiraUser) {
         ResourceUserDto userDto = modelMapper.map(jiraUser, ResourceUserDto.class);
         userDto.setTechnologies(technologyMapper.fromTechnologiesToTechnologiesDto(jiraUser.getTechnologies()));
-//        if (jiraUser.getColumns() != null && jiraUser.getColumns().size() > 0) {
-//            userDto.setColumn(modelMapper.map(jiraUser.getColumns().get(0), ResourceColumnDto.class));
-//        } else {
-//            userDto.setColumn(null);
-//        }
+        if (jiraUser.getUserReferences() != null && jiraUser.getUserReferences().size() > 0) {
+            List<JiraUsersReferences> userReferences = jiraUser.getUserReferences();
+            List<ResourceColumn> resourceColumns = new ArrayList<>();
+            List<Project> projects = new ArrayList<>();
+            for (JiraUsersReferences r : userReferences) {
+                resourceColumns.add(r.getColumn());
+                if (r.getProject() != null) {
+                    projects.add(r.getProject());
+                }
+            }
+            Collections.sort(resourceColumns, (o1, o2) -> o1.getPriority() - o2.getPriority());
+
+            ResourceColumn column = resourceColumns.get(0);
+            userDto.setColumn(modelMapper.map(column, ResourceColumnDto.class));
+
+            if (projects != null && projects.size() > 0) {
+                Type targetistType = new TypeToken<List<ProjectDto>>() {}.getType();
+                userDto.setProjects(modelMapper.map(projects, targetistType));
+            }
+        } else {
+            userDto.setColumn(null);
+        }
+
         return userDto;
     }
 

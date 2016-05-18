@@ -3,11 +3,10 @@ package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.FullProjectUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.FullProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDto;
-import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDtos;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.ProjectMapper;
-import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.JiraUserToFullProjectUserDtoMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraUsersReferences;
 import com.swansoftwaresolutions.jirareport.domain.entity.Project;
 import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
 import org.modelmapper.ModelMapper;
@@ -17,8 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -53,26 +50,41 @@ public class ProjectMapperImpl implements ProjectMapper {
         for (Project project : projects) {
             FullProjectDto projectDto = modelMapper.map(project, FullProjectDto.class);
 
-//            List<JiraUser> users = project.getUsers();
-//            List<FullProjectUserDto> userDtos = new ArrayList<>();
-//            for (JiraUser user : users) {
-//                FullProjectUserDto projectUserDto = modelMapper.map(user, FullProjectUserDto.class);
-//                projectUserDto.setEngineerLevel(user.getLevel());
-//                if (user.getColumns().size() > 0) {
-//                    projectUserDto.setColumn(modelMapper.map(project, ProjectDto.class));
-//                }
-//
-//                List<ResourceColumn> columns = user.getColumns();
-//                Collections.sort(columns, (o1, o2) -> o1.getPriority() - o2.getPriority());
-//
-//                Type targetistType = new TypeToken<List<ResourceColumnDto>>(){}.getType();
-//
-//                projectUserDto.setAssignmentTypes(modelMapper.map(columns, targetistType));
-//
-//                userDtos.add(projectUserDto);
-//            }
+            List<JiraUsersReferences> references = project.getReferences();
+            List<JiraUser> users = new ArrayList<>();
+            for (JiraUsersReferences usersReferences : references) {
+                users.add(usersReferences.getUser());
+            }
 
-//            projectDto.setUsers(userDtos);
+            List<FullProjectUserDto> userDtos = new ArrayList<>();
+            for (JiraUser user : users) {
+                FullProjectUserDto projectUserDto = modelMapper.map(user, FullProjectUserDto.class);
+                projectUserDto.setEngineerLevel(user.getLevel());
+                if (user.getUserReferences().size() > 0) {
+                    projectUserDto.setColumn(modelMapper.map(project, ProjectDto.class));
+                }
+
+                List<JiraUsersReferences> userRef = user.getUserReferences();
+                List<ResourceColumn> columns = new ArrayList<>();
+
+                for (JiraUsersReferences usersReferences : userRef) {
+                    if (usersReferences.getProject().getId().equals(project.getId())) {
+                        columns.add(0, usersReferences.getColumn());
+                    } else {
+                        columns.add(usersReferences.getColumn());
+                    }
+                }
+//                Collections.sort(columns, (o1, o2) -> o1.getPriority() - o2.getPriority());
+
+                Type targetistType = new TypeToken<List<ResourceColumnDto>>(){}.getType();
+
+                projectUserDto.setAssignmentTypes(modelMapper.map(columns, targetistType));
+                projectUserDto.setAvatar(user.getAvatar());
+
+                userDtos.add(projectUserDto);
+            }
+
+            projectDto.setUsers(userDtos);
 
             projectDtos.add(projectDto);
         }

@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.mapper.impl;
 
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.FullResourceUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.FullResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceFilterData;
@@ -10,6 +11,7 @@ import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.JiraUserToFu
 import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.JiraUserToResourceUserDtoMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUsersReferences;
+import com.swansoftwaresolutions.jirareport.domain.entity.Project;
 import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
 import org.apache.commons.lang.StringUtils;
 import org.modelmapper.ModelMapper;
@@ -97,10 +99,10 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
             FullResourceColumnDto fullResourceColumnDto = modelMapper.map(c, FullResourceColumnDto.class);
             List<JiraUsersReferences> references = c.getReferences();
             int count = 0;
-            if (c.getReferences() != null && c.getReferences().size() > 0) {
+            if (references != null && references.size() > 0) {
 
                 List<JiraUser> users = new ArrayList<>();
-                for (JiraUsersReferences r : c.getReferences()) {
+                for (JiraUsersReferences r : references) {
                     users.add(r.getUser());
                 }
                 List<FullResourceUserDto> fullResourceUserDtos = new ArrayList<>();
@@ -116,12 +118,19 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
                             && filterLocations(userDto, filterData.getLocation())) {
                         if (user.getUserReferences() != null) {
                             List<ResourceColumn> resourceColumns = new ArrayList<>();
-                            for (JiraUsersReferences r : c.getReferences()) {
+                            List<Project> projects = new ArrayList<>();
+                            for (JiraUsersReferences r : user.getUserReferences()) {
                                 resourceColumns.add(r.getColumn());
+                                if (r.getProject() != null) {
+                                    projects.add(r.getProject());
+                                }
                             }
                             Collections.sort(resourceColumns, (o1, o2) -> o1.getPriority() - o2.getPriority());
                             ResourceColumn column = resourceColumns.get(0);
                             userDto.setColumn(modelMapper.map(column, ResourceColumnDto.class));
+
+                            Type targetistType = new TypeToken<List<ProjectDto>>() {}.getType();
+                            userDto.setProjects(modelMapper.map(projects, targetistType));
                         }
 
                         fullResourceUserDtos.add(userDto);
