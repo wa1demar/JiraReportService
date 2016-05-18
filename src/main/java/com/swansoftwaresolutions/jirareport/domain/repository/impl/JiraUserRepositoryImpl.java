@@ -127,7 +127,7 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
 
     @Override
     public JiraUser deleteUserFromColumn(String login) throws NoSuchEntityException {
-        Query query = sessionFactory.getCurrentSession().createQuery("update JiraUser u set u.column = (from ResourceColumn r WHERE r.fixed = true) where u.login = :login");
+        Query query = sessionFactory.getCurrentSession().createQuery("delete JiraUsersReferences r where r.user.login = :login");
         query.setParameter("login", login);
         query.executeUpdate();
         return findByLogin(login);
