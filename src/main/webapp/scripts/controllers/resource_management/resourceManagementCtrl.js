@@ -260,7 +260,6 @@
                 columnIndex: columnIndex,
                 memberIndex: memberIndex
             };
-            console.log($scope.insertedPositions);
         };
         
         //Dragend member
