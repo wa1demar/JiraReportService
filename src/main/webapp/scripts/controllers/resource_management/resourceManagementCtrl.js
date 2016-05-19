@@ -260,6 +260,7 @@
                 columnIndex: columnIndex,
                 memberIndex: memberIndex
             };
+            console.log($scope.insertedPositions);
         };
         
         //Dragend member
@@ -345,7 +346,7 @@
 
         //Select member
         $scope.selectElement = function (item) {
-            console.log(item);
+            // console.log(item);
             if ($scope.columns.selected === item) {
                 $scope.columns.selected = null;
 
@@ -550,17 +551,17 @@
 
         //Save data after member move
         $scope.moveMember = function (dataForUpdate, indexColumn, indexElementInColumn) {
+            console.log($scope.insertedPositions);
             dataForUpdate["filters"] = $scope.search;
             MemberFactory.update({login: $scope.currentMember.login, relation: "move"}, dataForUpdate, function(data){
                 //update member info from backend
                 // $scope.columns = data.columns;
-
                 // if ($scope.currentMember !== null) {
                 //     $scope.selectElement($scope.currentMember);
                 // }
 
-                //update member info without getResourceColumns
-                $scope.columns[indexColumn].users[indexElementInColumn] = data;
+                //update member info without getResourceColumns (commented for fix double members)
+                // $scope.columns[indexColumn].users[indexElementInColumn] = data;
                 //reindexing resourceOrder
                 $scope.columns[indexColumn].users.map(function(value, index) {
                     value.resourceOrder = index;
@@ -568,7 +569,6 @@
                     return value;
                 });
                 $scope.selectElement(data);
-
                 Notification.success("Save changes success");
             }, function (error) {
                 Notification.error("Server error: get assignment type");
