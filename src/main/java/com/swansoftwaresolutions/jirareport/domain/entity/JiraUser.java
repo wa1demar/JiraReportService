@@ -23,6 +23,7 @@ public class JiraUser implements Serializable {
     private List<Report> reports = new ArrayList<>();
     private List<JiraGroup> groups = new ArrayList<>();
     private Location location;
+    private Position position;
     private List<Technology> technologies = new ArrayList<>();
     private List<Attachment> attachments = new ArrayList<>();
     private String avatar;
@@ -158,5 +159,15 @@ public class JiraUser implements Serializable {
 
     public void setUserReferences(List<JiraUsersReferences> userReferences) {
         this.userReferences = userReferences;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "position_id", nullable = true)
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 }
