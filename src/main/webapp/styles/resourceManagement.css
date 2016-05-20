@@ -89,7 +89,6 @@
 }
 
 .main h4 {
-    text-align: center;
     margin-bottom: 0;
     cursor: pointer;
     background-color: #FFFFFF;
@@ -101,6 +100,11 @@
     font-size: 14px;
     margin: 0 5px;
     cursor: pointer;
+}
+
+.main h4 .member-count {
+    font-size: 12px;
+    font-weight: bold;
 }
 
 .res-left-content ul.item {
