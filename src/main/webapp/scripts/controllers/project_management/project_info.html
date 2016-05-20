@@ -8,14 +8,13 @@
         </ul>
         <p class="empty-items" ng-if="currentProject.users === undefined || currentProject.users.length === 0">Empty</p>
     </div>
-    <div class="member-info-divider"></div>
-    <div class="row margin-0">
-        <span class="member-info-block-content-subtitle">Description:</span>
-        <div class="form-group editable-description">
-            <!--<textarea class="form-control" name="" id="" cols="30" rows="5" placeholder="Description"></textarea>-->
-            <a href="#" editable-textarea="currentProject.description" e-rows="5" onbeforesave="updateProjectDescription($data)">
-                <pre>{{ currentProject.description || 'no description' }}</pre>
-            </a>
-        </div>
-    </div>
+    <!--<div class="member-info-divider"></div>-->
+    <!--<div class="row margin-0">-->
+        <!--<span class="member-info-block-content-subtitle">Description:</span>-->
+        <!--<div class="form-group editable-description">-->
+            <!--<a href="#" editable-textarea="currentProject.description" e-rows="5" onbeforesave="updateProjectDescription($data)">-->
+                <!--<pre>{{ currentProject.description || 'no description' }}</pre>-->
+            <!--</a>-->
+        <!--</div>-->
+    <!--</div>-->
 </div>

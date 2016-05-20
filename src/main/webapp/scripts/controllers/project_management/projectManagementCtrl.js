@@ -335,6 +335,7 @@
             ProjectFactory.update({id: $scope.currentProject.id}, $scope.currentProject, function(data){
                 Notification.success("Update description success");
                 //get projects
+                // $scope.currentProject = data;
                 // $scope.getProjectColumns();
             }, function (error) {
                 Notification.error("Server error");
