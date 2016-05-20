@@ -42,7 +42,7 @@
       <div class="form-group">
           <label for="level">EL</label>
           <select class="form-control" style="width: 100%;" ng-init="model.level = 1" ng-model="model.level" data-placeholder="Select level" id="level" name="level" convert-to-number>
-            <option ng-repeat="value in engineerLevelDictionary" value="{{value}}">EL - {{value}}</option>
+            <option ng-repeat="value in positions" value="{{value.id}}">{{value.name}}</option>
           </select>
       </div>
 

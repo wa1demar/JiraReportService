@@ -12,8 +12,6 @@
         $scope.loaderShow = true;
         $scope.showSearch = true;
         $scope.showMemberInfo = false;
-        //TODO need get from db
-        $scope.engineerLevelDictionary = [1, 2, 3, 4];
 
         //For change assignment type in sselect box
         $scope.model = {
@@ -190,6 +188,17 @@
             });
         };
         $scope.getProjects();
+
+        //Get positions
+        $scope.positions = [];
+        $scope.getPositions = function () {
+            DictionaryFactory.query({name: 'positions'}, function(result){
+                $scope.positions = result.items;
+            }, function (error) {
+                Notification.error("Server error: get positions");
+            });
+        };
+        $scope.getPositions();
 
         //Get locations
         $scope.locations = [];
@@ -657,11 +666,11 @@
                     resolve: {
                         dlgData: function () {
                             return {
-                                members:                    members,
-                                locations:                  $scope.locations,
-                                technologies:               $scope.technologies,
-                                engineerLevelDictionary:    $scope.engineerLevelDictionary,
-                                assignmentTypes:            $scope.assignmentTypes
+                                members:            members,
+                                locations:          $scope.locations,
+                                technologies:       $scope.technologies,
+                                positions:          $scope.positions,
+                                assignmentTypes:    $scope.assignmentTypes
                             };
                         }
                     }
@@ -833,8 +842,8 @@
                 resolve: {
                     dlgData: function () {
                         return {
-                            currentMember:              $scope.currentMember,
-                            engineerLevelDictionary:    $scope.engineerLevelDictionary
+                            currentMember:  $scope.currentMember,
+                            positions:      $scope.positions
                         };
                     }
                 }
@@ -870,8 +879,7 @@
                 resolve: {
                     dlgData: function () {
                         return {
-                            currentMember:              $scope.currentMember,
-                            engineerLevelDictionary:    $scope.engineerLevelDictionary
+                            currentMember: $scope.currentMember
                         };
                     }
                 }

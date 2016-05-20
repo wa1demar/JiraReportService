@@ -11,7 +11,7 @@
         $scope.members = dlgData.members;
         $scope.locations = dlgData.locations;
         $scope.technologies = dlgData.technologies;
-        $scope.engineerLevelDictionary = dlgData.engineerLevelDictionary;
+        $scope.positions = dlgData.positions;
         $scope.assignmentTypes = dlgData.assignmentTypes;
 
         $scope.ok = function () {

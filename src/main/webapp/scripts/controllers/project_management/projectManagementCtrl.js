@@ -12,8 +12,6 @@
         $scope.loaderShow = true;
         $scope.showSearch = true;
         $scope.showProjectInfo = false;
-        //TODO need get from db
-        $scope.engineerLevelDictionary = [1, 2, 3, 4];
 
 // ----------------------------------------------------------------------------------------------------------------------
 //prepare search params
@@ -178,17 +176,9 @@
         };
         $scope.getAssignmentTypes();
 
-        //TODO Get projects
+        //Get projects
         $scope.projects = [];
         $scope.getProjects = function () {
-
-            // $scope.projects = [
-            //     {id: 1, title: "Project 1"},
-            //     {id: 2, title: "Project 2"},
-            //     {id: 3, title: "Project 3"},
-            //     {id: 4, title: "Project 4"},
-            // ];
-
             ProjectFactory.query(function(result){
                 $scope.projects = result.projects;
             }, function (error) {
@@ -196,6 +186,17 @@
             });
         };
         $scope.getProjects();
+
+        //Get positions
+        $scope.positions = [];
+        $scope.getPositions = function () {
+            DictionaryFactory.query({name: 'positions'}, function(result){
+                $scope.positions = result.items;
+            }, function (error) {
+                Notification.error("Server error: get positions");
+            });
+        };
+        $scope.getPositions();
 
         $scope.$watch('search', function() {
             console.log(" ---- new search");

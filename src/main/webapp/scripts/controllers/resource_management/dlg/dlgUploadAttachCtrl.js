@@ -8,9 +8,6 @@
     DlgUploadAttachCtrl.$inject = ['$scope', '$uibModalInstance', 'dlgData', 'FileUploader'];
 
     function DlgUploadAttachCtrl($scope, $uibModalInstance, dlgData, FileUploader) {
-        // $scope.model = dlgData.currentMember;
-        // $scope.engineerLevelDictionary = dlgData.engineerLevelDictionary;
-
         var result = {};
 
         //test upload

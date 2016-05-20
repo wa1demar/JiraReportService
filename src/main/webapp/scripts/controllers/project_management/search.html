@@ -17,7 +17,7 @@
                 data-placeholder="Select EL"
                 id="engineerLevel"
                 name="engineerLevel">
-            <option ng-repeat="value in engineerLevelDictionary" value="{{value}}">EL - {{value}}</option>
+            <option ng-repeat="value in positions" value="{{value.id}}">{{value.name}}</option>
         </select>
     </div>
     <div class="form-group">

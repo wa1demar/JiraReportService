@@ -9,7 +9,7 @@
 
     function DlgChangeLevelCtrl($scope, $uibModalInstance, dlgData) {
         $scope.model = dlgData.currentMember;
-        $scope.engineerLevelDictionary = dlgData.engineerLevelDictionary;
+        $scope.positions = dlgData.positions;
 
         $scope.ok = function () {
             $uibModalInstance.close($scope.model);
