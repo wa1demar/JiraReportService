@@ -94,6 +94,18 @@ public class ProjectMapperImpl implements ProjectMapper {
 
     @Override
     public FullProjectDto fromProjectToFullProjectDto(Project project) {
-        return modelMapper.map(project, FullProjectDto.class);
+        FullProjectDto fullProjectDto = modelMapper.map(project, FullProjectDto.class);
+
+        List<JiraUsersReferences> references = project.getReferences();
+        if (references.size() > 0) {
+            List<FullProjectUserDto> users = new ArrayList<>();
+            for (JiraUsersReferences references1 : references) {
+                users.add(modelMapper.map(references1.getUser(), FullProjectUserDto.class));
+            }
+
+            fullProjectDto.setUsers(users);
+
+        }
+        return fullProjectDto;
     }
 }
