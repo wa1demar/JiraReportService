@@ -6,8 +6,13 @@ import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDtos;
 import com.swansoftwaresolutions.jirareport.core.mapper.ProjectMapper;
 import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraUsersReferences;
 import com.swansoftwaresolutions.jirareport.domain.entity.Project;
+import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
+import com.swansoftwaresolutions.jirareport.domain.repository.JiraUsersReferencesRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.ProjectRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.ResourceBordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +26,12 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     ProjectRepository projectRepository;
+
+    @Autowired
+    JiraUsersReferencesRepository jiraUsersReferencesRepository;
+
+    @Autowired
+    ResourceBordRepository resourceBordRepository;
 
     @Autowired
     ProjectMapper projectMapper;
@@ -45,6 +56,23 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void delete(Long id) {
+
+        List<JiraUser> jiraUsers = jiraUsersReferencesRepository.findUsersByProjectId(id);
+        ResourceColumn resourceColumn = resourceBordRepository.findDefaultColumn();
+
+        for (JiraUser user : jiraUsers) {
+            if (user.getUserReferences().size() > 1) {
+                jiraUsersReferencesRepository.deleteByProject(user.getLogin(), id);
+            } else {
+                jiraUsersReferencesRepository.deleteByProject(user.getLogin(), id);
+
+                JiraUsersReferences jiraUsersReferences = new JiraUsersReferences();
+                jiraUsersReferences.setColumn(resourceColumn);
+                jiraUsersReferences.setUser(user);
+                jiraUsersReferencesRepository.add(jiraUsersReferences);
+            }
+        }
+
         projectRepository.delete(id);
     }
 
@@ -57,5 +85,11 @@ public class ProjectServiceImpl implements ProjectService {
         projectDtos.setProjects(projectDtoList);
 
         return projectDtos;
+    }
+
+    @Override
+    public ProjectDto update(ProjectDto projectDto) {
+        Project project = projectRepository.update( projectMapper.fromProjectDtoToProject(projectDto));
+        return projectMapper.fromProjectToProjectDto(project);
     }
 }

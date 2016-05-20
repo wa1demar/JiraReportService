@@ -16,4 +16,5 @@ public interface ProjectService {
 
     FullProjectDtos findAllFull();
 
+    ProjectDto update(ProjectDto projectDto);
 }

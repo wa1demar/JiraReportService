@@ -15,4 +15,6 @@ public interface ProjectRepository {
     Project findById(Long projectId);
 
     void delete(Long id);
+
+    Project update(Project project);
 }

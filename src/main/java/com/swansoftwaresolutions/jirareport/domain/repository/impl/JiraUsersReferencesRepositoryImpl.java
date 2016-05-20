@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUsersReferences;
 import com.swansoftwaresolutions.jirareport.domain.entity.Project;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUsersReferencesRepository;
@@ -53,6 +54,20 @@ public class JiraUsersReferencesRepositoryImpl implements JiraUsersReferencesRep
         Query query = sessionFactory.getCurrentSession().createQuery("select r.project from JiraUsersReferences r where r.user.login = :login and r.column.id = :id");
         query.setParameter("login", login);
         query.setParameter("id", fromAssignmentTypeId);
+        return query.list();
+    }
+
+    @Override
+    public List<JiraUsersReferences> findByProjectId(Long id) {
+        Query query = sessionFactory.getCurrentSession().createQuery("from JiraUsersReferences r where r.project.id = :id");
+        query.setParameter("id", id);
+        return query.list();
+    }
+
+    @Override
+    public List<JiraUser> findUsersByProjectId(Long id) {
+        Query query = sessionFactory.getCurrentSession().createQuery("select r.user from JiraUsersReferences r where r.project.id = :id");
+        query.setParameter("id", id);
         return query.list();
     }
 
