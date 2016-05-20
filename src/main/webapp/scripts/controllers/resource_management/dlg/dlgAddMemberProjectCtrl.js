@@ -10,6 +10,7 @@
     function DlgAddMemberProjectCtrl($scope, $uibModalInstance, dlgData) {
         $scope.projects = dlgData.projects;
         $scope.assignmentTypes = dlgData.assignmentTypes;
+        $scope.currentMember = dlgData.currentMember;
 
         $scope.ok = function () {
             if($scope.addMemberProjectForm.$valid) {

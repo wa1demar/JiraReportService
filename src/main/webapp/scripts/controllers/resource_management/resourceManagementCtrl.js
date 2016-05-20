@@ -354,7 +354,7 @@
 
         //Select member
         $scope.selectElement = function (item) {
-            // console.log(item);
+            console.log(item);
             if ($scope.columns.selected === item) {
                 $scope.columns.selected = null;
 
@@ -792,7 +792,8 @@
                     dlgData: function () {
                         return {
                             projects: result,
-                            assignmentTypes: $scope.assignmentTypes
+                            assignmentTypes: $scope.assignmentTypes,
+                            currentMember: $scope.currentMember
                         };
                     }
                 }

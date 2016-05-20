@@ -15,7 +15,7 @@
       </div>
       <div class="form-group" ng-class="{ 'has-error': addMemberProjectForm.$submitted || addMemberProjectForm.assignmentTypeId.$touched && addMemberProjectForm.assignmentTypeId.$invalid }">
           <label for="assignmentTypeId">Assignment type:</label>
-          <select ui-select2 ng-model="model.assignmentTypeId" data-placeholder="Select assignment type" id="assignmentTypeId" name="assignmentTypeId" style="width: 100%;" required>
+          <select ui-select2 ng-init="model.assignmentTypeId = currentMember.column.id" ng-model="model.assignmentTypeId" data-placeholder="Select assignment type" id="assignmentTypeId" name="assignmentTypeId" style="width: 100%;" required convert-to-number="">
               <option value=""></option>
               <option ng-repeat="value in assignmentTypes" value="{{value.id}}">{{value.name}}</option>
           </select>
