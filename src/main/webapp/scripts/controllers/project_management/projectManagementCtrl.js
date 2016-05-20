@@ -5,9 +5,9 @@
         .module('jiraPluginApp')
         .controller('ProjectManagementCtrl', ProjectManagementCtrl);
 
-    ProjectManagementCtrl.$inject = ['$scope', '$uibModal', '$filter', '$window', 'ProjectFactory', 'UsersFactory', 'DictionaryFactory', 'ResourceColumnFactory', 'Notification'];
+    ProjectManagementCtrl.$inject = ['$scope', '$uibModal', '$filter', '$window', 'ProjectFactory', 'UsersFactory', 'DictionaryFactory', 'ResourceColumnFactory', 'MemberFactory', 'Notification'];
 
-    function ProjectManagementCtrl($scope, $uibModal, $filter, $window, ProjectFactory, UsersFactory, DictionaryFactory, ResourceColumnFactory, Notification) {
+    function ProjectManagementCtrl($scope, $uibModal, $filter, $window, ProjectFactory, UsersFactory, DictionaryFactory, ResourceColumnFactory, MemberFactory, Notification) {
         var self = this;
         $scope.loaderShow = true;
         $scope.showSearch = true;
@@ -416,13 +416,14 @@
             });
             modalInstance.result.then(function (data) {
                 console.log(data);
-                // ProjectFactory.delete({id: $scope.currentMember.id}, function() {
-                //     Notification.success("Delete project success");
-                //     //get projects
-                //     $scope.getProjectColumns();
-                // }, function () {
-                //     Notification.error("Server error");
-                // });
+                ProjectFactory.delete({id: $scope.currentProject.id, relation: "projects", idRelation: data.login}, function(data) {
+                    Notification.success("Delete member success");
+                    //get member info
+                    $scope.currentProject = data;
+                    $scope.getProjectColumns();
+                }, function () {
+                    Notification.error("Server error");
+                });
             }, function () {});
         };
 
