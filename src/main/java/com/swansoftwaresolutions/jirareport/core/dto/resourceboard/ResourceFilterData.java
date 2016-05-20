@@ -6,15 +6,15 @@ package com.swansoftwaresolutions.jirareport.core.dto.resourceboard;
 public class ResourceFilterData {
     private Long[] technology;
     private Long[] project;
-    private Integer[] engineerLevel;
+    private Long[] engineerLevel;
     private Long[] location;
     private String name;
 
-    public Integer[] getEngineerLevel() {
+    public Long[] getEngineerLevel() {
         return engineerLevel;
     }
 
-    public void setEngineerLevel(Integer[] engineerLevel) {
+    public void setEngineerLevel(Long[] engineerLevel) {
         this.engineerLevel = engineerLevel;
     }
 

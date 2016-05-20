@@ -88,6 +88,9 @@ public class JiraUserMapperImpl implements JiraUserMapper {
 
             ResourceColumn column = resourceColumns.get(0);
             userDto.setColumn(modelMapper.map(column, ResourceColumnDto.class));
+//            if (jiraUser.getPosition() != null) {
+//                userDto.setPositionDto(modelMapper.map(jiraUser.getPosition(), PositionDto.class));
+//            }
 
             if (projects != null && projects.size() > 0) {
                 Type targetistType = new TypeToken<List<ProjectDto>>() {}.getType();

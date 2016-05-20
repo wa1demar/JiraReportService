@@ -1,7 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.dto.jira_users;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.swansoftwaresolutions.jirareport.core.dto.locations.LocationDto;
+import com.swansoftwaresolutions.jirareport.core.dto.position.PositionDto;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologyDto;
@@ -16,7 +16,7 @@ public class ResourceUserDto {
 
     private String login;
     private String name;
-    private Integer engineerLevel;
+    private PositionDto position;
     private List<TechnologyDto> technologies = new ArrayList<>();
     private List<ProjectDto> projects = new ArrayList<>();
     private LocationDto location;
@@ -39,14 +39,6 @@ public class ResourceUserDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getEngineerLevel() {
-        return engineerLevel;
-    }
-
-    public void setEngineerLevel(Integer engineerLevel) {
-        this.engineerLevel = engineerLevel;
     }
 
     public List<TechnologyDto> getTechnologies() {
@@ -103,5 +95,13 @@ public class ResourceUserDto {
 
     public void setProjects(List<ProjectDto> projects) {
         this.projects = projects;
+    }
+
+    public PositionDto getPosition() {
+        return position;
+    }
+
+    public void setPosition(PositionDto position) {
+        this.position = position;
     }
 }
