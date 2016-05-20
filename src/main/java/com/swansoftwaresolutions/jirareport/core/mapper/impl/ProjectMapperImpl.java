@@ -91,4 +91,9 @@ public class ProjectMapperImpl implements ProjectMapper {
 
        return projectDtos;
     }
+
+    @Override
+    public FullProjectDto fromProjectToFullProjectDto(Project project) {
+        return modelMapper.map(project, FullProjectDto.class);
+    }
 }

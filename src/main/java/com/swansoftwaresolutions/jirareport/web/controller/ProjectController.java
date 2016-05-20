@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
+import com.swansoftwaresolutions.jirareport.core.dto.projects.FullProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.FullProjectDtos;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDtos;
@@ -58,5 +59,14 @@ public class ProjectController {
         FullProjectDtos allProjects = projectService.findAllFull();
 
         return new ResponseEntity<>(allProjects, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/v1/projects/{id}/members/{login:.+}/", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<FullProjectDto> deleteProject(@PathVariable("login") String login, @PathVariable("id") Long id) throws NoSuchEntityException {
+
+        FullProjectDto newNewResourceUserDto = projectService.deleteMember(login, id);
+
+        return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
     }
 }

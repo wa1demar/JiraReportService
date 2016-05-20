@@ -2,7 +2,6 @@ package com.swansoftwaresolutions.jirareport.core.mapper;
 
 import com.swansoftwaresolutions.jirareport.core.dto.projects.FullProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDto;
-import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDtos;
 import com.swansoftwaresolutions.jirareport.domain.entity.Project;
 
 import java.util.List;
@@ -18,4 +17,6 @@ public interface ProjectMapper {
     List<ProjectDto> fromProjectsToProjectDtos(List<Project> projects);
 
     List<FullProjectDto> fromProjectsToFullProjectDtos(List<Project> projects);
+
+    FullProjectDto fromProjectToFullProjectDto(Project project);
 }

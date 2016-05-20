@@ -10,12 +10,15 @@ import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUsersReferences;
 import com.swansoftwaresolutions.jirareport.domain.entity.Project;
 import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
+import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUsersReferencesRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.ProjectRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.ResourceBordRepository;
+import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +32,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     JiraUsersReferencesRepository jiraUsersReferencesRepository;
+
+    @Autowired
+    JiraUserRepository jiraUserRepository;
 
     @Autowired
     ResourceBordRepository resourceBordRepository;
@@ -91,5 +97,28 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectDto update(ProjectDto projectDto) {
         Project project = projectRepository.update( projectMapper.fromProjectDtoToProject(projectDto));
         return projectMapper.fromProjectToProjectDto(project);
+    }
+
+    @Override
+    public FullProjectDto deleteMember(String login, Long id) throws NoSuchEntityException {
+        Project project = projectRepository.findById(id);
+        JiraUser jiraUser = jiraUserRepository.findByLogin(login);
+
+        jiraUsersReferencesRepository.deleteByProject(jiraUser.getLogin(), project.getId());
+
+        jiraUser = jiraUserRepository.findByLogin(login);
+        if (jiraUser.getUserReferences().size() == 0) {
+            ResourceColumn bench = resourceBordRepository.findDefaultColumn();
+            JiraUsersReferences jiraUsersReferences = new JiraUsersReferences();
+            jiraUsersReferences.setColumn(bench);
+            jiraUsersReferences.setUser(jiraUser);
+            jiraUsersReferencesRepository.add(jiraUsersReferences);
+
+            jiraUser.setUserReferences(new ArrayList<JiraUsersReferences>(){{
+                add(jiraUsersReferences); }});
+
+        }
+
+        return projectMapper.fromProjectToFullProjectDto(project);
     }
 }
