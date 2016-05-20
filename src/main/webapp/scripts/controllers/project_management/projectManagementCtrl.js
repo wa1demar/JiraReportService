@@ -416,7 +416,7 @@
             });
             modalInstance.result.then(function (data) {
                 console.log(data);
-                ProjectFactory.delete({id: $scope.currentProject.id, relation: "projects", idRelation: data.login}, function(data) {
+                ProjectFactory.delete({id: $scope.currentProject.id, relation: "members", idRelation: data.login}, function(data) {
                     Notification.success("Delete member success");
                     //get member info
                     $scope.currentProject = data;
