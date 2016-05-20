@@ -61,9 +61,9 @@ public class ProjectController {
         return new ResponseEntity<>(allProjects, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/v1/projects/{id}/members/{login:.+}/", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/v1/projects/{id}/members/{login:.+}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<FullProjectDto> deleteProject(@PathVariable("login") String login, @PathVariable("id") Long id) throws NoSuchEntityException {
+    public ResponseEntity<FullProjectDto> deleteMember(@PathVariable("login") String login, @PathVariable("id") Long id) throws NoSuchEntityException {
 
         FullProjectDto newNewResourceUserDto = projectService.deleteMember(login, id);
 
