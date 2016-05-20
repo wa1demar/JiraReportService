@@ -242,13 +242,18 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
         return false;
     }
 
-    private boolean filterLevel(FullResourceUserDto userDto, Integer[] level) {
+    private boolean filterLevel(FullResourceUserDto userDto, Long[] level) {
         if (level == null || level.length == 0) {
             return true;
         }
+
+        if (userDto.getPosition() == null) {
+            return false;
+        }
+
         for (int i = 0; i < level.length; i++) {
 
-            List<Integer> filteredData = Arrays.stream(level).filter(t -> t.equals(userDto.getPosition().getName())).collect(Collectors.toList());
+            List<Long> filteredData = Arrays.stream(level).filter(t -> t.equals(userDto.getPosition().getId())).collect(Collectors.toList());
             if (filteredData != null && filteredData.size() > 0) {
                 return true;
             }
