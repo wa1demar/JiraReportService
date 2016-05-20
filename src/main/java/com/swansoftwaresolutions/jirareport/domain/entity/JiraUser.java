@@ -18,7 +18,6 @@ public class JiraUser implements Serializable {
     private String login;
     private String fullName;
     private Long jiraUserId;
-    private Integer level;
     private String description;
     private List<Report> reports = new ArrayList<>();
     private List<JiraGroup> groups = new ArrayList<>();
@@ -123,15 +122,6 @@ public class JiraUser implements Serializable {
 
     public void setAttachments(List<Attachment> attachments) {
         this.attachments = attachments;
-    }
-
-    @Column(name = "level")
-    public Integer getLevel() {
-        return level;
-    }
-
-    public void setLevel(Integer level) {
-        this.level = level;
     }
 
     @Column(name = "avatar")

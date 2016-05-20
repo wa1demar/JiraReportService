@@ -7,8 +7,6 @@ import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColum
 import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceFilterData;
 import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologyDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.ResourceBordMapper;
-import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.JiraUserToFullResourceUserDtoMapper;
-import com.swansoftwaresolutions.jirareport.core.mapper.propertymap.JiraUserToResourceUserDtoMapper;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUsersReferences;
 import com.swansoftwaresolutions.jirareport.domain.entity.Project;
@@ -37,9 +35,6 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
     @Autowired
     public ResourceBordMapperImpl(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
-
-        modelMapper.addMappings(new JiraUserToResourceUserDtoMapper());
-        modelMapper.addMappings(new JiraUserToFullResourceUserDtoMapper());
     }
 
     @Override
@@ -133,8 +128,15 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
                             userDto.setProjects(modelMapper.map(projects, targetistType));
                         }
 
-                        fullResourceUserDtos.add(userDto);
                         allUsersFiltered.add(userDto);
+
+//                        if (user.getPosition() != null) {
+//                            PositionDto positionDto = modelMapper.map(user.getPosition(), PositionDto.class);
+//                            userDto.setEngineerLevel(positionDto);
+//                        }
+
+                        fullResourceUserDtos.add(userDto);
+
                     }
                 }
                 Collections.sort(fullResourceUserDtos, (o1, o2) -> o1.getResourceOrder() - o2.getResourceOrder());
@@ -246,7 +248,7 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
         }
         for (int i = 0; i < level.length; i++) {
 
-            List<Integer> filteredData = Arrays.stream(level).filter(t -> t.equals(userDto.getEngineerLevel())).collect(Collectors.toList());
+            List<Integer> filteredData = Arrays.stream(level).filter(t -> t.equals(userDto.getPosition().getName())).collect(Collectors.toList());
             if (filteredData != null && filteredData.size() > 0) {
                 return true;
             }

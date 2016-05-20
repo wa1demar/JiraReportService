@@ -59,7 +59,7 @@ public class ProjectMapperImpl implements ProjectMapper {
             List<FullProjectUserDto> userDtos = new ArrayList<>();
             for (JiraUser user : users) {
                 FullProjectUserDto projectUserDto = modelMapper.map(user, FullProjectUserDto.class);
-                projectUserDto.setEngineerLevel(user.getLevel());
+                projectUserDto.setEngineerLevel(user.getPosition() != null ? user.getPosition().getName() : "");
                 if (user.getUserReferences().size() > 0) {
                     projectUserDto.setColumn(modelMapper.map(project, ProjectDto.class));
                 }

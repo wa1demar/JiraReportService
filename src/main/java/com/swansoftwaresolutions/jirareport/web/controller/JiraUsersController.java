@@ -57,15 +57,6 @@ public class JiraUsersController {
         return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
     }
 
-//    @RequestMapping(value = "/v1/members/{login:.+}", method = RequestMethod.DELETE)
-//    @ResponseBody
-//    public ResponseEntity<ResourceUserDto> removeUserFromBoard(@PathVariable("login") String login) throws NoSuchEntityException {
-//
-//        ResourceUserDto newNewResourceUserDto = jiraUserService.removeUserFromBoard(login);
-//
-//        return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
-//    }
-
     @RequestMapping(value = "/v1/members/{login:.+}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<ResourceUserDto> getUserInfo(@PathVariable("login") String login) throws NoSuchEntityException {

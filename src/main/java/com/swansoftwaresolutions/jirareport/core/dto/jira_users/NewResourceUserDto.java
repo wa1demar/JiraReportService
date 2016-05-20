@@ -6,7 +6,7 @@ package com.swansoftwaresolutions.jirareport.core.dto.jira_users;
 public class NewResourceUserDto {
 
     private String userLogin;
-    private Integer level;
+    private Long level;
     private Long location;
     private Long assignmentTypeId;
     private Long[] technologies;
@@ -20,11 +20,11 @@ public class NewResourceUserDto {
         this.userLogin = userLogin;
     }
 
-    public Integer getLevel() {
+    public Long getLevel() {
         return level;
     }
 
-    public void setLevel(Integer level) {
+    public void setLevel(Long level) {
         this.level = level;
     }
 

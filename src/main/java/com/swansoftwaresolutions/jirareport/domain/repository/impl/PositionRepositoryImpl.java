@@ -45,9 +45,11 @@ public class PositionRepositoryImpl implements PositionRepository {
         return position;
     }
 
-    private Position findById(Long id) {
+    @Override
+    public Position findById(Long level) {
         Query query = sessionFactory.getCurrentSession().createQuery("from Position p where p.id = :id");
-        query.setParameter("id", id);
+        query.setParameter("id", level);
         return (Position) query.uniqueResult();
     }
+
 }

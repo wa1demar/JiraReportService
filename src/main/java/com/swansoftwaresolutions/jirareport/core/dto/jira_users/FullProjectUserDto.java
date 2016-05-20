@@ -13,7 +13,7 @@ import java.util.List;
 public class FullProjectUserDto {
     private String login;
     private String name;
-    private Integer engineerLevel;
+    private String engineerLevel;
     private String avatar;
     private ProjectDto column;
     private List<ResourceColumnDto> assignmentTypes = new ArrayList<>();
@@ -34,11 +34,11 @@ public class FullProjectUserDto {
         this.name = name;
     }
 
-    public Integer getEngineerLevel() {
+    public String getEngineerLevel() {
         return engineerLevel;
     }
 
-    public void setEngineerLevel(Integer engineerLevel) {
+    public void setEngineerLevel(String engineerLevel) {
         this.engineerLevel = engineerLevel;
     }
 

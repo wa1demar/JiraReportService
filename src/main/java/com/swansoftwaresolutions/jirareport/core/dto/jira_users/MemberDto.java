@@ -5,16 +5,16 @@ package com.swansoftwaresolutions.jirareport.core.dto.jira_users;
  */
 public class MemberDto {
 
-    private int engineerLevel;
+    private Long engineerLevel;
     private String description;
     private Long locationId;
     private AssignmentType assignmentType;
 
-    public int getEngineerLevel() {
+    public Long getEngineerLevel() {
         return engineerLevel;
     }
 
-    public void setEngineerLevel(int engineerLevel) {
+    public void setEngineerLevel(Long engineerLevel) {
         this.engineerLevel = engineerLevel;
     }
 

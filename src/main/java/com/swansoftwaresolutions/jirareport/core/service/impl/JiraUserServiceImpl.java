@@ -44,6 +44,9 @@ public class JiraUserServiceImpl implements JiraUserService {
     TechnologyRepository technologyRepository;
 
     @Autowired
+    PositionRepository positionRepository;
+
+    @Autowired
     LocationRepository locationRepository;
 
     @Autowired
@@ -113,7 +116,7 @@ public class JiraUserServiceImpl implements JiraUserService {
         JiraUser jiraUser = jiraUserRepository.findByLogin(newResourceUserDto.getUserLogin());
 
         jiraUser.setDescription(newResourceUserDto.getDescription());
-        jiraUser.setLevel(newResourceUserDto.getLevel());
+//        jiraUser.setPosition(newResourceUserDto.getLevel());
         jiraUser.setTechnologies(technologyRepository.findAllByIds(newResourceUserDto.getTechnologies()));
 
         ResourceColumn defaultColumn = resourceBordRepository.findById(newResourceUserDto.getAssignmentTypeId());
@@ -127,6 +130,7 @@ public class JiraUserServiceImpl implements JiraUserService {
         }});
 
         jiraUser.setLocation(locationRepository.findById(newResourceUserDto.getLocation()));
+        jiraUser.setPosition(positionRepository.findById(newResourceUserDto.getLevel()));
 
         JiraUser newJiraUser = jiraUserRepository.update(jiraUser);
 

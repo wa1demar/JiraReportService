@@ -15,4 +15,6 @@ public interface PositionRepository {
     Position delete(Long id);
 
     Position update(Position position);
+
+    Position findById(Long level);
 }
