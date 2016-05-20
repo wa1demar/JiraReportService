@@ -6,6 +6,7 @@ import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * @author Vladimir Martynyuk
  */
 @Repository
+@Transactional
 public class ProjectRepositoryImpl implements ProjectRepository {
 
     @Autowired
@@ -43,5 +45,11 @@ public class ProjectRepositoryImpl implements ProjectRepository {
         Query query = sessionFactory.getCurrentSession().createQuery("delete Project p where p.id = :id");
         query.setParameter("id", id);
         query.executeUpdate();
+    }
+
+    @Override
+    public Project update(Project project) {
+        sessionFactory.getCurrentSession().update(project);
+        return project;
     }
 }

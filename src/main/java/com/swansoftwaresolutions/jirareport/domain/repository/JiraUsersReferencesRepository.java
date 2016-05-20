@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository;
 
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUsersReferences;
 import com.swansoftwaresolutions.jirareport.domain.entity.Project;
 
@@ -19,4 +20,7 @@ public interface JiraUsersReferencesRepository {
 
     List<Project> findByUserAndAssignmentType(String login, Long fromAssignmentTypeId);
 
+    List<JiraUsersReferences> findByProjectId(Long id);
+
+    List<JiraUser> findUsersByProjectId(Long id);
 }

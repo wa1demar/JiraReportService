@@ -1,6 +1,5 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
-import com.swansoftwaresolutions.jirareport.core.dto.projects.FullProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.FullProjectDtos;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDto;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDtos;
@@ -26,6 +25,14 @@ public class ProjectController {
     @RequestMapping(value = "/v1/projects", method = RequestMethod.POST)
     private ResponseEntity<ProjectDto> addProject(@Valid @RequestBody ProjectDto projectDto) throws NoSuchEntityException {
         ProjectDto newProjectDto = projectService.add(projectDto);
+
+        return new ResponseEntity<>(newProjectDto, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/v1/projects/{id}", method = RequestMethod.PUT)
+    private ResponseEntity<ProjectDto> updateProject(@PathVariable("id") Long id, @Valid @RequestBody ProjectDto projectDto) throws NoSuchEntityException {
+        projectDto.setId(id);
+        ProjectDto newProjectDto = projectService.update(projectDto);
 
         return new ResponseEntity<>(newProjectDto, HttpStatus.OK);
     }
