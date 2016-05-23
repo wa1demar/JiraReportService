@@ -30,7 +30,7 @@
         dnd-effect-allowed="copyMove"
         dnd-external-sources="true"
         dnd-selected="selectElement(column)"
-        dnd-dragend="dragendElement(item, $parent.$index, $index)"
+        dnd-dragend="dragendElement(item, column, $parent.$index, $index)"
         ng-class="{'selected': columns.selected === column}"
         ng-style="{background: lightColor(item.assignmentTypes[0].color, 0.4), border: '2px solid {{item.assignmentTypes[0].color}}'}"
         context-menu="memberMenuOptions(column, item)">

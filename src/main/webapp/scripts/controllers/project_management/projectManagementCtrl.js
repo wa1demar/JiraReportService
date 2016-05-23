@@ -154,7 +154,7 @@
         };
 
         //Dragend member
-        $scope.dragendElement = function(item, projectIndex, memberIndex) {
+        $scope.dragendElement = function(item, columnFrom, projectIndex, memberIndex) {
 
             console.log('----------------------');
             console.log($scope.insertedPositions);
@@ -164,11 +164,25 @@
                 $scope.insertedPositions.memberIndex === null) {
                 return false;
             }
+            var columnTo = $scope.columns[$scope.insertedPositions.columnIndex];
 
             //if sort elements
             if ($scope.insertedPositions.columnIndex === projectIndex) {
                 //delete old position
                 $scope.columns[projectIndex].users.splice(memberIndex, 1);
+
+                var dataForUpdate = {
+                    project: {
+                        fromProjectId:   columnFrom.id,
+                        toProjectId:     columnTo.id
+                    },
+                    users: $scope.columns[projectIndex].users.map(function(value, index) {
+                        return {
+                            login: value.login,
+                            index: index
+                        };
+                    })
+                };
 
                 //TODO save new data
 
@@ -197,6 +211,20 @@
                     if (data.moveType === 'move') {
                         $scope.columns[projectIndex].users.splice(memberIndex, 1);
                     }
+
+                    var dataForUpdate = {
+                        project: {
+                            fromProjectId:   columnFrom.id,
+                            toProjectId:     columnTo.id
+                        },
+                        users: $scope.columns[$scope.insertedPositions.columnIndex].users.map(function(value, index) {
+                            return {
+                                login: value.login,
+                                index: index
+                            };
+                        }),
+                        moveDetail: data
+                    };
 
                     //TODO save new data
 
