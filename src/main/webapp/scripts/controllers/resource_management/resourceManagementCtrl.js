@@ -278,7 +278,8 @@
         //Select member
         $scope.selectElement = function (item) {
             console.log(item);
-            if ($scope.columns.selected === item) {
+
+            if ($scope.columns.selected !== null && $scope.columns.selected !== undefined && $scope.columns.selected.login === item.login) {
                 $scope.columns.selected = null;
 
                 $scope.showSearch = true;
@@ -493,12 +494,14 @@
 
                 //update member info without getResourceColumns (commented for fix double members)
                 // $scope.columns[indexColumn].users[indexElementInColumn] = data;
+                $scope.columns[indexColumn].users[indexElementInColumn].column = data.column;
                 //reindexing resourceOrder
                 $scope.columns[indexColumn].users.map(function(value, index) {
                     value.resourceOrder = index;
 
                     return value;
                 });
+                $scope.columns.selected = null;
                 $scope.selectElement(data);
                 Notification.success("Save changes success");
             }, function (error) {
