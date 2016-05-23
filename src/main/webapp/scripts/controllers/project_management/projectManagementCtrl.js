@@ -14,22 +14,23 @@
         $scope.showProjectInfo = false;
 
 // ----------------------------------------------------------------------------------------------------------------------
+        $scope.lightColor = function (hex, lum) {
+            return colorLuminance(hex, lum);
+        };
+
+// ----------------------------------------------------------------------------------------------------------------------
 //prepare search params
         if ($window.localStorage.pm_search) {
             $scope.search = JSON.parse($window.localStorage.pm_search);
         } else {
             $scope.search = {
                 technology: [],
+                location: [],
+                project: [],
                 engineerLevel: [],
-                pm: [],
-                project: []
+                assignmentType: []
             };
         }
-
-// ----------------------------------------------------------------------------------------------------------------------
-        $scope.lightColor = function (hex, lum) {
-            return colorLuminance(hex, lum);
-        };
 
 //----------------------------------------------------------------------------------------------------------------------
 //Get all data for Resource Board
@@ -42,114 +43,21 @@
 
             //set data to search query
             var searchQuery = {
+                "id": "list_with_users",
                 "technology": $scope.search.technology,
+                "location": $scope.search.location,
+                "project": $scope.search.project,
                 "engineerLevel": $scope.search.engineerLevel,
-                "pm": $scope.search.pm,
-                "project": $scope.search.project
+                "assignmentType": $scope.search.assignmentType
             };
 
-            ProjectFactory.query({id: 'list_with_users'}, searchQuery, function (result) {
+            ProjectFactory.query(searchQuery, function (result) {
                 $scope.columns = result.projects;
                 $scope.loaderShow = false;
             }, function (error) {
                 Notification.error("Server error");
             });
 
-            // $scope.columns = [
-            //     {
-            //         id: 1,
-            //         title: "Project 1",
-            //         description: "Description",
-            //         users: [
-            //             {
-            //                 id: 1,
-            //                 name: "Full Name 1",
-            //                 engineerLevel: 1,
-            //                 assignmentTypes: [{id: 3, name: "PM", color: "#4086E7"}],
-            //                 avatar: "https://swansoftwaresolutions.atlassian.net/secure/useravatar?ownerId=slevchenko&avatarId=13706",
-            //                 column: {id: 1, name: "Project 1"}
-            //             },
-            //             {
-            //                 id: 2,
-            //                 name: "Full Name 2",
-            //                 engineerLevel: 3,
-            //                 assignmentTypes: [
-            //                     {id: 11, name: "Dev", color: "#179f1c"},
-            //                     {id: 12, name: "Shadow", color: "#424242"}
-            //                 ],
-            //                 column: {id: 1, name: "Project 1"}
-            //             },
-            //             {
-            //                 id: 11,
-            //                 name: "Full Name 3",
-            //                 engineerLevel: 2,
-            //                 assignmentTypes: [{id: 11, name: "Dev", color: "#179f1c"}],
-            //                 column: {id: 1, name: "Project 1"}
-            //             },
-            //             {
-            //                 id: 12,
-            //                 name: "Full Name 5",
-            //                 engineerLevel: 2,
-            //                 assignmentTypes: [{id: 5, name: "QA", color: "#F4D520"}],
-            //                 column: {id: 1, name: "Project 1"}
-            //             }
-            //         ]
-            //     },
-            //     {
-            //         id: 2,
-            //         title: "Project 2",
-            //         description: "Description",
-            //         users: [
-            //             {
-            //                 id: 3,
-            //                 name: "Full Name 2",
-            //                 engineerLevel: 3,
-            //                 assignmentTypes: [{id: 3, name: "PM", color: "#4086E7"}],
-            //                 column: {id: 2, name: "Project 2"}
-            //             }
-            //         ]
-            //     },
-            //     {
-            //         id: 3,
-            //         title: "Project 3",
-            //         description: "Description",
-            //         users: [
-            //             {
-            //                 id: 4,
-            //                 name: "Full Name 3",
-            //                 engineerLevel: 2,
-            //                 assignmentTypes: [{id: 3, name: "PM", color: "#4086E7"}],
-            //                 column: {id: 3, name: "Project 3"}
-            //             },
-            //             {
-            //                 id: 2,
-            //                 name: "Full Name 2",
-            //                 engineerLevel: 3,
-            //                 assignmentTypes: [
-            //                     {id: 12, name: "Shadow", color: "#424242"},
-            //                     {id: 11, name: "Dev", color: "#179f1c"}
-            //                 ],
-            //                 column: {id: 1, name: "Project 1"}
-            //             }
-            //         ]
-            //     },
-            //     {
-            //         id: 4,
-            //         title: "Project 4",
-            //         description: "Description",
-            //         users: [
-            //             {
-            //                 id: 5,
-            //                 name: "Full Name 4",
-            //                 engineerLevel: 2,
-            //                 assignmentTypes: [{id: 3, name: "PM", color: "#4086E7"}],
-            //                 column: {id: 4, name: "Project 4"}
-            //             }
-            //         ]
-            //     }
-            // ];
-
-            console.log($scope.columns);
         };
 
         $scope.currentProject = {};
@@ -197,6 +105,17 @@
             });
         };
         $scope.getPositions();
+
+        //Get locations
+        $scope.locations = [];
+        $scope.getLocations = function () {
+            DictionaryFactory.query({name: 'locations'}, function(result){
+                $scope.locations = result.items;
+            }, function (error) {
+                Notification.error("Server error: get locations");
+            });
+        };
+        $scope.getLocations();
 
         $scope.$watch('search', function() {
             console.log(" ---- new search");

@@ -11,6 +11,26 @@
         </select>
     </div>
     <div class="form-group">
+        <label for="location">Location</label>
+        <select ui-select2 multiple style="width: 100%;"
+                ng-model="search.location"
+                data-placeholder="Select location"
+                id="location"
+                name="location">
+            <option ng-repeat="value in locations" value="{{value.id}}">{{value.name}}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="project">Project</label>
+        <select ui-select2 multiple style="width: 100%;"
+                ng-model="search.project"
+                data-placeholder="Select projects"
+                id="project"
+                name="project">
+            <option ng-repeat="value in projects" value="{{value.id}}">{{value.title}}</option>
+        </select>
+    </div>
+    <div class="form-group">
         <label for="engineerLevel">EL</label>
         <select ui-select2 multiple style="width: 100%;"
                 ng-model="search.engineerLevel"
@@ -21,9 +41,24 @@
         </select>
     </div>
     <div class="form-group">
-        <label for="project">Project</label>
-        <select ui-select2 multiple style="width: 100%;" ng-model="search.project" data-placeholder="Select projects" id="project" name="project">
-            <option ng-repeat="value in projects" value="{{value.id}}">{{value.title}}</option>
+        <label for="assignmentType">Assignment type</label>
+        <select ui-select2 multiple style="width: 100%;"
+                ng-model="search.assignmentType"
+                data-placeholder="Select assignment type"
+                id="assignmentType"
+                name="assignmentType">
+            <option ng-repeat="value in assignmentTypes" value="{{value.id}}">{{value.name}}</option>
         </select>
     </div>
+
+    <!--<div class="form-group">-->
+        <!--<label for="engineerLevel">EL</label>-->
+        <!--<select ui-select2 multiple style="width: 100%;"-->
+                <!--ng-model="search.engineerLevel"-->
+                <!--data-placeholder="Select EL"-->
+                <!--id="engineerLevel"-->
+                <!--name="engineerLevel">-->
+            <!--<option ng-repeat="value in positions" value="{{value.id}}">{{value.name}}</option>-->
+        <!--</select>-->
+    <!--</div>    -->
 </div>
