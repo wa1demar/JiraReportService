@@ -35,7 +35,7 @@ public class JiraUsersReferences {
         this.user = user;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "assygnment_type_id")
     public ResourceColumn getColumn() {
         return column;

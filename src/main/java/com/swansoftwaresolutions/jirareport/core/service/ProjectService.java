@@ -1,9 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.service;
 
-import com.swansoftwaresolutions.jirareport.core.dto.projects.FullProjectDto;
-import com.swansoftwaresolutions.jirareport.core.dto.projects.FullProjectDtos;
-import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDto;
-import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDtos;
+import com.swansoftwaresolutions.jirareport.core.dto.projects.*;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 
 /**
@@ -16,7 +13,7 @@ public interface ProjectService {
 
     void delete(Long id);
 
-    FullProjectDtos findAllFull();
+    FullProjectDtos findAllFull(ProjectFilterData filterData);
 
     ProjectDto update(ProjectDto projectDto);
 

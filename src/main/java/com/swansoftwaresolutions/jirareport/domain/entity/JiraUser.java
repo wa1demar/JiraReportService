@@ -85,7 +85,7 @@ public class JiraUser implements Serializable {
         this.groups = groups;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "location_id", nullable = true)
     public Location getLocation() {
         return location;
@@ -95,7 +95,7 @@ public class JiraUser implements Serializable {
         this.location = location;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users")
     @Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
     @OrderBy("id ASC")
     public List<Technology> getTechnologies() {

@@ -1,9 +1,6 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
-import com.swansoftwaresolutions.jirareport.core.dto.projects.FullProjectDto;
-import com.swansoftwaresolutions.jirareport.core.dto.projects.FullProjectDtos;
-import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDto;
-import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectDtos;
+import com.swansoftwaresolutions.jirareport.core.dto.projects.*;
 import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,8 +52,20 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/v1/projects/list_with_users", method = RequestMethod.GET)
-    private ResponseEntity<FullProjectDtos> getProjectsWithUsers() throws NoSuchEntityException {
-        FullProjectDtos allProjects = projectService.findAllFull();
+    private ResponseEntity<FullProjectDtos> getProjectsWithUsers(@RequestParam(value = "technology", required = false) Long[] technologies,
+                                                                 @RequestParam(value = "project", required = false) Long[] projects,
+                                                                 @RequestParam(value = "engineerLevel", required = false) Long[] engineerLevels,
+                                                                 @RequestParam(value = "location", required = false) Long[] locations,
+                                                                 @RequestParam(value = "assignmentType", required = false) Long[] assignmentTypes) throws NoSuchEntityException {
+
+        ProjectFilterData filterData = new ProjectFilterData();
+        filterData.setTechnology(technologies);
+        filterData.setProject(projects);
+        filterData.setEngineerLevel(engineerLevels);
+        filterData.setLocation(locations);
+        filterData.setAssignmentType(assignmentTypes);
+
+        FullProjectDtos allProjects = projectService.findAllFull(filterData);
 
         return new ResponseEntity<>(allProjects, HttpStatus.OK);
     }
@@ -68,5 +77,16 @@ public class ProjectController {
         FullProjectDto newNewResourceUserDto = projectService.deleteMember(login, id);
 
         return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
+    }
+
+    private Long[] arrToLong(String[] arr) {
+        if (arr == null) {
+            return null;
+        }
+        Long[] data = new Long[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            data[i] = Long.parseLong(arr[i]);
+        }
+        return data;
     }
 }
