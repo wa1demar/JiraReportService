@@ -120,6 +120,16 @@
         $scope.$watch('search', function() {
             console.log(" ---- new search");
             $window.localStorage.pm_search = JSON.stringify($scope.search);
+
+            $scope.isSearch = true;
+            if ($scope.search.technology.length === 0 &&
+                $scope.search.location.length === 0 &&
+                $scope.search.project.length === 0 &&
+                $scope.search.engineerLevel.length === 0 &&
+                $scope.search.assignmentType.length === 0) {
+                $scope.isSearch = false;
+            }
+
             $scope.getProjectColumns(true);
         }, true);
 
