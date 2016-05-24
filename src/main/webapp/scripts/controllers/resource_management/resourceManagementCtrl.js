@@ -154,10 +154,27 @@
             });
         };
 
+        //Update member counts
+        // $scope.updateMemberCounts = function () {
+        //     _.each($scope.columns, function(element, index, list) {
+        //         $scope.columns[index].allMembersCount = $scope.columns[index].users.length;
+        //     });
+        // };
+
         $scope.$watch('search', function() {
             console.log(" ---- new search");
             $window.localStorage.rm_search = JSON.stringify($scope.search);
             $scope.currentMember = null;
+
+            $scope.isSearch = true;
+            if ($scope.search.technology.length === 0 &&
+                $scope.search.project.length === 0 &&
+                $scope.search.engineerLevel.length === 0 &&
+                $scope.search.location.length === 0 &&
+                ($scope.search.name === null || $scope.search.name === '')) {
+                $scope.isSearch = false;
+            }
+
             $scope.getResourceColumns(true);
         }, true);
 
@@ -503,6 +520,8 @@
                 });
                 $scope.columns.selected = null;
                 $scope.selectElement(data);
+                //TODO ned for show member counts after move
+                // $scope.getResourceColumns();
                 Notification.success("Save changes success");
             }, function (error) {
                 Notification.error("Server error: get assignment type");

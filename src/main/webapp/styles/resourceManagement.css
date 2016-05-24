@@ -105,6 +105,8 @@
 .main h4 .member-count {
     font-size: 12px;
     font-weight: bold;
+    font-style: italic;
+    color: #A9A8A8;
 }
 
 .res-left-content ul.item {
