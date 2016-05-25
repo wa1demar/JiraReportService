@@ -197,7 +197,6 @@
 
                 //save new data
                 $scope.moveMember(dataForUpdate, moveMember.login, "move");
-                Notification.success("Update projects success");
 
                 $scope.insertedPositions = null;
             } else {
@@ -240,7 +239,6 @@
 
                     //save new data
                     $scope.moveMember(dataForUpdate, moveMember.login, data.moveType);
-                    Notification.success("Update projects success");
 
                     $scope.insertedPositions = null;
                 }, function (error) {
