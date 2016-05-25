@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MoveMemberToProject;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.*;
 import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -79,14 +80,21 @@ public class ProjectController {
         return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
     }
 
-    private Long[] arrToLong(String[] arr) {
-        if (arr == null) {
-            return null;
-        }
-        Long[] data = new Long[arr.length];
-        for (int i = 0; i < arr.length; i++) {
-            data[i] = Long.parseLong(arr[i]);
-        }
-        return data;
+    @RequestMapping(value = "/v1/projects/{id}/members/{login:.+}/move", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<FullProjectDtos> moveMember(@PathVariable("login") String login, @PathVariable("id") Long id, @Valid @RequestBody MoveMemberToProject moveMemberToProject) throws NoSuchEntityException {
+
+        FullProjectDtos fullProjectDtos = projectService.moveMember(login, moveMemberToProject);
+
+        return new ResponseEntity<>(fullProjectDtos, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/v1/projects/{id}/members/{login:.+}/copy", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<FullProjectDtos> copyMember(@PathVariable("login") String login, @PathVariable("id") Long id, @Valid @RequestBody MoveMemberToProject moveMemberToProject) throws NoSuchEntityException {
+
+        FullProjectDtos fullProjectDtos = projectService.copyMember(login, moveMemberToProject);
+
+        return new ResponseEntity<>(fullProjectDtos, HttpStatus.OK);
     }
 }

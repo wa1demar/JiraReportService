@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository;
 
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberPositionDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.Project;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface ProjectRepository {
     void delete(Long id);
 
     Project update(Project project);
+
+    void sortMembers(List<MemberPositionDto> users);
 }

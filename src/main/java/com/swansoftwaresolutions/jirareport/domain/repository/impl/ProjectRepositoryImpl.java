@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberPositionDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.Project;
 import com.swansoftwaresolutions.jirareport.domain.repository.ProjectRepository;
 import org.hibernate.Query;
@@ -51,5 +52,10 @@ public class ProjectRepositoryImpl implements ProjectRepository {
     public Project update(Project project) {
         sessionFactory.getCurrentSession().update(project);
         return project;
+    }
+
+    @Override
+    public void sortMembers(List<MemberPositionDto> users) {
+
     }
 }
