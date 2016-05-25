@@ -164,6 +164,8 @@
         //Dragend member
         $scope.dragendElement = function(item, columnFrom, projectIndex, memberIndex) {
 
+            var moveMember = $scope.columns[projectIndex].users[memberIndex];
+
             console.log('----------------------');
             console.log($scope.insertedPositions);
             console.log('----------------------');
@@ -180,7 +182,7 @@
                 $scope.columns[projectIndex].users.splice(memberIndex, 1);
 
                 var dataForUpdate = {
-                    project: {
+                    projects: {
                         fromProjectId:   columnFrom.id,
                         toProjectId:     columnTo.id
                     },
@@ -189,11 +191,12 @@
                             login: value.login,
                             index: index
                         };
-                    })
+                    }),
+                    assignmentTypeId: moveMember.column.id
                 };
 
-                //TODO save new data
-
+                //save new data
+                $scope.moveMember(dataForUpdate, moveMember.login, "move");
                 Notification.success("Update projects success");
 
                 $scope.insertedPositions = null;
@@ -216,12 +219,13 @@
                 });
                 modalInstance.result.then(function (data) {
                     console.log($scope.insertedPositions);
+
                     if (data.moveType === 'move') {
                         $scope.columns[projectIndex].users.splice(memberIndex, 1);
                     }
 
                     var dataForUpdate = {
-                        project: {
+                        projects: {
                             fromProjectId:   columnFrom.id,
                             toProjectId:     columnTo.id
                         },
@@ -231,11 +235,11 @@
                                 index: index
                             };
                         }),
-                        moveDetail: data
+                        assignmentTypeId: data.assignmentType
                     };
 
-                    //TODO save new data
-
+                    //save new data
+                    $scope.moveMember(dataForUpdate, moveMember.login, data.moveType);
                     Notification.success("Update projects success");
 
                     $scope.insertedPositions = null;
@@ -530,30 +534,32 @@
         };
 
         //Save data after member move
-        $scope.moveMember = function (dataForUpdate, indexColumn, indexElementInColumn) {
-            // dataForUpdate["filters"] = $scope.search;
-            // ProjectFactory.update({login: $scope.currentMember.login, relation: "move"}, dataForUpdate, function(data){
-            //     //update member info from backend
-            //     // $scope.columns = data.columns;
-            //
-            //     // if ($scope.currentMember !== null) {
-            //     //     $scope.selectElement($scope.currentMember);
-            //     // }
-            //
-            //     //update member info without getResourceColumns
-            //     $scope.columns[indexColumn].users[indexElementInColumn] = data;
-            //     //reindexing resourceOrder
-            //     $scope.columns[indexColumn].users.map(function(value, index) {
-            //         value.resourceOrder = index;
-            //
-            //         return value;
-            //     });
-            //     $scope.selectElement(data);
-            //
-            //     Notification.success("Save changes success");
-            // }, function (error) {
-            //     Notification.error("Server error: get assignment type");
-            // });
+        $scope.moveMember = function (dataForUpdate, memberLogin, moveType) {
+            dataForUpdate["filters"] = $scope.search;
+            ProjectFactory.update({id: 0, relation: 'members', idRelation: memberLogin, typeRelation: moveType}, dataForUpdate, function(data){
+                $scope.columns = data.projects;
+
+                // //update member info from backend
+                // // $scope.columns = data.columns;
+                //
+                // // if ($scope.currentMember !== null) {
+                // //     $scope.selectElement($scope.currentMember);
+                // // }
+                //
+                // //update member info without getResourceColumns
+                // $scope.columns[indexColumn].users[indexElementInColumn] = data;
+                // //reindexing resourceOrder
+                // $scope.columns[indexColumn].users.map(function(value, index) {
+                //     value.resourceOrder = index;
+                //
+                //     return value;
+                // });
+                // $scope.selectElement(data);
+
+                Notification.success("Save changes success");
+            }, function (error) {
+                Notification.error("Server error: get assignment type");
+            });
         };
 
     }
