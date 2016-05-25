@@ -141,14 +141,12 @@
                     columnPriority: index
                 };
             });
-            console.log(dataForUpdate);
-
-            //TODO need add request for save new data
-            // ProjectFactory.update({id: 'sort'}, {filters: $scope.search, items: dataForUpdate}, function(result){
-            //     $scope.columns = result.columns;
-            // }, function (error) {
-            //     Notification.error("Server error: save assignment type");
-            // });
+            //request for save new data
+            ProjectFactory.update({id: 'sort'}, {filters: $scope.search, items: dataForUpdate}, function(result){
+                $scope.columns = result.columns;
+            }, function (error) {
+                Notification.error("Server error: save assignment type");
+            });
         };
 
         $scope.insertedPositions = {
