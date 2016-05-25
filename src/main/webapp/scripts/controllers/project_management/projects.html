@@ -49,8 +49,8 @@
                                   ng-style="{background: lightColor(assignmentType.color, 0.4), border: '2px solid {{assignmentType.color}}'}"></span>
                         </div>
                     </div>
-                    <div class="name-box">
-                        <div class="name-label">{{item.name}} EL - {{item.engineerLevel}}</div>
+                    <div class="name-box" tooltip-placement="top" uib-tooltip="{{item.name}} {{item.position.name}}">
+                        <div class="name-label">{{item.name}} {{item.position.name}}</div>
                     </div>
                 </div>
             </div>
