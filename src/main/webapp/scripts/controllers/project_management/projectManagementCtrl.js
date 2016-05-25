@@ -192,7 +192,7 @@
                             index: index
                         };
                     }),
-                    assignmentTypeId: moveMember.column.id
+                    assignmentTypeId: moveMember.assignmentTypes[0].id
                 };
 
                 //save new data
