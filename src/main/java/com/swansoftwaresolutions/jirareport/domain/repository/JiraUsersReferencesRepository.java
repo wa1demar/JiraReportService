@@ -23,4 +23,6 @@ public interface JiraUsersReferencesRepository {
     List<JiraUsersReferences> findByProjectId(Long id);
 
     List<JiraUser> findUsersByProjectId(Long id);
+
+    List<Project> findByUserAndProjectId(String login, Long fromProjectId);
 }

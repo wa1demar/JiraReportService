@@ -71,4 +71,12 @@ public class JiraUsersReferencesRepositoryImpl implements JiraUsersReferencesRep
         return query.list();
     }
 
+    @Override
+    public List<Project> findByUserAndProjectId(String login, Long fromProjectId) {
+        Query query = sessionFactory.getCurrentSession().createQuery("select r from JiraUsersReferences r where r.project.id = :id and r.user.login = :login");
+        query.setParameter("id", fromProjectId);
+        query.setParameter("login", login);
+        return query.list();
+    }
+
 }

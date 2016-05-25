@@ -1,8 +1,10 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MoveMemberToProject;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.*;
 import com.swansoftwaresolutions.jirareport.core.mapper.ProjectMapper;
 import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
+import com.swansoftwaresolutions.jirareport.core.service.ResourceBordService;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUsersReferences;
 import com.swansoftwaresolutions.jirareport.domain.entity.Project;
@@ -23,6 +25,9 @@ import java.util.List;
  */
 @Service
 public class ProjectServiceImpl implements ProjectService {
+
+    @Autowired
+    ResourceBordService resourceBordService;
 
     @Autowired
     ProjectRepository projectRepository;
@@ -117,5 +122,57 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         return projectMapper.fromProjectToFullProjectDto(project);
+    }
+
+    @Override
+    public FullProjectDtos moveMember(String login, MoveMemberToProject moveMemberToProject) throws NoSuchEntityException {
+        JiraUser jiraUser = jiraUserRepository.findByLogin(login);
+        ProjectMoveIds projectMoveIds = moveMemberToProject.getProjects();
+
+        if (projectMoveIds != null) {
+            jiraUsersReferencesRepository.deleteByProject(jiraUser.getLogin(), projectMoveIds.getFromProjectId());
+            ResourceColumn resourceColumn = resourceBordRepository.findById(moveMemberToProject.getAssignmentTypeId());
+            Project project = projectRepository.findById(projectMoveIds.getToProjectId());
+
+            if (project != null) {
+                    JiraUsersReferences jiraUsersReferences = new JiraUsersReferences();
+                    jiraUsersReferences.setUser(jiraUser);
+                    jiraUsersReferences.setColumn(resourceColumn);
+                    jiraUsersReferences.setProject(project);
+
+                    jiraUsersReferencesRepository.add(jiraUsersReferences);
+
+            }
+        }
+
+        projectRepository.sortMembers(moveMemberToProject.getUsers());
+
+        return findAllFull(moveMemberToProject.getFilters());
+    }
+
+    @Override
+    public FullProjectDtos copyMember(String login, MoveMemberToProject moveMemberToProject) throws NoSuchEntityException {
+        JiraUser jiraUser = jiraUserRepository.findByLogin(login);
+        ProjectMoveIds projectMoveIds = moveMemberToProject.getProjects();
+
+        if (projectMoveIds != null) {
+
+            ResourceColumn resourceColumn = resourceBordRepository.findById(moveMemberToProject.getAssignmentTypeId());
+            Project project = projectRepository.findById(projectMoveIds.getToProjectId());
+
+            if (project != null) {
+                JiraUsersReferences jiraUsersReferences = new JiraUsersReferences();
+                jiraUsersReferences.setUser(jiraUser);
+                jiraUsersReferences.setColumn(resourceColumn);
+                jiraUsersReferences.setProject(project);
+
+                jiraUsersReferencesRepository.add(jiraUsersReferences);
+
+            }
+        }
+
+        projectRepository.sortMembers(moveMemberToProject.getUsers());
+
+        return findAllFull(moveMemberToProject.getFilters());
     }
 }
