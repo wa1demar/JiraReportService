@@ -538,27 +538,9 @@
             dataForUpdate["filters"] = $scope.search;
             ProjectFactory.update({id: 0, relation: 'members', idRelation: memberLogin, typeRelation: moveType}, dataForUpdate, function(data){
                 $scope.columns = data.projects;
-
-                // //update member info from backend
-                // // $scope.columns = data.columns;
-                //
-                // // if ($scope.currentMember !== null) {
-                // //     $scope.selectElement($scope.currentMember);
-                // // }
-                //
-                // //update member info without getResourceColumns
-                // $scope.columns[indexColumn].users[indexElementInColumn] = data;
-                // //reindexing resourceOrder
-                // $scope.columns[indexColumn].users.map(function(value, index) {
-                //     value.resourceOrder = index;
-                //
-                //     return value;
-                // });
-                // $scope.selectElement(data);
-
                 Notification.success("Save changes success");
             }, function (error) {
-                Notification.error("Server error: get assignment type");
+                Notification.error("Server error: save changes");
             });
         };
 
