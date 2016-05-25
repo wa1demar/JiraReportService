@@ -80,7 +80,7 @@ public class ProjectController {
         return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/v1/projects/{id}/members/{login:.+}/move", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/v1/projects/{id}/members/{login:.+}/move", method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<FullProjectDtos> moveMember(@PathVariable("login") String login, @PathVariable("id") Long id, @Valid @RequestBody MoveMemberToProject moveMemberToProject) throws NoSuchEntityException {
 
@@ -89,7 +89,7 @@ public class ProjectController {
         return new ResponseEntity<>(fullProjectDtos, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/v1/projects/{id}/members/{login:.+}/copy", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/v1/projects/{id}/members/{login:.+}/copy", method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<FullProjectDtos> copyMember(@PathVariable("login") String login, @PathVariable("id") Long id, @Valid @RequestBody MoveMemberToProject moveMemberToProject) throws NoSuchEntityException {
 
