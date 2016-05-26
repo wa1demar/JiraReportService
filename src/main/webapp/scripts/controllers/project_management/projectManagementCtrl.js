@@ -143,7 +143,7 @@
             });
             //request for save new data
             ProjectFactory.update({id: 'sort'}, {filters: $scope.search, items: dataForUpdate}, function(result){
-                $scope.columns = result.columns;
+                $scope.columns = result.projects;
             }, function (error) {
                 Notification.error("Server error: save projects");
             });
