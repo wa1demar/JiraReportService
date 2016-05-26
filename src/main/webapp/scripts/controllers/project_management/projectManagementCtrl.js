@@ -145,7 +145,7 @@
             ProjectFactory.update({id: 'sort'}, {filters: $scope.search, items: dataForUpdate}, function(result){
                 $scope.columns = result.columns;
             }, function (error) {
-                Notification.error("Server error: save assignment type");
+                Notification.error("Server error: save projects");
             });
         };
 
@@ -166,9 +166,6 @@
 
             var moveMember = $scope.columns[projectIndex].users[memberIndex];
 
-            console.log('----------------------');
-            console.log($scope.insertedPositions);
-            console.log('----------------------');
             if ($scope.insertedPositions === null ||
                 $scope.insertedPositions.columnIndex === null ||
                 $scope.insertedPositions.memberIndex === null) {
@@ -321,8 +318,6 @@
                         Notification.error("Server error");
                     });
                 } else {
-                    //TODO need fix
-                    // delete data.users;
                     ProjectFactory.update({id: data.id}, data, function(data){
                         Notification.success("Update project success");
                         $scope.getProjectColumns();
@@ -407,26 +402,8 @@
                             html: '<a tabindex="-1" href="#" class="context-menu-item" data-id-project-index="'+index+'">'+$scope.projects[index].title+'</a>',
                             enabled: function() {return true},
                             click: function ($itemScope, $event, value, html) {
-
                                 var columnFromIndex = $itemScope.$parent.$index,
                                     columnToIndex   = $(html).data("idProjectIndex");
-
-                                //change assignment type
-                                // $scope.columns[columnFromIndex].users.splice($itemScope.$index, 1);
-                                // $scope.columns[columnToIndex].users.push($itemScope.item);
-
-                                var dataForUpdate = {
-                                    assignmentType: {
-                                        fromAssignmentTypeId:   $scope.columns[columnFromIndex].id,
-                                        toAssignmentTypeId:     $scope.columns[columnToIndex].id
-                                    },
-                                    users: $scope.columns[columnToIndex].users.map(function(value, index) {
-                                        return {
-                                            login: value.login,
-                                            index: index
-                                        };
-                                    })
-                                };
 
                                 //dlg
                                 var modalInstance = $uibModal.open({
@@ -453,15 +430,25 @@
                                         $scope.columns[columnToIndex].users.push($itemScope.item);
                                     }
 
-                                    //TODO save new data
+                                    var dataForUpdate = {
+                                        projects: {
+                                            fromProjectId:   $scope.columns[columnFromIndex].id,
+                                            toProjectId:     $scope.columns[columnToIndex].id
+                                        },
+                                        users: $scope.columns[columnToIndex].users.map(function(value, index) {
+                                            return {
+                                                login: value.login,
+                                                index: index
+                                            };
+                                        }),
+                                        assignmentTypeId: data.assignmentType
+                                    };
 
-                                    Notification.success("Update projects success");
+                                    //save new data
+                                    $scope.moveMember(dataForUpdate, $itemScope.item.login, data.moveType);
                                 }, function (error) {
 
                                 });
-
-                                //add request for save new data
-                                // $scope.moveMember(dataForUpdate, columnToIndex, $scope.columns[columnToIndex].users.length - 1);
                             }
                         }
                     );
@@ -482,20 +469,21 @@
                         $scope.columns[$itemScope.$parent.$index].users.unshift($itemScope.item);
 
                         var dataForUpdate = {
-                            assignmentType: {
-                                fromAssignmentTypeId:   $scope.columns[$itemScope.$parent.$index].id,
-                                toAssignmentTypeId:     $scope.columns[$itemScope.$parent.$index].id
+                            projects: {
+                                fromProjectId:   $scope.columns[$itemScope.$parent.$index].id,
+                                toProjectId:     $scope.columns[$itemScope.$parent.$index].id
                             },
                             users: $scope.columns[$itemScope.$parent.$index].users.map(function(value, index) {
                                 return {
                                     login: value.login,
                                     index: index
                                 };
-                            })
+                            }),
+                            assignmentTypeId: $itemScope.item.assignmentTypes[0].id
                         };
 
-                        //add request for save new data
-                        // $scope.moveMember(dataForUpdate, $itemScope.$parent.$index, 0);
+                        //save new data
+                        $scope.moveMember(dataForUpdate, $itemScope.item.login, 'move');
                     }
                 },
                 {
@@ -510,20 +498,21 @@
                         $scope.columns[$itemScope.$parent.$index].users.push($itemScope.item);
 
                         var dataForUpdate = {
-                            assignmentType: {
-                                fromAssignmentTypeId:   $scope.columns[$itemScope.$parent.$index].id,
-                                toAssignmentTypeId:     $scope.columns[$itemScope.$parent.$index].id
+                            projects: {
+                                fromProjectId:   $scope.columns[$itemScope.$parent.$index].id,
+                                toProjectId:     $scope.columns[$itemScope.$parent.$index].id
                             },
                             users: $scope.columns[$itemScope.$parent.$index].users.map(function(value, index) {
                                 return {
                                     login: value.login,
                                     index: index
                                 };
-                            })
+                            }),
+                            assignmentTypeId: $itemScope.item.assignmentTypes[0].id
                         };
 
-                        //add request for save new data
-                        // $scope.moveMember(dataForUpdate, $itemScope.$parent.$index, $scope.columns[$itemScope.$parent.$index].users.length - 1);
+                        //save new data
+                        $scope.moveMember(dataForUpdate, $itemScope.item.login, 'move');
                     }
                 }
             );
