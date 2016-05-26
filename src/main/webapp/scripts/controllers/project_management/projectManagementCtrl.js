@@ -522,9 +522,13 @@
 
         //Save data after member move
         $scope.moveMember = function (dataForUpdate, memberLogin, moveType) {
+            // $scope.loaderShow = true;
             dataForUpdate["filters"] = $scope.search;
             ProjectFactory.update({id: 0, relation: 'members', idRelation: memberLogin, typeRelation: moveType}, dataForUpdate, function(data){
                 $scope.columns = data.projects;
+
+                // $scope.getProjectColumns();
+
                 Notification.success("Save changes success");
             }, function (error) {
                 Notification.error("Server error: save changes");
