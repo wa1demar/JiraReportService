@@ -31,7 +31,7 @@ public class ProjectRepositoryImpl implements ProjectRepository {
 
     @Override
     public List<Project> findAll() {
-        Query query = sessionFactory.getCurrentSession().createQuery("from Project p");
+        Query query = sessionFactory.getCurrentSession().createQuery("from Project p order by p.sortPosition");
 
         return query.list();
     }
