@@ -1,9 +1,11 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberPositionDto;
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnPriority;
 import com.swansoftwaresolutions.jirareport.domain.entity.Project;
 import com.swansoftwaresolutions.jirareport.domain.repository.ProjectRepository;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -55,7 +57,45 @@ public class ProjectRepositoryImpl implements ProjectRepository {
     }
 
     @Override
-    public void sortMembers(List<MemberPositionDto> users) {
+    public void sortMembers(List<MemberPositionDto> users, Long projectId) {
 
+        if (users != null && users.size() > 0) {
+            Session session = sessionFactory.openSession();
+            try {
+                for (MemberPositionDto positionDto : users) {
+                    Query query = session.createQuery("update JiraUsersReferences r set r.positionInColumn = :priority where r.user.login = :login and r.project.id = :id")
+                            .setParameter("id", projectId)
+                            .setParameter("priority", positionDto.getIndex())
+                            .setParameter("login", positionDto.getLogin());
+                    query.executeUpdate();
+                }
+
+                session.flush();
+
+            } finally {
+                session.close();
+            }
+        }
+    }
+
+    @Override
+    public void sort(List<ResourceColumnPriority> projectPositionDto) {
+        if (projectPositionDto != null && projectPositionDto.size() > 0) {
+            Session session = sessionFactory.openSession();
+            try {
+                for (ResourceColumnPriority positionDto : projectPositionDto) {
+                    Query query = session.createQuery("update Project  p set p.sortPosition = :priority where p.id = :id")
+                            .setParameter("id", positionDto.getColumnId())
+                            .setParameter("priority", positionDto.getColumnPriority());
+                    query.executeUpdate();
+                }
+
+                session.flush();
+
+            } finally {
+                session.close();
+            }
+
+        }
     }
 }

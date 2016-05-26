@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -79,6 +80,7 @@ public class ProjectMapperImpl implements ProjectMapper {
                     }
                     if (usersReferences.getProject().getId().equals(project.getId())) {
                         columns.add(0, usersReferences.getColumn());
+                        userDto.setResourceOrder(usersReferences.getPositionInColumn());
                     } else {
                         columns.add(usersReferences.getColumn());
                     }
@@ -103,6 +105,8 @@ public class ProjectMapperImpl implements ProjectMapper {
                 }
 
             }
+
+            Collections.sort(userDtos, (o1, o2) -> o1.getResourceOrder() - o2.getResourceOrder());
 
             projectDto.setUsers(userDtos);
 

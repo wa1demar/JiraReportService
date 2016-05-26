@@ -14,6 +14,7 @@ public class JiraUsersReferences {
     private JiraUser user;
     private ResourceColumn column;
     private Project project;
+    private int positionInColumn;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,4 +56,12 @@ public class JiraUsersReferences {
         this.project = project;
     }
 
+    @Column(name = "sort_position")
+    public int getPositionInColumn() {
+        return positionInColumn;
+    }
+
+    public void setPositionInColumn(int positionInColumn) {
+        this.positionInColumn = positionInColumn;
+    }
 }

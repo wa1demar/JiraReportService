@@ -23,4 +23,6 @@ public interface ProjectService {
     FullProjectDtos moveMember(String login, MoveMemberToProject moveMemberToProject) throws NoSuchEntityException;
 
     FullProjectDtos copyMember(String login, MoveMemberToProject moveMemberToProject) throws NoSuchEntityException;
+
+    FullProjectDtos sortProjects(ProjectPositionDto projectPositionDto);
 }

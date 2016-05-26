@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.domain.repository;
 
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberPositionDto;
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnPriority;
 import com.swansoftwaresolutions.jirareport.domain.entity.Project;
 
 import java.util.List;
@@ -19,5 +20,8 @@ public interface ProjectRepository {
 
     Project update(Project project);
 
-    void sortMembers(List<MemberPositionDto> users);
+    void sortMembers(List<MemberPositionDto> users, Long projectId);
+
+    void sort(List<ResourceColumnPriority> projectPositionDto);
+
 }

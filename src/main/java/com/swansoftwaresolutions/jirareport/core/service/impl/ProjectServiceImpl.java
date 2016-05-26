@@ -145,7 +145,7 @@ public class ProjectServiceImpl implements ProjectService {
             }
         }
 
-        projectRepository.sortMembers(moveMemberToProject.getUsers());
+        projectRepository.sortMembers(moveMemberToProject.getUsers(), moveMemberToProject.getProjects().getToProjectId());
 
         return findAllFull(moveMemberToProject.getFilters());
     }
@@ -171,8 +171,15 @@ public class ProjectServiceImpl implements ProjectService {
             }
         }
 
-        projectRepository.sortMembers(moveMemberToProject.getUsers());
+        projectRepository.sortMembers(moveMemberToProject.getUsers(), moveMemberToProject.getProjects().getToProjectId());
 
         return findAllFull(moveMemberToProject.getFilters());
+    }
+
+    @Override
+    public FullProjectDtos sortProjects(ProjectPositionDto projectPositionDto) {
+        projectRepository.sort(projectPositionDto.getItems());
+
+        return findAllFull(projectPositionDto.getFilters());
     }
 }

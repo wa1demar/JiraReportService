@@ -44,7 +44,7 @@ public class Project {
         this.sortPosition = sortPosition;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "project")
     public List<JiraUsersReferences> getReferences() {
         return references;
     }

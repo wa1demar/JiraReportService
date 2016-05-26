@@ -97,4 +97,13 @@ public class ProjectController {
 
         return new ResponseEntity<>(fullProjectDtos, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/v1/projects/sort", method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseEntity<FullProjectDtos> sortProjects(@Valid @RequestBody ProjectPositionDto projectPositionDto) throws NoSuchEntityException {
+
+        FullProjectDtos fullProjectDtos = projectService.sortProjects(projectPositionDto);
+
+        return new ResponseEntity<>(fullProjectDtos, HttpStatus.OK);
+    }
 }

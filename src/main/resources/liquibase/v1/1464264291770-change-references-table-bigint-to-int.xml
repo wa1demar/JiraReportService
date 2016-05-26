@@ -1,0 +1,8 @@
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+    <changeSet id="1464264291770" author="Waldemar">
+       <modifyDataType tableName="jira_users_references" columnName="sort_position" newDataType="int" />
+        <addDefaultValue tableName="jira_users_references" columnName="sort_position" defaultValue="0" />
+    </changeSet>
+</databaseChangeLog>
