@@ -144,6 +144,7 @@
             //request for save new data
             ProjectFactory.update({id: 'sort'}, {filters: $scope.search, items: dataForUpdate}, function(result){
                 $scope.columns = result.projects;
+                Notification.success("Save changes success");
             }, function (error) {
                 Notification.error("Server error: save projects");
             });
@@ -522,12 +523,13 @@
 
         //Save data after member move
         $scope.moveMember = function (dataForUpdate, memberLogin, moveType) {
-            // $scope.loaderShow = true;
+            $scope.loaderShow = true;
             dataForUpdate["filters"] = $scope.search;
             ProjectFactory.update({id: 0, relation: 'members', idRelation: memberLogin, typeRelation: moveType}, dataForUpdate, function(data){
-                $scope.columns = data.projects;
+                // $scope.columns = data.projects;
 
-                // $scope.getProjectColumns();
+                //FIXME need change to $scope.columns = data.projects;
+                $scope.getProjectColumns();
 
                 Notification.success("Save changes success");
             }, function (error) {
