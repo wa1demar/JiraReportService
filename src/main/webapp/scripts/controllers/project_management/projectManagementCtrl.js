@@ -557,6 +557,29 @@
             });
         };
 
+        $scope.exportProjects = function () {
+            //dlg
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'scripts/controllers/project_management/dlg/dlg_export_projects.html',
+                controller: 'DlgExportProjects',
+                backdrop: 'static',
+                size: 'md',
+                resolve: {
+                    dlgData: function () {
+                        return {
+                            columns: $scope.columns
+                        };
+                    }
+                }
+            });
+            modalInstance.result.then(function (data) {
+
+            }, function (error) {
+
+            });
+        };
+
     }
 
 })();
