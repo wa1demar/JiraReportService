@@ -225,7 +225,7 @@
                         $scope.columns[$scope.insertedPositions.columnIndex].users.splice($scope.insertedPositions.memberIndex, 1);
                         $scope.insertedPositions = null;
                         Notification.error("Error: user exist in this project");
-                        
+
                         return true;
                     }
 
@@ -398,7 +398,7 @@
             enabled: function() {return false}
         };
 
-        var hideContextMenu = true;
+        var hideContextMenu = false;
         $scope.memberMenuOptions = function (column, item) {
             if (hideContextMenu) { return []; }
 
@@ -436,6 +436,14 @@
                                     }
                                 });
                                 modalInstance.result.then(function (data) {
+
+                                    //user exist in project
+                                    if (_.findWhere($scope.columns[columnToIndex].users, {login: $itemScope.item.login}) !== undefined) {
+                                        Notification.error("Error: user exist in this project");
+
+                                        return true;
+                                    }
+
                                     if (data.moveType === 'move') {
                                         $scope.columns[columnFromIndex].users.splice($itemScope.$index, 1);
                                         $scope.columns[columnToIndex].users.push($itemScope.item);
