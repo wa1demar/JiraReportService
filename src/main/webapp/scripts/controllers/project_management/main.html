@@ -6,7 +6,7 @@
         </div>
         <div class="aui-page-header-actions">
             <button class="btn btn-primary" type="submit" ng-click="processProject()">Add project</button>
-            <button class="btn btn-primary" type="submit" ng-click="exportProjects()" title="Export projexts">
+            <button ng-if="columns.length > 0" class="btn btn-primary" type="submit" ng-click="exportProjects()" title="Export projexts">
                 <span class="glyphicon glyphicon-export"></span>
             </button>
         </div>
