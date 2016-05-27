@@ -217,6 +217,18 @@
                 modalInstance.result.then(function (data) {
                     console.log($scope.insertedPositions);
 
+                    //Count users in column > 1
+                    if (_.where(
+                            $scope.columns[$scope.insertedPositions.columnIndex].users,
+                            {login: $scope.columns[projectIndex].users[memberIndex].login}
+                        ).length > 1) {
+                        $scope.columns[$scope.insertedPositions.columnIndex].users.splice($scope.insertedPositions.memberIndex, 1);
+                        $scope.insertedPositions = null;
+                        Notification.error("Error: user exist in this project");
+                    }
+
+                    return true;
+
                     if (data.moveType === 'move') {
                         $scope.columns[projectIndex].users.splice(memberIndex, 1);
                     }
