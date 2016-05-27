@@ -6,9 +6,14 @@
         </div>
         <div class="aui-page-header-actions">
             <button class="btn btn-primary" type="submit" ng-click="processProject()">Add project</button>
-            <button ng-if="columns.length > 0" class="btn btn-primary" type="submit" ng-click="exportProjects()" title="Export projexts">
-                <span class="glyphicon glyphicon-export"></span>
-            </button>
+            <a ng-href="{{CONFIG.API_PATH}}/projects/export" target="_blank">
+                <button ng-if="columns.length > 0" class="btn btn-primary" title="Export projects">
+                    <span class="glyphicon glyphicon-export"></span>
+                </button>
+            </a>
+            <!--<button ng-if="columns.length > 0" class="btn btn-primary" type="submit" ng-click="exportProjects()" title="Export projects">-->
+                <!--<span class="glyphicon glyphicon-export"></span>-->
+            <!--</button>-->
         </div>
     </div>
 </header>
