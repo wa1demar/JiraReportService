@@ -225,9 +225,9 @@
                         $scope.columns[$scope.insertedPositions.columnIndex].users.splice($scope.insertedPositions.memberIndex, 1);
                         $scope.insertedPositions = null;
                         Notification.error("Error: user exist in this project");
+                        
+                        return true;
                     }
-
-                    return true;
 
                     if (data.moveType === 'move') {
                         $scope.columns[projectIndex].users.splice(memberIndex, 1);
