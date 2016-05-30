@@ -23,7 +23,7 @@ public class ExportProjectController extends AbstractController {
     ProjectService projectService;
 
     @Override
-    @RequestMapping(value = "/projects/export")
+    @RequestMapping(value = "/rest/v1/projects/export")
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         FullProjectDtos allProjects = projectService.findAllFull(new ProjectFilterData());
 

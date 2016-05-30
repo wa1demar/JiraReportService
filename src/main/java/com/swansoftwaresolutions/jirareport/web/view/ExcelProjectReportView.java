@@ -20,6 +20,9 @@ public class ExcelProjectReportView extends AbstractExcelView {
 
     private static final int FIRST_ROW = 1;
 
+    private int maxRowNum = 0;
+    private int maxColNum = 0;
+
     @Override
     protected void buildExcelDocument(Map<String, Object> model, HSSFWorkbook workbook, HttpServletRequest request,
                                       HttpServletResponse response) throws Exception {
@@ -39,8 +42,6 @@ public class ExcelProjectReportView extends AbstractExcelView {
         style.setFont(font);
 
         int colNum = 0;
-        int maxRowNum = 0;
-        int maxColNum = 0;
         for ( FullProjectDto project : revenueData.getProjects()) {
             HSSFCell headerCell = header.createCell(colNum);
             headerCell.setCellStyle(headerStyle);
@@ -71,7 +72,8 @@ public class ExcelProjectReportView extends AbstractExcelView {
             colNum++;
         }
 
-        for (int i = FIRST_ROW + 1; i < maxRowNum + 1; i++) {
+        maxRowNum++;
+        for (int i = FIRST_ROW + 1; i < maxRowNum; i++) {
             for (int j = 0; j < maxColNum + 1; j++) {
                 HSSFRow row = sheet.getRow(i) != null ? sheet.getRow(i) : sheet.createRow(i);
                 HSSFCell cell = row.getCell(j) != null ? row.getCell(j) : row.createCell(j);
@@ -82,13 +84,23 @@ public class ExcelProjectReportView extends AbstractExcelView {
                 cellStyle.setBorderRight(CellStyle.BORDER_THIN);
 
 
-                if (i == maxRowNum) {
-                    cellStyle.setBorderBottom(CellStyle.BORDER_THIN);
-                }
-
                 cell.setCellStyle(cellStyle);
             }
         }
+
+        HSSFRow separateRow = sheet.createRow(maxRowNum++);
+        for (int i = 0; i < maxColNum + 1; i++) {
+            HSSFCell cell = separateRow.createCell(i);
+
+            HSSFCellStyle cellStyle = workbook.createCellStyle();
+            cellStyle.setFillBackgroundColor(IndexedColors.LIGHT_BLUE.getIndex());
+            cellStyle.setFillPattern(CellStyle.BIG_SPOTS);
+            cellStyle.setBorderTop(CellStyle.BORDER_THIN);
+            cellStyle.setBorderBottom(CellStyle.BORDER_THIN);
+
+            cell.setCellStyle(cellStyle);
+        }
+
 
 
 
