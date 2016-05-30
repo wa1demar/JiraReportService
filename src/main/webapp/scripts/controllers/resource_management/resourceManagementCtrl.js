@@ -257,39 +257,63 @@
                         login: value.login,
                         index: index
                     };
-                })
+                }),
+                projectId: null
             };
 
-            //TODO check member projects (_.groupBy(list, iterator))
-            // var modalInstance = $uibModal.open({
-            //     animation: true,
-            //     templateUrl: 'scripts/controllers/resource_management/dlg/dlg_member_change_column.html',
-            //     controller: 'DlgMemberChangeColumn',
-            //     size: 'md',
-            //     resolve: {
-            //         dlgData: function () {
-            //             return {
-            //                 projects: $scope.projects
-            //             };
-            //         }
-            //     }
-            // });
-            // modalInstance.result.then(function (data) {
-            //     dataForUpdate['projectId'] = data.projectId;
-            //     //TODO save new data
-            //     //add request for save new data
-            //     // $scope.moveMember(dataForUpdate, $scope.insertedPositions.columnIndex, $scope.insertedPositions.memberIndex);
-            //
-            //     Notification.success("Update projects success");
-            // }, function (error) {
-            //     //delete element which moved
-            //     $scope.columns[$scope.insertedPositions.memberIndex].users.splice($scope.insertedPositions.memberIndex, 1);
-            //     $scope.columns[indexParent].users.splice(indexMember, 0, item);
-            // });
+            //TODO check member projects
+            if (item.projects.length > 1) {
+                var groupByAssignmentType =_.groupBy(item.projects, function(item){
+                    return item.assignmentType.id == columnFrom.id ? 'current' : 'other';
+                });
 
-            //add request for save new data
-            $scope.moveMember(dataForUpdate, $scope.insertedPositions.columnIndex, $scope.insertedPositions.memberIndex);
-            $scope.insertedPositions = null;
+                if (groupByAssignmentType.current != undefined && groupByAssignmentType.current.length >= 2 && columnFrom.id !== columnTo.id) {
+
+                    console.log(111);
+
+                    var modalInstance = $uibModal.open({
+                        animation: true,
+                        templateUrl: 'scripts/controllers/resource_management/dlg/dlg_member_change_column.html',
+                        controller: 'DlgMemberChangeColumn',
+                        size: 'md',
+                        resolve: {
+                            dlgData: function () {
+                                return {
+                                    projects: groupByAssignmentType.current
+                                };
+                            }
+                        }
+                    });
+                    modalInstance.result.then(function (data) {
+                        console.log(data);
+                        dataForUpdate.projectId = data.projectId;
+                        //TODO save new data
+                        if (data.btnType == "ok") {
+                            //add request for save new data
+                            $scope.moveMember(dataForUpdate, $scope.insertedPositions.columnIndex, $scope.insertedPositions.memberIndex);
+                        } else {
+                            //delete element which moved
+                            console.log($scope.insertedPositions);
+                            $scope.columns[$scope.insertedPositions.columnIndex].users.splice($scope.insertedPositions.memberIndex, 1);
+                            $scope.columns[indexParent].users.splice(indexMember, 0, item);
+                        }
+
+                        $scope.insertedPositions = null;
+                    }, function (error) {
+                        //delete element which moved
+                        $scope.columns[$scope.insertedPositions.memberIndex].users.splice($scope.insertedPositions.memberIndex, 1);
+                        $scope.columns[indexParent].users.splice(indexMember, 0, item);
+                    });
+                } else {
+                    //add request for save new data
+                    $scope.moveMember(dataForUpdate, $scope.insertedPositions.columnIndex, $scope.insertedPositions.memberIndex);
+                    $scope.insertedPositions = null;
+                }
+            } else {
+                //add request for save new data
+                $scope.moveMember(dataForUpdate, $scope.insertedPositions.columnIndex, $scope.insertedPositions.memberIndex);
+                $scope.insertedPositions = null;
+            }
         };
 
         //Select member
@@ -521,7 +545,7 @@
                 $scope.columns.selected = null;
                 $scope.selectElement(data);
                 //TODO ned for show member counts after move
-                // $scope.getResourceColumns();
+                $scope.getResourceColumns();
                 Notification.success("Save changes success");
             }, function (error) {
                 Notification.error("Server error: get assignment type");
