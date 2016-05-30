@@ -16,6 +16,8 @@ public interface ProjectService {
 
     FullProjectDtos findAllFull(ProjectFilterData filterData);
 
+    ExportProjectsDtos findAllForExport(ProjectFilterData filterData);
+
     ProjectDto update(ProjectDto projectDto);
 
     FullProjectDto deleteMember(String login, Long id) throws NoSuchEntityException;

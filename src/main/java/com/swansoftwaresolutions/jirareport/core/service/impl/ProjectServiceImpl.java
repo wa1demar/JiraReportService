@@ -1,24 +1,21 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MoveMemberToProject;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.*;
+import com.swansoftwaresolutions.jirareport.core.dto.technologies.FullTechnologyDto;
+import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.ProjectMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.TechnologyMapper;
 import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
 import com.swansoftwaresolutions.jirareport.core.service.ResourceBordService;
-import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
-import com.swansoftwaresolutions.jirareport.domain.entity.JiraUsersReferences;
-import com.swansoftwaresolutions.jirareport.domain.entity.Project;
-import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
-import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
-import com.swansoftwaresolutions.jirareport.domain.repository.JiraUsersReferencesRepository;
-import com.swansoftwaresolutions.jirareport.domain.repository.ProjectRepository;
-import com.swansoftwaresolutions.jirareport.domain.repository.ResourceBordRepository;
+import com.swansoftwaresolutions.jirareport.domain.entity.*;
+import com.swansoftwaresolutions.jirareport.domain.repository.*;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Vladimir Martynyuk
@@ -33,6 +30,9 @@ public class ProjectServiceImpl implements ProjectService {
     ProjectRepository projectRepository;
 
     @Autowired
+    TechnologyRepository technologyRepository;
+
+    @Autowired
     JiraUsersReferencesRepository jiraUsersReferencesRepository;
 
     @Autowired
@@ -43,6 +43,12 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     ProjectMapper projectMapper;
+
+    @Autowired
+    TechnologyMapper technologyMapper;
+
+    @Autowired
+    JiraUserMapper jiraUserMapper;
 
     @Override
     public ProjectDto add(ProjectDto projectDto) {
@@ -93,6 +99,34 @@ public class ProjectServiceImpl implements ProjectService {
         projectDtos.setProjects(projectDtoList);
 
         return projectDtos;
+    }
+
+    @Override
+    public ExportProjectsDtos findAllForExport(ProjectFilterData filterData) {
+        List<Project> projects = projectRepository.findAll();
+        List<FullProjectDto> projectDtoList = projectMapper.fromProjectsToFullProjectDtos(projects, filterData);
+
+        List<JiraUser> users = jiraUserRepository.findFromBench();
+
+        Map<String, Set<JiraUserDto>> listMap = new HashMap<>();
+        for (JiraUser user : users) {
+            JiraUserDto userDto = jiraUserMapper.fromJiraUserToJiraUserDto(user);
+            List<Technology> technologies = user.getTechnologies();
+            for (Technology technology : technologies) {
+                FullTechnologyDto technologyDto = technologyMapper.fromTechnologyToFullTechnologyDto(technology);
+                Set<JiraUserDto> jiraUsers = listMap.get(technologyDto.getName());
+                if (jiraUsers == null) {
+                    jiraUsers = new HashSet<>();
+                }
+                jiraUsers.add(userDto);
+                listMap.put(technologyDto.getName(), jiraUsers);
+            }
+        }
+
+        ExportProjectsDtos exportProjectsDtos = new ExportProjectsDtos();
+        exportProjectsDtos.setProjects(projectDtoList);
+        exportProjectsDtos.setTechnologies(listMap);
+        return exportProjectsDtos;
     }
 
     @Override

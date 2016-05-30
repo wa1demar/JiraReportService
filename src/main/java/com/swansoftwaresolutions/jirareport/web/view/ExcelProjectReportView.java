@@ -1,8 +1,9 @@
 package com.swansoftwaresolutions.jirareport.web.view;
 
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.FullProjectUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.jira_users.JiraUserDto;
+import com.swansoftwaresolutions.jirareport.core.dto.projects.ExportProjectsDtos;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.FullProjectDto;
-import com.swansoftwaresolutions.jirareport.core.dto.projects.FullProjectDtos;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.view.document.AbstractExcelView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Vladimir Martynyuk
@@ -27,7 +29,7 @@ public class ExcelProjectReportView extends AbstractExcelView {
     protected void buildExcelDocument(Map<String, Object> model, HSSFWorkbook workbook, HttpServletRequest request,
                                       HttpServletResponse response) throws Exception {
 
-        FullProjectDtos revenueData = (FullProjectDtos) model.get("projectData");
+        ExportProjectsDtos revenueData = (ExportProjectsDtos) model.get("projectData");
 
         HSSFSheet sheet = workbook.createSheet("Project Assignments");
 
@@ -45,7 +47,7 @@ public class ExcelProjectReportView extends AbstractExcelView {
         for ( FullProjectDto project : revenueData.getProjects()) {
             HSSFCell headerCell = header.createCell(colNum);
             headerCell.setCellStyle(headerStyle);
-            headerCell.setCellValue(project.getTitle() + " (" + project.getUsers().size() + ")");
+            headerCell.setCellValue(project.getTitle() /*+ " (" + project.getUsers().size() + ")"*/);
 
             if (project.getUsers() != null && project.getUsers().size() > 0) {
                 int rowNum = FIRST_ROW + 1;
@@ -83,26 +85,60 @@ public class ExcelProjectReportView extends AbstractExcelView {
                 cellStyle.setBorderLeft(CellStyle.BORDER_THIN);
                 cellStyle.setBorderRight(CellStyle.BORDER_THIN);
 
+                if (j == maxRowNum) {
+                    cellStyle.setBorderBottom(CellStyle.BORDER_THIN);
+                }
 
                 cell.setCellStyle(cellStyle);
             }
         }
 
-        HSSFRow separateRow = sheet.createRow(maxRowNum++);
-        for (int i = 0; i < maxColNum + 1; i++) {
-            HSSFCell cell = separateRow.createCell(i);
 
-            HSSFCellStyle cellStyle = workbook.createCellStyle();
-            cellStyle.setFillBackgroundColor(IndexedColors.LIGHT_BLUE.getIndex());
-            cellStyle.setFillPattern(CellStyle.BIG_SPOTS);
-            cellStyle.setBorderTop(CellStyle.BORDER_THIN);
-            cellStyle.setBorderBottom(CellStyle.BORDER_THIN);
+        maxRowNum++;
 
-            cell.setCellStyle(cellStyle);
+
+        Map<String, Set<JiraUserDto>> technologies = revenueData.getTechnologies();
+
+        HSSFRow banchRow = sheet.createRow(maxRowNum++);
+        colNum = 0;
+        for (Map.Entry<String, Set<JiraUserDto>> entry : technologies.entrySet()) {
+            HSSFCell headerCell = banchRow.createCell(colNum);
+            headerCell.setCellValue(entry.getKey() + " Bench");
+            headerCell.setCellStyle(getHeaderStyle(workbook));
+
+            if (entry.getValue() != null && entry.getValue().size() > 0) {
+                int rowNum = maxRowNum;
+                for (JiraUserDto user : entry.getValue()) {
+                    HSSFRow row = null;
+                    if (sheet.getRow(rowNum) == null) {
+                        row = sheet.createRow(rowNum);
+                    } else {
+                        row = sheet.getRow(rowNum);
+                    }
+
+                    HSSFCell cell = row.createCell(colNum);
+                    cell.setCellValue(user.getName() + (user.getPosition() != null ? " - " + user.getPosition().getName() : ""));
+
+                    HSSFCellStyle cellStyle = workbook.createCellStyle();
+
+                    cellStyle.setBorderLeft(CellStyle.BORDER_THIN);
+                    cellStyle.setBorderRight(CellStyle.BORDER_THIN);
+
+
+                    cell.setCellStyle(cellStyle);
+                    rowNum++;
+
+                }
+
+//                maxRowNum = maxRowNum <= rowNum ? rowNum : maxRowNum;
+            }
+
+            sheet.autoSizeColumn(colNum);
+
+            maxColNum = maxColNum <= colNum ? colNum : maxColNum;
+            colNum++;
+
         }
-
-
-
 
     }
 

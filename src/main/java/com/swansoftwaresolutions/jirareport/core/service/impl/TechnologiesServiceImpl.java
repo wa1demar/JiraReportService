@@ -38,24 +38,24 @@ public class TechnologiesServiceImpl implements TechnologiesService {
     public TechnologyDto add(TechnologyDto technologyDto) {
         Technology technology = technologyRepository.add(technologyMapper.fromTechnologyDtoToTechnology(technologyDto));
 
-        return technologyMapper.fromtechnologyToTechnologyDto(technology);
+        return technologyMapper.fromTechnologyToTechnologyDto(technology);
     }
 
     @Override
     public TechnologyDto delete(Long id) {
         Technology technology = technologyRepository.delete(id);
-        return technologyMapper.fromtechnologyToTechnologyDto(technology);
+        return technologyMapper.fromTechnologyToTechnologyDto(technology);
     }
 
     @Override
     public TechnologyDto find(Long id) {
         Technology technology = technologyRepository.findById(id);
-        return technologyMapper.fromtechnologyToTechnologyDto(technology);
+        return technologyMapper.fromTechnologyToTechnologyDto(technology);
     }
 
     @Override
     public TechnologyDto update(TechnologyDto technologyDto) {
         Technology technology = technologyRepository.update(technologyMapper.fromTechnologyDtoToTechnology(technologyDto));
-        return technologyMapper.fromtechnologyToTechnologyDto(technology);
+        return technologyMapper.fromTechnologyToTechnologyDto(technology);
     }
 }

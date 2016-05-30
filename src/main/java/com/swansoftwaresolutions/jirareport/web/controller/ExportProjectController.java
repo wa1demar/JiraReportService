@@ -1,6 +1,6 @@
 package com.swansoftwaresolutions.jirareport.web.controller;
 
-import com.swansoftwaresolutions.jirareport.core.dto.projects.FullProjectDtos;
+import com.swansoftwaresolutions.jirareport.core.dto.projects.ExportProjectsDtos;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.ProjectFilterData;
 import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
 import com.swansoftwaresolutions.jirareport.web.view.ExcelProjectReportView;
@@ -25,7 +25,7 @@ public class ExportProjectController extends AbstractController {
     @Override
     @RequestMapping(value = "/rest/v1/projects/export")
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        FullProjectDtos allProjects = projectService.findAllFull(new ProjectFilterData());
+        ExportProjectsDtos allProjects = projectService.findAllForExport(new ProjectFilterData());
 
         return new ModelAndView(new ExcelProjectReportView(), "projectData", allProjects);
 

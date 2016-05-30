@@ -75,4 +75,11 @@ public class TechnologyRepositoryImpl implements TechnologyRepository {
         query.setParameterList("ids", ids);
         return query.list();
     }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Technology> findBench() {
+        Query query = sessionFactory.getCurrentSession().createQuery("select t FROM Technology t join t.users u join u.userReferences r where r.column.id = 1");
+        return query.list();
+    }
 }
