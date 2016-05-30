@@ -13,6 +13,8 @@ public class FullProjectDto {
     private Long id;
     private String title;
     private int sortPosition;
+    private int allMembersCount;
+    private int membersCount;
     private List<FullProjectUserDto> users = new ArrayList<>();
 
     public Long getId() {
@@ -45,5 +47,21 @@ public class FullProjectDto {
 
     public void setUsers(List<FullProjectUserDto> users) {
         this.users = users;
+    }
+
+    public int getAllMembersCount() {
+        return allMembersCount;
+    }
+
+    public void setAllMembersCount(int allMembersCount) {
+        this.allMembersCount = allMembersCount;
+    }
+
+    public int getMembersCount() {
+        return membersCount;
+    }
+
+    public void setMembersCount(int membersCount) {
+        this.membersCount = membersCount;
     }
 }
