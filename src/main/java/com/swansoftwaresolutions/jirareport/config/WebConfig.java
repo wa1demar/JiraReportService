@@ -1,6 +1,6 @@
 package com.swansoftwaresolutions.jirareport.config;
 
-import org.modelmapper.ModelMapper;
+import com.swansoftwaresolutions.jirareport.web.view.ExcelProjectReportView;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +35,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         resolver.setPrefix("/WEB-INF/");
         resolver.setSuffix(".jsp");
         return resolver;
+    }
+
+    @Bean
+    public ExcelProjectReportView excelProjectReportView() {
+        return new ExcelProjectReportView();
     }
 
     @Override
