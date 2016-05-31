@@ -18,7 +18,6 @@
         $scope.cancel = function () {
             $scope.model['btnType'] = "cancel";
             $uibModalInstance.close($scope.model);
-            // $uibModalInstance.dismiss('cancel');
         };
     }
 
