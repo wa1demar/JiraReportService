@@ -39,4 +39,7 @@ public interface JiraUserRepository {
     void updateAll(List<JiraUser> users);
 
     void sortMembers(List<MemberPositionDto> users);
+
+    List<JiraUser> findFromBench();
+
 }

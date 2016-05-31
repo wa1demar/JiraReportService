@@ -110,5 +110,10 @@ public class JiraUserMapperImpl implements JiraUserMapper {
         return userDto;
     }
 
+    @Override
+    public com.swansoftwaresolutions.jirareport.core.dto.jira_users.JiraUserDto fromJiraUserToJiraUserDto(JiraUser user) {
+        return modelMapper.map(user, com.swansoftwaresolutions.jirareport.core.dto.jira_users.JiraUserDto.class);
+    }
+
 
 }

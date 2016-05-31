@@ -51,23 +51,7 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
         List<FullResourceUserDto> allUsersFiltered = new ArrayList<>();
         for (ResourceColumn c : columns) {
             FullResourceColumnDto fullResourceColumnDto = modelMapper.map(c, FullResourceColumnDto.class);
-//            if (c.getUsers() != null && c.getUsers().size() > 0) {
-//                List<FullResourceUserDto> fullResourceUserDtos = new ArrayList<>();
-//                for (JiraUser user : c.getUsers()) {
-//                    FullResourceUserDto userDto = modelMapper.map(user, FullResourceUserDto.class);
-//                    if (!allUsersFiltered.contains(userDto)) {
-//                        if (user.getColumns() != null) {
-//                            ResourceColumn column = user.getColumns().get(0);
-//                            userDto.setColumn(modelMapper.map(column, ResourceColumnDto.class));
-//                        }
-//
-//                        fullResourceUserDtos.add(userDto);
-//                        allUsersFiltered.add(userDto);
-//                    }
-//
-//                }
-//                fullResourceColumnDto.setUsers(fullResourceUserDtos);
-//            }
+
             columnDtos.add(fullResourceColumnDto);
         }
         Collections.sort(columnDtos, (o1, o2) -> o1.getId().compareTo(o2.getId()));
@@ -136,11 +120,6 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
 
                         allUsersFiltered.add(userDto);
 
-//                        if (user.getPosition() != null) {
-//                            PositionDto positionDto = modelMapper.map(user.getPosition(), PositionDto.class);
-//                            userDto.setEngineerLevel(positionDto);
-//                        }
-
                         fullResourceUserDtos.add(userDto);
 
                     }
@@ -151,33 +130,7 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
                 fullResourceColumnDto.setMembersCount(fullResourceUserDtos.size());
 
             }
-//            if (c.getUsers() != null && c.getUsers().size() > 0) {
-//                List<FullResourceUserDto> fullResourceUserDtos = new ArrayList<>();
-//                for (JiraUser user : c.getUsers()) {
-//                    FullResourceUserDto userDto = modelMapper.map(user, FullResourceUserDto.class);
-//                    if (!allUsersFiltered.contains(userDto)) {
-//                        count++;
-//                    }
-//                    if (!allUsersFiltered.contains(userDto) && filterName(userDto, filterData.getName())
-//                            && filterTechnologies(userDto, filterData.getTechnology())
-//                            && filterLevel(userDto, filterData.getEngineerLevel())
-//                            && filterProject(userDto, filterData.getProject())
-//                            && filterLocations(userDto, filterData.getLocation())) {
-//                        if (user.getColumns() != null) {
-//                            ResourceColumn column = user.getColumns().get(0);
-//                            userDto.setColumn(modelMapper.map(column, ResourceColumnDto.class));
-//                        }
-//
-//                        fullResourceUserDtos.add(userDto);
-//                        allUsersFiltered.add(userDto);
-//                    }
-//
-//                }
-//                Collections.sort(fullResourceUserDtos, (o1, o2) -> o1.getResourceOrder() - o2.getResourceOrder());
-//                fullResourceColumnDto.setUsers(fullResourceUserDtos);
-//                fullResourceColumnDto.setAllMembersCount(count);
-//                fullResourceColumnDto.setMembersCount(fullResourceUserDtos.size());
-//            }
+
             columnDtos.add(fullResourceColumnDto);
         }
         Collections.sort(columnDtos, (o1, o2) -> o1.getSortPosition() - o2.getSortPosition());

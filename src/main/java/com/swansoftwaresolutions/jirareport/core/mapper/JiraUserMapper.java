@@ -4,7 +4,6 @@ import com.swansoftwaresolutions.jirareport.core.dto.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ImportedJiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.ResourceUserDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
-import com.swansoftwaresolutions.jirareport.core.dto.JiraUserAutoDto;
 
 import java.util.List;
 
@@ -20,4 +19,6 @@ public interface JiraUserMapper {
     List<JiraUser> fromDtos(List<ImportedJiraUserDto> usersList);
 
     ResourceUserDto fromJiraUserToResourceUserDto(JiraUser jiraUser);
+
+    com.swansoftwaresolutions.jirareport.core.dto.jira_users.JiraUserDto fromJiraUserToJiraUserDto(JiraUser user);
 }

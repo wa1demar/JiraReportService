@@ -4,7 +4,6 @@ import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberPositionDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraGroup;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
-import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
 import com.swansoftwaresolutions.jirareport.domain.entity.Technology;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -172,6 +171,12 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
         session.flush();
         session.close();
 
+    }
+
+    @Override
+    public List<JiraUser> findFromBench() {
+        Query query = sessionFactory.getCurrentSession().createQuery("select u from JiraUser u join u.userReferences r join u.technologies t where r.column.id = 1");
+        return query.list();
     }
 
 }
