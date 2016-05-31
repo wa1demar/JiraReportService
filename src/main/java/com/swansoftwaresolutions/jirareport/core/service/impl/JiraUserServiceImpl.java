@@ -199,13 +199,13 @@ public class JiraUserServiceImpl implements JiraUserService {
 
         AssignmentType assignmentType = memberDto.getAssignmentType();
         if (assignmentType != null) {
-            List<Project>  projects = jiraUsersReferencesRepository.findByUserAndAssignmentType(user.getLogin(), assignmentType.getFromAssignmentTypeId());
+            List<Project> projects = jiraUsersReferencesRepository.findByUserAndAssignmentType(user.getLogin(), assignmentType.getFromAssignmentTypeId());
             jiraUsersReferencesRepository.deleteByAssignmentType(user.getLogin(), assignmentType.getFromAssignmentTypeId());
 
             ResourceColumn resourceColumn = resourceBordRepository.findById(assignmentType.getToAssignmentTypeId());
 
             if (projects != null && projects.size() > 0) {
-                for (Project project  : projects) {
+                for (Project project : projects) {
                     JiraUsersReferences jiraUsersReferences = new JiraUsersReferences();
                     jiraUsersReferences.setUser(user);
                     jiraUsersReferences.setColumn(resourceColumn);
@@ -267,26 +267,42 @@ public class JiraUserServiceImpl implements JiraUserService {
         AssignmentType assignmentType = memberDto.getAssignmentType();
 
         if (assignmentType != null) {
-            List<Project>  projects = jiraUsersReferencesRepository.findByUserAndAssignmentType(jiraUser.getLogin(), assignmentType.getFromAssignmentTypeId());
-            jiraUsersReferencesRepository.deleteByAssignmentType(jiraUser.getLogin(), assignmentType.getFromAssignmentTypeId());
+            if (memberDto.getProjectId() == null) {
+                List<Project> projects = jiraUsersReferencesRepository.findByUserAndAssignmentType(jiraUser.getLogin(), assignmentType.getFromAssignmentTypeId());
+                jiraUsersReferencesRepository.deleteByAssignmentType(jiraUser.getLogin(), assignmentType.getFromAssignmentTypeId());
 
-            ResourceColumn resourceColumn = resourceBordRepository.findById(assignmentType.getToAssignmentTypeId());
+                ResourceColumn resourceColumn = resourceBordRepository.findById(assignmentType.getToAssignmentTypeId());
 
-            if (projects != null && projects.size() > 0) {
-                for (Project project  : projects) {
+                if (projects != null && projects.size() > 0) {
+                    for (Project project : projects) {
+                        JiraUsersReferences jiraUsersReferences = new JiraUsersReferences();
+                        jiraUsersReferences.setUser(jiraUser);
+                        jiraUsersReferences.setColumn(resourceColumn);
+                        jiraUsersReferences.setProject(project);
+
+                        jiraUsersReferencesRepository.add(jiraUsersReferences);
+                    }
+                } else {
                     JiraUsersReferences jiraUsersReferences = new JiraUsersReferences();
                     jiraUsersReferences.setUser(jiraUser);
                     jiraUsersReferences.setColumn(resourceColumn);
-                    jiraUsersReferences.setProject(project);
 
                     jiraUsersReferencesRepository.add(jiraUsersReferences);
                 }
             } else {
+                Project project = projectRepository.findById(memberDto.getProjectId());
+                jiraUsersReferencesRepository.deleteByAssignmentTypeAndProject(jiraUser.getLogin(), assignmentType.getFromAssignmentTypeId(), memberDto.getProjectId());
+
+                ResourceColumn resourceColumn = resourceBordRepository.findById(assignmentType.getToAssignmentTypeId());
+
                 JiraUsersReferences jiraUsersReferences = new JiraUsersReferences();
                 jiraUsersReferences.setUser(jiraUser);
                 jiraUsersReferences.setColumn(resourceColumn);
+                jiraUsersReferences.setProject(project);
 
                 jiraUsersReferencesRepository.add(jiraUsersReferences);
+
+
             }
 
         }
@@ -361,8 +377,9 @@ public class JiraUserServiceImpl implements JiraUserService {
             jiraUsersReferences.setUser(jiraUser);
             jiraUsersReferencesRepository.add(jiraUsersReferences);
 
-            jiraUser.setUserReferences(new ArrayList<JiraUsersReferences>(){{
-                add(jiraUsersReferences); }});
+            jiraUser.setUserReferences(new ArrayList<JiraUsersReferences>() {{
+                add(jiraUsersReferences);
+            }});
 
         }
 
