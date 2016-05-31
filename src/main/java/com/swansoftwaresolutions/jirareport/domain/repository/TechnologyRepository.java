@@ -21,4 +21,7 @@ public interface TechnologyRepository {
     List<Technology> findAllByIds(Long[] technologies);
 
     List<Technology> findAllByIds(List<Long> ids);
+
+    List<Technology> findBench();
+
 }

@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.core.mapper;
 
+import com.swansoftwaresolutions.jirareport.core.dto.technologies.FullTechnologyDto;
 import com.swansoftwaresolutions.jirareport.core.dto.technologies.TechnologyDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.Technology;
 
@@ -13,7 +14,11 @@ public interface TechnologyMapper {
 
     Technology fromTechnologyDtoToTechnology(TechnologyDto technologyDto);
 
-    TechnologyDto fromtechnologyToTechnologyDto(Technology technology);
+    TechnologyDto fromTechnologyToTechnologyDto(Technology technology);
 
     Technology fromTechnologiesDtoToTechnologies(List<TechnologyDto> technologiesDto);
+
+    List<FullTechnologyDto> fromTechnologiesToFullTechnologiesDto(List<Technology> technologies);
+
+    FullTechnologyDto fromTechnologyToFullTechnologyDto(Technology technology);
 }
