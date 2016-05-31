@@ -3,9 +3,11 @@ package com.swansoftwaresolutions.jirareport.core.service.impl;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.JiraUserDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MoveMemberToProject;
 import com.swansoftwaresolutions.jirareport.core.dto.projects.*;
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
 import com.swansoftwaresolutions.jirareport.core.dto.technologies.FullTechnologyDto;
 import com.swansoftwaresolutions.jirareport.core.mapper.JiraUserMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.ProjectMapper;
+import com.swansoftwaresolutions.jirareport.core.mapper.ResourceBordMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.TechnologyMapper;
 import com.swansoftwaresolutions.jirareport.core.service.ProjectService;
 import com.swansoftwaresolutions.jirareport.core.service.ResourceBordService;
@@ -46,6 +48,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     TechnologyMapper technologyMapper;
+
+    @Autowired
+    ResourceBordMapper resourceBordMapper;
 
     @Autowired
     JiraUserMapper jiraUserMapper;
@@ -105,6 +110,7 @@ public class ProjectServiceImpl implements ProjectService {
     public ExportProjectsDtos findAllForExport(ProjectFilterData filterData) {
         List<Project> projects = projectRepository.findAll();
         List<FullProjectDto> projectDtoList = projectMapper.fromProjectsToFullProjectDtos(projects, filterData);
+        ResourceColumnDto resourceColumnDto = resourceBordMapper.fromResourceColumnToResourceColumnDto(resourceBordRepository.findDefaultColumn());
 
         List<JiraUser> users = jiraUserRepository.findFromBench();
 
@@ -118,6 +124,8 @@ public class ProjectServiceImpl implements ProjectService {
                 if (jiraUsers == null) {
                     jiraUsers = new HashSet<>();
                 }
+
+                userDto.setAssignmentType(resourceColumnDto);
                 jiraUsers.add(userDto);
                 listMap.put(technologyDto.getName(), jiraUsers);
             }

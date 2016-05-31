@@ -1,6 +1,7 @@
 package com.swansoftwaresolutions.jirareport.core.dto.jira_users;
 
 import com.swansoftwaresolutions.jirareport.core.dto.position.PositionDto;
+import com.swansoftwaresolutions.jirareport.core.dto.resourceboard.ResourceColumnDto;
 
 /**
  * @author Vladimir Martynyuk
@@ -10,6 +11,7 @@ public class JiraUserDto {
     private String login;
     private String name;
     private PositionDto position;
+    private ResourceColumnDto assignmentType;
 
     public String getLogin() {
         return login;
@@ -52,5 +54,13 @@ public class JiraUserDto {
         int result = login.hashCode();
         result = 31 * result + name.hashCode();
         return result;
+    }
+
+    public ResourceColumnDto getAssignmentType() {
+        return assignmentType;
+    }
+
+    public void setAssignmentType(ResourceColumnDto assignmentType) {
+        this.assignmentType = assignmentType;
     }
 }

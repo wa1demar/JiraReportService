@@ -27,6 +27,10 @@ public class ExportProjectController extends AbstractController {
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         ExportProjectsDtos allProjects = projectService.findAllForExport(new ProjectFilterData());
 
+        response.setHeader("Content-Disposition", "inline; filename=Project Assignments.xls");
+        // Make sure to set the correct content type
+        response.setContentType("application/vnd.ms-excel");
+
         return new ModelAndView(new ExcelProjectReportView(), "projectData", allProjects);
 
     }
