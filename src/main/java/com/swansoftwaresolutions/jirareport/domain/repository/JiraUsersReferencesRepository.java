@@ -25,4 +25,6 @@ public interface JiraUsersReferencesRepository {
     List<JiraUser> findUsersByProjectId(Long id);
 
     List<Project> findByUserAndProjectId(String login, Long fromProjectId);
+
+    void deleteByAssignmentTypeAndProject(String login, Long fromAssignmentTypeId, Long projectId);
 }

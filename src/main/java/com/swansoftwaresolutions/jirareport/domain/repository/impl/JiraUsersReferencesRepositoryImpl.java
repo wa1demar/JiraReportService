@@ -79,4 +79,13 @@ public class JiraUsersReferencesRepositoryImpl implements JiraUsersReferencesRep
         return query.list();
     }
 
+    @Override
+    public void deleteByAssignmentTypeAndProject(String login, Long fromAssignmentTypeId, Long projectId) {
+        Query query = sessionFactory.getCurrentSession().createQuery("delete JiraUsersReferences r where r.user.login = :login and r.column.id = :id and r.project.id = :projectId");
+        query.setParameter("login", login);
+        query.setParameter("id", fromAssignmentTypeId);
+        query.setParameter("projectId", projectId);
+        query.executeUpdate();
+    }
+
 }

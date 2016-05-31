@@ -18,10 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -98,18 +95,27 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
                         if (user.getUserReferences() != null) {
                             List<ResourceColumn> resourceColumns = new ArrayList<>();
                             List<Project> projects = new ArrayList<>();
+                            Map<Long, ResourceColumn> columnMap = new HashMap<>();
                             for (JiraUsersReferences r : user.getUserReferences()) {
                                 resourceColumns.add(r.getColumn());
                                 if (r.getProject() != null) {
-                                    projects.add(r.getProject());
+                                    Project project = r.getProject();
+                                    columnMap.put(project.getId(), r.getColumn());
+                                    projects.add(project);
                                 }
                             }
                             Collections.sort(resourceColumns, (o1, o2) -> o1.getPriority() - o2.getPriority());
                             ResourceColumn column = resourceColumns.get(0);
                             userDto.setColumn(modelMapper.map(column, ResourceColumnDto.class));
 
-                            Type targetistType = new TypeToken<List<ProjectDto>>() {}.getType();
-                            userDto.setProjects(modelMapper.map(projects, targetistType));
+                            List<ProjectDto> resultProjects = new ArrayList<>();
+                            for (Project pr : projects) {
+                                ProjectDto projectDto = modelMapper.map(pr, ProjectDto.class);
+                                projectDto.setAssignmentType(modelMapper.map(columnMap.get(pr.getId()), ResourceColumnDto.class));
+
+                                resultProjects.add(projectDto);
+                            }
+                            userDto.setProjects(resultProjects);
                         }
 
                         allUsersFiltered.add(userDto);

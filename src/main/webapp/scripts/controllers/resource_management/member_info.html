@@ -32,7 +32,7 @@
         </span>
         <ul ng-if="currentMember.projects.length > 0" class="member-info-ul">
             <li ng-repeat="value in currentMember.projects">
-                {{value.title}} <span ng-click="delMemberProject(value)" class="glyphicon glyphicon-trash control-icon-right cursor-pointer" title="Delete"></span>
+                {{value.title}} ({{value.assignmentType.name}}) <span ng-click="delMemberProject(value)" class="glyphicon glyphicon-trash control-icon-right cursor-pointer" title="Delete"></span>
             </li>
         </ul>
         <p class="empty-items" ng-if="currentMember.projects === undefined || currentMember.projects.length === 0">Empty</p>
