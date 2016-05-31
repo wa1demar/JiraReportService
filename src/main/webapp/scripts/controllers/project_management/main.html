@@ -38,7 +38,8 @@
                             ng-class="{'selected': columns.selected === column}">
 
                             <h4 class="column-h4">
-                                {{column.title}} <!--<span class="count-users">(count: {{column.users.length}})</span>-->
+                                {{column.title}}
+                                <span class="member-count">(<span ng-if="isSearch">{{column.membersCount}} of </span>{{column.allMembersCount}})</span>
                                 <span ng-if="!column.fixed" ng-click="delProject(column)" class="glyphicon glyphicon-remove control-icon" title="Delete"></span>
                                 <span ng-click="processProject(column)" class="glyphicon glyphicon-pencil control-icon" title="Edit"></span>
                             </h4>

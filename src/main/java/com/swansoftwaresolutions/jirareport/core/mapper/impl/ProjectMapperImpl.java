@@ -92,7 +92,7 @@ public class ProjectMapperImpl implements ProjectMapper {
 
                 userDto.setProjects(userProjects);
 
-
+                count++;
                 if (filterTechnologies(userDto, filterData.getTechnology())
                         && filterLevel(userDto, filterData.getEngineerLevel())
                         && filterProject(userDto, filterData.getProject())
@@ -110,6 +110,8 @@ public class ProjectMapperImpl implements ProjectMapper {
 
             projectDto.setUsers(userDtos);
 
+            projectDto.setAllMembersCount(count);
+            projectDto.setMembersCount(projectDto.getUsers().size());
             projectDtos.add(projectDto);
         }
 
