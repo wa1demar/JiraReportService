@@ -198,7 +198,7 @@ public class ExcelProjectReportView extends AbstractExcelView {
 
 
         CellStyle style = workbook.createCellStyle();
-        style.setFillForegroundColor((short) 67);
+        style.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.getIndex());
         style.setFillPattern(CellStyle.SOLID_FOREGROUND);
         style.setWrapText(true);
         style.setAlignment(CellStyle.ALIGN_LEFT);
@@ -303,7 +303,7 @@ public class ExcelProjectReportView extends AbstractExcelView {
     private CellStyle getPositionCellStyle(HSSFWorkbook workbook) {
         CellStyle style = workbook.createCellStyle();
         style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-        style.setFillForegroundColor((short) 67);
+        style.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.getIndex());
         style.setFillPattern(CellStyle.SOLID_FOREGROUND);
 
         style.setTopBorderColor(IndexedColors.GREY_25_PERCENT.getIndex());
