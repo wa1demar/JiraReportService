@@ -12,6 +12,7 @@
         $scope.loaderShow = true;
         $scope.showSearch = true;
         $scope.showProjectInfo = false;
+        $scope.showResourceLoader = false;
 
 // ----------------------------------------------------------------------------------------------------------------------
         $scope.lightColor = function (hex, lum) {
@@ -35,10 +36,14 @@
 //----------------------------------------------------------------------------------------------------------------------
 //Get all data for Resource Board
         $scope.columns = [];
-        $scope.getProjectColumns = function (showLoader) {
+        $scope.getProjectColumns = function (showLoader, showResourceLoader) {
             var showLoader = showLoader !== undefined ? showLoader : false;
             if (!!showLoader) {
                 $scope.loaderShow = true;
+            }
+            var showResourceLoader = showResourceLoader !== undefined ? showResourceLoader : false;
+            if (!!showResourceLoader) {
+                $scope.showResourceLoader = true;
             }
 
             //set data to search query
@@ -54,6 +59,7 @@
             ProjectFactory.query(searchQuery, function (result) {
                 $scope.columns = result.projects;
                 $scope.loaderShow = false;
+                $scope.showResourceLoader = false;
             }, function (error) {
                 Notification.error("Server error");
             });
@@ -194,7 +200,7 @@
                 };
 
                 //save new data
-                $scope.moveMember(dataForUpdate, moveMember.login, "move");
+                $scope.moveMember(dataForUpdate, moveMember.login, "move", true);
 
                 $scope.insertedPositions = null;
             } else {
@@ -248,7 +254,7 @@
                     };
 
                     //save new data
-                    $scope.moveMember(dataForUpdate, moveMember.login, data.moveType);
+                    $scope.moveMember(dataForUpdate, moveMember.login, data.moveType, true);
 
                     $scope.insertedPositions = null;
                 }, function (error) {
@@ -385,7 +391,7 @@
                     Notification.success("Delete member success");
                     //get member info
                     $scope.currentProject = data;
-                    $scope.getProjectColumns();
+                    $scope.getProjectColumns(false, true);
                 }, function () {
                     Notification.error("Server error");
                 });
@@ -466,7 +472,7 @@
                                     };
 
                                     //save new data
-                                    $scope.moveMember(dataForUpdate, $itemScope.item.login, data.moveType);
+                                    $scope.moveMember(dataForUpdate, $itemScope.item.login, data.moveType, true);
                                 }, function (error) {
 
                                 });
@@ -542,14 +548,15 @@
         };
 
         //Save data after member move
-        $scope.moveMember = function (dataForUpdate, memberLogin, moveType) {
-            $scope.loaderShow = true;
+        $scope.moveMember = function (dataForUpdate, memberLogin, moveType, showResourceLoader) {
+            // $scope.loaderShow = true;
+            $scope.showResourceLoader = true;
             dataForUpdate["filters"] = $scope.search;
             ProjectFactory.update({id: 0, relation: 'members', idRelation: memberLogin, typeRelation: moveType}, dataForUpdate, function(data){
                 // $scope.columns = data.projects;
 
                 //FIXME need change to $scope.columns = data.projects;
-                $scope.getProjectColumns();
+                $scope.getProjectColumns(false, showResourceLoader);
 
                 Notification.success("Save changes success");
             }, function (error) {
