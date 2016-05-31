@@ -11,11 +11,14 @@
         $scope.dlgData = dlgData;
 
         $scope.ok = function () {
+            $scope.model['btnType'] = "ok";
             $uibModalInstance.close($scope.model);
         };
 
         $scope.cancel = function () {
-            $uibModalInstance.dismiss('cancel');
+            $scope.model['btnType'] = "cancel";
+            $uibModalInstance.close($scope.model);
+            // $uibModalInstance.dismiss('cancel');
         };
     }
 
