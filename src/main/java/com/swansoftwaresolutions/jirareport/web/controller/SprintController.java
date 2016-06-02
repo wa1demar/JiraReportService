@@ -25,7 +25,7 @@ public class SprintController {
 
     @RequestMapping(value = "/{report_id}/sprints", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<SprintDto> addNewSprint(@Valid @RequestBody NewSprintDto sprintDto, @PathVariable("report_id") long reportId) {
+    public ResponseEntity<SprintDto> addNewSprint(@Valid @RequestBody NewSprintDto sprintDto, @PathVariable("report_id") long reportId) throws NoSuchEntityException {
         sprintDto.setReportId(reportId);
 
         SprintDto dto = sprintService.add(sprintDto);

@@ -1,12 +1,11 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.*;
 
@@ -55,6 +54,9 @@ public class Report  implements Serializable{
     @Column(name = "type_ID")
     private Integer typeId;
 
+    @Column(name = "last_sprint_index")
+    private Integer lastSprintIndex = 1;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
     @Fetch(FetchMode.JOIN)
@@ -67,6 +69,7 @@ public class Report  implements Serializable{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "report")
     @Fetch(FetchMode.JOIN)
     @BatchSize(size = 10)
+    @OrderBy("id asc")
     private Set<Sprint> sprints = new HashSet<>();
 
     public Long getId() {
@@ -205,4 +208,11 @@ public class Report  implements Serializable{
         this.sprints = sprints;
     }
 
+    public Integer getLastSprintIndex() {
+        return lastSprintIndex;
+    }
+
+    public void setLastSprintIndex(Integer lastSprintIndex) {
+        this.lastSprintIndex = lastSprintIndex;
+    }
 }

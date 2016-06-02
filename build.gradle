@@ -1,5 +1,5 @@
 group 'com.swansoftwaresolutions.jirareport'
-version '0.3'
+version '1.3.1-SNAPSHOT'
 
 apply plugin: 'java'
 apply plugin: 'idea'
