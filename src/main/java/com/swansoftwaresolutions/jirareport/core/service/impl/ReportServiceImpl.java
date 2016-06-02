@@ -751,6 +751,8 @@ public class ReportServiceImpl implements ReportService {
                     .showUat(finalIsShowUat)
                     .sprintsCount(sprints != null ? sprints.size() : 0)
                     .closedSprintsCount(finalClosedCount)
+                    .issues(sprints != null && sprints.size() > 0 ? sprints.get(0).getIssues() : "")
+                    .description(sprints != null && sprints.size() > 0 ? sprints.get(0).getDescription() : "")
                     .build());
         }).start();
 
@@ -850,6 +852,8 @@ public class ReportServiceImpl implements ReportService {
                         .vTargetHours(prRep.getTargetHours() != null ? prRep.getTargetHours() : 0L)
                         .showUat(finalIsShowUat)
                         .sprintsCount(sprints != null ? sprints.size() : 0)
+                        .issues(sprints != null && sprints.size() > 0 ? sprints.get(0).getIssues() : "")
+                        .description(sprints != null && sprints.size() > 0 ? sprints.get(0).getDescription() : "")
                         .closedSprintsCount(finalClosedCount)
                         .build());
             }).start();

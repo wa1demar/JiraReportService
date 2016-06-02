@@ -40,6 +40,8 @@ public class SprintProjectReportDto {
     private Long actualUatDefectHours;
     private int defectActual;
     private List<SprintDeveloper> developers = new ArrayList<>();
+    private String issues;
+    private String description;
 
     private Chart chart;
 
@@ -291,5 +293,21 @@ public class SprintProjectReportDto {
 
     public void setShowOutOfRange(boolean showOutOfRange) {
         this.showOutOfRange = showOutOfRange;
+    }
+
+    public String getIssues() {
+        return issues;
+    }
+
+    public void setIssues(String issues) {
+        this.issues = issues;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
