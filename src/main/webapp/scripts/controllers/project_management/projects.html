@@ -20,7 +20,7 @@
                         <img ng-if="item.avatar !== undefined && item.avatar !== '' && item.avatar !== null" ng-src="{{item.avatar}}" alt="{{item.name}}" class="avatar">
                         <span ng-if="item.avatar === undefined || item.avatar === '' || item.avatar === null" class="glyphicon glyphicon-user no-avatar"></span>
                     </div>
-                    <div class="circle-box">
+                    <div class="circle-box" ng-if="!item.notShowCircles">
                         <div ng-if="item.assignmentTypes.length > 1">
                             <span ng-repeat="assignmentType in item.assignmentTypes" ng-if="$index >= 1"
                                   class="circle-item"
