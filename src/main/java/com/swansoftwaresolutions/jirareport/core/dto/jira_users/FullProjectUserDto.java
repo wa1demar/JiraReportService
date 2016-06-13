@@ -27,6 +27,7 @@ public class FullProjectUserDto {
     private List<ResourceColumnDto> assignmentTypes = new ArrayList<>();
     private ProjectDto column;
     private int resourceOrder;
+    private boolean notShowCircles;
 
     public String getLogin() {
         return login;
@@ -149,5 +150,13 @@ public class FullProjectUserDto {
 
     public void setColumn(ProjectDto column) {
         this.column = column;
+    }
+
+    public boolean isNotShowCircles() {
+        return notShowCircles;
+    }
+
+    public void setNotShowCircles(boolean notShowCircles) {
+        this.notShowCircles = notShowCircles;
     }
 }

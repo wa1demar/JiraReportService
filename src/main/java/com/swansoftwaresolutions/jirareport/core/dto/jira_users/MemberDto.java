@@ -9,6 +9,7 @@ public class MemberDto {
     private String description;
     private Long locationId;
     private AssignmentType assignmentType;
+    private boolean notShowCircles;
 
     public Long getEngineerLevel() {
         return engineerLevel;
@@ -40,5 +41,13 @@ public class MemberDto {
 
     public void setAssignmentType(AssignmentType assignmentType) {
         this.assignmentType = assignmentType;
+    }
+
+    public boolean isNotShowCircles() {
+        return notShowCircles;
+    }
+
+    public void setNotShowCircles(boolean notShowCircles) {
+        this.notShowCircles = notShowCircles;
     }
 }
