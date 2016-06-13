@@ -1,9 +1,10 @@
 <div class="modal-header">
   <h3 class="modal-title capitalize">{{dlgData.type}} sprint</h3>
 </div>
+
 <form name="processSprintForm" ng-submit="submit()" novalidate>
     <div class="content-body" style="margin: 20px;">
-        <div class="field-group" ng-class="{ 'has-error': processSprintForm.$submitted || processSprintForm.name.$touched && processSprintForm.name.$invalid }">
+        <div ng-if="report.typeId != 3" class="field-group" ng-class="{ 'has-error': processSprintForm.$submitted || processSprintForm.name.$touched && processSprintForm.name.$invalid }">
             <label for="name" class="control-label">Name: </label>
             <input ng-model="sprint.name" type="text" class="form-control" id="name" name="name" required/>
             <div class="help-block" ng-messages="processSprintForm.name.$error" ng-if="processSprintForm.name.$touched || processSprintForm.$submitted">

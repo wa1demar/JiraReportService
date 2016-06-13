@@ -15,6 +15,7 @@
         <select id="id-type" class="form-control" name="id-type"  ng-model="model.typeId" convert-to-number>
           <option value="1">Automatic</option>
           <option value="2">Manual</option>
+          <option value="3">Special</option>
         </select>
       </div>
       <div class="form-group" ng-if="model.typeId === 1" ng-class="{ 'has-error': processReportForm.$submitted || processReportForm.boardId.$touched && processReportForm.boardId.$invalid }">

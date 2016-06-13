@@ -17,8 +17,9 @@
             <div class="field-group">
                 <label>Board type:</label>
                 <span style="padding: 5px 0 0 0; font-weight: bold; float: left;">
-                    <span ng-show="report.typeId !== 2">Automatic</span>
+                    <span ng-show="report.typeId === 1">Automatic</span>
                     <span ng-show="report.typeId === 2">Manual</span>
+                    <span ng-show="report.typeId === 3">Special</span>
                 </span>
             </div>
             <div class="field-group" ng-show="report.typeId === 1">
