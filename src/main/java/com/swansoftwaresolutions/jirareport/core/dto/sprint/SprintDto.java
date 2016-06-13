@@ -16,6 +16,8 @@ public class SprintDto {
     private Date endDate;
     private Date startDate;
     private Long reportId;
+    private String description;
+    private String issues;
 
     public long getId() {
         return id;
@@ -95,5 +97,21 @@ public class SprintDto {
 
     public void setShowOutOfRange(boolean showOutOfRange) {
         this.showOutOfRange = showOutOfRange;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getIssues() {
+        return issues;
+    }
+
+    public void setIssues(String issues) {
+        this.issues = issues;
     }
 }

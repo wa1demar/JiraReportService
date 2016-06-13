@@ -23,6 +23,7 @@ public class ResourceUserDto {
     private ResourceColumnDto column;
     private String description;
     private String avatar;
+    private boolean notShowCircles;
     private List<AttachmentDto> attachments = new ArrayList<>();
 
     public String getLogin() {
@@ -103,5 +104,13 @@ public class ResourceUserDto {
 
     public void setPosition(PositionDto position) {
         this.position = position;
+    }
+
+    public boolean isNotShowCircles() {
+        return notShowCircles;
+    }
+
+    public void setNotShowCircles(boolean notShowCircles) {
+        this.notShowCircles = notShowCircles;
     }
 }

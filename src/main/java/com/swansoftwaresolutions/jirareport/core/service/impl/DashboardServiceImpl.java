@@ -9,10 +9,8 @@ import com.swansoftwaresolutions.jirareport.core.mapper.ReportMapper;
 import com.swansoftwaresolutions.jirareport.core.service.DashboardService;
 import com.swansoftwaresolutions.jirareport.core.service.ReportService;
 import com.swansoftwaresolutions.jirareport.domain.entity.CacheProjectTotal;
-import com.swansoftwaresolutions.jirareport.domain.entity.Report;
 import com.swansoftwaresolutions.jirareport.domain.model.Paged;
 import com.swansoftwaresolutions.jirareport.domain.repository.CacheProjectTotalRepository;
-import com.swansoftwaresolutions.jirareport.domain.repository.ReportRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -138,6 +136,8 @@ public class DashboardServiceImpl implements DashboardService {
             projectReportDto.setActualUatDefectPoints(total.getuActualPoints());
             projectReportDto.setTargetUatDefectHours(total.getuTargetHours());
             projectReportDto.setActualUatDefectHours(total.getuActualHours());
+            projectReportDto.setIssues(total.getIssues());
+            projectReportDto.setDescription(total.getDescription());
             projectReportDto.setSprintsCount(total.getSprintsCount());
             projectReportDto.setChart(new Chart(
                     total.getChartLabels().split(","),

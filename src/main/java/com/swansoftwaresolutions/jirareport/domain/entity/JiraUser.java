@@ -27,6 +27,7 @@ public class JiraUser implements Serializable {
     private List<Attachment> attachments = new ArrayList<>();
     private String avatar;
     private int resourceOrder;
+    private boolean notShowCircles;
     private List<JiraUsersReferences> userReferences = new ArrayList<>();
 
     @Column(name = "email")
@@ -159,5 +160,14 @@ public class JiraUser implements Serializable {
 
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    @Column(name = "not_show_circles")
+    public boolean isNotShowCircles() {
+        return notShowCircles;
+    }
+
+    public void setNotShowCircles(boolean notShowCircles) {
+        this.notShowCircles = notShowCircles;
     }
 }

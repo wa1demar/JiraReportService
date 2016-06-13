@@ -37,6 +37,8 @@ public class ProjectReportDto {
     private Long actualUatDefectHours;
 
     private long sprintsCount;
+    private String description;
+    private String issues;
 
     private Chart chart;
 
@@ -273,5 +275,21 @@ public class ProjectReportDto {
 
     public void setSprintsCount(long sprintsCount) {
         this.sprintsCount = sprintsCount;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getIssues() {
+        return issues;
+    }
+
+    public void setIssues(String issues) {
+        this.issues = issues;
     }
 }

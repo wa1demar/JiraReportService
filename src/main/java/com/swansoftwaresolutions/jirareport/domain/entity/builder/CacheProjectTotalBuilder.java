@@ -126,6 +126,16 @@ public class CacheProjectTotalBuilder {
         return this;
     }
 
+    public CacheProjectTotalBuilder issues(String issues) {
+        this.projectTotal.setIssues(issues);
+        return this;
+    }
+
+    public CacheProjectTotalBuilder description(String description) {
+        this.projectTotal.setDescription(description);
+        return this;
+    }
+
     public CacheProjectTotal build() {
         return projectTotal;
     }

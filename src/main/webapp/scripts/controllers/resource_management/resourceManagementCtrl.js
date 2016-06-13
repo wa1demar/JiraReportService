@@ -395,12 +395,12 @@
                 engineerLevel:          $scope.currentMember.engineerLevel,
                 description:            $scope.currentMember.description,
                 locationId:             $scope.currentMember.location.id,
+                notShowCircles:         $scope.currentMember.notShowCircles === undefined ? false : $scope.currentMember.notShowCircles,
                 assignmentType: {
                     fromAssignmentTypeId:   fromAssignmentTypeId,
                     toAssignmentTypeId:     $scope.currentMember.column.id
                 }
             };
-
             MemberFactory.update({login: $scope.currentMember.login}, memberForUpdate, function(data){
                 Notification.success("Update member info success");
                 //get member info
