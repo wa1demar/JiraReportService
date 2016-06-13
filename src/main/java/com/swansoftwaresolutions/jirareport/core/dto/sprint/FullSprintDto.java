@@ -1,11 +1,9 @@
 package com.swansoftwaresolutions.jirareport.core.dto.sprint;
 
 import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDeveloperDto;
-import com.swansoftwaresolutions.jirareport.domain.entity.SprintDeveloper;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Vladimir Martynyuk
@@ -25,6 +23,8 @@ public class FullSprintDto {
     List<SprintDeveloperDto> developers;
     List<SprintDeveloperDto> sprintTeams;
     private long jiraSprintId;
+    private String issues;
+    private String description;
 
     public long getId() {
         return id;
@@ -163,5 +163,21 @@ public class FullSprintDto {
 
     public void setShowOutOfRange(boolean showOutOfRange) {
         this.showOutOfRange = showOutOfRange;
+    }
+
+    public String getIssues() {
+        return issues;
+    }
+
+    public void setIssues(String issues) {
+        this.issues = issues;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
