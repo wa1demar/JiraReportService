@@ -1,5 +1,6 @@
 package com.swansoftwaresolutions.jirareport.domain.repository.impl;
 
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
 import com.swansoftwaresolutions.jirareport.domain.entity.Position;
 import com.swansoftwaresolutions.jirareport.domain.repository.PositionRepository;
 import org.hibernate.Query;
@@ -35,7 +36,18 @@ public class PositionRepositoryImpl implements PositionRepository {
     @Override
     public Position delete(Long id) {
         Position position = findById(id);
-        sessionFactory.getCurrentSession().delete(position);
+        List<JiraUser> users = position.getUsers();
+        for (JiraUser u : users) {
+            u.setPosition(null);
+            Query query = sessionFactory.getCurrentSession().createQuery("update JiraUser u set u.position = null where u.login = :login");
+            query.setParameter("login", u.getLogin());
+            query.executeUpdate();
+        }
+
+        Query query = sessionFactory.getCurrentSession().createQuery("delete Position p where p.id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
+
         return position;
     }
 
