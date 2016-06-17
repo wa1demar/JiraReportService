@@ -98,7 +98,7 @@ public class SprintServiceImpl implements SprintService {
         Report report = reportRepository.findById(reportId);
 
         Sprint sprint = null;
-        if (report.getTypeId() != 2) {
+        if (report.getTypeId() == 1) {
             developerRepository.deleteBySprintId(sprintId);
             sprint = sprintRepository.findById(sprintId);
         } else {
