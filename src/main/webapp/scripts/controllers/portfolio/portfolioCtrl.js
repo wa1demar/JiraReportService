@@ -39,6 +39,10 @@
         this.updateChart = function (item) {
             var chartData = item.chart;
 
+            if (!chartData) {
+                return false;
+            }
+
             //Chart type (bad: red; good: green)
             console.log("Data for chart: actual = "+chartData.actual[chartData.actual.length - 1]+" ; target = "+chartData.target[chartData.actual.length - 1]);
             var actualChartColor = "#FF0000";
