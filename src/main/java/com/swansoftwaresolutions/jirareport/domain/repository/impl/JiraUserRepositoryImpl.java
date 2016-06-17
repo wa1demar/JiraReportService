@@ -129,7 +129,9 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
         Query query = sessionFactory.getCurrentSession().createQuery("delete JiraUsersReferences r where r.user.login = :login");
         query.setParameter("login", login);
         query.executeUpdate();
+
         return findByLogin(login);
+
     }
 
     @Override
