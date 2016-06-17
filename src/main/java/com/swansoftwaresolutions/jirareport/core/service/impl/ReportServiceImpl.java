@@ -326,7 +326,10 @@ public class ReportServiceImpl implements ReportService {
 
         try {
             Report report = reportRepository.findById(reportId);
-            if (report.getBoardId() == null) {
+            if (report.getTypeId() == 3) {
+                projectDashboardDto.setReport(buildSpecialReport(report));
+                projectDashboardDto.setSprints(buildSpecialSprints(report));
+            } else if (report.getBoardId() == null) {
                 projectDashboardDto.setSprints(buildManualSprints(report));
                 projectDashboardDto.setReport(buildProjectReport(reportId, projectDashboardDto.getSprints()));
             } else {
@@ -354,6 +357,71 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public boolean showUat(Long reportId) {
         return reportRepository.showUat(reportId);
+    }
+
+    private List<SprintProjectReportDto> buildSpecialSprints(Report report) throws NoSuchEntityException {
+        List<SprintProjectReportDto> sprints = new ArrayList<>();
+
+        List<FullSprintDto> sprintDtoList = sprintService.findByReport(report);
+
+        for (FullSprintDto sprintDto : sprintDtoList) {
+            SprintProjectReportDto sprint = new SprintProjectReportDto();
+            sprint.setId(sprintDto.getId());
+            sprint.setName(sprintDto.getName());
+            sprint.setNotCountTarget(sprintDto.isNotCountTarget());
+            sprint.setShowUat(sprintDto.isShowUat());
+            sprint.setShowOutOfRange(sprintDto.isShowOutOfRange());
+            sprint.setState(sprintDto.getState());
+            sprint.setType(sprintDto.getType());
+            sprint.setStartDate(sprintDto.getStartDate());
+            sprint.setEndDate(sprintDto.getEndDate());
+            sprint.setCompleteDate(sprintDto.getEndDate());
+            sprint.setDescription(sprintDto.getDescription());
+            sprint.setIssues(sprintDto.getIssues());
+
+            sprint.setTargetPoints(0);
+            sprint.setTargetHours(0L);
+            sprint.setTargetQatDefectHours(0L);
+            sprint.setTargetQatDefectMin(0);
+            sprint.setTargetQatDefectMax(0);
+            sprint.setTargetUatDefectHours(0L);
+            sprint.setTargetUatDefectMin(0);
+            sprint.setTargetUatDefectMax(0);
+
+            sprint.setActualHours(0L);
+            sprint.setActualPoints(0);
+            sprint.setActualQatDefectHours(0L);
+            sprint.setActualQatDefectPoints(0);
+            sprint.setActualUatDefectHours(0L);
+            sprint.setActualUatDefectPoints(0);
+
+            sprints.add(sprint);
+        }
+
+        Collections.sort(sprints, (o1, o2) -> o2.getStartDate().compareTo(o1.getStartDate()));
+
+        new Thread(() -> {
+            projectTotalRepository.saveOrUpdate(new CacheProjectTotalBuilder()
+                    .vTargetPoints(0)
+                    .vActualPoints(0)
+                    .qtargetMin(0)
+                    .qtargetMax(0)
+                    .qActualPoints(0)
+                    .qTargetHours(0L)
+                    .qActualHours(0L)
+                    .utargetMin(0)
+                    .utargetMax(0)
+                    .uActualPoints(0)
+                    .uTargetHours(0L)
+                    .report(report)
+                    .vActualHours(0L)
+                    .vTargetHours(0L)
+                    .issues(sprints.size() > 0 ? sprints.get(0).getIssues() : "")
+                    .description(sprints.size() > 0 ? sprints.get(0).getDescription() : "")
+                    .build());
+        }).start();
+
+        return sprints;
     }
 
     private List<SprintProjectReportDto> buildManualSprints(Report report) {
@@ -648,6 +716,41 @@ public class ReportServiceImpl implements ReportService {
             }
         }
         return false;
+    }
+
+    private ProjectReportDto buildSpecialReport(Report report) {
+        ProjectReportDto prRep = new ProjectReportDto();
+        ReportDto reportDto = reportMapper.toDto(report);
+        prRep.setId(reportDto.getId());
+        prRep.setTitle(reportDto.getTitle());
+        prRep.setCreator(reportDto.getCreator());
+        prRep.setCreatedDate(reportDto.getCreatedDate());
+        prRep.setUpdatedDate(reportDto.getUpdatedDate());
+        prRep.setClosedDate(reportDto.getClosedDate());
+        prRep.setTypeId(reportDto.getTypeId());
+        prRep.setClosed(reportDto.isClosed());
+        prRep.setAdmins(reportDto.getAdmins());
+
+        prRep.setTargetPoints(0);
+        prRep.setTargetHours(0L);
+        prRep.setTargetQatDefectHours(0L);
+        prRep.setTargetQatDefectMin(0);
+        prRep.setTargetQatDefectMax(0);
+        prRep.setTargetUatDefectHours(0L);
+        prRep.setTargetUatDefectMin(0);
+        prRep.setTargetUatDefectMax(0);
+
+        prRep.setActualHours(0L);
+        prRep.setActualPoints(0);
+        prRep.setActualQatDefectHours(0L);
+        prRep.setActualQatDefectPoints(0);
+        prRep.setActualUatDefectHours(0L);
+        prRep.setActualUatDefectPoints(0);
+
+        prRep.setChart(null);
+
+        return prRep;
+
     }
 
     private ProjectReportDto buildAutomaticProjectReport(Report report, List<SprintProjectReportDto> sprints) {

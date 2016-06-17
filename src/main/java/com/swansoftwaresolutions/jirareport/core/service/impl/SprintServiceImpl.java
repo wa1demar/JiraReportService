@@ -224,6 +224,8 @@ public class SprintServiceImpl implements SprintService {
             fullSpr.setShowUat(sprint.isShowUAT());
             fullSpr.setDevelopers(developers);
             fullSpr.setShowOutOfRange(sprint.isShowOutOfRange());
+            fullSpr.setIssues(sprint.getIssues());
+            fullSpr.setDescription(sprint.getDescription());
 
             if (sprint.getJiraSprint() != null) {
                 fullSpr.setCompleteDate(sprint.getJiraSprint().getCompleteDate());

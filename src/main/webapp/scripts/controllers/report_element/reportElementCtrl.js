@@ -62,12 +62,17 @@
 //----------------------------------------------------------------------------------------------------------------------
 //update chart
         $scope.updateChart = function (item) {
+
             if ($scope.showSprintId === null || $scope.showSprintId === undefined) {
                 //console.log("update Chart for report");
                 $scope.chartData = $scope.reportData.report.chart;
             } else {
                 //console.log("update Chart for sprint");
                 $scope.chartData = item.chart;
+            }
+
+            if (!$scope.chartData) {
+                return;
             }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -109,6 +114,11 @@
                 //count hideUatCount, closedSprintCount and add some new fields
                 $scope.hideUatCount = 0;
                 $scope.closedSprintCount = 0;
+
+                $scope.sprintsCount = $scope.reportData.sprints.length;
+                $scope.sprintIndex = 0;
+                $scope.currentSprint = $scope.reportData.sprints[$scope.sprintIndex];
+
                 for(var index = 0; index < $scope.reportData.sprints.length; index++) {
                     $scope.hideUatCount = !$scope.reportData.sprints[index].showUat ? $scope.hideUatCount + 1 : $scope.hideUatCount;
                     $scope.closedSprintCount = $scope.reportData.sprints[index].state === "closed" ? $scope.closedSprintCount + 1 : $scope.closedSprintCount;
@@ -365,6 +375,11 @@
             $location.url("/report/" + item.id);
             //self.getReportWithSprintsAndTeamsData();
         };
+
+        $scope.showOlderSprint = function () {
+            $scope.sprintIndex = $scope.sprintIndex >= $scope.sprintsCount - 1 ? 0 : $scope.sprintIndex + 1;
+            $scope.currentSprint = $scope.reportData.sprints[$scope.sprintIndex];
+        }
     }
 
 })();

@@ -139,11 +139,15 @@ public class DashboardServiceImpl implements DashboardService {
             projectReportDto.setIssues(total.getIssues());
             projectReportDto.setDescription(total.getDescription());
             projectReportDto.setSprintsCount(total.getSprintsCount());
-            projectReportDto.setChart(new Chart(
-                    total.getChartLabels().split(","),
-                    Arrays.stream(total.getChartTarget().substring(1, total.getChartTarget().length()-1).split(",")).map(String::trim).mapToDouble(Double::parseDouble).toArray(),
-                    Arrays.stream(total.getChartActual().substring(1, total.getChartActual().length()-1).split(",")).map(String::trim).mapToInt(Integer::parseInt).toArray()
-            ));
+            if (total.getChartActual() != null) {
+                projectReportDto.setChart(new Chart(
+                        total.getChartLabels().split(","),
+                        Arrays.stream(total.getChartTarget().substring(1, total.getChartTarget().length() - 1).split(",")).map(String::trim).mapToDouble(Double::parseDouble).toArray(),
+                        Arrays.stream(total.getChartActual().substring(1, total.getChartActual().length() - 1).split(",")).map(String::trim).mapToInt(Integer::parseInt).toArray()
+                ));
+            } else {
+                projectReportDto.setChart(null);
+            }
 
 
             ProjectDashboardDto dashboardDto = new ProjectDashboardDto();
