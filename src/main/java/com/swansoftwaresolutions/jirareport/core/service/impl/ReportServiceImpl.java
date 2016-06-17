@@ -110,20 +110,27 @@ public class ReportServiceImpl implements ReportService {
         Report newReport = reportMapper.fromDto(newReportDto);
         newReport.setAdmins(jiraUsers);
 
-        Report addedReport = reportRepository.add(newReport);
-
-        List<JiraSprint> jiraSprints = jiraSprintRepository.findByBoardId(addedReport.getBoardId());
-
-        List<Sprint> sprints = new ArrayList<>();
-        for (JiraSprint jiraSprint : jiraSprints) {
-            Sprint sprint = new Sprint();
-            sprint.setJiraSprint(jiraSprint);
-            sprint.setReport(addedReport);
-
-            sprints.add(sprint);
+        if (newReportDto.getTypeId() != 1) {
+            newReport.setBoardId(null);
         }
 
-        sprintRepository.addAll(sprints);
+        Report addedReport = reportRepository.add(newReport);
+
+        if (addedReport.getTypeId() == 1) {
+
+            List<JiraSprint> jiraSprints = jiraSprintRepository.findByBoardId(addedReport.getBoardId());
+
+            List<Sprint> sprints = new ArrayList<>();
+            for (JiraSprint jiraSprint : jiraSprints) {
+                Sprint sprint = new Sprint();
+                sprint.setJiraSprint(jiraSprint);
+                sprint.setReport(addedReport);
+
+                sprints.add(sprint);
+            }
+
+            sprintRepository.addAll(sprints);
+        }
 
         ReportDto reportDto = reportMapper.toDto(addedReport);
 
