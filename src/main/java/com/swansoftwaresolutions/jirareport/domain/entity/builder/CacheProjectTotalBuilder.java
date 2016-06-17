@@ -4,6 +4,7 @@ import com.swansoftwaresolutions.jirareport.domain.entity.CacheProjectTotal;
 import com.swansoftwaresolutions.jirareport.domain.entity.Report;
 
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * @author Vladimir Martynyuk
@@ -133,6 +134,16 @@ public class CacheProjectTotalBuilder {
 
     public CacheProjectTotalBuilder description(String description) {
         this.projectTotal.setDescription(description);
+        return this;
+    }
+
+    public CacheProjectTotalBuilder startDate(Date date) {
+        this.projectTotal.setStartDate(date);
+        return this;
+    }
+
+    public CacheProjectTotalBuilder endDate(Date date) {
+        this.projectTotal.setEndDate(date);
         return this;
     }
 

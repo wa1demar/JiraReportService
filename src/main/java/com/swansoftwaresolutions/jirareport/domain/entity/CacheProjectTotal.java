@@ -5,6 +5,7 @@ import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author Vladimir Martynyuk
@@ -88,6 +89,12 @@ public class CacheProjectTotal implements Serializable {
     @Cascade(CascadeType.ALL)
     @JoinColumn(name="report_id")
     private Report report;
+
+    @Column(name = "start_date")
+    private Date startDate;
+
+    @Column(name = "end_date")
+    private Date endDate;
 
     public Long getId() {
         return id;
@@ -279,5 +286,21 @@ public class CacheProjectTotal implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }
