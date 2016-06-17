@@ -139,6 +139,8 @@ public class DashboardServiceImpl implements DashboardService {
             projectReportDto.setIssues(total.getIssues());
             projectReportDto.setDescription(total.getDescription());
             projectReportDto.setSprintsCount(total.getSprintsCount());
+            projectReportDto.setStartDate(total.getStartDate());
+            projectReportDto.setEndDate(total.getEndDate());
             if (total.getChartActual() != null) {
                 projectReportDto.setChart(new Chart(
                         total.getChartLabels().split(","),

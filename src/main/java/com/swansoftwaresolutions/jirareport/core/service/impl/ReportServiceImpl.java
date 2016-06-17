@@ -418,6 +418,8 @@ public class ReportServiceImpl implements ReportService {
                     .vTargetHours(0L)
                     .issues(sprints.size() > 0 ? sprints.get(0).getIssues() : "")
                     .description(sprints.size() > 0 ? sprints.get(0).getDescription() : "")
+                    .startDate(sprints.size() > 0 ? sprints.get(0).getStartDate() : null)
+                    .endDate(sprints.size() > 0 ? sprints.get(0).getEndDate() : null)
                     .build());
         }).start();
 
@@ -856,6 +858,8 @@ public class ReportServiceImpl implements ReportService {
                     .closedSprintsCount(finalClosedCount)
                     .issues(sprints != null && sprints.size() > 0 ? sprints.get(0).getIssues() : "")
                     .description(sprints != null && sprints.size() > 0 ? sprints.get(0).getDescription() : "")
+                    .startDate(sprints.size() > 0 ? sprints.get(0).getStartDate() : null)
+                    .endDate(sprints.size() > 0 ? sprints.get(0).getEndDate() : null)
                     .build());
         }).start();
 
@@ -956,7 +960,8 @@ public class ReportServiceImpl implements ReportService {
                         .showUat(finalIsShowUat)
                         .sprintsCount(sprints != null ? sprints.size() : 0)
                         .issues(sprints != null && sprints.size() > 0 ? sprints.get(0).getIssues() : "")
-                        .description(sprints != null && sprints.size() > 0 ? sprints.get(0).getDescription() : "")
+                        .description(sprints != null && sprints.size() > 0 ? sprints.get(0).getDescription() : "").startDate(sprints.size() > 0 ? sprints.get(0).getStartDate() : null)
+                        .endDate(sprints.size() > 0 ? sprints.get(0).getEndDate() : null)
                         .closedSprintsCount(finalClosedCount)
                         .build());
             }).start();

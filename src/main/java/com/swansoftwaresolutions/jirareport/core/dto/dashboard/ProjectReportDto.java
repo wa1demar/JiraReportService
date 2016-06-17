@@ -18,6 +18,8 @@ public class ProjectReportDto {
     private Date createdDate;
     private Date updatedDate;
     private Date closedDate;
+    private Date startDate;
+    private Date endDate;
     private int typeId;
     private boolean closed;
     private List<JiraUserDto> admins= new ArrayList<>();
@@ -291,5 +293,21 @@ public class ProjectReportDto {
 
     public void setIssues(String issues) {
         this.issues = issues;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }
