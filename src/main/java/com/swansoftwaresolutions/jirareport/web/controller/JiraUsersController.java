@@ -66,7 +66,7 @@ public class JiraUsersController {
         return new ResponseEntity<>(newNewResourceUserDto, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/v1/members/{login:.+}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/v1/members/{login:.+}", method = RequestMethod.PUT, headers="Accept=application/xml, application/json")
     @ResponseBody
     public ResponseEntity<ResourceUserDto> updateMemberInfo(@PathVariable("login") String login, @Valid @RequestBody MemberDto memberDto) throws NoSuchEntityException {
 

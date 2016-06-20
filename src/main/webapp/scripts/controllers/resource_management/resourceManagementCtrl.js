@@ -393,7 +393,7 @@
         $scope.chnageMemberInfoData = function (fromAssignmentTypeId, type) {
             console.log($scope.currentMember.engineerLevel);
             var memberForUpdate = {
-                engineerLevel:          $scope.currentMember.position.id,
+                engineerLevel:          $scope.currentMember.position ? $scope.currentMember.position.id : null,
                 description:            $scope.currentMember.description,
                 locationId:             $scope.currentMember.location.id,
                 notShowCircles:         $scope.currentMember.notShowCircles === undefined ? false : $scope.currentMember.notShowCircles,
