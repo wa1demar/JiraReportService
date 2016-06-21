@@ -182,4 +182,12 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
         return query.list();
     }
 
+    @Override
+    public void deleteTechnology(String login, Long technologyId) {
+        Query query = sessionFactory.getCurrentSession().createSQLQuery("delete from jira_users_technologies WHERE technology_id = :technologyId and jira_user_login = :login");
+        query.setParameter("technologyId", technologyId);
+        query.setParameter("login", login);
+        query.executeUpdate();
+    }
+
 }

@@ -369,10 +369,12 @@
         $scope.updateMemberDescription = function(data) {
             $scope.currentMember.description = data;
 
+            console.log($scope.currentMember);
             var memberForUpdate = {
-                engineerLevel:          $scope.currentMember.engineerLevel,
+                engineerLevel:          $scope.currentMember.position ? $scope.currentMember.position.id : null,
                 description:            data,
                 locationId:             $scope.currentMember.location.id,
+                notShowCircles:         $scope.currentMember.notShowCircles === undefined ? false : $scope.currentMember.notShowCircles,
                 assignmentType: {
                     fromAssignmentTypeId:   $scope.currentMember.column.id,
                     toAssignmentTypeId:     $scope.currentMember.column.id
