@@ -4,7 +4,6 @@ import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberDto;
 import com.swansoftwaresolutions.jirareport.core.dto.jira_users.MemberPositionDto;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraGroup;
 import com.swansoftwaresolutions.jirareport.domain.entity.JiraUser;
-import com.swansoftwaresolutions.jirareport.domain.entity.ResourceColumn;
 import com.swansoftwaresolutions.jirareport.domain.entity.Technology;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraUserRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
@@ -130,18 +129,21 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
         Query query = sessionFactory.getCurrentSession().createQuery("delete JiraUsersReferences r where r.user.login = :login");
         query.setParameter("login", login);
         query.executeUpdate();
+
         return findByLogin(login);
+
     }
 
     @Override
     public JiraUser updateJiraUserInfo(String login, MemberDto memberDto) throws NoSuchEntityException {
-        Query query = sessionFactory.getCurrentSession().createQuery("update JiraUser u set u.description = :description, " +
+        Query query = sessionFactory.getCurrentSession().createQuery("update JiraUser u set u.description = :description, u.notShowCircles = :notShowCircles, " +
                 "u.location = (from Location l where l.id = :locationId), " +
                 "u.position= (from Position p where p.id = :positionId) where u.login = :login") ;
         query.setParameter("login", login);
         query.setParameter("description", memberDto.getDescription());
         query.setParameter("locationId", memberDto.getLocationId());
         query.setParameter("positionId", memberDto.getEngineerLevel());
+        query.setParameter("notShowCircles", memberDto.isNotShowCircles());
         query.executeUpdate();
         return findByLogin(login);
     }
@@ -172,6 +174,12 @@ public class JiraUserRepositoryImpl implements JiraUserRepository {
         session.flush();
         session.close();
 
+    }
+
+    @Override
+    public List<JiraUser> findFromBench() {
+        Query query = sessionFactory.getCurrentSession().createQuery("select u from JiraUser u join u.userReferences r join u.technologies t where r.column.id = 1");
+        return query.list();
     }
 
 }

@@ -18,6 +18,8 @@ public class ProjectReportDto {
     private Date createdDate;
     private Date updatedDate;
     private Date closedDate;
+    private Date startDate;
+    private Date endDate;
     private int typeId;
     private boolean closed;
     private List<JiraUserDto> admins= new ArrayList<>();
@@ -37,6 +39,8 @@ public class ProjectReportDto {
     private Long actualUatDefectHours;
 
     private long sprintsCount;
+    private String description;
+    private String issues;
 
     private Chart chart;
 
@@ -273,5 +277,37 @@ public class ProjectReportDto {
 
     public void setSprintsCount(long sprintsCount) {
         this.sprintsCount = sprintsCount;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getIssues() {
+        return issues;
+    }
+
+    public void setIssues(String issues) {
+        this.issues = issues;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }

@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface SprintService {
 
-    SprintDto add(NewSprintDto sprintDto);
+    SprintDto add(NewSprintDto sprintDto) throws NoSuchEntityException;
 
     SprintDto update(SprintDto sprintDto);
 

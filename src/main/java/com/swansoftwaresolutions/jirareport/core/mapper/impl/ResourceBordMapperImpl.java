@@ -18,10 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -54,23 +51,7 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
         List<FullResourceUserDto> allUsersFiltered = new ArrayList<>();
         for (ResourceColumn c : columns) {
             FullResourceColumnDto fullResourceColumnDto = modelMapper.map(c, FullResourceColumnDto.class);
-//            if (c.getUsers() != null && c.getUsers().size() > 0) {
-//                List<FullResourceUserDto> fullResourceUserDtos = new ArrayList<>();
-//                for (JiraUser user : c.getUsers()) {
-//                    FullResourceUserDto userDto = modelMapper.map(user, FullResourceUserDto.class);
-//                    if (!allUsersFiltered.contains(userDto)) {
-//                        if (user.getColumns() != null) {
-//                            ResourceColumn column = user.getColumns().get(0);
-//                            userDto.setColumn(modelMapper.map(column, ResourceColumnDto.class));
-//                        }
-//
-//                        fullResourceUserDtos.add(userDto);
-//                        allUsersFiltered.add(userDto);
-//                    }
-//
-//                }
-//                fullResourceColumnDto.setUsers(fullResourceUserDtos);
-//            }
+
             columnDtos.add(fullResourceColumnDto);
         }
         Collections.sort(columnDtos, (o1, o2) -> o1.getId().compareTo(o2.getId()));
@@ -114,26 +95,30 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
                         if (user.getUserReferences() != null) {
                             List<ResourceColumn> resourceColumns = new ArrayList<>();
                             List<Project> projects = new ArrayList<>();
+                            Map<Long, ResourceColumn> columnMap = new HashMap<>();
                             for (JiraUsersReferences r : user.getUserReferences()) {
                                 resourceColumns.add(r.getColumn());
                                 if (r.getProject() != null) {
-                                    projects.add(r.getProject());
+                                    Project project = r.getProject();
+                                    columnMap.put(project.getId(), r.getColumn());
+                                    projects.add(project);
                                 }
                             }
                             Collections.sort(resourceColumns, (o1, o2) -> o1.getPriority() - o2.getPriority());
                             ResourceColumn column = resourceColumns.get(0);
                             userDto.setColumn(modelMapper.map(column, ResourceColumnDto.class));
 
-                            Type targetistType = new TypeToken<List<ProjectDto>>() {}.getType();
-                            userDto.setProjects(modelMapper.map(projects, targetistType));
+                            List<ProjectDto> resultProjects = new ArrayList<>();
+                            for (Project pr : projects) {
+                                ProjectDto projectDto = modelMapper.map(pr, ProjectDto.class);
+                                projectDto.setAssignmentType(modelMapper.map(columnMap.get(pr.getId()), ResourceColumnDto.class));
+
+                                resultProjects.add(projectDto);
+                            }
+                            userDto.setProjects(resultProjects);
                         }
 
                         allUsersFiltered.add(userDto);
-
-//                        if (user.getPosition() != null) {
-//                            PositionDto positionDto = modelMapper.map(user.getPosition(), PositionDto.class);
-//                            userDto.setEngineerLevel(positionDto);
-//                        }
 
                         fullResourceUserDtos.add(userDto);
 
@@ -145,33 +130,7 @@ public class ResourceBordMapperImpl implements ResourceBordMapper {
                 fullResourceColumnDto.setMembersCount(fullResourceUserDtos.size());
 
             }
-//            if (c.getUsers() != null && c.getUsers().size() > 0) {
-//                List<FullResourceUserDto> fullResourceUserDtos = new ArrayList<>();
-//                for (JiraUser user : c.getUsers()) {
-//                    FullResourceUserDto userDto = modelMapper.map(user, FullResourceUserDto.class);
-//                    if (!allUsersFiltered.contains(userDto)) {
-//                        count++;
-//                    }
-//                    if (!allUsersFiltered.contains(userDto) && filterName(userDto, filterData.getName())
-//                            && filterTechnologies(userDto, filterData.getTechnology())
-//                            && filterLevel(userDto, filterData.getEngineerLevel())
-//                            && filterProject(userDto, filterData.getProject())
-//                            && filterLocations(userDto, filterData.getLocation())) {
-//                        if (user.getColumns() != null) {
-//                            ResourceColumn column = user.getColumns().get(0);
-//                            userDto.setColumn(modelMapper.map(column, ResourceColumnDto.class));
-//                        }
-//
-//                        fullResourceUserDtos.add(userDto);
-//                        allUsersFiltered.add(userDto);
-//                    }
-//
-//                }
-//                Collections.sort(fullResourceUserDtos, (o1, o2) -> o1.getResourceOrder() - o2.getResourceOrder());
-//                fullResourceColumnDto.setUsers(fullResourceUserDtos);
-//                fullResourceColumnDto.setAllMembersCount(count);
-//                fullResourceColumnDto.setMembersCount(fullResourceUserDtos.size());
-//            }
+
             columnDtos.add(fullResourceColumnDto);
         }
         Collections.sort(columnDtos, (o1, o2) -> o1.getSortPosition() - o2.getSortPosition());

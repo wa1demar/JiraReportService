@@ -75,6 +75,21 @@ body {
   margin: 0.3em 0.5em;
 }
 
+a.image_button {
+  padding: 35px 5px 5px 5px;
+  cursor: pointer;
+  text-decoration: none;
+  color: #3078b6;
+}
+
+a.image_button:hover {
+  color: #3078b6;
+}
+
+a.image_button.reload {
+  background: url("../images/favicon/reload_active.png") top center no-repeat;
+}
+
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
   .container {

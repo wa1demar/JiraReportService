@@ -766,6 +766,32 @@ table.aui .tr-for-progress-bar {
     text-shadow: 2px 2px 2px #021124;
 }
 
+.resource-loader-box {
+    overflow-x: auto;
+    overflow-y: auto;
+    position: absolute;
+    width: 80%;
+    height: 100%;
+    background: #000000;
+    opacity: 0.5;
+    z-index: 10;
+}
+
+.resource-loader-msg {
+    position: absolute;
+    height: 30px;
+    text-align: center;
+    font-size: 2em;
+    color: white;
+    text-shadow: 2px 2px 2px #021124;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 15;
+}
+
 /*====================================================================================================================*/
 /*DUE DATE ISSUES*/
 /*====================================================================================================================*/

@@ -314,7 +314,8 @@
                     dlgData: function () {
                         return {
                             item: $scope.reportModel != undefined ? $scope.reportModel.sprint : undefined,
-                            type: type
+                            type: type,
+                            report: $scope.report
                         };
                     }
                 }

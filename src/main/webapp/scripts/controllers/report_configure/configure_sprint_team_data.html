@@ -1,51 +1,52 @@
 <form class="aui">
-    <div class="autofill-box">
-        <span ng-show="showAutoFillData.showAutoFillLabel" class="aui-lozenge aui-lozenge-current">Autofill {{showAutoFillData.sprintName}}</span>
-        <span ng-show="reportModel.sprint.state === 'future'" class="aui-lozenge aui-lozenge-moved">Future sprint</span>
-    </div>
-    <div id="sprint-autofill-box">
-        <div>
-            Sprint type:
-            <select ng-model="reportModel.sprint.type" id="sprint-type" name="sprint-type" class="select sprint-type" convert-to-number>
-                <option value="0">Standard</option>
-                <option value="1">Additional blue</option>
-                <option value="2">Additional red</option>
-            </select>
-            <p class="sprint-note-text">
-                * Additional sprint - if sprint was added after finishing the jiraProject
-            </p>
-            <p class="sprint-note-text">
-                Blue - additional sprint for scope changed. Red - additional unpaid sprint
-            </p>
+    <div ng-if="report.typeId != 3">
+        <div class="autofill-box">
+            <span ng-show="showAutoFillData.showAutoFillLabel" class="aui-lozenge aui-lozenge-current">Autofill {{showAutoFillData.sprintName}}</span>
+            <span ng-show="reportModel.sprint.state === 'future'" class="aui-lozenge aui-lozenge-moved">Future sprint</span>
         </div>
-        <div style="margin-top: 15px;">
-            <input ng-model="reportModel.sprint.notCountTarget" name="not-count-target" id="not-count-target" type="checkbox"/>
-            <label for="not-count-target" style="color: #000000;">Not count target</label>
-            <p class="sprint-note-text">* If checked then do not add target points/hours to Project total</p>
-        </div>
-        <div style="margin-top: 15px;">
-            <input ng-model="reportModel.sprint.showUat" ng-change="calcParams()" name="show-uat-sprint" id="show-uat-sprint" type="checkbox"/>
-            <label for="show-uat-sprint" style="color: #000000;">UAT</label>
-            <p class="sprint-note-text">* If checked then show UAT Defects</p>
-        </div>
-        <div ng-if="report.typeId === 1" style="margin-top: 15px;">
-            <input ng-model="reportModel.sprint.showOutOfRange" name="show-out-of-range" id="show-out-of-range" type="checkbox"/>
-            <label for="show-out-of-range" style="color: #000000;">Show Out Of Range</label>
-            <p class="sprint-note-text">* If checked then show points which out of range</p>
-        </div>
+        <div id="sprint-autofill-box">
+            <div>
+                Sprint type:
+                <select ng-model="reportModel.sprint.type" id="sprint-type" name="sprint-type" class="select sprint-type" convert-to-number>
+                    <option value="0">Standard</option>
+                    <option value="1">Additional blue</option>
+                    <option value="2">Additional red</option>
+                </select>
+                <p class="sprint-note-text">
+                    * Additional sprint - if sprint was added after finishing the jiraProject
+                </p>
+                <p class="sprint-note-text">
+                    Blue - additional sprint for scope changed. Red - additional unpaid sprint
+                </p>
+            </div>
+            <div style="margin-top: 15px;">
+                <input ng-model="reportModel.sprint.notCountTarget" name="not-count-target" id="not-count-target" type="checkbox"/>
+                <label for="not-count-target" style="color: #000000;">Not count target</label>
+                <p class="sprint-note-text">* If checked then do not add target points/hours to Project total</p>
+            </div>
+            <div style="margin-top: 15px;">
+                <input ng-model="reportModel.sprint.showUat" ng-change="calcParams()" name="show-uat-sprint" id="show-uat-sprint" type="checkbox"/>
+                <label for="show-uat-sprint" style="color: #000000;">UAT</label>
+                <p class="sprint-note-text">* If checked then show UAT Defects</p>
+            </div>
+            <div ng-if="report.typeId === 1" style="margin-top: 15px;">
+                <input ng-model="reportModel.sprint.showOutOfRange" name="show-out-of-range" id="show-out-of-range" type="checkbox"/>
+                <label for="show-out-of-range" style="color: #000000;">Show Out Of Range</label>
+                <p class="sprint-note-text">* If checked then show points which out of range</p>
+            </div>
 
-        <hr/>
-        <div ng-show="sprintTeams.length > 0" id="has-sprint-team-data" style="display: none"></div>
-        <table class="aui table table-preview-details" style="width: inherit;">
-            <thead>
+            <hr/>
+            <div ng-show="sprintTeams.length > 0" id="has-sprint-team-data" style="display: none"></div>
+            <table class="aui table table-preview-details" style="width: inherit;">
+                <thead>
                 <tr>
                     <th style="width: 300px;" class="border-right-2">Developer</th>
                     <th style="width: 150px;" class="border-right-2">Engineer Level</th>
                     <th style="width: 150px;" class="border-right-2">Participation Level</th>
                     <th style="width: 300px;">Days in Sprint</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 <tr ng-show="sprintTeams.length > 0" ng-repeat="data in sprintTeams" class="configure-dev-row" data-id="{{data.id}}">
                     <td class="border-right-2">
                         <select ui-select2 ng-model="data.developerLogin" class="developer-name" disabled>
@@ -88,17 +89,17 @@
                               id="add-sprint-team" class="aui-button">Add</span>
                     </td>
                 </tr>
-            </tbody>
-        </table>
-        <hr/>
-        <div><strong>Preview details</strong></div>
-        <div>
-            <div ng-show="!sprintTeams || sprintTeams.length === 0">
-                <p class="text-center">Data not found</p>
-            </div>
+                </tbody>
+            </table>
+            <hr/>
+            <div><strong>Preview details</strong></div>
+            <div>
+                <div ng-show="!sprintTeams || sprintTeams.length === 0">
+                    <p class="text-center">Data not found</p>
+                </div>
 
-            <table class="aui table table-preview-details" ng-hide="sprintTeams && sprintTeams.length === 0">
-                <thead>
+                <table class="aui table table-preview-details" ng-hide="sprintTeams && sprintTeams.length === 0">
+                    <thead>
                     <tr>
                         <th colspan="5"></th>
                         <th colspan="3" class="text-center" style="border-left: 1px solid #cccccc">QAT</th>
@@ -120,47 +121,66 @@
                         <th ng-hide="!reportModel.sprint.showUat" class="text-center uat-element">Defects Max</th>
                         <th ng-hide="!reportModel.sprint.showUat" class="text-center uat-element">Defects Hours</th>
                     </tr>
-                </thead>
-                <tbody>
+                    </thead>
+                    <tbody>
 
-                <tr ng-repeat="data in sprintTeams" class="table-preview-details-row" data-id="{{data.id}}">
-                    <td class="dev-name">
-                        {{data.developerName}}
-                    </td>
-                    <td class="engineer-lvl text-center">{{data.engineerLevel === 4 ? 3 : data.engineerLevel}}</td>
-                    <td class="participation-lvl text-center">{{data.participationLevel | number:1}}</td>
-                    <td class="days-in-sprint text-center">{{data.daysInSprint}}</td>
+                    <tr ng-repeat="data in sprintTeams" class="table-preview-details-row" data-id="{{data.id}}">
+                        <td class="dev-name">
+                            {{data.developerName}}
+                        </td>
+                        <td class="engineer-lvl text-center">{{data.engineerLevel === 4 ? 3 : data.engineerLevel}}</td>
+                        <td class="participation-lvl text-center">{{data.participationLevel | number:1}}</td>
+                        <td class="days-in-sprint text-center">{{data.daysInSprint}}</td>
 
-                    <td class="target-points text-center">{{data.targetPoints}}</td>
-                    <td class="target-hours text-center" style="display: none;">{{data.targetHours}}</td>
+                        <td class="target-points text-center">{{data.targetPoints}}</td>
+                        <td class="target-hours text-center" style="display: none;">{{data.targetHours}}</td>
 
-                    <td class="defect-min text-center" style="border-left: 1px solid #cccccc">{{data.defectMin}}</td>
-                    <td class="defect-max text-center">{{data.defectMax}}</td>
-                    <td class="defect-hours text-center">{{data.defectHours}}</td>
+                        <td class="defect-min text-center" style="border-left: 1px solid #cccccc">{{data.defectMin}}</td>
+                        <td class="defect-max text-center">{{data.defectMax}}</td>
+                        <td class="defect-hours text-center">{{data.defectHours}}</td>
 
-                    <td ng-hide="!reportModel.sprint.showUat" class="uat-defect-min text-center uat-element" style="border-left: 1px solid #cccccc">{{data.uatDefectMin}}</td>
-                    <td ng-hide="!reportModel.sprint.showUat" class="uat-defect-max text-center uat-element">{{data.uatDefectMax}}</td>
-                    <td ng-hide="!reportModel.sprint.showUat" class="uat-defect-hours text-center uat-element">{{data.uatDefectHours}}</td>
-                </tr>
-                <tr class="table-preview-details-row-total">
-                    <td>Total</td>
-                    <td class="engineer-lvl-total text-center">{{totalPreviewDetails.engineerLevel}}</td>
-                    <td class="participation-lvl-total text-center"></td>
-                    <td class="days-in-sprint-total text-center"></td>
+                        <td ng-hide="!reportModel.sprint.showUat" class="uat-defect-min text-center uat-element" style="border-left: 1px solid #cccccc">{{data.uatDefectMin}}</td>
+                        <td ng-hide="!reportModel.sprint.showUat" class="uat-defect-max text-center uat-element">{{data.uatDefectMax}}</td>
+                        <td ng-hide="!reportModel.sprint.showUat" class="uat-defect-hours text-center uat-element">{{data.uatDefectHours}}</td>
+                    </tr>
+                    <tr class="table-preview-details-row-total">
+                        <td>Total</td>
+                        <td class="engineer-lvl-total text-center">{{totalPreviewDetails.engineerLevel}}</td>
+                        <td class="participation-lvl-total text-center"></td>
+                        <td class="days-in-sprint-total text-center"></td>
 
-                    <td class="target-points-total text-center">{{totalPreviewDetails.targetPoints}}</td>
-                    <td class="target-hours-total text-center" style="display: none;">{{totalPreviewDetails.targetHours}}</td>
+                        <td class="target-points-total text-center">{{totalPreviewDetails.targetPoints}}</td>
+                        <td class="target-hours-total text-center" style="display: none;">{{totalPreviewDetails.targetHours}}</td>
 
-                    <td class="defect-min-total text-center" style="border-left: 1px solid #cccccc">{{totalPreviewDetails.defectMin}}</td>
-                    <td class="defect-max-total text-center">{{totalPreviewDetails.defectMax}}</td>
-                    <td class="defect-hours-total text-center">{{totalPreviewDetails.defectHours}}</td>
+                        <td class="defect-min-total text-center" style="border-left: 1px solid #cccccc">{{totalPreviewDetails.defectMin}}</td>
+                        <td class="defect-max-total text-center">{{totalPreviewDetails.defectMax}}</td>
+                        <td class="defect-hours-total text-center">{{totalPreviewDetails.defectHours}}</td>
 
-                    <td ng-hide="!reportModel.sprint.showUat" class="uat-defect-min-total text-center uat-element" style="border-left: 1px solid #cccccc">{{totalPreviewDetails.uatDefectMin}}</td>
-                    <td ng-hide="!reportModel.sprint.showUat" class="uat-defect-max-total text-center uat-element">{{totalPreviewDetails.uatDefectMax}}</td>
-                    <td ng-hide="!reportModel.sprint.showUat" class="uat-defect-hours-total text-center uat-element">{{totalPreviewDetails.uatDefectHours}}</td>
-                </tr>
-                </tbody>
-            </table>
+                        <td ng-hide="!reportModel.sprint.showUat" class="uat-defect-min-total text-center uat-element" style="border-left: 1px solid #cccccc">{{totalPreviewDetails.uatDefectMin}}</td>
+                        <td ng-hide="!reportModel.sprint.showUat" class="uat-defect-max-total text-center uat-element">{{totalPreviewDetails.uatDefectMax}}</td>
+                        <td ng-hide="!reportModel.sprint.showUat" class="uat-defect-hours-total text-center uat-element">{{totalPreviewDetails.uatDefectHours}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+    <div ng-if="report.typeId === 3">
+        <label ng-if="report.typeId === 3" style="color: #0f0f0f">Report for the Period: </label>
+        {{ reportModel.sprint.startDate | date:'MM/dd/yyyy'  }} - {{ reportModel.sprint.endDate | date:'MM/dd/yyyy' }}
+        <div class="row">
+            <div class="col-sm-6">
+                <label ng-if="report.typeId === 3" style="color: #0f0f0f">Description: </label>
+                <textarea ng-model="reportModel.sprint.description" style="width: 100%; height: 200px; padding: 10px"></textarea>
+            </div>
+            <div class="col-sm-6">
+                <label ng-if="report.typeId === 3" style="color: #c12e2a">Issues: </label>
+                <textarea ng-model="reportModel.sprint.issues" style="width: 100%; color: #c12e2a; height: 200px; padding: 10px"></textarea>
+            </div>
+
+
+        </div>
+
+    </div>
+
 </form>

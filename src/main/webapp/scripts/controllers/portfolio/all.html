@@ -1,7 +1,7 @@
 <table ng-show="reportsData.length > 0" class="aui table">
     <tbody>
         <tr class="element-row" dir-paginate="data in reportsData | filter: query | itemsPerPage: reportsDataPerPage" total-items="totalReportsData" current-page="pagination.current">
-            <td class="report-element-table-chart">
+            <td class="report-element-table-chart" ng-show="data.chart">
                 <div class="name-box" style="font-size: 16px; font-weight: bold;">
                     <a ng-href="#/report/{{data.id}}">
                         {{data.title}}
@@ -27,7 +27,7 @@
                     </center>
                 </div>
             </td>
-            <td class="report-element-table-sprint">
+            <td class="report-element-table-sprint" ng-show="data.chart">
                 <div class="report-element-sprint-table">
                     <table class="aui table table-sprint">
                         <thead>
@@ -146,6 +146,30 @@
                     </div>
 
                 </div>
+            </td>
+            <td ng-hide="data.chart" colspan="2">
+                <div class="name-box" style="font-size: 16px; font-weight: bold;">
+                    <a ng-href="#/report/{{data.id}}">
+                        {{data.title}}
+                    </a>
+                </div>
+                <div style="padding: 0 0 0 5%">
+                    <label style="color: #0f0f0f">Report for the Period: </label>
+                    {{ data.startDate | date:'MM/dd/yyyy'  }} - {{ data.endDate | date:'MM/dd/yyyy' }}
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label style="color: #0f0f0f">Description: </label>
+                            <textarea readonly="readonly" ng-model="data.description" style="width: 100%; height: 200px; padding: 10px"></textarea>
+                        </div>
+                        <div class="col-sm-6">
+                            <label style="color: #c12e2a">Issues: </label>
+                            <textarea readonly="readonly" ng-model="data.issues" style="width: 100%; color: #c12e2a; height: 200px; padding: 10px"></textarea>
+                        </div>
+
+
+                    </div>
+                </div>
+
             </td>
         </tr>
     </tbody>

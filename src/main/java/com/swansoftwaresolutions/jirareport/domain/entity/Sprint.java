@@ -45,6 +45,12 @@ public class Sprint  implements Serializable {
     @Column(name = "type")
     private int type;
 
+    @Column(name = "issues")
+    private String issues;
+
+    @Column(name = "description")
+    private String description;
+
     @OneToOne(fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
     @BatchSize(size = 10)
@@ -158,5 +164,21 @@ public class Sprint  implements Serializable {
 
     public void setShowOutOfRange(boolean showOutOfRange) {
         this.showOutOfRange = showOutOfRange;
+    }
+
+    public String getIssues() {
+        return issues;
+    }
+
+    public void setIssues(String issues) {
+        this.issues = issues;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

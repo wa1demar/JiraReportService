@@ -12,6 +12,7 @@ public class MoveMemberDto {
     private AssignmentType assignmentType;
     private List<MemberPositionDto> users = new ArrayList<>();
     private ResourceFilterData filters;
+    private Long projectId;
 
     public AssignmentType getAssignmentType() {
         return assignmentType;
@@ -35,5 +36,13 @@ public class MoveMemberDto {
 
     public void setFilters(ResourceFilterData filters) {
         this.filters = filters;
+    }
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
     }
 }

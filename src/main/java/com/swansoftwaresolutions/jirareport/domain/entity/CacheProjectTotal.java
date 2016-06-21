@@ -1,13 +1,11 @@
 package com.swansoftwaresolutions.jirareport.domain.entity;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author Vladimir Martynyuk
@@ -81,10 +79,22 @@ public class CacheProjectTotal implements Serializable {
     @Column(name = "sprints_count")
     private long sprintsCount;
 
+    @Column(name = "issues")
+    private String issues;
+
+    @Column(name = "description")
+    private String description;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @Cascade(CascadeType.ALL)
     @JoinColumn(name="report_id")
     private Report report;
+
+    @Column(name = "start_date")
+    private Date startDate;
+
+    @Column(name = "end_date")
+    private Date endDate;
 
     public Long getId() {
         return id;
@@ -260,5 +270,37 @@ public class CacheProjectTotal implements Serializable {
 
     public void setSprintsCount(long sprintsCount) {
         this.sprintsCount = sprintsCount;
+    }
+
+    public String getIssues() {
+        return issues;
+    }
+
+    public void setIssues(String issues) {
+        this.issues = issues;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }

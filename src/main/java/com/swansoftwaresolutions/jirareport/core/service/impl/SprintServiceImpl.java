@@ -5,7 +5,6 @@ import com.swansoftwaresolutions.jirareport.core.dto.sprint_developer.SprintDeve
 import com.swansoftwaresolutions.jirareport.core.mapper.SprintDeveloperMapper;
 import com.swansoftwaresolutions.jirareport.core.mapper.SprintMapper;
 import com.swansoftwaresolutions.jirareport.core.service.SprintService;
-import com.swansoftwaresolutions.jirareport.domain.entity.JiraBoard;
 import com.swansoftwaresolutions.jirareport.domain.entity.Report;
 import com.swansoftwaresolutions.jirareport.domain.entity.Sprint;
 import com.swansoftwaresolutions.jirareport.domain.entity.SprintDeveloper;
@@ -15,7 +14,6 @@ import com.swansoftwaresolutions.jirareport.domain.repository.ReportRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.SprintDeveloperRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.SprintRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.exception.NoSuchEntityException;
-import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +48,13 @@ public class SprintServiceImpl implements SprintService {
     private SprintDeveloperMapper developerMapper;
 
     @Override
-    public SprintDto add(NewSprintDto sprintDto) {
+    public SprintDto add(NewSprintDto sprintDto) throws NoSuchEntityException {
+        Report report = reportRepository.findById(sprintDto.getReportId());
+        if (sprintDto.getName() == null || sprintDto.getName().equals("")) {
+            sprintDto.setName("Report " + report.getLastSprintIndex());
+            report.setLastSprintIndex(report.getLastSprintIndex()+1);
+            reportRepository.update(report);
+        }
         return sprintMapper.toDto(sprintRepository.add(sprintMapper.fromDto(sprintDto)));
     }
 
@@ -94,7 +98,7 @@ public class SprintServiceImpl implements SprintService {
         Report report = reportRepository.findById(reportId);
 
         Sprint sprint = null;
-        if (report.getTypeId() != 2) {
+        if (report.getTypeId() == 1) {
             developerRepository.deleteBySprintId(sprintId);
             sprint = sprintRepository.findById(sprintId);
         } else {
@@ -220,6 +224,8 @@ public class SprintServiceImpl implements SprintService {
             fullSpr.setShowUat(sprint.isShowUAT());
             fullSpr.setDevelopers(developers);
             fullSpr.setShowOutOfRange(sprint.isShowOutOfRange());
+            fullSpr.setIssues(sprint.getIssues());
+            fullSpr.setDescription(sprint.getDescription());
 
             if (sprint.getJiraSprint() != null) {
                 fullSpr.setCompleteDate(sprint.getJiraSprint().getCompleteDate());

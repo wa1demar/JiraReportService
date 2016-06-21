@@ -1,8 +1,28 @@
 <div id="report-element">
-    <table class="report-element-table">
+    <div style="padding: 16px" ng-if="reportData.report.typeId === 3">
+        <label style="color: #0f0f0f">Report for the Period: </label>
+        {{ currentSprint.startDate | date:'MM/dd/yyyy'  }} - {{ currentSprint.endDate | date:'MM/dd/yyyy' }}
+        <div class="row">
+            <div class="col-sm-5">
+                <label style="color: #0f0f0f">Description: </label>
+                <textarea readonly="readonly" ng-model="currentSprint.description" style="width: 100%; height: 200px; padding: 10px"></textarea>
+            </div>
+            <div class="col-sm-5">
+                <label style="color: #c12e2a">Issues: </label>
+                <textarea readonly="readonly" ng-model="currentSprint.issues" style="width: 100%; color: #c12e2a; height: 200px; padding: 10px"></textarea>
+            </div>
+            <div class="col-sm-2">
+                <a class="image_button reload" href="" ng-click="showOlderSprint()">Old Reports</a>
+            </div>
+
+
+        </div>
+
+    </div>
+    <table class="report-element-table" >
         <tr>
             <td class="report-element-table-chart">
-                <div class="report-element-chart">
+                <div class="report-element-chart" ng-if="reportData.report.typeId != 3">
                     <center><h3 id="chart-title">{{showSprintName !== '' && showSprintName !== undefined ? showSprintName : 'Project to date'}}</h3></center>
                     <div ng-show="reportData.sprints.length > 0 && hasSprintTeam" id="chart-box">
                         <canvas id="line" class="chart chart-line" chart-data="data" chart-options="options"
@@ -15,8 +35,8 @@
                     </center>
                 </div>
             </td>
-            <td class="report-element-table-sprint">
-                <div class="report-element-sprint-table">
+            <td class="report-element-table-sprint" >
+                <div class="report-element-sprint-table" ng-if="reportData.report.typeId != 3">
                     <table ng-show="reportData.sprints.length > 0" class="aui table table-sprint">
                         <thead>
                             <tr>
@@ -265,9 +285,10 @@
             </td>
         </tr>
     </table>
+
 </div>
 
-<div style="width: 100%;">
+<div style="width: 100%;" ng-if="reportData.report.typeId != 3">
     <div class="aui-navgroup-horizontal">
         <center><h3 style="margin-top: 10px;">Project Progress Bar</h3></center>
     </div>

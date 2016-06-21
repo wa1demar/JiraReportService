@@ -9,6 +9,8 @@
 
     function DlgProcessSprintCtrl($scope, $uibModalInstance, dlgData, SprintFactory) {
         $scope.sprint = dlgData.item;
+        $scope.report = dlgData.report;
+        console.log(dlgData.report);
         if (dlgData.type === "add") {
             $scope.sprint = {
                 state: "active"
