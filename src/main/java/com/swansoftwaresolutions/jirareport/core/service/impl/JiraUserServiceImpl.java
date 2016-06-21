@@ -25,7 +25,6 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author Vitaliy Holovko
@@ -256,14 +255,13 @@ public class JiraUserServiceImpl implements JiraUserService {
 
     @Override
     public ResourceUserDto deleteTechnology2(String login, Long technologyId) throws NoSuchEntityException {
-        Technology technology = technologyRepository.findById(technologyId);
+        JiraUser user = jiraUserRepository.findByLogin(login);
+        Set<Technology> technologies = new HashSet<>(user.getTechnologies());
+        technologies.removeIf(t -> t.getId().equals(technologyId));
+        user.setTechnologies(new ArrayList<>(technologies));
+        jiraUserRepository.deleteTechnology(login, technologyId);
 
-        List<JiraUser> users = technology.getUsers();
-
-        technology.setUsers(users.parallelStream().filter(i -> !i.getLogin().equals(login)).collect(Collectors.toList()));
-        technologyRepository.update(technology);
-
-        return jiraUserMapper.fromJiraUserToResourceUserDto(jiraUserRepository.findByLogin(login));
+        return jiraUserMapper.fromJiraUserToResourceUserDto(user);
     }
 
     @Override
