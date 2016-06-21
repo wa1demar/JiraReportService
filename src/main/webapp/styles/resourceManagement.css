@@ -47,9 +47,10 @@
 }
 
 .res-left-content ul.main {
-    height: 100%;
-    min-width: 100%;
+    /*height: 100%;*/
+    /*min-width: 100%;*/
     white-space: nowrap;
+    overflow: hidden;
     padding: 0;
     margin: 10px 0;
 }
@@ -90,9 +91,29 @@
 
 .main h4 {
     margin-bottom: 0;
-    cursor: pointer;
     background-color: #FFFFFF;
     padding: 10px 0;
+    position: relative;
+    white-space: normal;
+    overflow: hidden;
+    font-size: 15px;
+}
+
+.main h4 .controls {
+    position: absolute;
+    top: 0;
+    padding: 10px 0;
+    background: rgba(0, 0, 0, 0.5);
+    right: -48px;
+    transition: right 0.5s ease-out 0.5s;
+}
+
+.main h4:hover .controls {
+    right: 0;
+}
+
+.main h4 .controls span {
+    cursor: pointer;
 }
 
 .main h4 .control-icon {
@@ -100,6 +121,7 @@
     font-size: 14px;
     margin: 0 5px;
     cursor: pointer;
+    color: #FFFFFF;
 }
 
 .main h4 .member-count {
@@ -115,6 +137,10 @@
     white-space: nowrap;
     padding: 10px;
     border: 1px solid #CCCCCC;
+}
+
+.res-left-content ul.item.moved {
+    border-top: 25px;
 }
 
 .res-left-content ul.item:empty {
