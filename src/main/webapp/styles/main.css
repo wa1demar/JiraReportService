@@ -88,6 +88,8 @@ a.image_button:hover {
 
 a.image_button.reload {
   background: url("../images/favicon/reload_active.png") top center no-repeat;
+  position: absolute;
+  top: -10px;
 }
 
 /* Responsive: Portrait tablets and up */
