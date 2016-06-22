@@ -42,4 +42,5 @@ public interface JiraUserRepository {
 
     List<JiraUser> findFromBench();
 
+    void deleteTechnology(String login, Long technologyId);
 }
