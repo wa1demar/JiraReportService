@@ -28,7 +28,7 @@
 
                             <h4 class="column-h4">
                                 <!--<a href="#" editable-text="listName">{{ listName || 'empty' }}</a>-->
-                                {{column.name}} <span class="member-count">(<span ng-if="isSearch">{{column.membersCount}} of </span>{{column.allMembersCount}})</span>
+                                {{::column.name}} <span class="member-count">(<span ng-if="isSearch">{{column.membersCount}} of </span>{{column.allMembersCount}})</span>
 
                                 <div class="controls" >
                                     <span ng-if="!column.fixed" ng-click="delColumn(column)" class="glyphicon glyphicon-remove control-icon" title="Delete"></span>
