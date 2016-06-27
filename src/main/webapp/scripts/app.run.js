@@ -37,6 +37,24 @@
             $rootScope.showMenu = authenticationFactory.isLogged;
             $rootScope.roles = authenticationFactory.roles;
             $rootScope.isAdmin = $filter('hasRole')(authenticationFactory.roles, "ROLE_ADMIN");
+            $rootScope.isCurrentUser = function (data) {
+                var res = false;
+                if (data && data.admins) {
+                    $.each(data.admins, function (index, value) {
+                        console.log(value.login);
+                        console.log(value.login === authenticationFactory.user);
+                        if (value.login === authenticationFactory.user) {
+                            res = true;
+                        }
+                    });
+                }
+
+                if($rootScope.isAdmin) {
+                    res = true;
+                }
+
+                return res;
+            };
 
             // if the user is already logged in, take him to the home page
             if (authenticationFactory.isLogged === true && $location.path() === '/login') {
