@@ -21,20 +21,14 @@
 
                 <div class="res-left-content-center">
                     <ul ng-if="!loaderShow" class="main"
-                        dnd-list="columns"
-                        dnd-allowed-types="['column']"
-                        dnd-horizontal-list="true"
-                        dnd-external-sources="true"
                         ng-style="{width: columns.length*240}">
                         <li ng-repeat="column in columns"
                             class="main grey"
-                            dnd-draggable="column"
-                            dnd-type="'column'"
                             ng-class="{'selected': columns.selected === column}">
 
                             <h4 class="column-h4">
                                 <!--<a href="#" editable-text="listName">{{ listName || 'empty' }}</a>-->
-                                {{column.name}} <span class="member-count">(<span ng-if="isSearch">{{column.membersCount}} of </span>{{column.allMembersCount}})</span>
+                                {{::column.name}} <span class="member-count">(<span ng-if="isSearch">{{column.membersCount}} of </span>{{column.allMembersCount}})</span>
 
                                 <div class="controls" >
                                     <span ng-if="!column.fixed" ng-click="delColumn(column)" class="glyphicon glyphicon-remove control-icon" title="Delete"></span>

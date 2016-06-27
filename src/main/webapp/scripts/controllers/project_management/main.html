@@ -28,19 +28,13 @@
 
                 <div class="res-left-content-center">
                     <ul ng-if="!loaderShow" class="main"
-                        dnd-list="columns"
-                        dnd-allowed-types="['column']"
-                        dnd-horizontal-list="true"
-                        dnd-external-sources="true"
                         ng-style="{width: columns.length*240}">
                         <li ng-repeat="column in columns"
                             class="main grey project-box"
-                            dnd-type="'column'"
-                            dnd-moved="columns.splice($index, 1)"
                             ng-class="{'selected': columns.selected === column}">
 
                             <h4 class="column-h4">
-                                {{column.title}}  <span class="member-count">(<span ng-if="isSearch">{{column.membersCount}} of </span>{{column.allMembersCount}})</span>
+                                {{::column.title}}  <span class="member-count">(<span ng-if="isSearch">{{column.membersCount}} of </span>{{column.allMembersCount}})</span>
                                 <div class="controls" >
                                     <span ng-if="!column.fixed" ng-click="delProject(column)" class="glyphicon glyphicon-remove control-icon" title="Delete"></span>
                                     <span ng-click="processProject(column)" class="glyphicon glyphicon-pencil control-icon" title="Edit"></span>
