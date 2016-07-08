@@ -1,9 +1,8 @@
 package com.swansoftwaresolutions.jirareport.core.service.impl;
 
 import com.swansoftwaresolutions.jirareport.core.dto.TimeSheetDto;
-import com.swansoftwaresolutions.jirareport.core.dto.user.UserLoginDto;
 import com.swansoftwaresolutions.jirareport.core.service.TimeSheetService;
-import com.swansoftwaresolutions.jirareport.core.service.UserService;
+import com.swansoftwaresolutions.jirareport.domain.entity.JiraIssue;
 import com.swansoftwaresolutions.jirareport.domain.entity.User;
 import com.swansoftwaresolutions.jirareport.domain.repository.JiraIssueRepository;
 import com.swansoftwaresolutions.jirareport.domain.repository.UserRepository;
@@ -11,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Vladimir Martynyuk
@@ -31,7 +32,7 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 
         User user = userRepository.findByUsername(auth.getName());
 
-        jiraIssueRepository.
+        List<JiraIssue> issues = jiraIssueRepository.findByUserLogin(user.getUsername());
 
 
         return null;
