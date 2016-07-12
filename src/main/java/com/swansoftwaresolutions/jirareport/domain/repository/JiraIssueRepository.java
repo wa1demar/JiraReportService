@@ -31,4 +31,6 @@ public interface JiraIssueRepository {
     void saveAll(List<JiraIssue> list);
 
     List<JiraIssue> findAllDueDate(List<String> agileDoneNames);
+
+    List<JiraIssue> findByUserLogin(String username);
 }

@@ -149,4 +149,11 @@ public class JiraIssueRepositoryImpl implements JiraIssueRepository {
         query.setParameterList("agileDoneNames", agileDoneNames);
         return query.list();
     }
+
+    @Override
+    public List<JiraIssue> findByUserLogin(String username) {
+        Query query = sessionFactory.getCurrentSession().createQuery("from JiraIssue issue where issue.assignedKey = :login");
+        query.setParameter("login", username);
+        return query.list();
+    }
 }
